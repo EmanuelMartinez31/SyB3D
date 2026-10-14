@@ -1,0 +1,13 @@
+{
+  "name": "hud-3d-draft",
+  "version": "1.0.0",
+  "description": "HUD 3D para pick/ban de League of Legends (control manual)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "ws": "^8.18.0"
+  }
+}

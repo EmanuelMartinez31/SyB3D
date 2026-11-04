@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <!-- Los recursos se cargan localmente; Three.js no depende de una CDN. -->
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>SyB — Resumen postpartida</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="./styles.css" />
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "/overlay/vendor/three/build/three.module.js",
+          "three/addons/": "/overlay/vendor/three/examples/jsm/"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <main id="stage" hidden aria-label="Resumen de estadísticas postpartida">
+      <div class="topline"></div>
+      <!-- Encabezado: torneo, título, logos principales y formato de serie. -->
+      <header class="header">
+        <div class="brand"><span id="tournament-name"></span></div>
+        <div class="title">
+          <small>ANÁLISIS FINAL</small>
+          <div class="title-row">
+            <img class="title-logo" id="blue-logo" alt="" hidden />
+            <h1>RESUMEN DE PARTIDA</h1>
+            <img class="title-logo" id="red-logo" alt="" hidden />
+          </div>
+        </div>
+        <div class="meta"><b id="series-format">BO3 · JUEGO 1</b></div>
+      </header>
+
+      <!-- Equipo azul: render.js coloca aquí los datos y crea sus cinco tarjetas. -->
+      <section class="teambar blue" aria-label="Equipo azul">
+        <div class="team-id">
+          <div class="team-tag" id="blue-tag">AZUL</div>
+          <div class="team-name" id="blue-name">EQUIPO AZUL</div>
+          <div class="team-sub">LADO AZUL</div>
+        </div>
+        <div class="center-score">
+          <strong id="blue-kills">0</strong><span>—</span><strong id="red-kills-top">0</strong>
+        </div>
+        <div class="team-id right"><div class="result" id="blue-result">FINALIZADA</div></div>
+      </section>
+      <div class="cards" id="blue-cards"></div>
+
+      <!-- Equipo rojo: misma estructura y estilos, con sus colores y resultados. -->
+      <section class="teambar red" aria-label="Equipo rojo">
+        <div class="team-id">
+          <div class="team-tag" id="red-tag">ROJO</div>
+          <div class="team-name" id="red-name">EQUIPO ROJO</div>
+          <div class="team-sub">LADO ROJO</div>
+        </div>
+        <div class="center-score">
+          <span>DURACIÓN</span><strong id="game-duration">00:00</strong>
+        </div>
+        <div class="team-id right"><div class="result" id="red-result">FINALIZADA</div></div>
+      </section>
+      <div class="cards redcards" id="red-cards"></div>
+
+      <!-- Un solo canvas WebGL dibuja los diez campeones sobre sus respectivas tarjetas. -->
+      <canvas id="webgl" aria-hidden="true"></canvas>
+      <div id="demo-badge" hidden>DEMO · DATOS FICTICIOS</div>
+    </main>
+    <!-- Punto de entrada: obtiene el estado, construye las tarjetas y sincroniza los modelos. -->
+    <script type="module" src="./src/main.js"></script>
+  </body>
+</html>

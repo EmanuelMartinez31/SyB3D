@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SyB Ingame Overlay</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="./src/styles.css">
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "./vendor/three/build/three.module.js",
+        "three/addons/": "./vendor/three/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+<body>
+  <main id="viewport" aria-label="HUD de partida League of Legends">
+    <div id="stage">
+      <section class="objectives" aria-label="Temporizadores de objetivos">
+        <div id="objective-dragon" class="objective objective-dragon">
+          <img class="objective-icon" src="./assets/objectives/dragon.png" alt="" aria-hidden="true">
+          <span class="objective-copy"><small>PRÓXIMO DRAGÓN</small><strong>--:--</strong></span>
+          <img id="objective-dragon-type" class="objective-type-icon" src="./assets/objectives/dragon.png" alt="" aria-hidden="true" hidden>
+        </div>
+        <div id="objective-secondary" class="objective objective-grubs">
+          <img id="objective-secondary-icon" class="objective-icon" src="./assets/objectives/grub.png" alt="" aria-hidden="true">
+          <span class="objective-copy"><small>VACULARVAS</small><strong>--:--</strong></span>
+        </div>
+      </section>
+
+      <header class="topbar" aria-label="Marcador de la partida">
+        <section class="top-team top-team-blue">
+          <div id="blue-series-score" class="series-score" title="Victorias del equipo azul en la serie" hidden>0</div>
+          <div class="team-emblem"><img id="blue-team-logo" class="team-logo" alt="" hidden><span id="blue-emblem">A</span></div>
+          <div class="team-identity"><strong id="blue-name">AZUL</strong></div>
+          <div class="top-stat" title="Torretas destruidas"><img class="tower-icon" src="./assets/objectives/tower.png" alt="" aria-hidden="true"><strong id="blue-towers">0</strong></div>
+          <div class="top-gold"><img class="gold-icon" src="./assets/ui/gold.svg" alt="" aria-hidden="true"><strong id="blue-gold">0.0K</strong></div>
+        </section>
+
+        <div class="game-center">
+          <strong id="blue-kills" class="center-kills center-kills-blue">0</strong>
+          <div class="game-clock">
+            <span id="series-format" class="series-format">BO1</span>
+            <span id="game-label" class="live-caption">PARTIDA 1 DE 1</span>
+            <strong id="game-time">00:00</strong>
+            <span id="gold-lead" class="gold-lead">±0.0K</span>
+          </div>
+          <strong id="red-kills" class="center-kills center-kills-red">0</strong>
+        </div>
+
+        <section class="top-team top-team-red">
+          <div class="top-gold"><img class="gold-icon" src="./assets/ui/gold.svg" alt="" aria-hidden="true"><strong id="red-gold">0.0K</strong></div>
+          <div class="top-stat" title="Torretas destruidas"><img class="tower-icon" src="./assets/objectives/tower.png" alt="" aria-hidden="true"><strong id="red-towers">0</strong></div>
+          <div class="team-identity"><strong id="red-name">ROJO</strong></div>
+          <div class="team-emblem"><img id="red-team-logo" class="team-logo" alt="" hidden><span id="red-emblem">R</span></div>
+          <div id="red-series-score" class="series-score" title="Victorias del equipo rojo en la serie" hidden>0</div>
+        </section>
+      </header>
+
+      <section class="objective-ribbon" aria-label="Objetivos conseguidos por equipo">
+        <div class="team-objective-tray blue" aria-label="Objetivos del equipo azul">
+          <span class="objective-counter" title="Vacularbas"><img src="./assets/objectives/grub.png" alt="" aria-hidden="true"><strong id="blue-grubs-score">0</strong></span>
+          <span class="objective-counter" title="Heraldos"><img src="./assets/objectives/riftherald.png" alt="" aria-hidden="true"><strong id="blue-herald-score">0</strong></span>
+          <span class="objective-counter" title="Barones"><img src="./assets/objectives/baron.png" alt="" aria-hidden="true"><strong id="blue-baron-score">0</strong></span>
+          <div id="blue-dragon-list" class="dragon-history" aria-label="Dragones del equipo azul"></div>
+        </div>
+        <div class="objective-ribbon-center" aria-hidden="true"></div>
+        <div class="team-objective-tray red" aria-label="Objetivos del equipo rojo">
+          <span class="objective-counter" title="Vacularbas"><img src="./assets/objectives/grub.png" alt="" aria-hidden="true"><strong id="red-grubs-score">0</strong></span>
+          <span class="objective-counter" title="Heraldos"><img src="./assets/objectives/riftherald.png" alt="" aria-hidden="true"><strong id="red-herald-score">0</strong></span>
+          <span class="objective-counter" title="Barones"><img src="./assets/objectives/baron.png" alt="" aria-hidden="true"><strong id="red-baron-score">0</strong></span>
+          <div id="red-dragon-list" class="dragon-history" aria-label="Dragones del equipo rojo"></div>
+        </div>
+      </section>
+
+      <div id="connection" class="connection" role="status">CONECTANDO</div>
+      <div id="demo-badge" class="demo-badge" hidden>VISTA PREVIA · DATOS DEMO</div>
+
+      <section class="scoreboard" aria-label="Estadísticas de los diez jugadores">
+        <div class="scoreboard-heading">
+          <span id="score-blue-name">AZUL</span>
+          <span aria-hidden="true"></span>
+          <span id="score-red-name">ROJO</span>
+        </div>
+        <div class="teams-grid">
+          <section id="blue-players" class="team-players team-blue" aria-label="Equipo azul"></section>
+          <section id="gold-matchups" class="gold-matchups" aria-label="Oro individual y diferencia por línea"></section>
+          <section id="red-players" class="team-players team-red" aria-label="Equipo rojo"></section>
+        </div>
+      </section>
+
+      <aside id="voidgrub-alert" class="voidgrub-alert" aria-label="Las tres vacularbas han sido eliminadas" hidden>
+        <div class="voidgrub-models" aria-hidden="true"></div>
+        <div class="voidgrub-caption"><strong>VACULARVAS</strong><span class="alert-label">TRÍO ELIMINADO</span><b class="alert-team" hidden></b></div>
+      </aside>
+
+      <aside id="baron-alert" class="baron-alert" aria-label="Barón eliminado" hidden>
+        <div class="baron-models" aria-hidden="true"></div>
+        <div class="baron-caption"><strong>BARÓN</strong><span class="alert-label">OBJETIVO ELIMINADO</span><b class="alert-team" hidden></b></div>
+      </aside>
+
+      <aside id="herald-alert" class="herald-alert" aria-label="Heraldo eliminado" hidden>
+        <div class="herald-models" aria-hidden="true"></div>
+        <div class="herald-caption"><strong>HERALDO</strong><span class="alert-label">OBJETIVO ELIMINADO</span><b class="alert-team" hidden></b></div>
+      </aside>
+
+      <aside id="dragon-alert" class="dragon-alert" aria-label="Dragón eliminado" hidden>
+        <div class="dragon-models" aria-hidden="true"></div>
+        <div class="dragon-caption"><strong>DRAGÓN DE AIRE</strong><span class="alert-label">OBJETIVO ELIMINADO</span><b class="alert-team" hidden></b></div>
+      </aside>
+
+      <aside class="sponsor" aria-label="Espacio para patrocinadores"></aside>
+    </div>
+  </main>
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>

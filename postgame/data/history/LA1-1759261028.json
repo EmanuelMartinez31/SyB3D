@@ -1,0 +1,589 @@
+{
+  "schemaVersion": 1,
+  "gameId": "LA1-1759261028",
+  "source": "lcu-match-history",
+  "capturedAt": "2026-11-02T06:00:56.915Z",
+  "gameCreation": 1793405105012,
+  "gameDuration": 1641,
+  "gameNumber": 1,
+  "format": "BO3",
+  "info": {
+    "tournament": "GAMEGROUNDS",
+    "blue": "UPA ESPORTS",
+    "red": "ANAHUAC MAYAB",
+    "blueShort": "UPA",
+    "redShort": "AMY",
+    "blueLogo": "/uploads/blue-1793563196018.png",
+    "redLogo": "/uploads/red-1793563200939.png",
+    "logo": "https://i.postimg.cc/GTPr1MVF/Gamergrounds-isotipo-Mesa-de-trabajo-1-copia-15.png",
+    "bg": ""
+  },
+  "sideTeams": null,
+  "winner": "blue",
+  "teams": {
+    "blue": {
+      "side": "blue",
+      "result": "VICTORIA",
+      "kills": 35,
+      "players": [
+        {
+          "participantId": 1,
+          "player": "Manolo Melenas#CAST",
+          "championId": 223,
+          "champion": "Tahm Kench",
+          "championAlias": "TahmKench",
+          "role": "JUNGLE",
+          "teamId": 100,
+          "win": true,
+          "kda": {
+            "kills": 4,
+            "deaths": 2,
+            "assists": 7
+          },
+          "damage": {
+            "champions": 22170,
+            "total": 76786,
+            "taken": 34123,
+            "mitigated": 38565,
+            "physical": 3660,
+            "magic": 18509,
+            "true": 0
+          },
+          "healing": 18695,
+          "cs": 136,
+          "gold": 10036,
+          "vision": {
+            "score": 25,
+            "wardsPlaced": 13,
+            "wardsKilled": 1,
+            "controlWards": 4
+          },
+          "items": [
+            3084,
+            3075,
+            1026,
+            3047,
+            2022,
+            0,
+            3363
+          ],
+          "spells": [
+            4,
+            12
+          ],
+          "runes": [
+            8437,
+            8000
+          ],
+          "level": 16,
+          "timeCCingOthers": 51,
+          "turretKills": 3,
+          "inhibitorKills": 1,
+          "objectivesStolen": null
+        },
+        {
+          "participantId": 2,
+          "player": "KingOfMidLane#LAN",
+          "championId": 876,
+          "champion": "Lillia",
+          "championAlias": "Lillia",
+          "role": "JUNGLE",
+          "teamId": 100,
+          "win": true,
+          "kda": {
+            "kills": 9,
+            "deaths": 1,
+            "assists": 7
+          },
+          "damage": {
+            "champions": 25395,
+            "total": 358888,
+            "taken": 34953,
+            "mitigated": 23094,
+            "physical": 1789,
+            "magic": 19700,
+            "true": 3905
+          },
+          "healing": 23728,
+          "cs": 263,
+          "gold": 13921,
+          "vision": {
+            "score": 33,
+            "wardsPlaced": 5,
+            "wardsKilled": 4,
+            "controlWards": 4
+          },
+          "items": [
+            6653,
+            3157,
+            4633,
+            3020,
+            1082,
+            1028,
+            3364
+          ],
+          "spells": [
+            4,
+            11
+          ],
+          "runes": [
+            8010,
+            8200
+          ],
+          "level": 17,
+          "timeCCingOthers": 34,
+          "turretKills": 1,
+          "inhibitorKills": 0,
+          "objectivesStolen": null
+        },
+        {
+          "participantId": 3,
+          "player": "Banedeodo#0406",
+          "championId": 13,
+          "champion": "Ryze",
+          "championAlias": "Ryze",
+          "role": "MIDDLE",
+          "teamId": 100,
+          "win": true,
+          "kda": {
+            "kills": 10,
+            "deaths": 5,
+            "assists": 6
+          },
+          "damage": {
+            "champions": 29985,
+            "total": 189214,
+            "taken": 29081,
+            "mitigated": 18298,
+            "physical": 1656,
+            "magic": 28328,
+            "true": 0
+          },
+          "healing": 6568,
+          "cs": 225,
+          "gold": 13409,
+          "vision": {
+            "score": 36,
+            "wardsPlaced": 17,
+            "wardsKilled": 2,
+            "controlWards": 10
+          },
+          "items": [
+            1058,
+            1058,
+            2522,
+            3175,
+            3040,
+            6657,
+            3363
+          ],
+          "spells": [
+            12,
+            4
+          ],
+          "runes": [
+            8230,
+            8400
+          ],
+          "level": 17,
+          "timeCCingOthers": 38,
+          "turretKills": 5,
+          "inhibitorKills": 0,
+          "objectivesStolen": null
+        },
+        {
+          "participantId": 4,
+          "player": "Xeyhatt#001",
+          "championId": 498,
+          "champion": "Xayah",
+          "championAlias": "Xayah",
+          "role": "BOTTOM",
+          "teamId": 100,
+          "win": true,
+          "kda": {
+            "kills": 11,
+            "deaths": 3,
+            "assists": 4
+          },
+          "damage": {
+            "champions": 33255,
+            "total": 194688,
+            "taken": 18843,
+            "mitigated": 10806,
+            "physical": 33189,
+            "magic": 30,
+            "true": 35
+          },
+          "healing": 7434,
+          "cs": 238,
+          "gold": 14621,
+          "vision": {
+            "score": 19,
+            "wardsPlaced": 7,
+            "wardsKilled": 4,
+            "controlWards": 2
+          },
+          "items": [
+            3031,
+            3032,
+            6675,
+            3036,
+            1055,
+            1036,
+            3363
+          ],
+          "spells": [
+            21,
+            4
+          ],
+          "runes": [
+            8010,
+            8300
+          ],
+          "level": 14,
+          "timeCCingOthers": 24,
+          "turretKills": 1,
+          "inhibitorKills": 2,
+          "objectivesStolen": null
+        },
+        {
+          "participantId": 5,
+          "player": "Gato Blanco#LAN",
+          "championId": 111,
+          "champion": "Nautilus",
+          "championAlias": "Nautilus",
+          "role": "UTILITY",
+          "teamId": 100,
+          "win": true,
+          "kda": {
+            "kills": 1,
+            "deaths": 4,
+            "assists": 16
+          },
+          "damage": {
+            "champions": 8189,
+            "total": 36127,
+            "taken": 19369,
+            "mitigated": 37562,
+            "physical": 2857,
+            "magic": 5332,
+            "true": 0
+          },
+          "healing": 2596,
+          "cs": 38,
+          "gold": 9291,
+          "vision": {
+            "score": 78,
+            "wardsPlaced": 30,
+            "wardsKilled": 7,
+            "controlWards": 12
+          },
+          "items": [
+            3109,
+            3190,
+            3876,
+            3076,
+            3047,
+            3067,
+            3364
+          ],
+          "spells": [
+            4,
+            3
+          ],
+          "runes": [
+            8351,
+            8400
+          ],
+          "level": 14,
+          "timeCCingOthers": 68,
+          "turretKills": 1,
+          "inhibitorKills": 0,
+          "objectivesStolen": null
+        }
+      ]
+    },
+    "red": {
+      "side": "red",
+      "result": "DERROTA",
+      "kills": 15,
+      "players": [
+        {
+          "participantId": 6,
+          "player": "Lulujoc#LAN",
+          "championId": 58,
+          "champion": "Renekton",
+          "championAlias": "Renekton",
+          "role": "JUNGLE",
+          "teamId": 200,
+          "win": false,
+          "kda": {
+            "kills": 2,
+            "deaths": 8,
+            "assists": 0
+          },
+          "damage": {
+            "champions": 27806,
+            "total": 156266,
+            "taken": 36780,
+            "mitigated": 34013,
+            "physical": 21244,
+            "magic": 5051,
+            "true": 1510
+          },
+          "healing": 9836,
+          "cs": 208,
+          "gold": 9420,
+          "vision": {
+            "score": 33,
+            "wardsPlaced": 7,
+            "wardsKilled": 7,
+            "controlWards": 0
+          },
+          "items": [
+            6692,
+            3111,
+            3071,
+            2021,
+            0,
+            1083,
+            3340
+          ],
+          "spells": [
+            14,
+            4
+          ],
+          "runes": [
+            8010,
+            8400
+          ],
+          "level": 16,
+          "timeCCingOthers": 30,
+          "turretKills": 1,
+          "inhibitorKills": 0,
+          "objectivesStolen": null
+        },
+        {
+          "participantId": 7,
+          "player": "Titan Speakerman#12367",
+          "championId": 56,
+          "champion": "Nocturne",
+          "championAlias": "Nocturne",
+          "role": "JUNGLE",
+          "teamId": 200,
+          "win": false,
+          "kda": {
+            "kills": 4,
+            "deaths": 3,
+            "assists": 7
+          },
+          "damage": {
+            "champions": 15652,
+            "total": 190706,
+            "taken": 26856,
+            "mitigated": 23704,
+            "physical": 13259,
+            "magic": 605,
+            "true": 1787
+          },
+          "healing": 10251,
+          "cs": 153,
+          "gold": 10677,
+          "vision": {
+            "score": 19,
+            "wardsPlaced": 4,
+            "wardsKilled": 3,
+            "controlWards": 2
+          },
+          "items": [
+            6696,
+            3073,
+            3047,
+            1036,
+            2020,
+            1036,
+            3364
+          ],
+          "spells": [
+            4,
+            11
+          ],
+          "runes": [
+            9923,
+            8000
+          ],
+          "level": 15,
+          "timeCCingOthers": 148,
+          "turretKills": 0,
+          "inhibitorKills": 0,
+          "objectivesStolen": null
+        },
+        {
+          "participantId": 8,
+          "player": "Guane#BGA",
+          "championId": 55,
+          "champion": "Katarina",
+          "championAlias": "Katarina",
+          "role": "MIDDLE",
+          "teamId": 200,
+          "win": false,
+          "kda": {
+            "kills": 9,
+            "deaths": 10,
+            "assists": 2
+          },
+          "damage": {
+            "champions": 33740,
+            "total": 142109,
+            "taken": 30012,
+            "mitigated": 22197,
+            "physical": 2024,
+            "magic": 29632,
+            "true": 2084
+          },
+          "healing": 3937,
+          "cs": 172,
+          "gold": 13140,
+          "vision": {
+            "score": 29,
+            "wardsPlaced": 12,
+            "wardsKilled": 3,
+            "controlWards": 2
+          },
+          "items": [
+            1082,
+            3146,
+            4645,
+            3173,
+            3100,
+            1052,
+            3363
+          ],
+          "spells": [
+            14,
+            4
+          ],
+          "runes": [
+            8112,
+            8000
+          ],
+          "level": 14,
+          "timeCCingOthers": 0,
+          "turretKills": 0,
+          "inhibitorKills": 0,
+          "objectivesStolen": null
+        },
+        {
+          "participantId": 9,
+          "player": "Undemap#LAN",
+          "championId": 22,
+          "champion": "Ashe",
+          "championAlias": "Ashe",
+          "role": "BOTTOM",
+          "teamId": 200,
+          "win": false,
+          "kda": {
+            "kills": 0,
+            "deaths": 10,
+            "assists": 3
+          },
+          "damage": {
+            "champions": 15871,
+            "total": 105839,
+            "taken": 23664,
+            "mitigated": 12662,
+            "physical": 14167,
+            "magic": 1703,
+            "true": 0
+          },
+          "healing": 4276,
+          "cs": 159,
+          "gold": 8661,
+          "vision": {
+            "score": 20,
+            "wardsPlaced": 8,
+            "wardsKilled": 1,
+            "controlWards": 0
+          },
+          "items": [
+            3153,
+            3085,
+            1086,
+            1036,
+            1036,
+            0,
+            3340
+          ],
+          "spells": [
+            4,
+            21
+          ],
+          "runes": [
+            8008,
+            8300
+          ],
+          "level": 13,
+          "timeCCingOthers": 51,
+          "turretKills": 0,
+          "inhibitorKills": 0,
+          "objectivesStolen": null
+        },
+        {
+          "participantId": 10,
+          "player": "Juleeeto#LAN",
+          "championId": 40,
+          "champion": "Janna",
+          "championAlias": "Janna",
+          "role": "UTILITY",
+          "teamId": 200,
+          "win": false,
+          "kda": {
+            "kills": 0,
+            "deaths": 4,
+            "assists": 9
+          },
+          "damage": {
+            "champions": 6052,
+            "total": 18693,
+            "taken": 19939,
+            "mitigated": 10385,
+            "physical": 1141,
+            "magic": 4910,
+            "true": 0
+          },
+          "healing": 11169,
+          "cs": 36,
+          "gold": 6966,
+          "vision": {
+            "score": 68,
+            "wardsPlaced": 30,
+            "wardsKilled": 5,
+            "controlWards": 6
+          },
+          "items": [
+            3870,
+            6617,
+            3009,
+            3504,
+            1052,
+            2022,
+            3364
+          ],
+          "spells": [
+            7,
+            4
+          ],
+          "runes": [
+            8214,
+            8400
+          ],
+          "level": 13,
+          "timeCCingOthers": 41,
+          "turretKills": 0,
+          "inhibitorKills": 0,
+          "objectivesStolen": null
+        }
+      ]
+    }
+  }
+}

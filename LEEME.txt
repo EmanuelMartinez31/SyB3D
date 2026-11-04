@@ -1,0 +1,500 @@
+SyB3D+HUD — Draft, Ingame y Postpartida en un solo servidor
+==========================================================
+
+INSTALACIÓN
+1. Extrae el ZIP en:
+   F:\Streams\OBS\Broadcast
+   Debe quedar esta carpeta:
+   F:\Streams\OBS\Broadcast\SyB3D+HUD
+2. Durante el primer arranque, conserva todavía tu carpeta original:
+   F:\Streams\OBS\Broadcast\SyB3D
+   iniciar.bat copiará automáticamente su carpeta models a SyB3D+HUD\draft\models.
+   Después de esa copia, la carpeta unificada tendrá sus propios modelos 3D.
+3. Conserva SyBSensor como carpeta vecina:
+   F:\Streams\OBS\Broadcast\SyBSensor
+   El proyecto puede estar directamente ahí o dentro de SyBSensor\SyBSensor.
+4. Haz doble clic en:
+   iniciar.bat
+   La primera vez instalará las dependencias automáticamente. Después abrirá el servidor
+   unificado y SyBSensor en otra ventana. Deja ambas ventanas abiertas; ya no necesitas
+   ejecutar «dotnet run» manualmente. El sensor no cambia y sigue enviando a
+   http://localhost:3000/sensor. Si no se abre, comprueba que dotnet esté instalado y
+   que la carpeta del sensor esté en la ruta anterior.
+
+IMPORTANTE
+- No abras los antiguos "node server.js" de SyB3D o SyBIngame al mismo tiempo:
+  el nuevo servidor necesita el puerto 3000.
+- No abras LeagueBroadcast.
+- El ingame puede iniciarse antes de la partida; quedará esperando los datos del sensor.
+
+DIRECCIONES — TODO EN PUERTO 3000
+- Panel de control: http://localhost:3000/
+- Overlay del draft: http://localhost:3000/overlay.html
+- Overlay del ingame: http://localhost:3000/overlay/
+- Receptor del sensor: http://localhost:3000/sensor
+- Estado del receptor: http://localhost:3000/status
+- Resumen postpartida para OBS: http://localhost:3000/postgame/
+- Demo del resumen: http://localhost:3000/postgame/?demo=1
+
+En OBS, actualiza la fuente del draft a puerto 3000. La fuente del ingame conserva
+la misma dirección. Draft e ingame usan 1920 × 1080 y fondo transparente. Para el
+postpartida, crea una fuente de navegador nueva de 1920 × 1080 con la dirección anterior;
+su fondo es opaco porque es una pantalla completa de estadísticas.
+
+PANEL Y SINCRONIZACIÓN
+- El panel controla nombres completos, siglas, logos, BO1/BO3/BO5 y marcador de serie.
+- Draft e ingame comparten directamente esa configuración en el mismo servidor. El último resumen
+  postpartida real también sincroniza nombres completos, siglas, logos y torneo desde el panel;
+  los cambios se reflejan sin volver a capturar la partida y sin alterar sus estadísticas.
+- Formatos de logo: PNG, JPG/JPEG, WEBP, GIF y SVG; máximo 8 MB por archivo.
+- Los logos se guardan en draft\uploads y se ajustan al recuadro sin deformarse.
+- Al cambiar de lado, también se intercambian nombres, siglas, logos y victorias.
+- En el draft, ambos nombres de equipo aprovechan todo el ancho central disponible antes
+  de saltar de línea; nombres realmente largos todavía pueden dividirse en varias líneas.
+- Al detectar un nexo destruido, la victoria queda PENDIENTE y no cambia el marcador
+  de inmediato. El punto se aplica al pulsar «Siguiente juego». Los snapshots repetidos
+  no duplican el resultado y el marcador respeta el límite del formato.
+- «Siguiente juego» y «Reset serie completa» también limpian el ingame. Los snapshots
+  de la partida anterior se ignoran para que no vuelvan a llenar el overlay.
+- «Reset serie completa» descarta cualquier victoria pendiente y reinicia la serie.
+- El centro muestra BO1/BO3/BO5 y PARTIDA N DE TOTAL con texto más grande. Cuando un
+  equipo alcanza las victorias necesarias, muestra SERIE COMPLETADA.
+- Después del Heraldo, el temporizador lateral avanza a Barón con su aparición inicial
+  fija a los 20:00. Cuando Barón aparece, muestra EN JUEGO sin conservar ese contador.
+  Tras matarlo aparece un nuevo contador de seis minutos, sin moverse por eventos repetidos.
+- Se conservan el diseño 3D, los valores visuales fijados, el fearless por equipo y
+  el orden crítico del procesamiento del roster.
+- «Siguiente juego» se sigue usando antes de crear la nueva sala.
+
+PANEL PROFESIONAL Y ORGANIZACIÓN DE CONTROLES
+- El panel se divide en tres secciones: «Draft», «Producción» y «Postpartida». El estado del sistema
+  y el registro del operador permanecen disponibles sin depender de la sección seleccionada.
+- «Draft» concentra el turno, el modo guiado/manual, la parrilla de campeones, las líneas, el marcador,
+  fearless y AUTO. «Siguiente juego» conserva su función y «Reiniciar serie completa» queda separado
+  de las acciones habituales para evitar confundirlo con ellas.
+- «Producción» reúne torneo, nombres, siglas, logos y presets. El logo general y el fondo se conservan
+  dentro de «Recursos avanzados del draft» porque todavía son utilizados por overlay.html; no se eliminó
+  ninguna acción que siga teniendo efecto. Esta sección secundaria ya no ocupa espacio durante el draft.
+- «Postpartida» agrupa el estado, los enlaces de OBS, mostrar/ocultar, captura, demo y regreso al último
+  resumen real. La demo sigue siendo ficticia y nunca sustituye el último resumen real.
+- Se quitaron del flujo visual encabezados repetidos, emojis de botones y ruido técnico innecesario. Los
+  indicadores ahora emplean estados consistentes y los botones fearless/AUTO muestran ACTIVADO/DESACTIVADO.
+- No cambian WebSockets, mensajes, rutas, puertos, sincronización, persistencia, reconexión ni ninguna
+  acción del servidor. Tampoco se modifican overlay.html, ingame, postpartida, SyBSensor, modelos o escalas.
+- Para instalar solamente este rediseño, copia draft\public\index.html sobre el mismo archivo de
+  SyB3D+HUD y recarga UNA VEZ el panel. No hace falta reiniciar el servidor ni recargar las fuentes OBS.
+- Verificación: 20 comprobaciones de draft, líneas, deshacer, marcador, fearless, producción, presets,
+  postpartida, navegación y reconexión real tras reiniciar el servidor. Sin errores de JavaScript y sin
+  desbordamiento horizontal en una ventana móvil de 390 px. Las tres secciones fueron revisadas visualmente.
+
+OPTIMIZACIÓN DEL PANEL Y DEL DRAFT VISIBLES
+- Se investigó el tirón de Twitch reportado al mirar directamente el panel o el draft. Ese patrón no se
+  consideró normal ni se atribuyó a internet sin medir: se compararon renderizado, trabajo periódico,
+  memoria gráfica, solicitudes y restauraciones de modelos en Chromium.
+- Panel: el indicador «EN VIVO» conserva su punto verde, pero ya no ejecuta una animación infinita.
+  Las barras conservan sus fondos casi opacos y el mismo diseño, sin desenfoque de fondo. Esta combinación
+  evitaba recomponer continuamente la página. En la prueba aislada, el proceso gráfico bajó de 148 % a 17 %
+  de un núcleo; son cifras comparativas del entorno de prueba, no una promesa de valores idénticos en otra PC.
+- Se conservan los 171 campeones, las consultas de diagnóstico, el LOG, los controles, las vistas y los mensajes.
+  Las solicitudes periódicas siguen siendo locales. También se corrigió el identificador del retrato de Kog'Maw.
+- Draft: la escena vuelve a un máximo de 60 fotogramas por segundo para conservar la fluidez de los modelos.
+  El canvas interno se limita a 1920 × 1080 aunque el monitor use una densidad de píxeles mayor; su tamaño CSS y
+  encuadre no cambian. En una fuente estándar de 1920 × 1080 con densidad 1, la resolución sigue siendo 1080p.
+- Al deshacer, limpiar o restaurar un draft ahora se detienen las animaciones retiradas y se liberan geometrías,
+  materiales, texturas y esqueletos. Una carga que termine después de una limpieza también descarta sus recursos.
+- La prueba de cinco restauraciones antes acumulaba recursos: subió de 94 a 262 geometrías y de 67 a 187 texturas.
+  Después quedó estable en 54 geometrías y 40 texturas con los mismos diez modelos de prueba. No hay cambios en
+  lineupPos, SCALE_FIX, posiciones, orden del roster, fila de presentación ni tiempos de la presentación.
+- Verificación: diez modelos y animaciones restaurados sin duplicados, seis baneos, dos picks rápidos con un solo
+  modelo en el podio, asignación de línea, deshacer y limpieza. Sin errores JavaScript ni respuestas HTTP fallidas.
+  Ingame, postpartida, SyBSensor, servidores, puertos, datos guardados y modelos no fueron modificados.
+- Para instalar solamente esta optimización, copia draft\public\index.html, draft\public\overlay.html y LEEME.txt
+  sobre SyB3D+HUD. Recarga UNA VEZ el panel y la fuente del draft para utilizar los archivos nuevos. No hace falta
+  reiniciar el servidor, borrar el estado ni volver a configurar OBS.
+- Si Twitch todavía se traba después de recargar ambos, consulta las estadísticas de OBS: pérdida por renderizado
+  o codificación apunta a CPU/GPU local; pérdida por red apunta a conexión o bitrate. Así se evita mezclar ambos
+  problemas. Esta optimización no cambia la red ni la configuración de Twitch.
+
+ENCUADRE 16:9 Y ESPACIO PARA FEARLESS
+- El draft compensa la diferencia entre una ventana ancha de navegador y una fuente OBS de 1920 × 1080. Al ser
+  16:9 más estrecho que la ventana donde se aprobó el encuadre, la cámara ajusta solamente su zoom para conservar
+  visibles los campeones exteriores; no cambia lineupPos, las posiciones, las escalas ni la presentación.
+- La barra inferior reserva 80 px reales en cada lado: 56 px para la columna fearless y el resto para separación
+  y margen exterior. Las columnas azul y roja están fuera de la barra escalada para que su tamaño y sus márgenes
+  se calculen directamente sobre la ventana de OBS y no se reduzcan junto con ella.
+- Se conserva el máximo de 60 fps, el canvas interno limitado a 1920 × 1080 y la liberación de recursos WebGL.
+  Tampoco cambian picks, baneos, fila de presentación, servidor, puertos, datos guardados, ingame o postpartida.
+- Verificación visual en un viewport OBS lógico de 1920 × 1080: barra entre x=80 y x=1840; columna azul entre
+  x=14 y x=74; columna roja entre x=1846 y x=1906; veinte retratos fearless y ausencia de errores JavaScript.
+  También se revisó una ventana ancha de 1916 × 906, donde las diez entradas por equipo se reparten en dos columnas
+  por la altura disponible. La prueba usó modelos sustitutos; los GLB y valores visuales de la instalación no cambian.
+- Para instalar solamente este ajuste, copia draft\public\overlay.html y LEEME.txt sobre SyB3D+HUD y recarga
+  UNA VEZ la fuente del draft. No hace falta reiniciar el servidor, borrar el estado ni volver a configurar OBS.
+
+SALIDA DE LOS PICKS FEARLESS EN EL CIERRE
+- Cuando comienza la cinemática que indica que terminaron los picks, las columnas de campeones usados se deslizan
+  hacia afuera y se desvanecen durante 1,2 segundos. La azul sale hacia la izquierda y la roja hacia la derecha,
+  para que no queden retratos fijos sobre el recorrido de cámara.
+- La animación se aplica solamente a una columna que contiene picks fearless. Si el historial está vacío, no se
+  activa ninguna salida. Al limpiar, iniciar un draft nuevo o restaurar el estado, las columnas vuelven a su lugar.
+- Esto cambia únicamente su presentación durante el cierre: no borra ni modifica el historial fearless guardado,
+  los equipos, picks, baneos, líneas, marcador, posiciones, escalas, 60 fps o el encuadre 16:9.
+- Corrección de visibilidad: los temporizadores del cierre quedan vinculados al draft que los creó. Si se limpia,
+  restaura o comienza otro draft antes de que terminen, el cierre anterior queda invalidado y ya no puede ocultar
+  las columnas fearless nuevas ni dejar el temporizador superior transparente.
+- Verificación en 1920 × 1080: se reprodujo la limpieza con un cierre todavía programado y se confirmó que el nuevo
+  fearless permanece visible. También se comprobaron la salida coordinada normal, el desvanecido completo, la
+  restauración visible y la ausencia de animación sin historial fearless. Sin errores de JavaScript; la prueba
+  visual utilizó Aurora como modelo sustituto y no alteró los modelos de la instalación.
+- Para instalar solamente esta mejora, copia draft\public\overlay.html y LEEME.txt sobre SyB3D+HUD y recarga
+  UNA VEZ la fuente del draft. No hace falta reiniciar el servidor ni volver a configurar OBS.
+
+CONEXIONES Y LOG DEL PANEL
+- El registro del operador permanece visible en la columna derecha del panel; en ventanas estrechas pasa
+  debajo del contenido. Los indicadores de conexión se conservan en la franja superior, debajo de la
+  navegación, y ya no es necesario bajar hasta el final para consultar la actividad.
+- Seis indicadores muestran Servidor/puerto, SyBSensor, Draft OBS, Ingame OBS, Postpartida OBS y LCU.
+  Se actualizan cada dos segundos. Verde significa conectado o recibiendo; amarillo, esperando o sin
+  datos recientes; rojo, sin conexión, sin datos o sin fuente OBS.
+- SyBSensor usa el /status existente: indica recepción reciente, número de snapshot y hora del último.
+  Ingame y postpartida muestran sus clientes WebSocket; el draft distingue el panel de las fuentes OBS.
+- Los mensajes del LOG incluyen hora, conservan scroll automático y guardan como máximo 120 líneas.
+  El diagnóstico solo reúne estados y cantidades: no muestra lockfile, contraseñas ni tokens, no cambia
+  SyBSensor y no necesita abrir ni consultar LeagueBroadcast.
+- Después de instalar este cambio, reinicia el servidor y recarga una vez el panel y las fuentes OBS
+  para registrar sus conexiones con la versión nueva.
+
+RECONEXIÓN AUTOMÁTICA Y RECUPERACIÓN DEL ESTADO
+- El panel, el draft, el ingame y el postpartida reintentan su WebSocket cada 1,5 segundos. Si el
+  servidor se detiene y vuelve a iniciarse, las mismas páginas y fuentes de OBS se recuperan solas:
+  no debes recargarlas manualmente ni volver a crear las fuentes.
+- El LOG registra una sola desconexión por cada interrupción y un aviso cuando la conexión se recupera.
+  Mientras el servidor no responde, el panel muestra «Reconectando...». Las acciones pulsadas durante
+  la caída no se envían ni se reproducen después; espera la recuperación antes de continuar.
+- El estado del draft se guarda localmente en draft\data\draft-state.json. Incluye picks, baneos,
+  líneas asignadas, roster, información del torneo, equipos, marcador, fearless, vínculos de equipo,
+  revisión de serie, victorias pendientes o ya contadas y la preferencia de AUTO (LCU).
+- Tras un reinicio, el draft limpia primero su representación anterior y reconstruye el estado guardado
+  sin duplicar modelos. Los picks recuperados aparecen directamente en sus espacios, sin volver a ocupar
+  el podio ni reactivar la fila de presentación. También se restauran los baneos y las líneas.
+- Si AUTO estaba activado, vuelve a activarse después del reinicio. El ingame vuelve a esperar datos y
+  se actualiza con el siguiente snapshot de SyBSensor; el sensor no necesita ningún cambio. El último
+  resumen postpartida real sigue recuperándose desde su propio archivo y permanece oculto al arrancar.
+- El archivo de estado no contiene lockfile, contraseñas ni tokens. No se expone como archivo web y no
+  utiliza LeagueBroadcast. Consérvalo durante la serie; para comenzar una serie nueva se siguen usando
+  los controles normales del panel.
+- Para instalar solamente esta mejora, copia los archivos del ZIP sobre SyB3D+HUD, reinicia el servidor
+  y recarga UNA VEZ el panel y las fuentes para que empiecen a usar el código nuevo. Después de eso,
+  las reconexiones posteriores ya serán automáticas.
+
+AVISOS DE DESCONEXIÓN Y RECUPERACIÓN EN EL LOG
+- El LOG avisa cuando SyBSensor deja de enviar datos después de haber estado recibiendo y cuando la
+  recepción se reanuda. También avisa cuando Draft OBS, Ingame OBS o Postpartida OBS pasa de tener al
+  menos una fuente conectada a ninguna, y después cuando recupera una conexión.
+- Cada interrupción produce un solo aviso de caída y uno de recuperación. Mientras el problema continúa
+  no se repite el mensaje cada dos segundos. Los estados visuales de las tarjetas superiores se conservan.
+- Al abrir el panel, la primera comprobación solamente establece la referencia: no anuncia recuperaciones
+  que no ocurrieron ni una desconexión de SyBSensor si todavía no había comenzado la recepción.
+- Si el servidor completo no responde, no se inventan desconexiones individuales del sensor o de OBS;
+  esos estados se vuelven a comparar cuando sus rutas de diagnóstico vuelvan a contestar. Las respuestas
+  antiguas de una comprobación que terminó tarde no pueden sobrescribir los avisos de una más reciente.
+- No se añadió alerta sonora. SyBSensor, las fuentes y el servidor no necesitan cambios para este punto.
+- Para instalar solamente estos avisos, copia el panel y LEEME.txt del ZIP sobre SyB3D+HUD y recarga el
+  panel. No hace falta reiniciar el servidor ni recargar las fuentes OBS, porque sus archivos no cambian.
+
+PRESETS DE EQUIPOS Y TORNEO
+- El apartado «Presets de equipos y torneo» está debajo de la información y los logos. Para guardar,
+  configura primero torneo, nombres, siglas y logos; escribe un nombre para el preset y pulsa «Guardar
+  preset». Para usarlo después, selecciónalo en la lista y pulsa «Cargar».
+- Cada preset incluye nombre del torneo, nombres de ambos equipos, sus siglas y los logos azul y rojo.
+  Guardar otro preset con el mismo nombre lo actualiza en vez de crear un duplicado.
+- Los presets se guardan localmente en draft\data\presets.json y sobreviven al cierre o reinicio del
+  servidor. No contienen credenciales, picks, baneos ni estadísticas de partidas.
+- Cargar un preset rellena el panel y envía la información al draft, ingame y postpartida. No cambia picks,
+  baneos, marcador ni fearless. El logo general del torneo y el fondo actualmente configurados se conservan.
+- «Eliminar» quita solamente el preset seleccionado después de pedir confirmación. No modifica la
+  configuración actual de los overlays ni borra los archivos de logos, porque pueden estar compartidos.
+- Para instalar esta mejora, copia los archivos del ZIP sobre SyB3D+HUD, reinicia el servidor y recarga
+  el panel. Las fuentes OBS se reconectan solas; sus archivos no fueron modificados.
+
+SELECCIONES RÁPIDAS EN EL DRAFT
+- Las selecciones de campeones forman una única fila de presentación compartida por ambos equipos.
+  Solamente un modelo ocupa el podio principal. El siguiente no aparece hasta que el anterior haya
+  llegado realmente a su espacio dentro del equipo; no basta con que haya comenzado a moverse.
+- El espacio de cada pick se reserva al recibirlo. Las líneas o swaps actualizan únicamente el destino
+  de ese campeón: nunca intercambian ni mueven a otro para resolver la presentación.
+- Los retratos y nombres pueden actualizarse al llegar la selección, pero los modelos que esperan su
+  turno permanecen fuera de la escena. Los baneos no entran en esta fila y conservan su funcionamiento.
+- Deshacer un pick pendiente lo retira de la fila. Limpiar el draft cancela también las presentaciones
+  antiguas, para que sus temporizadores no puedan alterar contadores ni posiciones del draft nuevo.
+- El cierre cinematográfico espera a que la fila quede vacía. No cambian lineupPos, tamaños, fearless,
+  vínculos de equipos ni el orden crítico reassignTeams() → ensureTeamBinds() del servidor.
+
+RESUMEN POSTPARTIDA
+- La captura automática se activa al entrar en EndOfGame o cuando SyBSensor detecta la destrucción
+  del nexo. Esto último permite cubrir personalizadas observadas aunque LCU permanezca en None.
+  El servidor crea una pantalla con los cinco jugadores de cada equipo, sus campeones, KDA, daño
+  total, daño a campeones, daño recibido, curación, CS, oro, visión, wards y objetos.
+- Si las estadísticas todavía no están listas, reintenta cada cinco segundos incluso después de
+  salir de EndOfGame. Cuando las rutas EOG no están disponibles, toma el GameId que ya entrega
+  SyBSensor y consulta directamente esa partida en /lol-match-history/v1/games/{gameId}.
+  Si el identificador incluye plataforma, como LA1-1759132007, la consulta usa solamente su parte
+  numérica (1759132007), mientras el resumen y la deduplicación conservan el GameId original completo.
+  NO depende del historial personal del operador: por eso también puede identificar una personalizada
+  que está observando sin ser jugador. El último GameInfo queda en ingame\data\latest-gameinfo.json
+  y permite que «Capturar ahora» recupere esa partida incluso si el ingame ya fue limpiado.
+- La captura se muestra automáticamente al completarse. Desde el apartado «Resumen postpartida»
+  del panel puedes mostrarla, ocultarla, abrir su fuente OBS, abrir la demo, capturar ahora,
+  mostrar la demo en OBS o volver al último resumen real.
+- «Siguiente juego» y «Reset serie completa» limpian el ingame, pero NO borran ni ocultan el
+  resumen postpartida. Así puedes preparar la siguiente partida sin perder la pantalla anterior.
+- El último resumen se guarda en postgame\data\latest-postgame.json y cada partida se conserva
+  por separado en postgame\data\history\{gameId}.json. Al reiniciar el servidor se recupera el
+  último resumen, pero vuelve oculto hasta que pulses «Mostrar resumen».
+- El encabezado muestra el nombre del torneo cuando está configurado y coloca los logos azul y rojo
+  a los lados de «Resumen de partida». Si no hay torneo o logos, esos espacios quedan vacíos.
+  No muestra el ID de la partida, el nombre del mapa ni el pie de estadísticas generales.
+- Los nombres de invocador y campeón tienen una banda oscura de ancho completo en primer plano;
+  el canvas del modelo permanece detrás y no puede tapar el texto. El nombre visible del invocador
+  elimina el símbolo # y toda la etiqueta posterior. Las líneas se recuperan también de timeline.lane
+  y timeline.role, incluidos DUO_CARRY y DUO_SUPPORT, aunque otros campos anteriores indiquen Invalid
+  o NONE.
+- Cada tarjeta muestra solamente los seis objetos del inventario, sin el icono del trinket rojo,
+  amarillo o azul. Se conservan la puntuación de visión y las estadísticas de wards colocados y
+  destruidos.
+- El encuadre horizontal de los modelos es más amplio y se centra después de aplicar su rotación,
+  para evitar recortes laterales en campeones anchos. Nocturne tiene una escala específica de 0,9;
+  las escalas de los demás campeones se conservan.
+- Cada tarjeta muestra el logo actual de su equipo como una marca de agua de 190 × 190 y 50 % de
+  opacidad detrás del campeón. El canvas 3D queda por delante del logo y los textos conservan su capa
+  superior. Al cambiar un logo en el panel se actualizan las cinco tarjetas de ese equipo; si no hay
+  logo o no puede cargarse, la marca de agua queda oculta y el resto de la tarjeta no cambia.
+- La demo utiliza datos y equipos ficticios y nunca sustituye el último resumen real guardado.
+  En la demo, Aurora se repite como modelo de prueba; en una partida real se busca el GLB del
+  campeón correspondiente dentro de draft\models.
+- Si falta el modelo de un campeón o no puede cargarse, su tarjeta conserva las estadísticas y
+  muestra el retrato del campeón como respaldo. Los objetos y retratos usan Data Dragon cuando
+  hay conexión; los modelos 3D y el resto de la interfaz funcionan localmente.
+- El módulo usa solamente el cliente local de LoL. No abre ni necesita LeagueBroadcast, no utiliza
+  sus canales y no modifica SyBSensor ni Credentials.bbd. Las credenciales del lockfile se leen
+  únicamente en memoria para conectar con 127.0.0.1 y nunca se guardan ni se muestran.
+- La pantalla y los controles están verificados localmente con datos de demostración. También se
+  simuló el caso problemático: LCU en None, ambos EOG con HTTP 404, nexo destruido detectado
+  por el sensor y captura tanto automática como manual mediante el GameId observado. El usuario
+  confirmó después la carga de la partida real mediante el identificador numérico del historial.
+  No hace falta repetirla para usar «Capturar ahora» si su GameInfo sigue guardado. Un error no
+  borra el resumen anterior.
+
+MVP DEL EQUIPO GANADOR
+- La antigua distinción «MAYOR DAÑO» se sustituye por «MVP». Se muestra una sola etiqueta y solamente
+  en un jugador del equipo que ganó la partida; ningún jugador del equipo perdedor participa en la selección.
+  El rótulo es grande, dorado y angular, con brillo, y aparece debajo del daño total sin tapar el nombre.
+- Riot no entrega en estos resúmenes un MVP estadístico oficial de cada partida. Por tanto, «MVP» es una
+  clasificación propia de SyB basada en las estadísticas capturadas, no una condecoración oficial del cliente.
+- El cálculo combina seis aportaciones: oro por minuto, visión por minuto, participación en asesinatos,
+  KDA inteligente, utilidad defensiva (daño recibido y CC) e impacto de daño (reparto dentro del equipo
+  y daño a campeones por minuto). Así no basta con tener la cifra de daño más alta y tanques o soportes
+  también pueden destacar por sus aportaciones.
+- La participación vale (asesinatos + asistencias) / asesinatos del equipo. El KDA inteligente usa
+  (asesinatos - muertes + asistencias/1,5) / 3,5. La utilidad suma el reparto de daño recibido y CC/50;
+  el daño combina el reparto de daño a campeones con daño/minuto. Oro, visión y daño por minuto evitan
+  que una partida larga infle las cifras solamente por durar más.
+- Los empates se resuelven en este orden: participación en asesinatos, KDA, daño a campeones, oro y,
+  finalmente, el orden original de las tarjetas. No se muestra una puntuación inventada en la interfaz.
+- Si el resumen no permite identificar al ganador o los cinco jugadores carecen de estadísticas útiles,
+  no se muestra MVP. El cálculo nunca cambia el ganador, las estadísticas ni los archivos guardados.
+- En la demo el MVP es Jugador 02 / Sejuani, mientras Jugador 03 / Aurora conserva el mayor daño. Esto
+  verifica que la etiqueta nueva no equivale a renombrar la distinción anterior.
+- Para instalar solamente esta mejora, copia postgame\overlay\src\mvp.js, render.js, styles.css y LEEME.txt
+  sobre SyB3D+HUD y recarga UNA VEZ la fuente de postpartida. No hace falta reiniciar el servidor, capturar
+  otra vez la partida ni recargar draft o ingame. Los modelos, escalas y datos reales permanecen intactos.
+- Verificación: cálculo con demo, ganador azul y rojo, imposibilidad de elegir a un perdedor, ausencia de
+  ganador y datos incompletos. En navegador se comprobaron diez tarjetas, diez modelos cargados, una sola
+  etiqueta MVP en el lado ganador y ausencia de errores de JavaScript.
+
+GUÍA DE LECTURA DEL CÓDIGO POSTPARTIDA
+- postgame\server.js: estado, conexión LCU, GameId observado, captura, persistencia y controles.
+- postgame\lib\normalize.js: convierte EOG e historial a una misma estructura de diez jugadores.
+- postgame\demo-summary.js: datos ficticios aislados para probar sin una partida real.
+- postgame\overlay\src\main.js: recibe el estado, decide si debe redibujar y conecta el WebSocket.
+- postgame\overlay\src\render.js: construye el encabezado, las franjas y las tarjetas HTML.
+- postgame\overlay\src\mvp.js: puntúa únicamente a los ganadores y decide qué tarjeta muestra MVP.
+- postgame\overlay\src\models.js: carga los GLB, anima, ajusta escala y dibuja los diez modelos.
+- postgame\overlay\src\scale-fix.js: contiene las correcciones individuales de escala.
+- postgame\overlay\src\catalog.js: genera las direcciones de retratos y objetos de Data Dragon.
+- postgame\overlay\styles.css: está separado en doce secciones numeradas según la zona visual.
+  El comentario junto a opacity: 0.5 señala el ajuste de transparencia de las marcas de agua.
+
+Los archivos tienen cabeceras y comentarios que explican el flujo sin cambiar la lógica. La limpieza
+de formato no modifica tamaños, colores, animaciones, captura, sincronización ni valores aprobados.
+
+EQUIPO Y COLOR EN LOS AVISOS 3D
+- Las pestañas de vacularbas, dragones, Barón y Heraldo muestran la sigla del equipo que aseguró
+  el objetivo dentro de la franja inferior. La sigla y la línea de la franja usan azul para el
+  equipo 1 y rojo para el equipo 2, con las siglas configuradas en el panel.
+- Dragones, Barón y Heraldo utilizan el mismo KillerNetworkId que los contadores de objetivos.
+  En vacularbas se guarda el equipo de cada NetworkId y la pestaña corresponde al equipo que asegura
+  AL MENOS DOS DE TRES, aunque el otro equipo mate la última. Los eventos repetidos conservan el
+  equipo y no reinician el aviso. Si no puede identificarse al atacante o no hay una mayoría conocida,
+  no se inventa una atribución: se oculta la sigla y se conserva el texto neutral original.
+- Para probar el color rojo en las demostraciones, añade &team=red a la dirección; sin ese
+  parámetro, las demostraciones de objetivos utilizan el equipo azul. No cambia modelos,
+  tamaños, encuadres ni animaciones.
+
+AVISO 3D DE VACULARVAS
+- Al registrarse la muerte de la TERCERA vacularba, con tres NetworkId distintos, aparece
+  una pestaña en el lado izquierdo con un grupo de tres modelos 3D animados.
+- El aviso permanece diez segundos y después sale automáticamente. Los snapshots y
+  DeathEvents repetidos no lo vuelven a activar ni reinician su animación.
+- La desaparición de las vacularbas cuando surge el Heraldo NO activa el aviso: solamente
+  cuentan las muertes recibidas en GameEvents con identificadores únicos.
+- El archivo voidgrub.glb contiene 27 clips. Cada vacularba reproduce SpawnIn al doble de
+  velocidad (3 segundos), con entradas escalonadas, y después mezcla suavemente a IdleVar1
+  (2,33 segundos) en bucle durante el resto del aviso. Los modelos tienen un tamaño un 10 %
+  menor que en la primera versión y la salida de la pestaña usa una transición.
+- El modelo y los módulos Three.js necesarios están incluidos localmente; el aviso no
+  necesita descargar recursos 3D de Internet ni usar LeagueBroadcast.
+- «Siguiente juego», «Reset serie completa» y una partida nueva limpian el aviso anterior.
+
+Para ver la pestaña sin esperar una partida:
+   http://localhost:3000/overlay/?demo=1&bo=BO3&grubs=1
+
+AVISOS 3D DE DRAGONES
+- Cada muerte única de un dragón genera su propio aviso en el lado derecho. Los DeathEvents
+  repetidos no reinician la animación ni duplican el aviso.
+- Hay modelos configurados para aire, infernal, montaña, océano, Hextech, Quimtech y Ancestral.
+  El aviso selecciona automáticamente el modelo y el título a partir del tipo detectado.
+- Todos utilizan el mismo recorte de aparición de 6,5 a 8,5 segundos, a velocidad normal: conserva
+  el rugido completo en aproximadamente 2 segundos y evita los momentos iniciales fuera de cámara.
+  El Ancestral usa su clip equivalente SRU_Dragon_elder_Spawn.anm; los demás utilizan
+  SRU_Dragon_Spawn.anm.
+- Después mezclan suavemente a SRU_dragon_idle_ag2al.anm (aproximadamente 5,17 segundos), que se
+  reproduce UNA SOLA VEZ. La postura final de pie queda mantenida, sin reiniciarse en bucle, hasta
+  que el aviso sale tras diez segundos. Ambos clips usan exactamente la misma escala y el mismo
+  anclaje para evitar cambios artificiales durante la transición.
+- Los seis dragones elementales conservan el tamaño validado con el de aire. El Ancestral es un 10 %
+  más grande. Los modelos y Three.js se cargan localmente. «Siguiente juego», «Reset serie completa»
+  y una partida nueva limpian el aviso anterior.
+
+Para ver las pestañas sin esperar una partida:
+   http://localhost:3000/overlay/?demo=1&bo=BO3&dragon=air
+   http://localhost:3000/overlay/?demo=1&bo=BO3&dragon=fire
+   http://localhost:3000/overlay/?demo=1&bo=BO3&dragon=earth
+   http://localhost:3000/overlay/?demo=1&bo=BO3&dragon=water
+   http://localhost:3000/overlay/?demo=1&bo=BO3&dragon=hextech
+   http://localhost:3000/overlay/?demo=1&bo=BO3&dragon=chemtech
+   http://localhost:3000/overlay/?demo=1&bo=BO3&dragon=elder
+
+AVISO 3D DE BARÓN
+- Cada muerte única de Barón genera un aviso en el lado izquierdo. Los DeathEvents repetidos
+  conservan el mismo identificador y no reinician la animación ni duplican el aviso.
+- Utiliza SRU_Baron_spawn.anm a velocidad normal (aproximadamente 3,23 segundos) y después mezcla
+  suavemente a SRU_Baron_idle1_aggro.anm (aproximadamente 1,93 segundos) en bucle. La aparición
+  termina con Barón completamente emergido y la espera lo mantiene en alerta.
+- Ambos clips usan exactamente la misma escala y el mismo anclaje para evitar saltos artificiales
+  durante la transición. El modelo tiene un tamaño ampliado y un encuadre recentrado para ocupar
+  casi toda la altura del panel, con la base apoyada sobre el marco inferior y la cabeza visible
+  durante la aparición. El aviso permanece diez segundos y después sale automáticamente.
+- El modelo se carga localmente. «Siguiente juego», «Reset serie completa» y una partida nueva
+  limpian el aviso anterior. El contador de reaparición de seis minutos sigue funcionando igual.
+
+Para ver la pestaña sin esperar una partida:
+   http://localhost:3000/overlay/?demo=1&bo=BO3&baron=1
+
+AVISO 3D DE HERALDO
+- Cada muerte única del Heraldo genera un aviso en el lado izquierdo. Los DeathEvents repetidos
+  conservan el mismo identificador y no reinician la animación ni duplican el aviso.
+- Utiliza Spawn recortado desde 1,35 segundos para omitir el inicio vacío. Después reproduce una
+  sola vez SRU_RiftHerald_angry_idle_transition.anm, que lo incorpora, y mezcla suavemente a
+  Angry_Idle en bucle durante el resto del aviso.
+- Los tres clips comparten exactamente la misma escala y el mismo anclaje. El modelo está ampliado
+  para darle más presencia durante la espera; durante el salto, la punta superior puede cortarse
+  ligeramente contra el marco. El aviso permanece diez segundos y después sale mediante una transición.
+- El modelo se carga localmente. «Siguiente juego», «Reset serie completa» y una partida nueva
+  limpian el aviso anterior.
+
+Para ver la pestaña sin esperar una partida:
+   http://localhost:3000/overlay/?demo=1&bo=BO3&herald=1
+
+PUNTUACIÓN DE VISIÓN
+- Cada jugador muestra su puntuación de visión como un número entero en la esquina superior
+  del icono de su ward o trinket. El contador de objetos permanece en la esquina inferior.
+- El valor procede de VisionScore y se presenta con Math.floor: por ejemplo, 17,267 se muestra
+  como 17. Es la puntuación de visión acumulada, no la cantidad literal de wards colocados.
+- Si el dato todavía no está disponible, el número queda oculto sin alterar la fila del jugador.
+  Al pasar el cursor por el trinket se conserva su nombre y se indica también la puntuación.
+
+HUD NATIVO
+Al recibir el primer snapshot válido de cada partida, el servidor oculta automáticamente
+el HUD nativo de League of Legends. Si el juego todavía no acepta el comando, reintenta
+con los siguientes snapshots. No necesitas ejecutar ningún comando al entrar.
+
+Siempre se conservan visibles:
+- El minimapa nativo (interfaceMinimap).
+- El panel del jugador seleccionado (interfaceTarget), para consultar sus estadísticas.
+
+Los controles manuales siguen disponibles:
+
+Ocultar el HUD nativo, conservando minimapa y panel del jugador seleccionado:
+   curl.exe -X POST http://localhost:3000/hud/hide
+
+Restaurar todo el HUD nativo:
+   curl.exe -X POST http://localhost:3000/hud/show
+
+DEMOSTRACIÓN OPCIONAL DEL INGAME
+   http://localhost:3000/overlay/?demo=1&bo=BO1
+   http://localhost:3000/overlay/?demo=1&bo=BO3
+   http://localhost:3000/overlay/?demo=1&bo=BO5
+
+VALIDACIÓN
+El usuario confirmó el funcionamiento integral en partidas reales mediante las pruebas realizadas
+durante el uso del draft, el ingame, los temporizadores, la sincronización y los avisos 3D.
+
+Además, las pruebas automatizadas verificaron:
+- Los dos WebSockets, subida de logos, recepción del sensor, sincronización de equipos, victoria
+  pendiente, aplicación con Siguiente juego, reset completo y limpieza del ingame.
+- Autoocultación con conservación de interfaceMinimap e interfaceTarget y reintentos por partida.
+- Vacularbas con tres NetworkId distintos, sin activarse por su desaparición al surgir el Heraldo.
+- Los siete dragones con su modelo y título, Barón y Heraldo con sus secuencias de animación,
+  salida automática, deduplicación de eventos y limpieza al cambiar de partida.
+- Puntuación de visión en los diez jugadores mediante demostración y snapshot real.
+- Atribución de equipo en los avisos 3D: Barón para azul, dragón y Heraldo para rojo, eventos
+  repetidos sin cambios, limpieza en una partida nueva y atacante desconocido sin atribución.
+  Vacularbas se comprobó con repartos azul-azul-rojo, rojo-rojo-azul y órdenes alternados: siempre
+  prevalece el equipo con dos de tres, incluso si muere la última a manos del otro equipo. Las cuatro
+  pestañas se revisaron en Chromium con sus siglas y colores, sin errores de JavaScript; los módulos
+  de animación no fueron modificados.
+- Diagnóstico superior con y sin fuentes OBS: draft, ingame y postpartida pasaron de cero a una fuente
+  al abrirse; draft volvió a cero al cerrarla. Un snapshot de prueba por /sensor recibió HTTP 204 y
+  cambió el indicador a «Recibiendo datos». El LOG quedó antes del turno, con hora y sin errores JS.
+- Selecciones rápidas del draft con cuatro picks consecutivos y equipos alternados: se presentó uno
+  por vez, se respetó el orden de llegada, cada modelo terminó exactamente en su espacio reservado y
+  los pendientes no recibieron un destino anticipado. Una limpieza con picks en espera dejó solamente
+  el nuevo pick, con contadores correctos y sin errores de JavaScript.
+- Reconexión con panel, draft, ingame y postpartida abiertos durante dos reinicios reales del servidor:
+  todos recuperaron su conexión sin recargar. Se restauraron dos picks en sus líneas cambiadas, un baneo,
+  equipos, siglas, torneo, marcador, fearless y AUTO, sin retratos ni modelos duplicados. Una victoria
+  pendiente sobrevivió al segundo reinicio, se aplicó con «Siguiente juego» y no pudo contarse dos veces.
+  El LOG registró una caída y una recuperación por interrupción; no hubo errores de JavaScript.
+- Avisos de SyBSensor y de las tres fuentes OBS: se probaron por separado la caída y la recuperación de
+  cada uno. Todas generaron los mensajes correctos, ninguna repitió el aviso durante más de cuatro
+  segundos de espera y las fuentes volvieron a una conexión. La primera recepción no produjo falsos
+  avisos de recuperación y no hubo errores de JavaScript.
+- Presets con dos configuraciones y logos subidos desde el panel: se comprobaron guardado, selección,
+  carga y sincronización sin alterar un pick ni el marcador. Los dos presets sobrevivieron a un reinicio
+  real y aparecieron en un panel nuevo. Eliminar el segundo fue persistente, conservó la configuración
+  actual y no borró los archivos de logos; no hubo errores de JavaScript.
+- Postpartida con diez tarjetas y diez modelos WebGL cargados, sin errores de JavaScript ni
+  recursos HTTP fallidos; mostrar, ocultar, demo, conservación al limpiar el ingame, captura
+  fallida sin pérdida del estado anterior y recuperación oculta del último resumen tras reiniciar.
+- En la última revisión se comprobaron nombres visibles sin #TAG, seis objetos por tarjeta, ausencia
+  del trinket, texto por delante del canvas, torneo y ambos logos visibles. Una actualización enviada
+  desde el panel cambió nombres, siglas, logos y torneo del mismo resumen sin modificar su GameId ni
+  el marcador de la partida. La apariencia final de los GLB reales de Nocturne y Renekton debe verse
+  en la instalación que contiene esos modelos; la demostración local solamente incluye Aurora.
+- Las marcas de agua se verificaron con diez logos cargados desde el panel, opacidad 0,5, canvas 3D
+  por delante y diez modelos sin errores. Un cambio del logo azul actualizó sus cinco tarjetas sin
+  modificar las rojas, el GameId ni los kills; no hubo errores de consola ni recursos HTTP fallidos.
+
+Si después de un cambio futuro aparece un problema de detección, conserva inmediatamente:
+   SyB3D+HUD\ingame\data\latest-gameinfo.json

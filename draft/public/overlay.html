@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>OVERLAY — Draft 3D</title>
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden; background: transparent; }
+  #bg { position: fixed; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1; }
+  #ui { position: fixed; top: 16px; left: 50%; transform: translateX(-50%); display: flex; gap: 10px; font-family: system-ui; color: #fff; text-shadow: 0 2px 8px #000; pointer-events: none; }
+  .slot { background: rgba(0,0,0,.55); padding: 8px 14px; border-radius: 8px; font-size: 14px; }
+
+  #draftbar {
+    position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%);
+    display: flex; align-items: flex-end; gap: 26px;
+    font-family: system-ui; pointer-events: none;
+    transform-origin: bottom center;
+  }
+  .teamcol { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .teamcol.team-blue { align-items: flex-start; }
+  .teamcol.team-red { align-items: flex-end; }
+  .team-boxes { display: flex; gap: 10px; }
+  .pbox {
+    width: 156px; height: 208px; border-radius: 14px;
+    background: rgba(5,8,15,.75);
+    border: 3px solid #1e3a8a;
+    box-shadow: 0 6px 24px rgba(0,0,0,.6);
+    overflow: hidden; position: relative;
+  }
+  .team-red .pbox { border-color: #7f1d1d; }
+  .pbox img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .pbox .pname {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    font-size: 16px; font-weight: 700; text-align: center; color: #fff;
+    background: rgba(0,0,0,.65); padding: 5px 0;
+    text-shadow: 0 1px 3px #000;
+  }
+
+  .ban-boxes { display: flex; gap: 8px; }
+  .bbox {
+    width: 78px; height: 78px; border-radius: 10px;
+    background: rgba(5,8,15,.7);
+    border: 2px solid #1e3a8a;
+    box-shadow: 0 4px 14px rgba(0,0,0,.5);
+    overflow: hidden; position: relative;
+  }
+  .team-red .bbox { border-color: #7f1d1d; }
+  .bbox img { width: 100%; height: 100%; object-fit: cover; display: block; filter: grayscale(.6) brightness(.85); }
+  .bbox::after {
+    content: '✕'; position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 44px; font-weight: 900; color: rgba(239,68,68,.9);
+    text-shadow: 0 2px 6px #000;
+  }
+
+  /* ===== USADOS (FEARLESS DRAFT) — esquinas superiores, cuadrícula fija de 5 cols ===== */
+  #blueUsed, #redUsed {
+    position: fixed;
+    top: 12px;
+    display: grid;
+    grid-template-columns: repeat(5, 40px);
+    gap: 4px;
+    z-index: 10;
+    pointer-events: none;
+  }
+  #blueUsed { left: 12px; }
+  #redUsed { right: 12px; }
+  .ubox {
+    width: 40px; height: 40px; border-radius: 6px;
+    background: rgba(5,8,15,.75);
+    border: 2px solid #1e3a8a;
+    box-shadow: 0 3px 10px rgba(0,0,0,.5);
+    overflow: hidden; position: relative;
+  }
+  #redUsed .ubox { border-color: #7f1d1d; }
+  .ubox img { width: 100%; height: 100%; object-fit: cover; display: block; filter: brightness(.6) saturate(.75); }
+  .ubox::after { content: '🔒'; position: absolute; bottom: 1px; right: 2px; font-size: 10px; }
+
+  #centerinfo {
+    display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
+    min-width: 460px; color: #fff; text-align: center;
+    text-shadow: 0 2px 8px #000;
+  }
+  #centerinfo img.logo { height: 140px; max-width: 440px; object-fit: contain; margin-bottom: 8px; filter: drop-shadow(0 2px 8px rgba(0,0,0,.7)); }
+  #tournamentName { font-size: 32px; font-weight: 800; letter-spacing: 2px; opacity: .95; }
+  #matchTeams { width: 100%; max-width: 460px; display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 5px; font-size: 26px; font-weight: 700; opacity: .9; }
+  #matchTeams .tb { flex: 1; min-width: 0; text-align: right; color: #60a5fa; line-height: 1.1; overflow-wrap: break-word; }
+  #matchTeams .tr { flex: 1; min-width: 0; text-align: left; color: #f87171; line-height: 1.1; overflow-wrap: break-word; }
+  #matchTeams .vs { font-weight: 900; opacity: .85; letter-spacing: 3px; flex: 0 0 auto; }
+
+   #scoreLine { margin-top: 8px; display: flex; flex-direction: column; align-items: center; gap: 3px; }
+  #scoreLine .scorerow { display: flex; align-items: center; gap: 20px; }
+  #scoreLine b { font-size: 28px; font-weight: 900; letter-spacing: 1px; }
+  .pip { display: inline-block; width: 14px; height: 14px; border-radius: 50%; border: 2px solid #555; margin: 0 3px; vertical-align: middle; }
+  .pip.blue.filled { background: #3b82f6; border-color: #3b82f6; box-shadow: 0 0 8px #3b82f6; }
+  .pip.red.filled { background: #ef4444; border-color: #ef4444; box-shadow: 0 0 8px #ef4444; }
+  #boLabel { font-size: 14px; font-weight: 800; opacity: .8; letter-spacing: 1px; }
+
+  /* ===== TIMER DEL DRAFT (sincronizado al cliente) ===== */
+        /* Franja del timer: toda la zona superior, drena de abajo hacia arriba */
+    /* Franja del timer: toda la zona superior, drena de abajo hacia arriba */
+  #timerwrap {
+    position: fixed; top: 0; left: 0; right: 0; height: 55vh;
+    display: none; z-index: -1; pointer-events: none;
+    font-family: system-ui; color: #fff; text-shadow: 0 2px 10px #000;
+  }
+  #timerBar {
+    position: absolute; top: 0; left: 0; right: 0; height: 100%;
+    transition: height 1s linear;
+    display: flex; align-items: center; justify-content: center;
+  }
+  /* El contenido va CENTRADO dentro de la franja (sube con ella mientras drena) */
+    /* El contenido va CENTRADO dentro de la franja y SIEMPRE encima del relleno */
+  #timerContent { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  #timerNum { font-size: 130px; font-weight: 900; line-height: 1; }
+  #timerPhase { font-size: 17px; font-weight: 800; letter-spacing: 3px; opacity: .95; text-transform: uppercase; }
+</style>
+</head>
+<body>
+<div id="ui"></div>
+
+<div id="timerwrap">
+  <div id="timerBar"></div>
+  <div id="timerContent"><span id="timerNum"></span><span id="timerPhase"></span></div>
+</div>
+
+<!-- Fearless usados: esquinas superiores, fuera del draftbar para no interferir -->
+<div id="blueUsed"></div>
+<div id="redUsed"></div>
+
+<div id="draftbar">
+  <div class="teamcol team-blue">
+    <div class="ban-boxes" id="blueBans"></div>
+    <div class="team-boxes" id="blueBoxes"></div>
+  </div>
+  <div id="centerinfo">
+    <img class="logo" id="tLogo" style="display:none">
+    <div id="tournamentName"></div>
+    <div id="matchTeams"></div>
+    <div id="scoreLine"></div>
+  </div>
+  <div class="teamcol team-red">
+    <div class="ban-boxes" id="redBans"></div>
+    <div class="team-boxes" id="redBoxes"></div>
+  </div>
+</div>
+
+
+<script type="importmap">
+{ "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+}}
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+const scene = new THREE.Scene();
+scene.fog = new THREE.Fog(0x23262e, 14, 48);
+const camera = new THREE.PerspectiveCamera(45, innerWidth/innerHeight, .1, 100);
+camera.position.set(0, 2.4, 14);
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+renderer.setSize(innerWidth, innerHeight);
+renderer.setPixelRatio(devicePixelRatio);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+document.body.appendChild(renderer.domElement);
+
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.target.set(0, 0.85, 0);
+controls.autoRotate = false;
+controls.enableDamping = true;
+
+scene.add(new THREE.AmbientLight(0x8899bb, 2.0));
+const key = new THREE.SpotLight(0xffffff, 600, 60, Math.PI/3, .6); key.position.set(0, 12, 8); scene.add(key);
+const rimBlue = new THREE.PointLight(0x3b82f6, 300, 60); rimBlue.position.set(-11, 4, 2); scene.add(rimBlue);
+const rimRed  = new THREE.PointLight(0xef4444, 300, 60); rimRed.position.set(11, 4, 2); scene.add(rimRed);
+const fill = new THREE.DirectionalLight(0xffffff, 1.4); fill.position.set(0, 6, 12); scene.add(fill);
+
+const podium = new THREE.Mesh(
+  new THREE.CylinderGeometry(1.7, 2.0, .35, 48),
+  new THREE.MeshStandardMaterial({ color: 0x2a2e39, metalness: .7, roughness: .35 })
+);
+podium.position.y = -.175; scene.add(podium);
+const floor = new THREE.Mesh(new THREE.CircleGeometry(30, 64),
+  new THREE.MeshStandardMaterial({ color: 0x3a3f4a, metalness: .35, roughness: .6 }));
+floor.rotation.x = -Math.PI/2; floor.position.y = -.36; scene.add(floor);
+const ring = new THREE.Mesh(new THREE.TorusGeometry(2.2, .04, 16, 100),
+  new THREE.MeshBasicMaterial({ color: 0x58a6ff }));
+ring.rotation.x = Math.PI/2; ring.position.y = .01; scene.add(ring);
+
+function lineupPos(team, i) {
+  const spread = 2.0;
+  const x = (team === 'blue' ? -1 : 1) * (2.7 + i * spread);
+  const z = 1.2 - i * 0.55;
+  return new THREE.Vector3(x, -0.25, z);
+}
+for (let t = 0; t < 2; t++) {
+  const team = t === 0 ? 'blue' : 'red';
+  for (let i = 0; i < 5; i++) {
+    const d = new THREE.Mesh(new THREE.CylinderGeometry(.85, .95, .06, 32),
+      new THREE.MeshStandardMaterial({
+        color: 0x14161d, metalness: .8, roughness: .3,
+        emissive: team === 'blue' ? 0x1e3a8a : 0x7f1d1d, emissiveIntensity: .25
+      }));
+    const p = lineupPos(team, i);
+    d.position.set(p.x, -.33, p.z);
+    scene.add(d);
+  }
+}
+
+const banCounters = { blue: 0, red: 0 };
+let ddragonVer = null;
+fetch('https://ddragon.leagueoflegends.com/api/versions.json')
+  .then(r => r.json()).then(v => ddragonVer = v[0]).catch(() => {});
+
+const NAME_TO_ID = {
+  "Aurelion Sol": "AurelionSol", "Bel'Veth": "Belveth", "Cho'Gath": "Chogath",
+  "Dr. Mundo": "DrMundo", "Jarvan IV": "JarvanIV",
+  "K'Sante": "KSante", "Kai'Sa": "Kaisa", "Kha'Zix": "Khazix",
+  "Kog'Maw": "KogMaw", "LeBlanc": "Leblanc", "Lee Sin": "LeeSin",
+  "Master Yi": "MasterYi", "Miss Fortune": "MissFortune", "Nunu & Willump": "Nunu",
+  "Rek'Sai": "RekSai", "Renata Glasc": "Renata", "Tahm Kench": "TahmKench",
+  "Twisted Fate": "TwistedFate", "Vel'Koz": "Velkoz", "Wukong": "MonkeyKing"
+};
+function champId(name) {
+  if (NAME_TO_ID[name]) return NAME_TO_ID[name];
+  return name.charAt(0).toUpperCase() + name.slice(1).replace(/[^a-zA-Z0-9]/g, '');
+}
+
+function buildBoxes(team) {
+  const wrap = document.getElementById(team + 'Boxes');
+  for (let i = 0; i < 5; i++) {
+    const box = document.createElement('div');
+    box.className = 'pbox';
+    wrap.appendChild(box);
+  }
+}
+function buildBanBoxes(team) {
+  const wrap = document.getElementById(team + 'Bans');
+  for (let i = 0; i < 5; i++) {
+    const box = document.createElement('div');
+    box.className = 'bbox';
+    wrap.appendChild(box);
+  }
+}
+buildBoxes('blue'); buildBoxes('red');
+buildBanBoxes('blue'); buildBanBoxes('red');
+
+function fitBar() {
+  const bar = document.getElementById('draftbar');
+  const s = Math.min(1, (innerWidth - 40) / bar.scrollWidth);
+  bar.style.transform = `translateX(-50%) scale(${s})`;
+}
+fitBar();
+
+function champImg(name) {
+  const ver = ddragonVer || '15.1.1';
+  const img = document.createElement('img');
+  img.src = `https://ddragon.leagueoflegends.com/cdn/${ver}/img/champion/${champId(name)}.png`;
+  img.onerror = () => { img.remove(); };
+  return img;
+}
+
+function fillBox(team, name, player, role) {
+  const boxes = document.querySelectorAll(`#${team}Boxes .pbox`);
+  let i = role ? slotForRole(role) : null;
+  if (i == null || !boxes[i] || boxes[i].querySelector('img')) {
+    i = [...boxes].findIndex(b => !b.querySelector('img'));
+    if (i < 0) return;
+  }
+  const box = boxes[i];
+  const im = champImg(name);
+  im.dataset.champ = name;
+  box.appendChild(im);
+  box.dataset.champ = name;
+  const nm = box.querySelector('.pname');
+  if (nm && !nm.textContent && player) nm.textContent = player;
+}
+
+function fillBanBox(team, name) {
+  const i = Math.min(banCounters[team], 4);
+  banCounters[team]++;
+  const box = document.querySelectorAll(`#${team}Bans .bbox`)[i];
+  box.appendChild(champImg(name));
+}
+
+// ===== Usados (fearless) =====
+function renderUsed(team, list) {
+  const wrap = document.getElementById(team + 'Used');
+  wrap.innerHTML = '';
+  (list || []).forEach(name => {
+    const box = document.createElement('div');
+    box.className = 'ubox';
+    box.appendChild(champImg(name));
+    wrap.appendChild(box);
+  });
+}
+
+function clearBoxes() {
+  document.querySelectorAll('.pbox img').forEach(im => im.remove());
+  document.querySelectorAll('.pbox').forEach(b => { delete b.dataset.champ; });
+  document.querySelectorAll('.bbox').forEach(b => b.innerHTML = '');
+  banCounters.blue = 0; banCounters.red = 0;
+}
+
+function applyInfo(data) {
+  if (!data) return;
+  currentInfoData = data;
+  const oldBg = document.getElementById('bg');
+  if (oldBg) oldBg.remove();
+  if (data.bg) {
+    const isVideo = /\.(mp4|webm|mov)(\?|$)/i.test(data.bg);
+    const el = document.createElement(isVideo ? 'video' : 'img');
+    el.id = 'bg';
+    if (isVideo) { el.muted = true; el.loop = true; el.autoplay = true; el.playsInline = true; }
+    el.src = data.bg;
+    document.body.prepend(el);
+  }
+  const logo = document.getElementById('tLogo');
+  if (data.logo) { logo.src = data.logo; logo.style.display = 'block'; }
+  else logo.style.display = 'none';
+  document.getElementById('tournamentName').textContent = data.tournament || '';
+  const bt = data.blue ? `<span class="tb">${data.blue}</span>` : '<span class="tb">AZUL</span>';
+  const rt = data.red ? `<span class="tr">${data.red}</span>` : '<span class="tr">ROJO</span>';
+  document.getElementById('matchTeams').innerHTML = bt + '<span class="vs">VS</span>' + rt;
+}
+
+function applyScore(d) {
+  if (!d) { document.getElementById('scoreLine').innerHTML = ''; return; }
+  const need = d.format === 'BO5' ? 3 : d.format === 'BO3' ? 2 : 1;
+  const totalGames = need * 2 - 1;
+  const gameNum = Math.min((d.blue || 0) + (d.red || 0) + 1, totalGames);
+  const pips = (wins, cls) => Array.from({ length: need }, (_, i) =>
+    `<i class="pip ${cls} ${i < wins ? 'filled' : ''}"></i>`).join('');
+      document.getElementById('scoreLine').innerHTML =
+    `<div class="scorerow"><span>${pips(d.blue, 'blue')}</span><b>${d.blue} — ${d.red}</b><span>${pips(d.red, 'red')}</span></div>` +
+    `<span id="boLabel">${d.format} · JUEGO ${gameNum} DE ${totalGames}</span>`;
+}
+
+// ===== Roster: nombres de jugador fijos por posición (llegan al iniciar la selección) =====
+function applyRoster(r) {
+  if (!r) return;
+  ['blue', 'red'].forEach(team => {
+    (r[team] || []).forEach((nm, i) => {
+      const box = document.querySelectorAll(`#${team}Boxes .pbox`)[i];
+      if (!box) return;
+      let sp = box.querySelector('.pname');
+      if (!sp) { sp = document.createElement('span'); sp.className = 'pname'; box.appendChild(sp); }
+      sp.textContent = nm || '';
+      sp.style.display = nm ? '' : 'none';
+    });
+  });
+}
+
+// ===== Timer del draft (sincronizado al cliente de LoL) =====
+function applyTimer(d) {
+  const w = document.getElementById('timerwrap');
+  if (draftDone) return; // el cierre ya se encargó del desvanecido: NO tocar nada
+  if (!d) { w.style.display = 'none'; return; }
+  w.style.display = 'block';
+  const fase = d.phase === 'FINALIZATION' ? 'FASE FINAL — INTERCAMBIOS' :
+               d.act === 'ban' ? `BANEANDO — ${d.team === 'blue' ? 'AZUL' : 'ROJO'}` :
+               d.act === 'pick' ? `SELECCIONANDO — ${d.team === 'blue' ? 'AZUL' : 'ROJO'}` : (d.phase || '');
+  document.getElementById('timerPhase').textContent = fase;
+  const num = document.getElementById('timerNum');
+  num.textContent = d.left;
+  num.style.color = d.left <= 5 ? '#f87171' : '#fff';
+  const pct = d.total > 0 ? Math.max(0, Math.min(100, (d.left / d.total) * 100)) : 0;
+  const bar = document.getElementById('timerBar');
+  bar.style.height = pct + '%';
+  bar.style.background = d.team === 'blue' ? '#3b82f6' : d.team === 'red' ? '#ef4444' : '#a1a1aa';
+}
+
+const loader = new GLTFLoader();
+const mixerHolder = [];
+let champCount = 0;
+const counters = { blue: 0, red: 0 };
+const pending = { blue: 0, red: 0 };
+const holdersByTeam = { blue: [], red: [] };
+const fxWaves = [];
+
+const ui = document.getElementById('ui');
+function logUI(t) { /* silenciado: el overlay ya no muestra mensajes */ }
+
+const ROT_FIX = {};
+// Ajuste de escala por campeón (>1 agranda, <1 achica)
+const SCALE_FIX = {
+  "Aatrox": 1.2, "Amumu": 0.5, "Blitzcrank": 0.8, "Ambessa": 1.0, "Annie": 0.6,
+  "Aurelion Sol": 1.4, "Azir": 1.6, "Ekko": 0.65, "Fizz": 0.6, "Galio": 1.4,
+  "Gnar": 0.6, "Hecarim": 1.3, "Heimerdinger": 0.6, "Hwei": 1.1, "Illaoi": 1.4,
+  "Ivern": 1.5, "Janna": 1.1, "Jarvan IV": 1.3, "Jax": 0.9, "Jayce": 1.4,
+  "Jinx": 0.9, "K'Sante": 1.2, "Karma": 1.2, "Kayle": 1.3, "Kayn": 1.2,
+  "Kha'Zix": 0.9, "Kennen": 0.8, "Kled": 1.4, "Kog'Maw": 0.7, "Lee Sin": 1.2,
+  "LeBlanc": 1.2, "Leona": 1.05, "Lillia": 1.4, "Lissandra": 2.2, "Locke": 1.1,
+  "Lucian": 1.25, "Lulu": 0.6, "Malzahar": 1.4, "Milio": 0.8, "Mordekaiser": 1.2,
+  "Nasus": 1.2, "Nautilus": 1.2, "Naafiri": 0.6, "Neeko": 1.5, "Nidalee": 0.95,
+  "Nocturne": 1.4, "Nunu & Willump": 1.5, "Pantheon": 1.9, "Poppy": 0.6,
+  "Rek'Sai": 0.6, "Rell": 1.4, "Renata Glasc": 1.2, "Riven": 1.2, "Sejuani": 1.1,
+  "Sett": 1.2, "Shen": 1.1, "Shyvana": 1.2, "Singed": 1.1, "Sion": 1.4,
+  "Sivir": 0.7, "Skarner": 1.3, "Smolder": 0.7, "Sona": 1.5, "Swain": 1.2,
+  "Talon": 0.8, "Taric": 1.4, "Teemo": 0.6, "Thresh": 1.2, "Tristana": 0.7,
+  "Twitch": 0.6, "Udyr": 1.2, "Urgot": 1, "Vel'Koz": 1.2, "Vex": 0.8,
+  "Viktor": 1.2, "Volibear": 1.4, "Wukong": 0.8, "Xerath": 1.2, "Xin Zhao": 1.2,
+  "Yone": 1.2, "Yorick": 1.2, "Zac": 1.2, "Ziggs": 0.5, "Zilean": 0.9, "Zoe": 0.9
+};
+
+function teamCompleteFX(team, silent) {
+  const rim = team === 'blue' ? rimBlue : rimRed;
+  rim.userData.pulse = 1;
+  const wave = new THREE.Mesh(
+    new THREE.TorusGeometry(1, .12, 12, 64),
+    new THREE.MeshBasicMaterial({ color: team === 'blue' ? 0x3b82f6 : 0xef4444, transparent: true, opacity: .9 })
+  );
+  wave.rotation.x = Math.PI/2;
+  wave.position.set((team === 'blue' ? -1 : 1) * 4.6, -.3, .3);
+  wave.userData.t = 0;
+  scene.add(wave);
+  fxWaves.push(wave);
+  if (!silent) logUI(`🏆 ¡Equipo ${team === 'blue' ? 'AZUL 🔵' : 'ROJO 🔴'} completo!`);
+}
+
+// ===== Transición cinematográfica al completar el draft =====
+let cine = null;
+const easeIO = t => t * t * (3 - 2 * t);
+function hideOverlayChrome() {
+  const duration = 'opacity 0.6s ease';
+  document.getElementById('blueUsed').style.transition = duration;
+  document.getElementById('redUsed').style.transition = duration;
+  document.getElementById('draftbar').style.transition = duration;
+  document.getElementById('blueUsed').style.opacity = '0';
+  document.getElementById('redUsed').style.opacity = '0';
+  document.getElementById('draftbar').style.opacity = '0';
+}
+function showOverlayChrome() {
+  const duration = 'opacity 0.8s ease';
+  document.getElementById('blueUsed').style.transition = duration;
+  document.getElementById('redUsed').style.transition = duration;
+  document.getElementById('draftbar').style.transition = duration;
+  document.getElementById('blueUsed').style.opacity = '1';
+  document.getElementById('redUsed').style.opacity = '1';
+  document.getElementById('draftbar').style.opacity = '1';
+}
+
+// ===== Logos 3D de equipo (sprites en el mundo, detrás de los campeones) =====
+let currentInfoData = null; // se actualiza en applyInfo y en init
+const teamLogoSprites = { blue: null, red: null };
+const logoTextureLoader = new THREE.TextureLoader();
+
+function createTeamLogoSprite(team) {
+  const mat = new THREE.SpriteMaterial({ transparent: true, opacity: 0, depthTest: true, depthWrite: false });
+  const sp = new THREE.Sprite(mat);
+  sp.scale.set(7, 7, 1);
+  // Un poco hacia el centro y más atrás para no cortarse
+  const centerX = (team === 'blue' ? -1 : 1) * 5.2;
+  sp.position.set(centerX, 2.5, -8);
+  sp.renderOrder = -1;
+  sp.visible = false;
+  scene.add(sp);
+  teamLogoSprites[team] = sp;
+}
+createTeamLogoSprite('blue');
+createTeamLogoSprite('red');
+
+function updateLogoTexture(team, url) {
+  const sp = teamLogoSprites[team];
+  if (!sp || !url) return;
+  logoTextureLoader.load(url, (tex) => {
+    tex.colorSpace = THREE.SRGBColorSpace;
+    sp.material.map = tex;
+    sp.material.needsUpdate = true;
+  });
+}
+
+// ===== Cinemática por fases =====
+// Fases: travel → pause (con logo) → travel → pause (con logo) → travel (regreso)
+function startCinematic() {
+  hideOverlayChrome();
+  const startPos = camera.position.clone();
+  const startTarget = controls.target.clone();
+  controls.enabled = false;
+
+  // Posiciones de showcase para cada equipo
+  const bluePos    = new THREE.Vector3(-9, 2.6, 8);
+  const blueLook   = new THREE.Vector3(-6.5, 1.0, 0);
+  const redPos     = new THREE.Vector3(9, 2.6, 8);
+  const redLook    = new THREE.Vector3(6.5, 1.0, 0);
+
+  // Actualizar las texturas de los logos con las URLs actuales
+  if (currentInfoData?.blueLogo) updateLogoTexture('blue', currentInfoData.blueLogo);
+  if (currentInfoData?.redLogo) updateLogoTexture('red', currentInfoData.redLogo);
+
+  cine = {
+    startPos, startTarget,
+    phaseIndex: 0,
+    phaseTime: 0,
+    phases: [
+      // 1) Viaje al equipo azul (4s)
+      { type: 'travel', dur: 4, fromPos: startPos.clone(), toPos: bluePos, fromLook: startTarget.clone(), toLook: blueLook },
+      // 2) Pausa en azul con logo (5s)
+      { type: 'pause', dur: 5, pos: bluePos, look: blueLook, logo: 'blue' },
+      // 3) Viaje del azul al rojo (4s)
+      { type: 'travel', dur: 4, fromPos: bluePos.clone(), toPos: redPos, fromLook: blueLook.clone(), toLook: redLook },
+      // 4) Pausa en rojo con logo (5s)
+      { type: 'pause', dur: 5, pos: redPos, look: redLook, logo: 'red' },
+      // 5) Regreso al centro (4s)
+      { type: 'travel', dur: 4, fromPos: redPos.clone(), toPos: startPos.clone(), fromLook: redLook.clone(), toLook: startTarget.clone() }
+    ]
+  };
+}
+
+let draftDone = false;
+// El gran cierre: se quita la franja del timer y suena el show (lo llama la fase FINALIZATION o el pick #10)
+function endDraftShow() {
+  if (draftDone) return;
+  draftDone = true;
+  const w = document.getElementById('timerwrap');
+  w.style.transition = 'opacity 2s ease';
+  w.style.opacity = '0';
+  setTimeout(() => { w.style.display = 'none'; w.style.opacity = '1'; w.style.transition = ''; }, 2100);
+  setTimeout(() => {
+    teamCompleteFX('blue', true);
+    teamCompleteFX('red', true);
+    startCinematic();
+    logUI('🏆 ¡DRAFT COMPLETO! 🏆');
+  }, 1000);
+}
+function checkDraftComplete() {
+  if (!draftDone && counters.blue === 5 && counters.red === 5) setTimeout(endDraftShow, 2000);
+}
+// ===== Líneas FIJAS: etiquetas TOP/JG/MID/ADC/SUP permanentes en cada slot =====
+const ROLE_ORDER = ['TOP', 'JUNGLE', 'MIDDLE', 'BOTTOM', 'UTILITY'];
+const ROLE_TXT = { TOP: 'TOP', JUNGLE: 'JG', MIDDLE: 'MID', BOTTOM: 'ADC', UTILITY: 'SUP' };
+const ROLE_ICON = {
+  TOP: 'https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-top.png',
+  JUNGLE: 'https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-jungle.png',
+  MIDDLE: 'https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-middle.png',
+  BOTTOM: 'https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-bottom.png',
+  UTILITY: 'https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-utility.png'
+};
+const roleIcons = {};
+const laneLabels = [];
+Object.entries(ROLE_ICON).forEach(([k, src]) => {
+  const im = new Image();
+  im.crossOrigin = 'anonymous';
+  im.onload = () => { roleIcons[k] = im; laneLabels.forEach(l => { if (l.role === k) drawLaneLabel(l); }); };
+  im.src = src;
+});
+function roundRect(g, x, y, w, h, r) {
+  g.beginPath(); g.moveTo(x + r, y);
+  g.arcTo(x + w, y, x + w, y + h, r); g.arcTo(x + w, y + h, x, y + h, r);
+  g.arcTo(x, y + h, x, y, r); g.arcTo(x, y, x + w, y, r); g.closePath();
+}
+function drawLaneLabel(l) {
+  const { sp, role, team } = l;
+  const cv = sp.userData.cv, g = cv.getContext('2d');
+  g.clearRect(0, 0, cv.width, cv.height);
+  g.fillStyle = 'rgba(5,8,15,.85)';
+  g.strokeStyle = team === 'blue' ? '#3b82f6' : '#ef4444';
+  g.lineWidth = 8;
+  roundRect(g, 6, 6, cv.width - 12, cv.height - 12, 18);
+  g.fill(); g.stroke();
+  const icon = roleIcons[role];
+  if (icon) g.drawImage(icon, 20, 20, 72, 72);
+  g.fillStyle = '#fff'; g.font = 'bold 50px system-ui';
+  g.textAlign = 'center'; g.textBaseline = 'middle';
+  g.fillText(ROLE_TXT[role], cv.width / 2 + 32, cv.height / 2 + 4);
+  sp.material.map.needsUpdate = true;
+}
+function makeLaneLabel(role, team, pos) {
+  const cv = document.createElement('canvas');
+  cv.width = 256; cv.height = 112;
+  const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(cv), depthTest: false }));
+  sp.scale.set(1.35, 0.55, 1);
+  sp.userData.cv = cv;
+  sp.position.set(pos.x, pos.y - 0.80, pos.z);
+  const l = { sp, role, team };
+  drawLaneLabel(l);
+  scene.add(sp);
+  laneLabels.push(l);
+}
+// Crear las 10 etiquetas fijas (5 por equipo), siempre visibles
+for (let t = 0; t < 2; t++) {
+  const team = t === 0 ? 'blue' : 'red';
+  ROLE_ORDER.forEach((role, i) => makeLaneLabel(role, team, lineupPos(team, i)));
+}
+function slotForRole(role) { const i = ROLE_ORDER.indexOf(role); return i < 0 ? null : i; }
+function nextSlot(team, preferred, exclude) {
+  const used = new Set((holdersByTeam[team] || []).filter(h => h !== exclude).map(h => h.userData.slot));
+  if (preferred != null && !used.has(preferred)) return preferred;
+  for (let i = 0; i < 5; i++) if (!used.has(i)) return i;
+  return 4;
+}
+// Cambia el destino del campeón sin mover a ningún otro.
+// Durante la espera solo actualiza la reserva; no lo adelanta al podio ni a su equipo.
+function moveHolderToSlot(team, holder, i) {
+  holder.userData.slot = i;
+  if (holder.userData.pending) return;
+  holder.userData.target = lineupPos(team, i);
+  holder.userData.targetRot = (team === 'blue' ? .5 : -.5) + (ROT_FIX[holder.userData.champName] || 0);
+}
+// Intercambia los retratos 2D de dos recuadros (los nombres de jugador quedan fijos)
+function swap2D(team, name, i) {
+  const boxes = [...document.querySelectorAll(`#${team}Boxes .pbox`)];
+  const boxA = boxes.find(b => b.dataset.champ === name);
+  const boxB = boxes[i];
+  if (!boxA || !boxB || boxA === boxB) return;
+  const imgA = boxA.querySelector('img');
+  const imgB = boxB.querySelector('img');
+  if (imgB) boxA.appendChild(imgB);
+  if (imgA) boxB.appendChild(imgA);
+  const cA = imgB ? imgB.dataset.champ : '';
+  const cB = imgA ? imgA.dataset.champ : '';
+  if (cA) boxA.dataset.champ = cA; else delete boxA.dataset.champ;
+  if (cB) boxB.dataset.champ = cB; else delete boxB.dataset.champ;
+}
+// Swap / asignación: el CAMPEÓN se mueve al slot fijo del jugador (las etiquetas jamás se mueven)
+function setRole(team, name, role) {
+  const i = slotForRole(role);
+  if (i == null) return;
+  const holder = (holdersByTeam[team] || []).find(h => h.userData.champName === name);
+  if (holder && holder.userData.slot !== i) {
+    // Cambia solamente su reserva; nunca intercambia el lugar de otro campeón.
+    moveHolderToSlot(team, holder, i);
+  }
+  swap2D(team, name, i);
+}
+
+function loadModelInto(holder, team, name) {
+  loader.load(`/models/${name}.glb`, (gltf) => {
+    const model = gltf.scene;
+    holder.add(model);
+    // Pre-escala en frío por huesos (pose de reposo): nace casi a tamaño final, sin "pop"
+    holder.updateMatrixWorld(true);
+    {
+      const hs = holder.scale.y || 1;
+      const ys = [];
+      const v = new THREE.Vector3();
+      const seen = new Map();
+      model.traverse(n => { if (n.isSkinnedMesh) n.skeleton.bones.forEach(b => { if (!seen.has(b.uuid)) seen.set(b.uuid, b); }); });
+      seen.forEach(b => { b.getWorldPosition(v); ys.push(v.y / hs); });
+      ys.sort((a, b) => a - b);
+      const p = q => ys[Math.min(ys.length - 1, Math.floor(ys.length * q))];
+      let h0 = p(.97) - p(.03);
+      if (!(h0 > 0.0001) || ys.length < 4) {
+        const bb = new THREE.Box3().setFromObject(model);
+        h0 = bb.getSize(new THREE.Vector3()).y / hs;
+      }
+      if (h0 > 0.0001) model.scale.multiplyScalar((2.2 * (SCALE_FIX[name] || 1)) / h0);
+    }
+    if (gltf.animations.length) {
+      const mixer = new THREE.AnimationMixer(model);
+      mixer.clipAction(gltf.animations[0]).play();
+      mixer.update(1.2); // saltar la pose transitoria: nacer ya con la idle asentada
+      mixerHolder.push(mixer);
+      holder.userData.normAt = performance.now() + 150;
+    } else {
+      holder.userData.normAt = performance.now() + 1200;
+    }
+    holder.userData.normModel = model;
+  }, undefined, () => {
+    const ph = new THREE.Mesh(new THREE.CapsuleGeometry(.5, 1, 8, 16),
+      new THREE.MeshStandardMaterial({ color: team === 'blue' ? 0x3b82f6 : 0xef4444 }));
+    ph.position.y = 1.1; holder.add(ph);
+  });
+}
+
+// ===== Fila de presentación: un solo campeón en el podio principal =====
+const pickQueue = [];
+let activePick = null;
+let draftGeneration = 0;
+let draftEndRequested = false;
+
+function pumpPickQueue() {
+  if (activePick) return;
+  const next = pickQueue.shift();
+  if (!next) return;
+  const { holder, team, name, generation } = next;
+  if (generation !== draftGeneration || holder.userData.cancelled) {
+    pumpPickQueue();
+    return;
+  }
+
+  activePick = holder;
+  ring.material.color.set(team === 'blue' ? 0x3b82f6 : 0xef4444);
+  logUI(`🎬 Pick ${team === 'blue' ? '🔵' : '🔴'}: ${name}`);
+  scene.add(holder);
+
+  setTimeout(() => {
+    // Un undo o una limpieza invalida esta presentación sin tocar el draft nuevo.
+    if (generation !== draftGeneration || holder.userData.cancelled) return;
+    pending[team]--;
+    holder.userData.pending = false;
+    holder.userData.normAt = performance.now() + 300;
+    const i = holder.userData.slot;
+    counters[team]++;
+    holder.userData.target = lineupPos(team, i);
+    holder.userData.targetRot = (team === 'blue' ? .5 : -.5) + (ROT_FIX[name] || 0);
+    checkDraftComplete();
+  }, 3000);
+}
+
+// El cierre cinematográfico espera a que todos los picks hayan salido del podio.
+function finishDraftWhenReady() {
+  if (!draftEndRequested || draftDone) return;
+  if (activePick || pickQueue.length) {
+    setTimeout(finishDraftWhenReady, 250);
+    return;
+  }
+  draftEndRequested = false;
+  endDraftShow();
+}
+
+function showChampion(team, name, instant = false, role = null, player = null) {
+  if (counters[team] + pending[team] >= 5) {
+    logUI(`⚠️ Máximo 5 picks para el equipo ${team === 'blue' ? 'azul' : 'rojo'}`);
+    return;
+  }
+  fillBox(team, name, player, role);
+  const holder = new THREE.Group();
+  holder.name = `champ-${champCount++}`;
+  holder.userData.team = team;
+  holder.userData.champName = name;
+  loadModelInto(holder, team, name);
+
+  if (instant) {
+    const i = nextSlot(team, role ? slotForRole(role) : null, holder);
+    holder.userData.slot = i;
+    counters[team]++;
+    holder.position.copy(lineupPos(team, i));
+    holder.rotation.y = (team === 'blue' ? .5 : -.5) + (ROT_FIX[name] || 0);
+    holder.scale.setScalar(1);
+    scene.add(holder);
+  } else {
+    // El espacio se reserva al llegar, pero el modelo espera fuera de la escena.
+    pending[team]++;
+    holder.userData.pending = true;
+    const iReservado = nextSlot(team, role ? slotForRole(role) : null, holder);
+    holder.userData.slot = iReservado;
+    holder.position.set(0, 0, 0);
+    holder.scale.setScalar(.01);
+    pickQueue.push({ holder, team, name, generation: draftGeneration });
+  }
+  holdersByTeam[team].push(holder);
+  if (!instant) pumpPickQueue();
+}
+
+const ws = new WebSocket(`ws://${location.host}/?client=overlay`);
+ws.onmessage = (e) => {
+  const msg = JSON.parse(e.data);
+  if (msg.type === 'pick') showChampion(msg.team, msg.champion, false, msg.role, msg.player);
+  if (msg.type === 'role') setRole(msg.team, msg.champion, msg.role);
+  if (msg.type === 'roster') applyRoster(msg.data);
+  if (msg.type === 'timer') applyTimer(msg.data);
+  if (msg.type === 'draftend') {
+    draftEndRequested = true;
+    setTimeout(finishDraftWhenReady, 4000);
+  }
+  if (msg.type === 'ban') {
+    if (banCounters[msg.team] >= 5) {
+      logUI(`⚠️ Máximo 5 bans para el equipo ${msg.team === 'blue' ? 'azul' : 'rojo'}`);
+    } else {
+      fillBanBox(msg.team, msg.champion);
+      logUI(`🚫 Ban ${msg.team === 'blue' ? '🔵' : '🔴'} (${banCounters[msg.team]}/5): ${msg.champion}`);
+    }
+  }
+  if (msg.type === 'undo') {
+    if (msg.itype === 'ban') {
+      if (banCounters[msg.team] > 0) {
+        banCounters[msg.team]--;
+        document.querySelectorAll(`#${msg.team}Bans .bbox`)[banCounters[msg.team]].innerHTML = '';
+      }
+    } else {
+      const holder = holdersByTeam[msg.team].pop();
+      if (holder) {
+        holder.userData.cancelled = true;
+        if (holder.userData.pending) {
+          holder.userData.pending = false;
+          pending[msg.team] = Math.max(0, pending[msg.team] - 1);
+          const qi = pickQueue.findIndex(entry => entry.holder === holder);
+          if (qi >= 0) pickQueue.splice(qi, 1);
+          if (activePick === holder) {
+            activePick = null;
+            setTimeout(pumpPickQueue, 0);
+          }
+        }
+        if (holder.userData.target) counters[msg.team] = Math.max(0, counters[msg.team] - 1);
+        scene.remove(holder);
+      }
+      const bx = [...document.querySelectorAll(`#${msg.team}Boxes .pbox`)].find(b => b.dataset.champ === msg.champion);
+      if (bx) { delete bx.dataset.champ; const im = bx.querySelector('img'); if (im) im.remove(); }
+    }
+    logUI('↩️ Última acción deshecha');
+  }
+  if (msg.type === 'info') applyInfo(msg.data);
+  if (msg.type === 'score') applyScore(msg.data);
+  if (msg.type === 'history') { renderUsed('blue', msg.data.blue); renderUsed('red', msg.data.red); }
+  if (msg.type === 'clear') {
+    // Los temporizadores de la selección anterior no deben modificar el draft nuevo.
+    draftGeneration++;
+    draftEndRequested = false;
+    pickQueue.length = 0;
+    activePick = null;
+    Object.values(holdersByTeam).flat().forEach(h => { h.userData.cancelled = true; });
+    [...scene.children].forEach(o => { if (o.name.startsWith('champ-')) scene.remove(o); });
+    counters.blue = 0; counters.red = 0;
+    pending.blue = 0; pending.red = 0;
+    holdersByTeam.blue = []; holdersByTeam.red = [];
+    draftDone = false;
+    cine = null;
+    ['blue', 'red'].forEach(t => { if (teamLogoSprites[t]) { teamLogoSprites[t].visible = false; teamLogoSprites[t].material.opacity = 0; } });
+    showOverlayChrome();
+    clearBoxes();
+    logUI('Listo para nuevo draft');
+  }
+  if (msg.type === 'init') {
+    showOverlayChrome();
+    applyInfo(msg.state?.info);
+    applyScore(msg.state?.score);
+    applyRoster(msg.state?.roster);
+    if (msg.state?.history) { renderUsed('blue', msg.state.history.blue); renderUsed('red', msg.state.history.red); }
+    (msg.state?.picks || []).forEach(p => showChampion(p.team, p.champion, true, p.role, p.player));
+  }
+};
+
+const clock = new THREE.Clock();
+(function tick() {
+  requestAnimationFrame(tick);
+  const dt = clock.getDelta();
+  mixerHolder.forEach(m => m.update(dt));
+
+  [rimBlue, rimRed].forEach(rim => {
+    if (rim.userData.pulse > 0) {
+      rim.userData.pulse = Math.max(0, rim.userData.pulse - dt / 1.6);
+      rim.intensity = 300 + Math.sin(rim.userData.pulse * Math.PI) * 800;
+    }
+  });
+  for (let i = fxWaves.length - 1; i >= 0; i--) {
+    const w = fxWaves[i];
+    w.userData.t += dt / 1.3;
+    const t = w.userData.t;
+    if (t >= 1) { scene.remove(w); fxWaves.splice(i, 1); continue; }
+    w.scale.setScalar(1 + t * 7);
+    w.material.opacity = .9 * (1 - t);
+  }
+
+  scene.traverse(o => {
+    if (o.name.startsWith('champ-')) {
+      // Normalización: escala + pies al suelo + centrado (con animación asentada)
+      if (o.userData.normAt && performance.now() >= o.userData.normAt) {
+        o.userData.normAt = false;
+        const m = o.userData.normModel;
+        if (m) {
+          const sample = () => {
+            o.updateMatrixWorld(true);
+            const bones = new Map();
+            m.traverse(n => {
+              if (n.isSkinnedMesh) n.skeleton.bones.forEach(b => { if (!bones.has(b.uuid)) bones.set(b.uuid, b); });
+            });
+            const xs = [], ys = [], zs = [];
+            const v = new THREE.Vector3();
+            bones.forEach(b => { b.getWorldPosition(v); xs.push(v.x); ys.push(v.y); zs.push(v.z); });
+            return { xs, ys, zs };
+          };
+          const pct = (arr, p) => { const a = [...arr].sort((x, y) => x - y); return a[Math.min(a.length - 1, Math.floor(a.length * p))]; };
+          const s = o.scale.y || 1;
+          let d = sample();
+          const h = (pct(d.ys, .97) - pct(d.ys, .03)) / s;
+          if (h > 0.0001) {
+            m.scale.multiplyScalar((2.2 * (SCALE_FIX[o.userData.champName] || 1)) / h);
+            d = sample();
+            const medX = pct(d.xs, .5), medZ = pct(d.zs, .5);
+            const cos = Math.cos(o.rotation.y), sin = Math.sin(o.rotation.y);
+            const dx = (medX - o.position.x) / s, dz = (medZ - o.position.z) / s;
+            // Corrección de posición SUAVE (sin "click"): se aplica gradual en el tick
+            m.userData.fixTo = new THREE.Vector3(
+              m.position.x - (dx * cos - dz * sin),
+              m.position.y - (pct(d.ys, .05) - o.position.y + 0.15) / s,
+              m.position.z - (dx * sin + dz * cos)
+            );
+          }
+        }
+      }
+      // Acomodo suave de la corrección de posición
+      if (o.userData.fixTo) {
+        const mdl = o.userData.normModel;
+        if (mdl) {
+          mdl.position.lerp(o.userData.fixTo, 1 - Math.pow(0.005, dt));
+          if (mdl.position.distanceTo(o.userData.fixTo) < 0.005) {
+            mdl.position.copy(o.userData.fixTo);
+            o.userData.fixTo = null;
+          }
+        } else o.userData.fixTo = null;
+      }
+      if (o.scale.x < 1) o.scale.setScalar(Math.min(1, o.scale.x + dt * 2.5));
+      if (o.userData.target) {
+        o.position.lerp(o.userData.target, 1 - Math.pow(0.02, dt));
+        if (o.userData.targetRot !== undefined)
+          o.rotation.y += (o.userData.targetRot - o.rotation.y) * (1 - Math.pow(0.02, dt));
+        // El siguiente pick no entra hasta que este llegó realmente a su espacio.
+        if (activePick === o && o.position.distanceTo(o.userData.target) < .01) {
+          o.position.copy(o.userData.target);
+          activePick = null;
+          setTimeout(pumpPickQueue, 0);
+        }
+      }
+    }
+  });
+
+  if (cine) {
+    const phase = cine.phases[cine.phaseIndex];
+    cine.phaseTime += dt;
+    const t = Math.min(1, cine.phaseTime / phase.dur);
+    const e = easeIO(t);
+
+    if (phase.type === 'travel') {
+      camera.position.lerpVectors(phase.fromPos, phase.toPos, e);
+      const look = new THREE.Vector3().lerpVectors(phase.fromLook, phase.toLook, e);
+      camera.lookAt(look);
+    } else if (phase.type === 'pause') {
+      camera.position.copy(phase.pos);
+      camera.lookAt(phase.look);
+      // Logo: fade in durante el primer segundo, visible, fade out durante el último segundo
+      const sp = teamLogoSprites[phase.logo];
+      if (sp) {
+        sp.visible = true;
+        const maxOpacity = 0.4;
+        if (cine.phaseTime < 1.0) {
+          sp.material.opacity = maxOpacity * (cine.phaseTime / 1.0);
+        } else if (cine.phaseTime > phase.dur - 1.0) {
+          sp.material.opacity = maxOpacity * ((phase.dur - cine.phaseTime) / 1.0);
+        } else {
+          sp.material.opacity = maxOpacity;
+        }
+      }
+    }
+
+    // Avanzar de fase
+    if (t >= 1) {
+      // Ocultar logo de la fase actual si lo había
+      if (phase.logo && teamLogoSprites[phase.logo]) {
+        teamLogoSprites[phase.logo].material.opacity = 0;
+        teamLogoSprites[phase.logo].visible = false;
+      }
+      cine.phaseIndex++;
+      cine.phaseTime = 0;
+      // ¿Terminó la última fase?
+      if (cine.phaseIndex >= cine.phases.length) {
+        camera.position.copy(cine.startPos);
+        controls.target.copy(cine.startTarget);
+        controls.enabled = true;
+        cine = null;
+        showOverlayChrome();
+      }
+    }
+  } else {
+    controls.update();
+  }
+  renderer.render(scene, camera);
+})();
+addEventListener('resize', () => {
+  camera.aspect = innerWidth/innerHeight; camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+  fitBar();
+});
+</script>
+</body>
+</html>

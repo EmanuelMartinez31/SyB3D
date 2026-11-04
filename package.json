@@ -1,7 +1,8 @@
 {
-  "name": "hud-3d-draft",
+  "name": "syb3d-hud-unificado",
   "version": "1.0.0",
-  "description": "HUD 3D para pick/ban de League of Legends (control manual)",
+  "private": true,
+  "description": "Draft e ingame de SyB en un solo servidor local",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"

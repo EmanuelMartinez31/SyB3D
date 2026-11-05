@@ -370,6 +370,14 @@
   .postgame-actions { display: grid; gap: 8px; padding: 16px; }
   .postgame-actions .danger { margin-top: 8px; }
   .postgame-note { padding: 0 16px 16px; color: var(--muted); font-size: 10px; line-height: 1.55; }
+  /* Ajuste de tamaño de los modelos 3D: vive aquí dentro, en la vista de
+     Postpartida, aprovechando el espacio libre bajo los dos paneles. */
+  .models-panel { margin-top: 18px; }
+  .models-panel .panel-header { align-items: flex-start; }
+  .models-body { padding: 16px 18px 18px; }
+  .models-frame { display: block; width: 100%; height: 640px; border: 0; background: transparent; }
+  .models-missing { padding: 26px 18px; color: var(--muted); font-size: 12px; line-height: 1.6; }
+  .models-missing b { color: var(--text); }
 
   @media (max-width: 1320px) {
     .workspace { grid-template-columns: minmax(0, 1fr) 280px; padding-right: 18px; padding-left: 18px; }
@@ -574,6 +582,23 @@
           <div class="postgame-note">La demo es ficticia y nunca sustituye los datos reales guardados.</div>
         </section>
       </div>
+
+      <section class="panel models-panel" aria-label="Tamaño de los modelos 3D">
+        <header class="panel-header">
+          <div><span class="section-kicker">Resumen · modelos 3D</span><h2>Tamaño de cada campeón</h2></div>
+          <span class="panel-hint">− / + · PASOS DEL 5 %<br>SE GUARDA POR CAMPEÓN</span>
+        </header>
+        <div class="models-body">
+          <div class="models-missing" id="modelsFallback">
+            El ajuste se carga aquí en cuanto abres esta pestaña.
+          </div>
+          <iframe class="models-frame" id="modelsFrame" title="Ajustar tamaño de los modelos 3D"
+                  src="about:blank" hidden></iframe>
+          <div class="postgame-links" style="margin-top:14px;">
+            <a class="link-button" href="/postgame/ajustar-modelos.html" target="_blank" rel="noopener">Abrir en pestaña aparte</a>
+          </div>
+        </div>
+      </section>
     </section>
   </main>
 
@@ -625,7 +650,7 @@ function switchView(view) {
     if (active) tab.setAttribute('aria-current', 'page');
     else tab.removeAttribute('aria-current');
   });
-  if (view === 'postgame') refreshPostgameStatus();
+  if (view === 'postgame') { refreshPostgameStatus(); cargarAjustadorModelos(); }
   window.scrollTo(0, 0);
 }
 function setHeaderConnection(level, text) {
@@ -1162,6 +1187,43 @@ async function postgameControl(action) {
     refreshPostgameStatus();
   }
 }
+// El ajustador de modelos se carga la primera vez que se abre Postpartida, no al
+// arrancar el panel: así no se descarga three.js si no se va a usar.
+let modelosCargados = false;
+function cargarAjustadorModelos() {
+  if (modelosCargados) return;
+  const marco = document.getElementById('modelsFrame');
+  const aviso = document.getElementById('modelsFallback');
+  if (!marco || !aviso) return;
+  modelosCargados = true;
+  marco.src = '/postgame/ajustar-modelos.html?embed=1';
+  marco.hidden = false;
+  aviso.hidden = true;
+  marco.addEventListener('load', () => {
+    // Si la página no llega a cargar (falta el vendor de three, por ejemplo),
+    // se avisa en el propio panel en vez de dejar un hueco vacío.
+    setTimeout(() => {
+      if (!marco.contentWindow) return;
+      try {
+        const alto = marco.contentDocument?.body?.scrollHeight || 0;
+        if (!alto) throw new Error('vacío');
+      } catch {
+        marco.hidden = true;
+        aviso.hidden = false;
+        aviso.innerHTML = 'No se pudo cargar el ajustador. Comprueba que existe <b>ingame\\overlay\\vendor\\three</b> y abre la <b>pestaña aparte</b> para ver el detalle.';
+      }
+    }, 2500);
+  });
+}
+// El propio ajustador avisa de su alto para que el marco no tenga scroll interno.
+window.addEventListener('message', (evento) => {
+  if (evento.origin !== location.origin) return;
+  if (evento.data?.tipo !== 'syb3d-ajustar-alto') return;
+  const marco = document.getElementById('modelsFrame');
+  const alto = Number(evento.data.alto);
+  if (marco && Number.isFinite(alto) && alto > 200) marco.style.height = `${Math.min(alto + 4, 1600)}px`;
+});
+
 refreshPostgameStatus();
 setInterval(refreshPostgameStatus, 3000);
 refreshDiagnostics();

@@ -98,12 +98,28 @@ body {
   align-items: center;
 }
 .brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   font-size: 21px;
   line-height: 1.1;
   letter-spacing: 0.13em;
   font-weight: 800;
   color: var(--gold);
   text-transform: uppercase;
+}
+/* Logo del torneo junto al nombre. Si el panel no manda logo, el hueco
+   desaparece y el nombre queda igual que antes. */
+.tournament-logo {
+  height: 26px;
+  width: auto;
+  max-width: 60px;
+  object-fit: contain;
+  flex: none;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.65));
+}
+.tournament-logo[hidden] {
+  display: none;
 }
 .brand span {
   display: block;
@@ -156,42 +172,57 @@ body {
   display: block;
 }
 .meta b {
-  color: #e5ebf5;
+  color: var(--gold);
+  font-size: 22px;
+  letter-spacing: 0.06em;
   margin-bottom: 4px;
 }
-/* 04. FRANJAS DE LOS EQUIPOS
-   Nombre, sigla, kills, duración y resultado de cada lado. */
-.teambar {
+/* 04. BARRA DEL MEDIO
+   Una sola franja entre las dos filas de tarjetas: equipo azul a la izquierda,
+   rojo a la derecha, marcador y duración en el centro. Sustituye a las dos
+   franjas que iban encima de cada equipo. */
+.midbar {
   position: absolute;
   left: 34px;
+  top: 541px;
   width: 1852px;
-  height: 51px;
+  height: 62px;
   display: grid;
-  grid-template-columns: 1fr 150px 1fr;
+  grid-template-columns: 1fr 236px 1fr;
   align-items: center;
   background: linear-gradient(90deg, rgba(22, 33, 49, 0.97), rgba(12, 16, 25, 0.98));
   border: 1px solid #293344;
   box-shadow: 0 8px 28px rgba(0, 0, 0, 0.28);
 }
-.teambar.blue {
-  top: 111px;
-  border-left: 3px solid var(--blue);
+/* El filo de color marca de qué lado es cada mitad. */
+.midbar:before,
+.midbar:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 3px;
 }
-.teambar.red {
-  top: 557px;
-  border-right: 3px solid var(--red);
+.midbar:before {
+  left: 0;
+  background: var(--blue);
 }
-.team-id {
+.midbar:after {
+  right: 0;
+  background: var(--red);
+}
+.mid-side {
   display: flex;
   align-items: center;
-  gap: 13px;
-  padding: 0 17px;
+  gap: 14px;
+  padding: 0 20px;
   min-width: 0;
 }
-.team-id.right {
+.mid-side.right {
   justify-content: flex-end;
+  text-align: right;
 }
-.team-tag {
+.mid-tag {
   display: grid;
   place-items: center;
   min-width: 48px;
@@ -205,15 +236,22 @@ body {
   transform: skew(-7deg);
   background: rgba(53, 167, 255, 0.08);
   white-space: nowrap;
+  flex: 0 0 auto;
 }
-.blue .team-tag {
+.mid-side.left .mid-tag {
   color: var(--blue-light);
 }
-.red .team-tag {
+.mid-side.right .mid-tag {
   color: var(--red-light);
   background: rgba(240, 82, 98, 0.08);
 }
-.team-name {
+.mid-team {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+.mid-team strong {
   font-size: 24px;
   letter-spacing: 0.06em;
   font-weight: 800;
@@ -221,54 +259,76 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.team-sub {
+.mid-team small {
   font: 600 10px Plex;
   color: #9aa6ba;
   letter-spacing: 0.12em;
   white-space: nowrap;
 }
-.result {
+/* VICTORIA / DERROTA, pegada al nombre del equipo. */
+.mid-result {
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 7px;
   height: 28px;
   padding: 0 12px;
   font-size: 14px;
   font-weight: 800;
   letter-spacing: 0.14em;
+  white-space: nowrap;
+  flex: 0 0 auto;
 }
-.result:before {
+.mid-result:before {
   content: '';
   width: 5px;
   height: 5px;
   transform: rotate(45deg);
   background: currentColor;
 }
-.blue .result {
-  color: var(--blue-light);
-  background: rgba(53, 167, 255, 0.08);
+.mid-result.win {
+  color: var(--gold);
+  background: rgba(214, 178, 92, 0.12);
 }
-.red .result {
-  color: var(--red-light);
-  background: rgba(240, 82, 98, 0.08);
+.mid-result.loss {
+  color: #98a4b8;
+  background: rgba(120, 132, 152, 0.1);
 }
-.center-score {
-  text-align: center;
-  border-inline: 1px solid #293344;
-  height: 51px;
+.mid-center {
+  height: 62px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
+  gap: 18px;
+  padding: 0 16px;
+  border-inline: 1px solid #293344;
 }
-.center-score strong {
-  font: 600 22px Plex;
+.mid-score {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
 }
-.center-score span {
-  font: 600 10px Plex;
-  color: #9ba7b9;
-  letter-spacing: 0.08em;
+.mid-score strong {
+  font: 600 30px Plex;
+  letter-spacing: -0.04em;
+}
+.mid-score span {
+  font: 600 14px Plex;
+  color: #7f8ba0;
+}
+.mid-duration {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+.mid-duration small {
+  font: 600 8px Plex;
+  color: #93a0b4;
+  letter-spacing: 0.14em;
+}
+.mid-duration strong {
+  font: 600 17px Plex;
+  letter-spacing: -0.02em;
 }
 /* 05. REJILLA Y TARJETAS
    Cinco tarjetas por equipo. "backwards" evita que la animación deje
@@ -276,20 +336,20 @@ body {
 .cards {
   position: absolute;
   left: 34px;
-  top: 175px;
+  top: 103px;
   width: 1852px;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 14px;
 }
 .cards.redcards {
-  top: 621px;
+  top: 611px;
 }
 .card {
   --team: var(--blue);
   --team-light: var(--blue-light);
   position: relative;
-  height: 369px;
+  height: 430px;
   overflow: hidden;
   background: linear-gradient(110deg, rgba(23, 32, 47, 0.98), rgba(13, 17, 27, 0.98) 68%);
   border: 1px solid #2b3547;
@@ -362,17 +422,17 @@ body {
 .model3d {
   position: absolute;
   z-index: 2;
-  left: -4px;
-  top: 43px;
-  width: 198px;
+  left: 10px;
+  top: 42px;
+  width: 226px;
   height: 214px;
   overflow: hidden;
 }
 .model3d:after {
   content: '';
   position: absolute;
-  left: 26px;
-  right: 20px;
+  left: 24px;
+  right: 18px;
   bottom: 1px;
   height: 13px;
   border-radius: 50%;
@@ -439,19 +499,19 @@ body {
   position: absolute;
   z-index: 5;
   right: 13px;
-  top: 13px;
-  width: 169px;
+  top: 9px;
+  width: 152px;
   text-align: right;
 }
 .kda-label {
-  font: 600 9px Plex;
+  font: 600 8px Plex;
   color: #9aa6ba;
   letter-spacing: 0.17em;
 }
 .kda {
-  font: 600 28px Plex;
+  font: 600 27px Plex;
   letter-spacing: -0.07em;
-  line-height: 1.15;
+  line-height: 1.02;
   white-space: nowrap;
 }
 .kda i {
@@ -460,30 +520,156 @@ body {
   font-size: 20px;
 }
 .kda-ratio {
-  font: 600 10px Plex;
+  font: 600 9px Plex;
   color: #a9b4c6;
   letter-spacing: 0.03em;
-  margin-bottom: 14px;
+  margin-bottom: 0;
 }
-.damage-label {
-  font: 600 9px Plex;
-  color: #b5bfd0;
-  letter-spacing: 0.09em;
+/* 08b. RUNAS
+   Página completa del jugador: cada árbol con su nombre, la piedra angular,
+   las runas elegidas y los tres fragmentos. El panel crece hacia arriba
+   (queda anclado por abajo) para usar el hueco libre bajo el KDA sin tocar
+   el badge MVP, que sigue justo debajo. */
+.runepage {
+  position: absolute;
+  z-index: 5;
+  right: 13px;
+  /* Anclado arriba Y abajo: el panel siempre rellena el hueco entre el KDA y el
+     MVP, aunque el jugador tenga menos runas o falten fragmentos. Antes solo
+     estaba anclado abajo y, con menos contenido, quedaba hueco libre arriba. */
+  top: 68px;
+  bottom: 221px;
+  width: 152px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 1px;
+  padding: 4px 6px;
+  background: rgba(5, 8, 14, 0.72);
+  border: 1px solid #293244;
 }
-.damage {
-  font: 600 32px Plex;
-  color: var(--gold);
-  line-height: 1.05;
-  letter-spacing: -0.06em;
+.rune-tree {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  min-width: 0;
+  min-height: 0;
+  flex: 1 1 0;
+  overflow: visible;
 }
-.damage-total {
-  font: 600 10px Plex;
-  color: #b0b9c9;
-  margin-top: 3px;
+.rune-tree-head {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
 }
-.damage-total b {
-  color: #e5eaf2;
-  font-weight: 600;
+.rune-tree-name {
+  margin-bottom: 4px; /* aire entre el nombre del árbol y sus iconos */
+  font: 600 9px Plex, monospace;
+  line-height: 1;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: #9aa6ba;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.rune-tree.primary .rune-tree-name {
+  color: var(--team-light);
+}
+.rune-line {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 3px;
+  min-height: 44px; /* igual que la piedra angular: nunca la pisa el nombre */
+  flex: 1 1 auto;
+}
+.rune-tree.secondary .rune-line {
+  min-height: 30px; /* igual que las runas elegidas */
+}
+/* El nombre del segundo árbol también necesita aire respecto a la piedra
+   angular del primero. */
+.rune-tree + .rune-tree .rune-tree-name {
+  margin-top: 4px;
+}
+.rune-shards {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  flex: 0 0 auto;
+  min-height: 21px;
+}
+/* Si el jugador no trae fragmentos, esa fila desaparece y su alto se reparte
+   como aire entre los nombres y los iconos. */
+.rune-shards:empty {
+  display: none;
+}
+.rune-icon {
+  display: block;
+  object-fit: contain;
+  flex: none;
+}
+.rune-icon.style {
+  width: 12px;
+  height: 12px;
+  opacity: 0.9;
+}
+.rune-icon.keystone {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(214, 178, 92, 0.55);
+  background: rgba(3, 5, 9, 0.85);
+  padding: 2px;
+}
+.rune-icon.pick {
+  width: 30px;
+  height: 30px;
+  opacity: 0.92;
+}
+.rune-icon.shard {
+  width: 21px;
+  height: 21px;
+  opacity: 0.75;
+}
+.rune-icon[hidden] {
+  display: none;
+}
+.rune-tree-name[hidden] {
+  display: none;
+}
+/* 08c. HECHIZOS DE INVOCADOR
+   Los dos hechizos viven en el hueco libre a la derecha del inventario. */
+.spellpair {
+  position: absolute;
+  z-index: 5;
+  right: 13px;
+  bottom: 11px;
+  display: flex;
+  gap: 5px;
+}
+.spellslot {
+  width: 27px;
+  height: 27px;
+  display: grid;
+  place-items: center;
+  background: #101622;
+  border: 1px solid #384255;
+  box-shadow: 0 2px 4px #000;
+  overflow: hidden;
+}
+.spellslot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.spellslot.empty {
+  opacity: 0.4;
 }
 /* 09. CS, ORO, VISIÓN Y WARDS
    Cuatro columnas iguales en la parte inferior de la tarjeta. */
@@ -495,7 +681,7 @@ body {
   bottom: 45px;
   height: 64px;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   background: rgba(5, 8, 14, 0.76);
   border: 1px solid #293244;
 }
@@ -558,9 +744,9 @@ body {
 .mvp {
   position: absolute;
   z-index: 6;
-  top: 151px;
+  top: 207px;
   right: 13px;
-  width: 169px;
+  width: 132px;
   height: 47px;
   display: grid;
   place-items: center;

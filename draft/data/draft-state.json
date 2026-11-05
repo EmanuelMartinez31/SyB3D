@@ -1,110 +1,8 @@
 {
   "version": 1,
   "state": {
-    "picks": [
-      {
-        "type": "pick",
-        "team": "blue",
-        "champion": "Rengar"
-      },
-      {
-        "type": "pick",
-        "team": "red",
-        "champion": "Riven"
-      },
-      {
-        "type": "pick",
-        "team": "red",
-        "champion": "Rumble"
-      },
-      {
-        "type": "pick",
-        "team": "blue",
-        "champion": "Ryze"
-      },
-      {
-        "type": "pick",
-        "team": "blue",
-        "champion": "Samira"
-      },
-      {
-        "type": "pick",
-        "team": "red",
-        "champion": "Sejuani"
-      },
-      {
-        "type": "pick",
-        "team": "red",
-        "champion": "Shen"
-      },
-      {
-        "type": "pick",
-        "team": "blue",
-        "champion": "Shyvana"
-      },
-      {
-        "type": "pick",
-        "team": "blue",
-        "champion": "Singed"
-      },
-      {
-        "type": "pick",
-        "team": "red",
-        "champion": "Sion"
-      }
-    ],
-    "bans": [
-      {
-        "type": "ban",
-        "team": "blue",
-        "champion": "Rakan"
-      },
-      {
-        "type": "ban",
-        "team": "red",
-        "champion": "Rammus"
-      },
-      {
-        "type": "ban",
-        "team": "blue",
-        "champion": "Rek'Sai"
-      },
-      {
-        "type": "ban",
-        "team": "red",
-        "champion": "Rell"
-      },
-      {
-        "type": "ban",
-        "team": "blue",
-        "champion": "Renata Glasc"
-      },
-      {
-        "type": "ban",
-        "team": "red",
-        "champion": "Renekton"
-      },
-      {
-        "type": "ban",
-        "team": "red",
-        "champion": "Senna"
-      },
-      {
-        "type": "ban",
-        "team": "blue",
-        "champion": "Seraphine"
-      },
-      {
-        "type": "ban",
-        "team": "red",
-        "champion": "Sett"
-      },
-      {
-        "type": "ban",
-        "team": "blue",
-        "champion": "Shaco"
-      }
-    ],
+    "picks": [],
+    "bans": [],
     "info": {
       "tournament": "GAMEGROUNDS",
       "blue": "UPA ESPORTS",
@@ -117,9 +15,9 @@
       "bg": ""
     },
     "score": {
-      "format": "BO3",
-      "blue": 0,
-      "red": 0
+      "format": "BO5",
+      "blue": 1,
+      "red": 2
     },
     "roster": null,
     "history": {
@@ -128,34 +26,14 @@
         "Aphelios",
         "Ashe",
         "Brand",
-        "Braum",
-        "Ezreal",
-        "Fizz",
-        "Galio",
-        "Hecarim",
-        "Heimerdinger",
-        "Leona",
-        "Locke",
-        "Lucian",
-        "Mel",
-        "Milio"
+        "Braum"
       ],
       "red": [
         "Anivia",
         "Annie",
         "Aurelion Sol",
         "Blitzcrank",
-        "Briar",
-        "Fiddlesticks",
-        "Fiora",
-        "Gangplank",
-        "Gwen",
-        "Hwei",
-        "Lillia",
-        "Lissandra",
-        "Lulu",
-        "Master Yi",
-        "Miss Fortune"
+        "Briar"
       ]
     },
     "histTeams": {
@@ -164,34 +42,14 @@
         "Aphelios",
         "Ashe",
         "Brand",
-        "Braum",
-        "Ezreal",
-        "Fizz",
-        "Galio",
-        "Hecarim",
-        "Heimerdinger",
-        "Leona",
-        "Locke",
-        "Lucian",
-        "Mel",
-        "Milio"
+        "Braum"
       ],
       "ANAHUAC MAYAB": [
         "Anivia",
         "Annie",
         "Aurelion Sol",
         "Blitzcrank",
-        "Briar",
-        "Fiddlesticks",
-        "Fiora",
-        "Gangplank",
-        "Gwen",
-        "Hwei",
-        "Lillia",
-        "Lissandra",
-        "Lulu",
-        "Master Yi",
-        "Miss Fortune"
+        "Briar"
       ]
     },
     "teamBind": {},
@@ -199,7 +57,9 @@
     "fearless": true,
     "lcuEnabled": false
   },
-  "seriesRevision": 41,
-  "countedGames": [],
+  "seriesRevision": 43,
+  "countedGames": [
+    "LA1-1760404331"
+  ],
   "pendingWinners": []
 }

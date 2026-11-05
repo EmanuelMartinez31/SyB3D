@@ -8,10 +8,19 @@ const LOCAL_SPELL_ICONS = new Set([
   'summoner_empty.png', 'summoner_emptysmite.png', '1101_smite.png', '1102_smite.png', '1103_smite.png'
 ]);
 
+// El cliente entrega el Teleport mejorado como «Unleashed_Teleport_New.dds».
+// Ese icono no está publicado ni en Data Dragon ni en los assets del cliente,
+// así que se usa el de Teleport normal: es el mismo hechizo y evita el hueco.
+const SPELL_ICON_ALIASES = [
+  [/teleport/i, 'summoner_teleport_new.png']
+];
+
 function spellIconFile(icon) {
   const basename = String(icon || '').split(/[\\/]/).pop().toLowerCase();
   const filename = basename.replace(/\.(?:dds|tex)$/, '.png');
-  return LOCAL_SPELL_ICONS.has(filename) ? filename : null;
+  if (LOCAL_SPELL_ICONS.has(filename)) return filename;
+  const alias = SPELL_ICON_ALIASES.find(([pattern]) => pattern.test(filename));
+  return alias ? alias[1] : null;
 }
 
 function cdragonAsset(iconPath) {
@@ -90,7 +99,10 @@ export async function loadGameCatalog() {
     },
     spellUrls(name, icon) {
       const localFile = spellIconFile(icon);
-      const basename = String(icon || '').split(/[\\/]/).pop().toLowerCase().replace(/\.(?:dds|tex)$/, '.png');
+      // Si hay alias local, se reutiliza ese nombre también para el respaldo
+      // remoto; si no, se usa el que trae el propio cliente.
+      const basename = localFile
+        || String(icon || '').split(/[\\/]/).pop().toLowerCase().replace(/\.(?:dds|tex)$/, '.png');
       return [
         localFile ? `./assets/spells/${localFile}` : null,
         `${DDRAGON}/cdn/${version}/img/spell/${encodeURIComponent(name)}.png`,

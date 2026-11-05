@@ -23,6 +23,21 @@ const numbers = [
   [3, 6, 8, 22960, 58180, 271, 12500, 29, 8, 3],
   [0, 4, 9, 9740, 41960, 49, 9300, 78, 24, 12]
 ];
+// Página de runas de cada jugador: árboles, piedra angular, cinco runas y los
+// tres fragmentos. Son páginas reales, con sus ids de Data Dragon.
+const runePages = [
+  { primary: 8000, secondary: 8400, keystone: 8010, picks: [9111, 9104, 8014, 8304, 8345], shards: [5008, 5008, 5001] },
+  { primary: 8000, secondary: 8300, keystone: 8437, picks: [8446, 8429, 8451, 8304, 8347], shards: [5005, 5008, 5013] },
+  { primary: 8200, secondary: 8300, keystone: 8229, picks: [8226, 8210, 8237, 8304, 8345], shards: [5008, 5008, 5001] },
+  { primary: 8000, secondary: 8200, keystone: 8005, picks: [8009, 9104, 8014, 8226, 8237], shards: [5005, 5008, 5002] },
+  { primary: 8400, secondary: 8300, keystone: 8465, picks: [8463, 8429, 8451, 8304, 8347], shards: [5007, 5002, 5001] },
+  { primary: 8000, secondary: 8400, keystone: 8010, picks: [9111, 9113, 8014, 8446, 8451], shards: [5008, 5008, 5002] },
+  { primary: 8100, secondary: 8300, keystone: 8112, picks: [8139, 8143, 8106, 8304, 8345], shards: [5005, 5008, 5013] },
+  { primary: 8200, secondary: 8300, keystone: 8214, picks: [8226, 8210, 8237, 8304, 8347], shards: [5008, 5008, 5013] },
+  { primary: 8000, secondary: 8200, keystone: 8008, picks: [8009, 9104, 8014, 8226, 8237], shards: [5005, 5008, 5002] },
+  { primary: 8400, secondary: 8300, keystone: 8437, picks: [8446, 8429, 8451, 8304, 8345], shards: [5007, 5002, 5001] }
+];
+
 const itemSets = [
   [3076, 3068, 3075, 3143, 3083, 3047, 3364],
   [6630, 3071, 3065, 3156, 3026, 3111, 3364],
@@ -67,7 +82,8 @@ function makePlayer(side, index) {
     },
     items: itemSets[globalIndex],
     spells: [4, index === 1 ? 11 : 12],
-    runes: [8010, 11000],
+    runes: [runePages[globalIndex].keystone, runePages[globalIndex].secondary],
+    runePage: runePages[globalIndex],
     level: 16,
     timeCCingOthers: 14 + index * 5,
     turretKills: index === 3 ? 4 : 1,

@@ -1,0 +1,68 @@
+﻿==========================================================
+  DIAGNOSTICO SyB3D
+==========================================================
+Fecha:    2026-11-04 15:04:28
+Carpeta:  F:\Streams\OBS\Broadcast\SyB3D+HUD
+
+--- 1. Node.js / npm ---
+  node: v24.21.0
+  npm:  12.2.0
+
+--- 2. Archivos clave del proyecto ---
+  OK      server.js
+  OK      package.json
+  OK      draft\server.js
+  OK      ingame\server.js
+  OK      postgame\server.js
+  OK      ingame\overlay\index.html
+  OK      ingame\overlay\src\render.js
+
+--- 3. Dependencias (node_modules) ---
+  OK      express
+  OK      ws
+
+--- 4. Puerto 3000 ANTES de arrancar ---
+  NADIE escucha en el puerto 3000
+
+--- 5. Arrancando el servidor durante 6 segundos ---
+  proceso sigue vivo a los 6s: True
+  /status -> HTTP 200
+  {"receiving":false,"sequence":0,"lastReceivedAt":null,"lastBytes":0,"lastCompactBytes":0,"webSocketClients":0,"latestAvailable":false,"compactAvailable":false,"draft":{"url":"http://127.0.0.1:3000","connected":true,"lastSync":"2026-11-04T21:04:34.124Z","error":null},"winnersReported":0,"hudAutoHide":{"gameId":null,"inFlight":false,"error":null,"preserve":["interfaceMinimap","interfaceTarget"]}}
+  (servidor detenido por el diagnostico)
+
+--- 6. Lo que imprime el servidor ---
+  OUT| Postpartida recuperado | juego=1760392126 | oculto hasta que el operador lo muestre
+  OUT| ============================================================
+  OUT| SyB3D+HUD listo: draft, ingame y postpartida funcionan en un solo puerto.
+  OUT| Panel       â†’ http://localhost:3000/
+  OUT| Draft OBS   â†’ http://localhost:3000/overlay.html
+  OUT| Ingame OBS  â†’ http://localhost:3000/overlay/
+  OUT| Postpartida â†’ http://localhost:3000/postgame/
+  OUT| Demo final  â†’ http://localhost:3000/postgame/?demo=1
+  OUT| SyBSensor   â†’ POST http://localhost:3000/sensor
+  OUT| Estado      â†’ http://localhost:3000/status
+  OUT| ============================================================
+  OUT| El ingame quedarÃ¡ esperando datos hasta que entres a la partida.
+  OUT| Postpartida LCU: conectado | fase=Matchmaking
+  OUT| SyB3D sincronizado desde http://127.0.0.1:3000
+
+--- 7. Lockfile de League of Legends ---
+  ENCONTRADO  F:\Riot\Riot Games\League of Legends\lockfile
+
+--- 8. Estado de git ---
+  M  .gitignore
+  M  draft/data/draft-state.json
+  M  ingame/overlay/index.html
+  M  ingame/overlay/src/render.js
+  M  ingame/overlay/src/styles.css
+  M  ingame/server.js
+  A  postgame/data/history/1760392126.json
+  M  postgame/data/latest-postgame.json
+  ?? diagnostico.bat
+  ?? diagnostico.ps1
+  ?? srv-stderr.txt
+  ?? srv-stdout.txt
+  rama: main
+  ultimo commit: db2086a Primer Commit
+
+=== FIN DEL DIAGNOSTICO ===

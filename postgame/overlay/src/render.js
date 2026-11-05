@@ -67,16 +67,34 @@ function cardTemplate(side) {
     <div class="identity"><strong></strong><span></span></div>
     <div class="stats">
       <div class="kda-label">K / D / A</div><div class="kda"></div><div class="kda-ratio"></div>
-      <div class="damage-label">DAÑO A CAMPEONES</div><div class="damage"></div>
-      <div class="damage-total">Daño total <b></b></div>
+    </div>
+    <div class="runepage" aria-label="Runas del jugador">
+      <div class="rune-tree primary">
+        <div class="rune-tree-head">
+          <img class="rune-icon style" data-rune="primary" alt="" hidden>
+          <strong class="rune-tree-name" data-tree="primary"></strong>
+        </div>
+        <div class="rune-line" data-line="primary"></div>
+      </div>
+      <div class="rune-tree secondary">
+        <div class="rune-tree-head">
+          <img class="rune-icon style" data-rune="secondary" alt="" hidden>
+          <strong class="rune-tree-name" data-tree="secondary"></strong>
+        </div>
+        <div class="rune-line" data-line="secondary"></div>
+      </div>
+      <div class="rune-shards"></div>
     </div>
     <div class="statgrid">
       <div class="ministat"><span>CS</span><strong data-stat="cs"></strong></div>
       <div class="ministat"><span>ORO</span><strong data-stat="gold"></strong></div>
-      <div class="ministat"><span>VISIÓN</span><strong data-stat="vision"></strong></div>
-      <div class="ministat"><span>WARDS</span><strong data-stat="wards"></strong><small>COLOC. / DESTR.</small></div>
+      <div class="ministat"><span>DAÑO A CAMPEONES</span><strong data-stat="damage"></strong></div>
     </div>
-    <div class="items"></div>`;
+    <div class="items"></div>
+    <div class="spellpair" aria-label="Hechizos de invocador">
+      <div class="spellslot" data-spell="0"><img alt="" hidden></div>
+      <div class="spellslot" data-spell="1"><img alt="" hidden></div>
+    </div>`;
   return card;
 }
 // ============================================================================
@@ -106,14 +124,11 @@ function fillCard(card, player, side, catalog, isMvp, logoSource) {
       ? ((kda.kills + kda.assists) / Math.max(1, kda.deaths || 0)).toFixed(2)
       : '—';
   card.querySelector('.kda-ratio').textContent = `${ratio} KDA`;
-  card.querySelector('.damage').textContent = number(player.damage?.champions);
-  card.querySelector('.damage-total b').textContent = number(player.damage?.total);
   setText(card, '[data-stat="cs"]', number(player.cs));
   setText(card, '[data-stat="gold"]', compact(player.gold));
-  setText(card, '[data-stat="vision"]', number(player.vision?.score));
-  const placed = number(player.vision?.wardsPlaced);
-  const killed = number(player.vision?.wardsKilled);
-  card.querySelector('[data-stat="wards"]').textContent = `${placed} / ${killed}`;
+  setText(card, '[data-stat="damage"]', number(player.damage?.champions));
+  fillRunes(card, player, catalog);
+  fillSpells(card, player, catalog);
   card.querySelector('.mvp').hidden = !isMvp;
   const fallback = card.querySelector('.model-fallback');
   const alias = player.championAlias || player.champion;
@@ -145,6 +160,104 @@ function fillCard(card, player, side, catalog, isMvp, logoSource) {
 }
 
 // ============================================================================
+// 3b. RUNAS DE LA TARJETA
+// Se pinta la página completa: los dos árboles, la piedra angular, las cinco
+// runas elegidas y los tres fragmentos. Cada icono se toma del catálogo; si
+// un id no tiene icono conocido, ese hueco simplemente no se dibuja.
+// ============================================================================
+function runeIcon(catalog, id) {
+  if (typeof id !== 'number' || !Number.isFinite(id)) return null;
+  return catalog.runeUrl ? catalog.runeUrl(id) : null;
+}
+
+function fillRunes(card, player, catalog) {
+  const page = player.runePage || {};
+  const picks = Array.isArray(page.picks) ? page.picks : [];
+  // La página de runas tiene 1 piedra angular + 3 runas del árbol principal y
+  // 2 del secundario. Se reparten así para poder nombrar cada árbol.
+  const planes = {
+    primary: { style: page.primary ?? null, ids: [page.keystone ?? null, ...picks.slice(0, 3)] },
+    secondary: { style: page.secondary ?? null, ids: picks.slice(3, 5) }
+  };
+  for (const [slot, plan] of Object.entries(planes)) {
+    const icono = card.querySelector(`[data-rune="${slot}"]`);
+    const fuente = runeIcon(catalog, plan.style);
+    if (icono) {
+      if (!fuente) {
+        icono.hidden = true;
+        icono.removeAttribute('src');
+      } else {
+        icono.hidden = false;
+        icono.src = fuente;
+        icono.alt = '';
+        icono.onerror = () => {
+          icono.hidden = true;
+        };
+      }
+    }
+    const nombre = card.querySelector(`[data-tree="${slot}"]`);
+    if (nombre) {
+      const texto = catalog.styleName ? catalog.styleName(plan.style) : '';
+      nombre.textContent = texto || '';
+      nombre.hidden = !texto;
+    }
+    const linea = card.querySelector(`[data-line="${slot}"]`);
+    if (!linea) continue;
+    linea.replaceChildren();
+    plan.ids.forEach((id, indice) => {
+      const origen = runeIcon(catalog, id);
+      if (!origen) return;
+      const imagen = document.createElement('img');
+      imagen.className = `rune-icon ${slot === 'primary' && indice === 0 ? 'keystone' : 'pick'}`;
+      imagen.alt = '';
+      imagen.src = origen;
+      imagen.onerror = () => imagen.remove();
+      linea.appendChild(imagen);
+    });
+  }
+
+  const shards = card.querySelector('.rune-shards');
+  shards.replaceChildren();
+  for (const id of page.shards || []) {
+    const fuente = catalog.shardUrl ? catalog.shardUrl(id) : null;
+    if (!fuente) continue;
+    const imagen = document.createElement('img');
+    imagen.className = 'rune-icon shard';
+    imagen.alt = '';
+    imagen.src = fuente;
+    shards.appendChild(imagen);
+  }
+}
+
+// ============================================================================
+// 3c. HECHIZOS DE INVOCADOR
+// Los dos hechizos van al hueco libre a la derecha del inventario. Si el id no
+// tiene icono conocido, el hueco queda vacío en vez de mostrar un icono falso.
+// ============================================================================
+function fillSpells(card, player, catalog) {
+  const ids = Array.isArray(player.spells) ? player.spells : [];
+  card.querySelectorAll('.spellslot').forEach((slot) => {
+    const indice = Number(slot.dataset.spell);
+    const imagen = slot.querySelector('img');
+    const fuente = catalog.spellUrl ? catalog.spellUrl(ids[indice]) : null;
+    if (!fuente) {
+      imagen.hidden = true;
+      imagen.removeAttribute('src');
+      slot.classList.add('empty');
+      return;
+    }
+    slot.classList.remove('empty');
+    imagen.hidden = false;
+    imagen.src = fuente;
+    imagen.alt = `Hechizo ${indice === 0 ? 'D' : 'F'}`;
+    imagen.onerror = () => {
+      imagen.hidden = true;
+      slot.classList.add('empty');
+    };
+  });
+}
+
+// ============================================================================
 // 4. PANTALLA COMPLETA
 // Actualiza encabezado y equipos, genera las diez tarjetas y devuelve a main.js
 // las zonas .model3d donde models.js debe dibujar cada campeón.
@@ -163,6 +276,19 @@ export function renderPostgame(summary, catalog) {
   document.getElementById('tournament-name').textContent = String(
     info.tournament || info.torneo || info.tournamentName || ''
   ).trim();
+  // Logo del torneo: es el mismo "logo general" que ya usa el overlay del
+  // draft y la tira de teamfight (info.logo del panel). Si no llega, no se
+  // dibuja nada y el nombre del torneo ocupa su sitio.
+  const tournamentLogo = document.getElementById('tournament-logo');
+  if (tournamentLogo) {
+    const marca = String(info.logo || info.tournamentLogo || '').trim();
+    tournamentLogo.hidden = !marca;
+    tournamentLogo.onerror = () => {
+      tournamentLogo.hidden = true;
+    };
+    if (marca) tournamentLogo.src = marca;
+    else tournamentLogo.removeAttribute('src');
+  }
   document.getElementById('demo-badge').hidden = !summary.demo;
   // Logos pequeños del encabezado. Las marcas de agua se asignan en fillCard().
   for (const side of ['blue', 'red']) {
@@ -177,6 +303,7 @@ export function renderPostgame(summary, catalog) {
       logo.alt = `Logo de ${info?.[side] || (side === 'blue' ? 'equipo azul' : 'equipo rojo')}`;
     } else logo.removeAttribute('src');
   }
+  const winner = String(summary.winner || '').toLowerCase();
   for (const side of ['blue', 'red']) {
     const team = summary.teams[side];
     document.getElementById(`${side}-tag`).textContent = shortTeam(side, info);
@@ -184,10 +311,14 @@ export function renderPostgame(summary, catalog) {
       info?.[side],
       side === 'blue' ? 'EQUIPO AZUL' : 'EQUIPO ROJO'
     );
-    document.getElementById(`${side}-result`).textContent = team.result || 'FINALIZADA';
+    const label = document.getElementById(`${side}-result`);
+    const gano = winner ? winner === side : /victoria|win/i.test(String(team.result || ''));
+    label.textContent = gano ? 'VICTORIA' : 'DERROTA';
+    label.classList.toggle('win', gano);
+    label.classList.toggle('loss', !gano);
   }
   document.getElementById('blue-kills').textContent = number(summary.teams.blue.kills);
-  document.getElementById('red-kills-top').textContent = number(summary.teams.red.kills);
+  document.getElementById('red-kills').textContent = number(summary.teams.red.kills);
   const mvp = selectMvp(summary);
   const views = [];
   for (const side of ['blue', 'red']) {

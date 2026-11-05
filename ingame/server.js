@@ -147,6 +147,121 @@ function compactItem(item) {
   };
 }
 
+// Misión de rol (parche 26.1+). El juego publica su estado en dos buffs:
+//   SR_2026_S1_RoleBound_<Rol>_Quest           → Count = puntos acumulados
+//   SR_2026_S1_RoleBound_<Rol>_QuestCompleted  → misión cumplida (Count 1)
+// Solo top, mid y bot llevan puntos en ese contador (1200 / 1350 / 1350).
+// La jungla lo deja en 1 y el apoyo no lo usa: ahí NO se inventa progreso,
+// únicamente se informa si la misión está cumplida. El objeto del hueco 8
+// (y su recompensa) sirve de respaldo cuando el buff todavía no ha salido.
+const QUEST_POINT_MAX = { top: 1200, mid: 1350, bot: 1350, support: 800 };
+// La mascota de jungla lleva los tratos en sus cargas (es el contador que se
+// muestra tal cual). El objeto de apoyo NO se usa como contador: sus cargas son
+// las wards disponibles, no el avance de la misión.
+const JUNGLE_PET_IDS = new Set([1101, 1102, 1103, 1104, 1105, 1106, 1107]);
+const SUPPORT_ITEM_IDS = new Set([3865, 3866, 3867, 3869, 3870, 3871, 3876, 3877]);
+const QUEST_ROLE_BY_ITEM = {
+  1200: 'top', 1222: 'top', 1201: 'mid', 1202: 'bot', 1203: 'support', 1204: 'jungle'
+};
+const QUEST_REWARD_ROLE = {
+  1220: 'top', 1221: 'top', 1206: 'mid', 1207: 'bot', 1208: 'support',
+  1205: 'jungle', 1209: 'jungle', 1210: 'jungle', 1211: 'jungle'
+};
+
+function compactQuest(hero, role) {
+  const buffs = Array.isArray(hero?.Common?.Buffs) ? hero.Common.Buffs : [];
+  const items = Array.isArray(hero?.Items) ? hero.Items : [];
+
+  let questRole = null;
+  let done = null;
+  let points = null;
+
+  for (const buff of buffs) {
+    const match = /RoleBound_(Top|Jungle|Mid|Bot|Support)_Quest(Completed)?/i.exec(buff?.Name || '');
+    if (!match) continue;
+    questRole = match[1].toLowerCase();
+    if (match[2]) done = true;
+    else if (done === null) done = false;
+    const count = finiteNumber(buff.Count);
+    if (count !== null) points = count;
+  }
+
+  // Respaldo por objetos cuando el buff aún no aparece (primeros segundos).
+  const questItem = items.find(item => finiteNumber(item?.Slot) === 8) || null;
+  const slotId = finiteNumber(questItem?.Id);
+  const rewardRole = QUEST_REWARD_ROLE[slotId] || null;
+  const itemRole = QUEST_ROLE_BY_ITEM[slotId] || null;
+  if (!questRole) questRole = rewardRole || itemRole || role || null;
+  if (!questRole) return null;
+  if (rewardRole && done !== true) done = true;
+
+  const quest = { role: questRole, itemId: itemRole || rewardRole ? slotId : null, done, value: null, max: null, count: null, smiteStage: null, petId: null };
+
+  const max = QUEST_POINT_MAX[questRole];
+
+  if (max && questRole === 'support') {
+    // El apoyo llena su objeto: el avance es el oro que acumula la misión. Se
+    // toma del buff de la misión y, si aún no lo publica, de las acumulaciones
+    // del objeto de apoyo. Las cargas (wards) quedan descartadas a propósito.
+    let value = finiteNumber(points);
+    if (!(value > 1)) {
+      const supportItem = items.find(item => SUPPORT_ITEM_IDS.has(finiteNumber(item?.Id)));
+      const stacks = finiteNumber(supportItem?.Stacks);
+      value = stacks > 1 ? stacks : null;
+    }
+    if (quest.done !== true && value !== null && value > 1) {
+      const clamped = Math.max(0, Math.min(max, value));
+      quest.done = clamped >= max;
+      if (!quest.done) {
+        quest.max = max;
+        quest.value = clamped;
+      }
+    }
+  } else if (max && finiteNumber(points) !== null) {
+    const value = Math.max(0, Math.min(max, points));
+    if (quest.done !== true) quest.done = value >= max;
+    // Al cumplirse el juego reinicia el contador a 1: no se publica ese valor
+    // como si fuera progreso.
+    if (!quest.done) {
+      quest.max = max;
+      quest.value = value;
+    }
+  }
+
+  // Contador de tratos de la mascota, el mismo en el indicador de misión y en
+  // el icono del castigo. Para el apoyo no se publica nada: su contador de
+  // objeto serían las wards, que no miden la misión.
+  const petItem = questRole === 'jungle'
+    ? items.find(item => JUNGLE_PET_IDS.has(finiteNumber(item?.Id)))
+    : null;
+  if (petItem) {
+    const treats = finiteNumber(petItem.Charges)
+      ?? finiteNumber(petItem.Count)
+      ?? finiteNumber(petItem.Stacks);
+    const petId = finiteNumber(petItem?.Id);
+    if (petId !== null) quest.petId = petId;
+    if (treats !== null) {
+      quest.count = treats;
+      quest.smiteStage = smiteStageFor(treats);
+      // Sin tratos pendientes termina la misión de jungla.
+      if (quest.smiteStage === 'primal') quest.done = true;
+    }
+  }
+
+  return quest;
+}
+
+// El objeto de la mascota cuenta los tratos que FALTAN (empieza en 35 y baja).
+// Etapas del castigo según ese contador:
+//   más de 20 restantes → castigo normal (amarillo)
+//   20 a 1 restantes    → castigo desatado (arcoíris)
+//   0 restantes         → castigo primigenio, del color del objeto comprado
+function smiteStageFor(remaining) {
+  if (remaining <= 0) return 'primal';
+  if (remaining <= 20) return 'unleashed';
+  return 'smite';
+}
+
 function compactPlayer(hero, gameTime) {
   const info = hero.Info || {};
   const common = hero.Common || {};
@@ -154,13 +269,15 @@ function compactPlayer(hero, gameTime) {
   for (const key of ['Q', 'W', 'E', 'R', 'D', 'F']) {
     spells[key.toLowerCase()] = compactSpell(hero[key], gameTime);
   }
+  const role = roleFromBuffs(common);
 
   return {
     id: info.NetworkId ?? null,
     team: info.Team ?? null,
     side: sideForTeam(info.Team),
     index: hero.HeroIndex ?? null,
-    role: roleFromBuffs(common),
+    role,
+    quest: compactQuest(hero, role),
     champion: common.Identifier ?? null,
     player: hero.NameAndTagline ?? info.Name ?? null,
     position: compactPosition(info.Position),
@@ -377,10 +494,34 @@ function compactObjectives(game, gameTime) {
   addScheduledCamp('baron', 1200);
 
   return {
-    upcomingDragonType: game.UpcomingDragonType ?? null,
+    // El juego entrega «Fire», «Water»… El HUD solo conoce los nombres
+    // canónicos, así que se normaliza aquí y se conserva el original si algún
+    // día aparece un tipo nuevo.
+    upcomingDragonType: normalizedDragonName(game.UpcomingDragonType),
+    // Tipo del dragón que está vivo en el pozo (para su icono cuando ya salió).
+    dragonType: liveDragonType(game),
     active,
     camps
   };
+}
+
+function normalizedDragonName(value) {
+  const raw = typeof value === 'string' && value.trim() ? value.trim() : null;
+  return normalizeDragonType(raw) || raw;
+}
+
+function liveDragonType(game) {
+  const candidates = [];
+  if (game.Dragon && typeof game.Dragon === 'object') candidates.push(game.Dragon);
+  const units = Array.isArray(game.NeutralMinions) ? game.NeutralMinions : [];
+  for (const unit of units) {
+    if (objectiveKindFromUnit(unit) === 'dragon' && unit?.Common?.IsAlive !== false) candidates.push(unit);
+  }
+  for (const unit of candidates) {
+    const type = dragonTypeFromUnit(unit);
+    if (type) return type;
+  }
+  return null;
 }
 
 function compactWards(game) {

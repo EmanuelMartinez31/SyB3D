@@ -8,7 +8,7 @@ const https = require('https');
 const fs = require('fs');
 const path = require('path');
 const { WebSocketServer } = require('ws');
-const { normalizeEog, normalizeHistory } = require('./lib/normalize');
+const { normalizeEog, normalizeHistory, repairSummaryRoles } = require('./lib/normalize');
 const { createDemoSummary } = require('./demo-summary');
 
 // ============================================================================
@@ -65,7 +65,9 @@ module.exports = function setupPostgame({ app, control, port }) {
   // Se restaura al arrancar, pero permanece oculto hasta que el operador lo muestre.
   // ==========================================================================
   try {
-    const saved = JSON.parse(fs.readFileSync(LATEST_PATH, 'utf8'));
+    // Un resumen guardado con dos JUNGLE y sin UTILITY se corrige al cargarlo:
+    // así la pantalla nunca muestra líneas repetidas aunque la captura sea vieja.
+    const saved = repairSummaryRoles(JSON.parse(fs.readFileSync(LATEST_PATH, 'utf8')));
     if (saved?.teams?.blue?.players?.length === 5 && saved?.teams?.red?.players?.length === 5) {
       latestSummary = saved;
       viewSummary = saved;
@@ -495,6 +497,52 @@ module.exports = function setupPostgame({ app, control, port }) {
     if (!root) return res.json({ files: [] });
     const files = fs.readdirSync(root).filter((file) => file.toLowerCase().endsWith('.glb'));
     res.json({ files });
+  });
+  // Ajuste de tamaño por campeón. El operador lo fija desde
+  // ajustar-modelos.html y se guarda en data/scale-fix.json. La pantalla lo
+  // aplica encima del encuadre automático, así un modelo que salga pequeño o
+  // grande se corrige sin tocar el código.
+  const SCALE_PATH = path.join(DATA_DIR, 'scale-fix.json');
+  // El archivo guarda { scaleFix: { campeón: multiplicador }, updatedAt }.
+  // Aquí se devuelve SOLO el mapa de campeones: la pantalla espera
+  // { campeón: multiplicador } y antes recibía el objeto entero anidado, así que
+  // no encontraba ningún campeón y el ajuste solo funcionaba por el navegador.
+  function leerAjustesEscala() {
+    try {
+      const datos = JSON.parse(fs.readFileSync(SCALE_PATH, 'utf8'));
+      if (!datos || typeof datos !== 'object') return {};
+      const mapa = datos.scaleFix && typeof datos.scaleFix === 'object' ? datos.scaleFix : datos;
+      const limpio = {};
+      for (const [campeon, valor] of Object.entries(mapa)) {
+        if (campeon === 'updatedAt' || campeon === 'scaleFix') continue;
+        const numero = Number(valor);
+        if (Number.isFinite(numero) && numero > 0.2 && numero < 5) limpio[campeon] = numero;
+      }
+      return limpio;
+    } catch {
+      return {};
+    }
+  }
+  app.get('/postgame/api/scale-fix', (req, res) => res.json({ scaleFix: leerAjustesEscala() }));
+  app.post('/postgame/api/scale-fix', express.json({ limit: '16kb' }), (req, res) => {
+    const entrada = req.body?.scaleFix;
+    if (!entrada || typeof entrada !== 'object') {
+      return res.status(400).json({ error: 'Se esperaba { scaleFix: { campeón: multiplicador } }' });
+    }
+    const limpio = {};
+    for (const [campeon, valor] of Object.entries(entrada)) {
+      const numero = Number(valor);
+      if (!Number.isFinite(numero) || numero < 0.2 || numero > 5) continue;
+      limpio[String(campeon).slice(0, 40)] = Number(numero.toFixed(3));
+    }
+    try {
+      fs.mkdirSync(DATA_DIR, { recursive: true });
+      fs.writeFileSync(SCALE_PATH, JSON.stringify({ scaleFix: limpio, updatedAt: new Date().toISOString() }, null, 2));
+      broadcast();
+      res.json({ ok: true, scaleFix: limpio });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
   });
   app.post('/postgame/api/control', express.json({ limit: '16kb' }), async (req, res) => {
     const action = req.body?.action;

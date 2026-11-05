@@ -109,6 +109,41 @@ function championFor(raw, championMap) {
   };
 }
 
+// ============================================================================
+// 3b. PÁGINA DE RUNAS
+// El cliente entrega perk0..perk5, el árbol principal y el secundario, y los
+// tres fragmentos (statPerks). Se guardan por separado para poder pintar la
+// página completa; además se conserva el par [piedra angular, secundario] que
+// ya usaba la pantalla, por si algún consumidor antiguo lo necesita.
+// ============================================================================
+function runePageFrom(raw = {}, stats = {}) {
+  const pick = (...values) => {
+    for (const value of values) {
+      const number = firstNumber(value);
+      if (number !== null) return number;
+    }
+    return null;
+  };
+  const statPerks = stats.statPerks || raw.statPerks || {};
+  return {
+    primary: pick(stats.perkPrimaryStyle, raw.perkPrimaryStyle),
+    secondary: pick(stats.perkSubStyle, raw.perkSubStyle),
+    keystone: pick(stats.perk0, raw.perk0),
+    picks: [
+      pick(stats.perk1, raw.perk1),
+      pick(stats.perk2, raw.perk2),
+      pick(stats.perk3, raw.perk3),
+      pick(stats.perk4, raw.perk4),
+      pick(stats.perk5, raw.perk5)
+    ],
+    shards: [
+      pick(statPerks.offense, stats.statPerksOffense, raw.statPerksOffense),
+      pick(statPerks.flex, stats.statPerksFlex, raw.statPerksFlex),
+      pick(statPerks.defense, stats.statPerksDefense, raw.statPerksDefense)
+    ]
+  };
+}
+
 function itemList(stats) {
   const direct = stats.items || stats.itemIds;
   if (Array.isArray(direct) && direct.length) {
@@ -173,6 +208,7 @@ function normalizePlayer(raw = {}, context = {}) {
     items: itemList(stats),
     spells: [firstNumber(raw.spell1Id, stats.spell1Id), firstNumber(raw.spell2Id, stats.spell2Id)],
     runes: [firstNumber(stats.perk0, stats.perkPrimaryStyle), firstNumber(stats.perkSubStyle)],
+    runePage: runePageFrom(raw, stats),
     level: firstNumber(stats.champLevel, stats.level),
     timeCCingOthers: firstNumber(stats.timeCCingOthers),
     turretKills: firstNumber(stats.turretKills),
@@ -200,12 +236,133 @@ function sortTeamPlayers(players) {
     .map((entry) => entry.player);
 }
 
+// ============================================================================
+// 4b. CINCO LÍNEAS POR EQUIPO
+// El cliente repite la posición cuando la partida no trae posiciones asignadas
+// (dos o tres JUNGLE en el mismo equipo), y la tabla acababa mostrando dos "JG"
+// y ningún "SUP". Aquí se conserva el primer rol declarado y los roles que
+// faltan se reparten entre los jugadores repetidos en el orden canónico, de
+// modo que cada equipo siempre muestra TOP, JG, MID, ADC y SUP una sola vez.
+// ============================================================================
+const SMITE_SPELL = 11;
+
+// El cliente repite posiciones cuando la partida no trae líneas asignadas, así
+// que al equipo llegan, por ejemplo, dos JUNGLE y dos BOTTOM. Para desempatar
+// se usan pistas del propio resumen:
+//   · JUNGLE  → el que lleva Castigo (hechizo 11);
+//   · BOTTOM  → el que más granjeo tiene (un tirador duplica al soporte);
+//   · UTILITY → el que menos granjeo tiene.
+const ROLE_PRIORITY = ['JUNGLE', 'BOTTOM', 'UTILITY', 'MIDDLE', 'TOP'];
+
+function minionsOf(player) {
+  const cs = Number(player?.cs);
+  return Number.isFinite(cs) ? cs : null;
+}
+
+function hasSmite(player) {
+  return (player?.spells || []).some((spell) => Number(spell) === SMITE_SPELL);
+}
+
+// Elige, entre varios candidatos, al que mejor encaja en un rol.
+// Diferencia mínima de granjeo para fiarse de la pista. Por debajo, los datos
+// están incompletos y se respeta el orden en que llegaron los jugadores.
+const CS_GAP = 30;
+
+function bestFit(players, role) {
+  const conGranjeo = players.filter((player) => minionsOf(player) !== null);
+  const valores = conGranjeo.map(minionsOf);
+  const hayPista = valores.length > 1 && Math.max(...valores) - Math.min(...valores) >= CS_GAP;
+  if (role === 'JUNGLE') {
+    return players.find(hasSmite) || players[0] || null;
+  }
+  if (role === 'BOTTOM') {
+    if (!hayPista) return players[0] || null;
+    return conGranjeo.reduce((best, player) =>
+      minionsOf(player) > minionsOf(best) ? player : best
+    );
+  }
+  if (role === 'UTILITY') {
+    if (!hayPista) return players[0] || null;
+    return conGranjeo.reduce((best, player) =>
+      minionsOf(player) < minionsOf(best) ? player : best
+    );
+  }
+  return players[0] || null;
+}
+
+function completeTeamRoles(players) {
+  const resolved = players.map((player) => ({ ...player }));
+  const claims = new Map();
+  for (const player of resolved) {
+    if (!player.role) continue;
+    if (!claims.has(player.role)) claims.set(player.role, []);
+    claims.get(player.role).push(player);
+  }
+
+  const assigned = new Map();
+  // 1) Una línea reclamada por un solo jugador se respeta tal cual.
+  for (const [role, list] of claims) {
+    if (list.length === 1) assigned.set(list[0], role);
+  }
+  // 2) Con varias reclamaciones se queda el que mejor encaja; el resto vuelve al bombo.
+  for (const [role, list] of claims) {
+    if (list.length < 2) continue;
+    const free = list.filter((player) => !assigned.has(player));
+    const keeper = bestFit(free, role);
+    if (keeper) assigned.set(keeper, role);
+  }
+
+  // 3) Las líneas que faltan se reparten por prioridad y por encaje real.
+  let pool = resolved.filter((player) => !assigned.has(player));
+  const taken = new Set(assigned.values());
+  for (const role of ROLE_PRIORITY) {
+    if (taken.has(role) || !pool.length) continue;
+    const pick = bestFit(pool, role);
+    if (!pick) break;
+    assigned.set(pick, role);
+    taken.add(role);
+    pool = pool.filter((player) => player !== pick);
+  }
+  // 4) Si aún queda alguien (equipos incompletos), se le da lo que quede.
+  for (const player of pool) {
+    const libre = ROLE_ORDER.find((role) => !taken.has(role));
+    if (!libre) break;
+    assigned.set(player, libre);
+    taken.add(libre);
+  }
+
+  for (const player of resolved) player.role = assigned.get(player) || player.role || '';
+
+  // 5) Pareja de la botella. El caso más común cuando las posiciones llegan
+  //    asignadas pero al revés: el ADC aparece como UTILITY y el soporte como
+  //    BOTTOM. Se comparan los granjeos y se intercambian si están claramente
+  //    al revés. Un tirador duplica de sobra al soporte; el umbral evita tocar
+  //    nada cuando los datos vienen incompletos.
+  const abajo = resolved.find((player) => player.role === 'BOTTOM');
+  const soporte = resolved.find((player) => player.role === 'UTILITY');
+  if (abajo && soporte && abajo !== soporte) {
+    const csAbajo = minionsOf(abajo);
+    const csSoporte = minionsOf(soporte);
+    if (
+      csAbajo !== null &&
+      csSoporte !== null &&
+      csSoporte - csAbajo >= CS_GAP &&
+      csSoporte >= csAbajo * 1.3
+    ) {
+      abajo.role = 'UTILITY';
+      soporte.role = 'BOTTOM';
+    }
+  }
+
+  return resolved;
+}
+
 function finalizeSummary({ gameId, gameDuration, gameCreation, teams, source, context }) {
   const blue = sortTeamPlayers(
-    teams.filter((team) => team.side === 'blue').flatMap((team) => team.players)
+    completeTeamRoles(teams.filter((team) => team.side === 'blue').flatMap((team) => team.players))
   );
   const red = sortTeamPlayers(
-    teams.filter((team) => team.side === 'red').flatMap((team) => team.players)
+    completeTeamRoles(teams.filter((team) => team.side === 'red').flatMap((team) => team.players))
   );
   if (blue.length !== 5 || red.length !== 5) return null;
   const blueWin = firstBoolean(
@@ -352,4 +509,18 @@ function normalizeHistory(data, context = {}) {
   });
 }
 
-module.exports = { normalizeEog, normalizeHistory, normalizeRole, sideFromTeam };
+// Resumen ya guardado en disco: se le corrigen las líneas sin volver a
+// consultar al cliente. Algunas capturas antiguas quedaron con dos JUNGLE y sin
+// UTILITY, y la pantalla las mostraba tal cual al recuperarlas al arrancar.
+function repairSummaryRoles(summary) {
+  if (!summary?.teams) return summary;
+  const teams = {};
+  for (const side of ['blue', 'red']) {
+    const players = summary.teams[side]?.players;
+    if (!Array.isArray(players)) return summary;
+    teams[side] = { ...summary.teams[side], players: sortTeamPlayers(completeTeamRoles(players)) };
+  }
+  return { ...summary, teams: { ...summary.teams, ...teams } };
+}
+
+module.exports = { normalizeEog, normalizeHistory, normalizeRole, sideFromTeam, repairSummaryRoles };

@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Comparador de modelos 3D · Postgame</title>
+  <style>
+    :root { color-scheme: dark; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 20px 22px 60px;
+      background: #080b12;
+      color: #e7edf7;
+      font-family: system-ui, -apple-system, Segoe UI, sans-serif;
+    }
+    h1 { font-size: 19px; letter-spacing: .06em; text-transform: uppercase; color: #d6b25c; margin: 0 0 6px; }
+    p.intro { font-size: 13px; color: #9aa6ba; margin: 0 0 16px; max-width: 900px; line-height: 1.55; }
+    .barra { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 16px; }
+    button {
+      font: 600 12px system-ui, sans-serif;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: #e7edf7;
+      background: #141c2b;
+      border: 1px solid #2b3547;
+      padding: 8px 14px;
+      cursor: pointer;
+    }
+    button:hover { border-color: #4a5a75; }
+    button.activo { background: #1d2a3f; border-color: #5b7ba8; color: #cfe0ff; }
+    .estado { font-size: 12px; color: #8fa0bb; }
+    .rejilla {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+      gap: 12px;
+    }
+    .celda { background: #0d1320; border: 1px solid #223047; }
+    .celda canvas { display: block; width: 100%; height: 210px; background: radial-gradient(circle at 50% 70%, #16213a, #0a0e18 70%); }
+    .celda .pie { padding: 7px 9px; font-size: 11px; line-height: 1.5; color: #9aa6ba; border-top: 1px solid #1c2637; }
+    .celda .pie b { display: block; color: #e7edf7; font-size: 12px; letter-spacing: .04em; margin-bottom: 2px; }
+    .celda .pie .ok { color: #7fd6a0; }
+    .celda .pie .mal { color: #f0a36b; }
+    .aviso { margin-top: 22px; font-size: 12px; color: #8fa0bb; line-height: 1.6; max-width: 900px; }
+    code { background: #101725; padding: 1px 5px; border: 1px solid #223047; font-size: 11px; color: #cfe0ff; }
+  </style>
+  <script type="importmap">
+    { "imports": {
+      "three": "/overlay/vendor/three/build/three.module.js",
+      "three/addons/": "/overlay/vendor/three/examples/jsm/"
+    } }
+  </script>
+</head>
+<body>
+  <h1>Comparador de modelos 3D</h1>
+  <p class="intro">
+    Página de diagnóstico: carga los GLB de <code>draft\models</code> y los dibuja con la misma regla
+    que usa la pantalla de resumen. Así se ve, con los modelos reales, si todos quedan del mismo
+    tamaño. No forma parte del HUD: puedes borrar este archivo cuando termines.
+  </p>
+  <div class="barra">
+    <button id="btn-nueva" class="activo">Regla nueva (por cuerpo)</button>
+    <button id="btn-vieja">Regla anterior (caja completa)</button>
+    <span class="estado" id="estado">Cargando lista de modelos…</span>
+  </div>
+  <div class="rejilla" id="rejilla"></div>
+  <p class="aviso">
+    Cada celda dibuja el modelo con el alto de cuerpo objetivo (2.62 unidades). El pie de cada una
+    indica el alto de cuerpo medido, la escala aplicada y qué límite manda: <b>alto</b>, <b>ancho</b>
+    o <b>tope</b>. Si en la regla nueva todos los números de escala cambian para que el cuerpo quede
+    igual, el encuadre está funcionando.
+  </p>
+
+  <script type="module">
+    import * as THREE from 'three';
+    import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+    import { measureBody, computeFit } from './src/models.js';
+    import { clone as cloneSkeleton } from 'three/addons/utils/SkeletonUtils.js';
+
+    const ANCHO = 190;
+    const ALTO = 210;
+    const rejilla = document.getElementById('rejilla');
+    const estado = document.getElementById('estado');
+    const loader = new GLTFLoader();
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
+    renderer.setSize(ANCHO, ALTO, false);
+
+    let modelos = [];
+    let regla = 'nueva';
+
+    // Misma cámara que la pantalla de resumen.
+    function crearEscena() {
+      const escena = new THREE.Scene();
+      const camara = new THREE.PerspectiveCamera(26, ANCHO / ALTO, 0.1, 100);
+      camara.position.set(0, 1.45, 7.2);
+      camara.lookAt(0, 1.25, 0);
+      escena.add(new THREE.HemisphereLight(0xdfe9ff, 0x1a2233, 1.5));
+      const luz = new THREE.DirectionalLight(0xffffff, 1.9);
+      luz.position.set(3, 6, 5);
+      escena.add(luz);
+      const relleno = new THREE.DirectionalLight(0x88aaff, 0.6);
+      relleno.position.set(-4, 2, -3);
+      escena.add(relleno);
+      return { escena, camara };
+    }
+
+    // Regla anterior: caja completa del modelo (incluye armas y efectos).
+    function medirVieja(modelo) {
+      const caja = new THREE.Box3().setFromObject(modelo);
+      return { size: caja.getSize(new THREE.Vector3()), base: caja.min.y, source: 'caja' };
+    }
+
+    async function dibujar() {
+      rejilla.replaceChildren();
+      for (const item of modelos) {
+        const celda = document.createElement('div');
+        celda.className = 'celda';
+        const lienzo = document.createElement('canvas');
+        lienzo.width = ANCHO;
+        lienzo.height = ALTO;
+        const pie = document.createElement('div');
+        pie.className = 'pie';
+        pie.innerHTML = `<b>${item.nombre}</b><span>cargando…</span>`;
+        celda.append(lienzo, pie);
+        rejilla.appendChild(celda);
+
+        try {
+          const modelo = cloneSkeleton(item.escena);
+          modelo.traverse((nodo) => {
+            if (nodo.isMesh || nodo.isSkinnedMesh) {
+              nodo.frustumCulled = false;
+              if (nodo.material) nodo.material.needsUpdate = true;
+            }
+          });
+          modelo.updateMatrixWorld(true);
+          const cuerpo = regla === 'nueva' ? measureBody(modelo) : medirVieja(modelo);
+          modelo.updateMatrixWorld(true);
+          const total = new THREE.Box3().setFromObject(modelo).getSize(new THREE.Vector3()).y;
+          const { fit, fitHeight, fitWidth } = computeFit(cuerpo.size, ANCHO / ALTO, 1, total);
+          modelo.scale.multiplyScalar(fit);
+          modelo.updateMatrixWorld(true);
+          const centro = new THREE.Box3().setFromObject(modelo).getCenter(new THREE.Vector3());
+          modelo.position.x -= centro.x;
+          modelo.position.z -= centro.z;
+          modelo.updateMatrixWorld(true);
+          modelo.position.y -= (regla === 'nueva' ? measureBody(modelo).base : new THREE.Box3().setFromObject(modelo).min.y);
+
+          const { escena, camara } = crearEscena();
+          escena.add(modelo);
+          renderer.setSize(ANCHO, ALTO, false);
+          renderer.render(escena, camara);
+
+          const destino = lienzo.getContext('2d');
+          destino.drawImage(renderer.domElement, 0, 0, ANCHO, ALTO);
+
+          const altoCuerpo = cuerpo.size.y * fit;
+          const limite = fit === fitWidth ? 'ancho' : 'alto';
+          const clase = Math.abs(altoCuerpo - 2.62) < 0.02 ? 'ok' : 'mal';
+          pie.innerHTML =
+            `<b>${item.nombre}</b>` +
+            `<span>cuerpo ${cuerpo.size.y.toFixed(2)} · escala ${fit.toFixed(2)} · en tarjeta ` +
+            `<span class="${clase}">${altoCuerpo.toFixed(2)}</span> · manda ${limite} · mide ${cuerpo.source}</span>`;
+        } catch (error) {
+          pie.innerHTML = `<b>${item.nombre}</b><span class="mal">no se pudo leer: ${error.message}</span>`;
+        }
+      }
+      estado.textContent = `${modelos.length} modelos · regla ${regla === 'nueva' ? 'nueva' : 'anterior'}`;
+    }
+
+    async function cargar() {
+      try {
+        const respuesta = await fetch('/postgame/api/models');
+        const datos = await respuesta.json();
+        const archivos = Array.isArray(datos.files) ? datos.files : [];
+        if (!archivos.length) {
+          estado.textContent = 'No encontré GLB en draft\\models';
+          return;
+        }
+        for (const archivo of archivos) {
+          try {
+            const gltf = await loader.loadAsync(`/models/${encodeURIComponent(archivo)}`);
+            modelos.push({ nombre: archivo.replace(/\.glb$/i, ''), escena: gltf.scene });
+          } catch {
+            modelos.push({ nombre: archivo, escena: null, error: true });
+          }
+        }
+        modelos = modelos.filter((m) => m.escena);
+        await dibujar();
+      } catch (error) {
+        estado.textContent = `Error al cargar la lista: ${error.message}`;
+      }
+    }
+
+    document.getElementById('btn-nueva').addEventListener('click', async (evento) => {
+      regla = 'nueva';
+      evento.target.classList.add('activo');
+      document.getElementById('btn-vieja').classList.remove('activo');
+      await dibujar();
+    });
+    document.getElementById('btn-vieja').addEventListener('click', async (evento) => {
+      regla = 'vieja';
+      evento.target.classList.add('activo');
+      document.getElementById('btn-nueva').classList.remove('activo');
+      await dibujar();
+    });
+
+    cargar();
+  </script>
+</body>
+</html>

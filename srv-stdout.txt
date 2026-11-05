@@ -1,0 +1,14 @@
+Postpartida recuperado | juego=1760392126 | oculto hasta que el operador lo muestre
+============================================================
+SyB3D+HUD listo: draft, ingame y postpartida funcionan en un solo puerto.
+Panel       → http://localhost:3000/
+Draft OBS   → http://localhost:3000/overlay.html
+Ingame OBS  → http://localhost:3000/overlay/
+Postpartida → http://localhost:3000/postgame/
+Demo final  → http://localhost:3000/postgame/?demo=1
+SyBSensor   → POST http://localhost:3000/sensor
+Estado      → http://localhost:3000/status
+============================================================
+El ingame quedará esperando datos hasta que entres a la partida.
+Postpartida LCU: conectado | fase=Matchmaking
+SyB3D sincronizado desde http://127.0.0.1:3000

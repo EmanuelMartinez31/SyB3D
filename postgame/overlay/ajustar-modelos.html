@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Ajustar tamaño de los modelos · Postgame</title>
+  <style>
+    :root { color-scheme: dark; }
+    * { box-sizing: border-box; }
+    body { margin: 0; padding: 18px 22px 50px; background: #080b12; color: #e7edf7; font-family: system-ui, -apple-system, Segoe UI, sans-serif; }
+    h1 { font-size: 18px; letter-spacing: .06em; text-transform: uppercase; color: #d6b25c; margin: 0 0 6px; }
+    p.intro { font-size: 13px; color: #9aa6ba; margin: 0 0 14px; max-width: 1020px; line-height: 1.55; }
+    .barra { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 16px; position: sticky; top: 0; background: #080b12; padding: 8px 0; z-index: 5; }
+    button { font: 600 12px system-ui, sans-serif; letter-spacing: .05em; text-transform: uppercase; color: #e7edf7; background: #141c2b; border: 1px solid #2b3547; padding: 8px 12px; cursor: pointer; }
+    button:hover { border-color: #4a5a75; }
+    button.principal { background: #1c3a2a; border-color: #3f7a55; color: #a9e8c2; }
+    button.peligro { background: #2a1a1a; border-color: #7a4040; color: #f0b0b0; }
+    .estado { font-size: 12px; color: #8fa0bb; }
+    .rejilla { display: grid; grid-template-columns: repeat(auto-fill, minmax(238px, 1fr)); gap: 12px; }
+    .celda { background: #0d1320; border: 1px solid #223047; }
+    .celda canvas { display: block; width: 100%; height: auto; aspect-ratio: 238 / 236; background: radial-gradient(circle at 50% 72%, #16213a, #0a0e18 72%); }
+    .celda { position: relative; }
+    .celda .pie { padding: 8px 9px; border-top: 1px solid #1c2637; display: flex; align-items: center; gap: 6px; }
+    /* Celda sin modelo: el lienzo queda vacío y un rótulo centrado explica que
+       falta el archivo .glb de ese campeón. */
+    .celda .aviso-falta {
+      position: absolute; left: 0; right: 0; top: calc(50% - 20px);
+      transform: translateY(-50%); text-align: center; pointer-events: none;
+      font: 600 11px system-ui, sans-serif; letter-spacing: .06em; text-transform: uppercase;
+      color: #5f6d84;
+    }
+    .celda.falta-modelo canvas { opacity: .5; }
+    .celda .pie .nombre { flex: 1; font-size: 12px; font-weight: 600; letter-spacing: .03em; }
+    .celda .pie .valor { font: 600 12px ui-monospace, monospace; color: #9fd6ff; min-width: 42px; text-align: right; }
+    .celda .pie button { padding: 4px 9px; font-size: 13px; line-height: 1; }
+    .nota { margin-top: 18px; font-size: 12px; color: #8fa0bb; line-height: 1.6; max-width: 1000px; }
+    code { background: #101725; padding: 1px 5px; border: 1px solid #223047; font-size: 11px; color: #cfe0ff; }
+    /* Modo incrustado: la página vive dentro del panel de control, así que no
+       repite título ni explicaciones y se ajusta al ancho que le dan. */
+    body.incrustado { padding: 0; background: transparent; }
+    body.incrustado h1, body.incrustado p.intro, body.incrustado p.nota { display: none; }
+    body.incrustado .barra { position: static; margin: 0 0 12px; padding: 0; background: transparent; }
+    body.incrustado .rejilla { grid-template-columns: repeat(auto-fill, minmax(236px, 1fr)); gap: 10px; }
+    /* El pie de cada celda se aprieta dentro del panel: nombre recortado con
+       puntos suspensivos y "sin GLB" en su sitio, sin partirse en dos líneas. */
+    body.incrustado .celda .pie { flex-wrap: nowrap; gap: 5px; padding: 7px 8px; }
+    body.incrustado .celda .pie .nombre {
+      font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0;
+    }
+    body.incrustado .celda .pie .valor { min-width: 34px; font-size: 11px; }
+    body.incrustado .celda .pie button { padding: 4px 8px; font-size: 12px; }
+    body.incrustado .celda .pie .falta { white-space: nowrap; font-size: 10px; }
+  </style>
+  <script type="importmap">
+    { "imports": {
+      "three": "/overlay/vendor/three/build/three.module.js",
+      "three/addons/": "/overlay/vendor/three/examples/jsm/"
+    } }
+  </script>
+</head>
+<body>
+  <script>
+    // Si la página va dentro del panel de control (?embed=1), se quita el marco
+    // propio y se avisa del alto para que el panel la encaje sin barra de scroll.
+    if (new URLSearchParams(location.search).has('embed')) {
+      document.body.classList.add('incrustado');
+      const avisarAlto = () => {
+        if (window.parent === window) return;
+        const alto = Math.ceil(document.documentElement.scrollHeight);
+        window.parent.postMessage({ tipo: 'syb3d-ajustar-alto', alto }, location.origin);
+      };
+      new ResizeObserver(avisarAlto).observe(document.body);
+      window.addEventListener('load', avisarAlto);
+    }
+  </script>
+  <h1>Ajustar tamaño de los modelos</h1>
+  <p class="intro">
+    Aquí se ve cada campeón del último resumen con la misma cámara y el mismo encuadre que la pantalla real.
+    Usa <b>−</b> y <b>+</b> hasta que todos queden del mismo tamaño y pulsa <b>Guardar</b>. El ajuste se
+    guarda en <code>postgame\data\scale-fix.json</code> y se aplica siempre, en esta pantalla y en la del HUD.
+  </p>
+  <div class="barra">
+    <button id="btn-guardar" class="principal">Guardar ajustes</button>
+    <button id="btn-reiniciar" class="peligro">Volver a automático</button>
+    <button id="btn-recargar">Recargar vista</button>
+    <span class="estado" id="estado">Cargando…</span>
+  </div>
+  <div class="rejilla" id="rejilla"></div>
+  <p class="nota">
+    Los valores se multiplican sobre el encuadre automático: 100 % es el tamaño que calcula el HUD,
+    110 % lo agranda un 10 %. El ajuste por campeón se guarda con su nombre, así que se mantiene
+    entre partidas. Si reinicias, el HUD vuelve a calcular todos los tamaños solo.
+  </p>
+
+  <script type="module">
+    import * as THREE from 'three';
+    import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+    import { clone as cloneSkeleton } from 'three/addons/utils/SkeletonUtils.js';
+    import { measureBody, computeFit, escalaGuardada, cargarAjustesDeEscala, tamanoRelativo } from './src/models.js';
+
+    const ANCHO = 238;
+    const ALTO = 236;
+    const PASO = 0.05;
+    const rejilla = document.getElementById('rejilla');
+    const estado = document.getElementById('estado');
+    const loader = new GLTFLoader();
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
+    renderer.setSize(ANCHO, ALTO, false);
+    renderer.setClearColor(0x000000, 0);
+
+    let jugadores = [];
+    let ajustes = {};
+
+    function crearEscena() {
+      const escena = new THREE.Scene();
+      const camara = new THREE.PerspectiveCamera(34, ANCHO / ALTO, 0.1, 100);
+      camara.position.set(0, 1.35, 5.2);
+      camara.lookAt(0, 1.25, 0);
+      escena.add(new THREE.AmbientLight(0xaabbd4, 2.1));
+      const key = new THREE.DirectionalLight(0xfff3df, 3.0);
+      key.position.set(-3, 6, 5);
+      escena.add(key);
+      const rim = new THREE.DirectionalLight(0x65baff, 2.2);
+      rim.position.set(3, 3, -4);
+      escena.add(rim);
+      const fill = new THREE.DirectionalLight(0xd7e5ff, 1.2);
+      fill.position.set(2, 2, 5);
+      escena.add(fill);
+      return { escena, camara };
+    }
+
+    function normalizar(valor) {
+      return String(valor || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
+    }
+
+    // Dibuja un modelo en su canvas con el encuadre automático × ajuste manual.
+    async function pintar(celda, jugador, archivo) {
+      const lienzo = celda.querySelector('canvas');
+      const { escena, camara } = crearEscena();
+      const gltf = await loader.loadAsync(`/models/${encodeURIComponent(archivo)}`);
+      const modelo = cloneSkeleton(gltf.scene);
+      modelo.traverse((nodo) => {
+        if (nodo.isMesh || nodo.isSkinnedMesh) {
+          nodo.frustumCulled = false;
+          if (nodo.material) nodo.material.needsUpdate = true;
+        }
+      });
+      modelo.rotation.y = 0.32;
+      modelo.updateMatrixWorld(true);
+      const cuerpo = measureBody(modelo);
+      const cajaTotal = new THREE.Box3().setFromObject(modelo).getSize(new THREE.Vector3());
+      // 1 = tamaño propio del campeón; el ajuste manual se aplica después.
+      const { fit } = computeFit(cuerpo.size, ANCHO / ALTO, 1, cajaTotal.x, cajaTotal.y);
+      const extra = Number(ajustes[jugador.clave] ?? 1);
+      modelo.scale.multiplyScalar(fit * tamanoRelativo(jugador.campeon) * extra);
+      modelo.updateMatrixWorld(true);
+      const caja = new THREE.Box3().setFromObject(modelo);
+      const centro = caja.getCenter(new THREE.Vector3());
+      modelo.position.x -= centro.x;
+      modelo.position.z -= centro.z;
+      modelo.updateMatrixWorld(true);
+      modelo.position.y -= new THREE.Box3().setFromObject(modelo).min.y;
+      modelo.updateMatrixWorld(true);
+      escena.add(modelo);
+
+      camara.aspect = ANCHO / ALTO;
+      camara.updateProjectionMatrix();
+      renderer.setSize(ANCHO, ALTO, false);
+      renderer.render(escena, camara);
+      lienzo.getContext('2d').drawImage(renderer.domElement, 0, 0, ANCHO, ALTO);
+    }
+
+    async function dibujar() {
+      rejilla.replaceChildren();
+      const archivos = await fetch('/postgame/api/models').then((r) => r.json()).then((d) => d.files || []).catch(() => []);
+      for (const jugador of jugadores) {
+        const buscado = normalizar(jugador.campeon);
+        const archivo = archivos.find((f) => normalizar(f.replace(/\.glb$/i, '')) === buscado);
+        const celda = document.createElement('div');
+        celda.className = 'celda';
+        celda.innerHTML = `
+          <canvas width="${ANCHO}" height="${ALTO}"></canvas>
+          <div class="pie">
+            <span class="nombre">${jugador.etiqueta}</span>
+            <button data-restar title="Más pequeño">−</button>
+            <span class="valor">${Math.round((Number(ajustes[jugador.clave] ?? 1)) * 100)}%</span>
+            <button data-sumar title="Más grande">+</button>
+          </div>`;
+        rejilla.appendChild(celda);
+
+        const valor = celda.querySelector('.valor');
+        const repintar = async () => {
+          valor.textContent = `${Math.round((Number(ajustes[jugador.clave] ?? 1)) * 100)}%`;
+          if (!archivo) return;
+          try {
+            await pintar(celda, jugador, archivo);
+          } catch (error) {
+            valor.textContent = 'sin GLB';
+          }
+        };
+        celda.querySelector('[data-sumar]').addEventListener('click', async () => {
+          ajustes[jugador.clave] = Math.min(3, Number(ajustes[jugador.clave] ?? 1) + PASO);
+          await repintar();
+        });
+        celda.querySelector('[data-restar]').addEventListener('click', async () => {
+          ajustes[jugador.clave] = Math.max(0.3, Number(ajustes[jugador.clave] ?? 1) - PASO);
+          await repintar();
+        });
+
+        if (!archivo) {
+          // Sin modelo no hay nada que ajustar: se esconde el control y se dice
+          // por qué, en vez de dejar los botones activos sin efecto.
+          celda.classList.add('falta-modelo');
+          valor.classList.add('falta');
+          valor.textContent = 'sin GLB';
+          celda.querySelector('[data-sumar]').hidden = true;
+          celda.querySelector('[data-restar]').hidden = true;
+          const aviso = document.createElement('span');
+          aviso.className = 'aviso-falta';
+          aviso.textContent = jugador.campeon;
+          celda.querySelector('canvas').after(aviso);
+          continue;
+        }
+        await repintar();
+      }
+      estado.textContent = `${jugadores.length} campeones · ajustes sin guardar: ${Object.keys(ajustes).length}`;
+    }
+
+    async function cargar() {
+      await cargarAjustesDeEscala();
+      ajustes = {};
+      for (const [clave, valor] of escalaGuardada.entries()) ajustes[clave] = valor;
+      // Campeones del resumen actual (real o demo).
+      let resumen = null;
+      try {
+        const estadoActual = await fetch('/postgame/api/state').then((r) => r.json());
+        resumen = estadoActual?.summary || null;
+      } catch {}
+      if (!resumen) {
+        try { resumen = await fetch('/postgame/api/demo').then((r) => r.json()); } catch {}
+      }
+      jugadores = [];
+      for (const lado of ['blue', 'red']) {
+        for (const jugador of resumen?.teams?.[lado]?.players || []) {
+          const campeon = jugador.champion || jugador.championAlias;
+          jugadores.push({
+            campeon,
+            // La clave del ajuste es el nombre normalizado: es exactamente la
+            // que busca el HUD al aplicar el tamaño.
+            clave: normalizar(campeon),
+            etiqueta: `${campeon} · ${jugador.player || ''}`.trim()
+          });
+        }
+      }
+      if (!jugadores.length) {
+        estado.textContent = 'No hay resumen cargado. Abre antes /postgame/?demo=1 o captura una partida.';
+        return;
+      }
+      await dibujar();
+    }
+
+    document.getElementById('btn-guardar').addEventListener('click', async () => {
+      // Se guarda con el nombre del campeón normalizado, como lo busca el HUD.
+      const salida = {};
+      for (const [clave, valor] of Object.entries(ajustes)) {
+        if (Number(valor) !== 1) salida[clave] = Number(Number(valor).toFixed(3));
+      }
+      // 1) Se guarda en el navegador: el HUD lo aplica al recargar, sin depender de nada más.
+      try {
+        localStorage.setItem('syb3d-scale-fix', JSON.stringify(salida));
+      } catch {}
+      try {
+        const respuesta = await fetch('/postgame/api/scale-fix', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ scaleFix: salida })
+        });
+        const datos = await respuesta.json();
+        if (!respuesta.ok) throw new Error(datos.error || 'no se pudo guardar');
+        estado.textContent = `Guardado: ${Object.keys(salida).length} ajustes. Abre o recarga la pantalla del PostGame (F5 en su ventana) para verlo aplicado.`;
+      } catch (error) {
+        estado.textContent = `Error al guardar: ${error.message}`;
+      }
+    });
+    document.getElementById('btn-reiniciar').addEventListener('click', async () => {
+      ajustes = {};
+      try { localStorage.removeItem('syb3d-scale-fix'); } catch {}
+      await fetch('/postgame/api/scale-fix', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ scaleFix: {} })
+      });
+      await cargar();
+      estado.textContent = 'Ajustes borrados: todos vuelven al tamaño automático.';
+    });
+    document.getElementById('btn-recargar').addEventListener('click', cargar);
+
+    cargar();
+  </script>
+</body>
+</html>

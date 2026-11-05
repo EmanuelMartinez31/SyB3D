@@ -19,9 +19,12 @@
   <body>
     <main id="stage" hidden aria-label="Resumen de estadísticas postpartida">
       <div class="topline"></div>
-      <!-- Encabezado: torneo, título, logos principales y formato de serie. -->
+      <!-- Encabezado: torneo, título y formato de serie. -->
       <header class="header">
-        <div class="brand"><span id="tournament-name"></span></div>
+        <div class="brand">
+          <img class="tournament-logo" id="tournament-logo" alt="" hidden>
+          <span id="tournament-name"></span>
+        </div>
         <div class="title">
           <small>ANÁLISIS FINAL</small>
           <div class="title-row">
@@ -34,31 +37,36 @@
       </header>
 
       <!-- Equipo azul: render.js coloca aquí los datos y crea sus cinco tarjetas. -->
-      <section class="teambar blue" aria-label="Equipo azul">
-        <div class="team-id">
-          <div class="team-tag" id="blue-tag">AZUL</div>
-          <div class="team-name" id="blue-name">EQUIPO AZUL</div>
-          <div class="team-sub">LADO AZUL</div>
-        </div>
-        <div class="center-score">
-          <strong id="blue-kills">0</strong><span>—</span><strong id="red-kills-top">0</strong>
-        </div>
-        <div class="team-id right"><div class="result" id="blue-result">FINALIZADA</div></div>
-      </section>
       <div class="cards" id="blue-cards"></div>
 
-      <!-- Equipo rojo: misma estructura y estilos, con sus colores y resultados. -->
-      <section class="teambar red" aria-label="Equipo rojo">
-        <div class="team-id">
-          <div class="team-tag" id="red-tag">ROJO</div>
-          <div class="team-name" id="red-name">EQUIPO ROJO</div>
-          <div class="team-sub">LADO ROJO</div>
+      <!-- Barra única del centro: equipo azul a la izquierda, rojo a la derecha,
+           marcador y duración en medio. -->
+      <section class="midbar" aria-label="Resumen de la partida">
+        <div class="mid-side left">
+          <span class="mid-tag" id="blue-tag">AZUL</span>
+          <span class="mid-team">
+            <strong id="blue-name">EQUIPO AZUL</strong>
+            <small>LADO AZUL</small>
+          </span>
+          <span class="mid-result win" id="blue-result">VICTORIA</span>
         </div>
-        <div class="center-score">
-          <span>DURACIÓN</span><strong id="game-duration">00:00</strong>
+        <div class="mid-center">
+          <div class="mid-score">
+            <strong id="blue-kills">0</strong><span>—</span><strong id="red-kills">0</strong>
+          </div>
+          <div class="mid-duration"><small>DURACIÓN</small><strong id="game-duration">00:00</strong></div>
         </div>
-        <div class="team-id right"><div class="result" id="red-result">FINALIZADA</div></div>
+        <div class="mid-side right">
+          <span class="mid-result loss" id="red-result">DERROTA</span>
+          <span class="mid-team">
+            <strong id="red-name">EQUIPO ROJO</strong>
+            <small>LADO ROJO</small>
+          </span>
+          <span class="mid-tag" id="red-tag">ROJO</span>
+        </div>
       </section>
+
+      <!-- Equipo rojo: misma estructura y estilos, con sus colores. -->
       <div class="cards redcards" id="red-cards"></div>
 
       <!-- Un solo canvas WebGL dibuja los diez campeones sobre sus respectivas tarjetas. -->

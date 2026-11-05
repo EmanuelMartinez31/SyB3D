@@ -34,6 +34,15 @@ if errorlevel 1 (
   echo [AVISO] No se encontro dotnet; SyBSensor no se inicio automaticamente.
   goto sensor_listo
 )
+
+rem Aviso si LeagueBroadcast tiene una lblib mas nueva que la ya compilada.
+set "LB_LBLIB=%LOCALAPPDATA%\LeagueBroadcast\current\lblib.dll"
+set "BIN_LBLIB=%SENSOR_DIR%\bin\Release\net10.0-windows\lblib.dll"
+if exist "%LB_LBLIB%" if exist "%BIN_LBLIB%" (
+  for /f %%A in ('powershell -NoProfile -Command "if ((Get-Item '%LB_LBLIB%').LastWriteTime -gt (Get-Item '%BIN_LBLIB%').LastWriteTime) { 'SI' } else { 'NO' }"') do set "LBLIB_VIEJA=%%A"
+  if /I "%LBLIB_VIEJA%"=="SI" echo [AVISO] LeagueBroadcast tiene una lblib mas nueva; se actualizara al compilar.
+)
+
 echo Iniciando SyBSensor en su propia ventana...
 start "SyBSensor" /D "%SENSOR_DIR%" cmd /k "timeout /t 2 /nobreak >nul && dotnet run"
 :sensor_listo

@@ -20,23 +20,25 @@
     <div id="stage">
       <section class="objectives" aria-label="Temporizadores de objetivos">
         <div id="objective-dragon" class="objective objective-dragon">
-          <img class="objective-icon" src="./assets/objectives/dragon.png" alt="" aria-hidden="true">
-          <span class="objective-copy"><small>PRÓXIMO DRAGÓN</small><strong>--:--</strong></span>
-          <img id="objective-dragon-type" class="objective-type-icon" src="./assets/objectives/dragon.png" alt="" aria-hidden="true" hidden>
+          <img id="objective-dragon-icon" class="objective-icon" src="./assets/objectives/dragon.png" alt="" aria-hidden="true">
+          <span class="objective-copy"><strong>--:--</strong></span>
         </div>
         <div id="objective-secondary" class="objective objective-grubs">
           <img id="objective-secondary-icon" class="objective-icon" src="./assets/objectives/grub.png" alt="" aria-hidden="true">
-          <span class="objective-copy"><small>VACULARVAS</small><strong>--:--</strong></span>
+          <span class="objective-copy"><strong>--:--</strong></span>
         </div>
       </section>
 
       <header class="topbar" aria-label="Marcador de la partida">
         <section class="top-team top-team-blue">
-          <div id="blue-series-score" class="series-score" title="Victorias del equipo azul en la serie" hidden>0</div>
+          <div id="blue-series-score" class="series-score" title="Victorias del equipo azul en la serie" hidden></div>
           <div class="team-emblem"><img id="blue-team-logo" class="team-logo" alt="" hidden><span id="blue-emblem">A</span></div>
           <div class="team-identity"><strong id="blue-name">AZUL</strong></div>
           <div class="top-stat" title="Torretas destruidas"><img class="tower-icon" src="./assets/objectives/tower.png" alt="" aria-hidden="true"><strong id="blue-towers">0</strong></div>
-          <div class="top-gold"><img class="gold-icon" src="./assets/ui/gold.svg" alt="" aria-hidden="true"><strong id="blue-gold">0.0K</strong></div>
+          <div class="top-gold-wrap">
+            <div class="top-gold"><img class="gold-icon" src="./assets/ui/gold.svg" alt="" aria-hidden="true"><strong id="blue-gold">0.0K</strong></div>
+            <span id="blue-gold-lead" class="team-gold-lead blue" title="Ventaja de oro del equipo azul" hidden></span>
+          </div>
         </section>
 
         <div class="game-center">
@@ -45,17 +47,20 @@
             <span id="series-format" class="series-format">BO1</span>
             <span id="game-label" class="live-caption">PARTIDA 1 DE 1</span>
             <strong id="game-time">00:00</strong>
-            <span id="gold-lead" class="gold-lead">±0.0K</span>
+            <span id="game-patch" class="game-patch" title="Parche actual de League of Legends">PARCHE —</span>
           </div>
           <strong id="red-kills" class="center-kills center-kills-red">0</strong>
         </div>
 
         <section class="top-team top-team-red">
-          <div class="top-gold"><img class="gold-icon" src="./assets/ui/gold.svg" alt="" aria-hidden="true"><strong id="red-gold">0.0K</strong></div>
+          <div class="top-gold-wrap">
+            <div class="top-gold"><img class="gold-icon" src="./assets/ui/gold.svg" alt="" aria-hidden="true"><strong id="red-gold">0.0K</strong></div>
+            <span id="red-gold-lead" class="team-gold-lead red" title="Ventaja de oro del equipo rojo" hidden></span>
+          </div>
           <div class="top-stat" title="Torretas destruidas"><img class="tower-icon" src="./assets/objectives/tower.png" alt="" aria-hidden="true"><strong id="red-towers">0</strong></div>
           <div class="team-identity"><strong id="red-name">ROJO</strong></div>
           <div class="team-emblem"><img id="red-team-logo" class="team-logo" alt="" hidden><span id="red-emblem">R</span></div>
-          <div id="red-series-score" class="series-score" title="Victorias del equipo rojo en la serie" hidden>0</div>
+          <div id="red-series-score" class="series-score" title="Victorias del equipo rojo en la serie" hidden></div>
         </section>
       </header>
 
@@ -79,11 +84,6 @@
       <div id="demo-badge" class="demo-badge" hidden>VISTA PREVIA · DATOS DEMO</div>
 
       <section class="scoreboard" aria-label="Estadísticas de los diez jugadores">
-        <div class="scoreboard-heading">
-          <span id="score-blue-name">AZUL</span>
-          <span aria-hidden="true"></span>
-          <span id="score-red-name">ROJO</span>
-        </div>
         <div class="teams-grid">
           <section id="blue-players" class="team-players team-blue" aria-label="Equipo azul"></section>
           <section id="gold-matchups" class="gold-matchups" aria-label="Oro individual y diferencia por línea"></section>
@@ -110,6 +110,21 @@
         <div class="dragon-models" aria-hidden="true"></div>
         <div class="dragon-caption"><strong>DRAGÓN DE AIRE</strong><span class="alert-label">OBJETIVO ELIMINADO</span><b class="alert-team" hidden></b></div>
       </aside>
+
+      <div id="rune-intro" class="rune-intro" aria-label="Runas de los equipos" hidden>
+        <div id="rune-side-blue" class="rune-side"></div>
+        <div id="rune-side-red" class="rune-side"></div>
+      </div>
+
+      <section id="fight-strip" class="fight-strip" aria-label="Teamfight en curso" hidden>
+        <div class="fight-side fight-side-blue" id="fight-blue"></div>
+        <div class="fight-center" aria-hidden="true">
+          <img id="fight-tournament-logo" class="fight-logo" alt="" hidden>
+        </div>
+        <div class="fight-side fight-side-red" id="fight-red"></div>
+      </section>
+
+      <div class="minimap-frame" aria-hidden="true"></div>
 
       <aside class="sponsor" aria-label="Espacio para patrocinadores"></aside>
     </div>

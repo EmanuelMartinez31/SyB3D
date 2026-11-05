@@ -115,14 +115,7 @@ function wireImageFallback(img, fallback) {
 const teamLogoAssets = new Map();
 
 function renderTeamIdentity(prefix, info) {
-  const fallbackName = prefix === 'blue' ? 'AZUL' : 'ROJO';
-  const fullName = String(info?.[prefix] || fallbackName).trim() || fallbackName;
-  const words = fullName.split(/\s+/).filter(Boolean);
-  const generatedShort = words.length > 1
-    ? words.map(word => word[0]).join('').slice(0, 4)
-    : fullName.slice(0, 4);
-  const shortName = String(info?.[`${prefix}Short`] || info?.[`${prefix}Tag`] || generatedShort)
-    .trim().toUpperCase() || fallbackName;
+  const { fullName, shortName } = teamShortName(prefix, info);
 
   setText(byId(`${prefix}-name`), shortName);
   byId(`${prefix}-name`).title = fullName;
@@ -136,6 +129,560 @@ function renderTeamIdentity(prefix, info) {
   const asset = teamLogoAssets.get(prefix);
   setText(asset.fallback, shortName.slice(0, 1));
   setImage(asset.img, info?.[`${prefix}Logo`], `Logo de ${fullName}`, asset.fallback, shortName.slice(0, 1));
+}
+
+// Data Dragon numera 16.22.1 y League usa el parche de temporada: 26.22.
+function formatPatch(version) {
+  const match = /^(\d+)\.(\d+)/.exec(String(version || ''));
+  if (!match) return null;
+  const major = Number(match[1]);
+  const minor = match[2];
+  return `${major + 10}.${minor}`;
+}
+
+function renderPatch(catalog) {
+  const element = byId('game-patch');
+  if (!element) return;
+  const patch = formatPatch(catalog?.version);
+  if (!patch) {
+    element.hidden = true;
+    return;
+  }
+  element.hidden = false;
+  setText(element, `PARCHE ${patch}`);
+  element.title = `Parche actual de League of Legends · versión ${catalog.version}`;
+}
+
+/* ------------------------------------------------------------------
+   Runas del inicio de partida
+   Se muestran del segundo 5 al 20 del reloj de la barra superior: las
+   runas del equipo azul a la izquierda y las del rojo a la derecha.
+   ------------------------------------------------------------------ */
+const RUNE_INTRO_FROM = 5;
+const RUNE_INTRO_UNTIL = 20;
+// Mismos tiempos que los avisos de objetivos: entra deslizándose desde la
+// orilla y sale por la misma orilla, además de desvanecerse.
+const RUNE_ENTER_MS = 560;
+const RUNE_LEAVE_MS = 420;
+let runeIntroSignature = '';
+let runeIntroPhase = 'hidden';
+let runeLeaveTimer = 0;
+
+function teamShortName(prefix, info) {
+  const fallbackName = prefix === 'blue' ? 'AZUL' : 'ROJO';
+  const fullName = String(info?.[prefix] || fallbackName).trim() || fallbackName;
+  const words = fullName.split(/\s+/).filter(Boolean);
+  const generatedShort = words.length > 1
+    ? words.map(word => word[0]).join('').slice(0, 4)
+    : fullName.slice(0, 4);
+  return {
+    fullName,
+    shortName: String(info?.[`${prefix}Short`] || info?.[`${prefix}Tag`] || generatedShort)
+      .trim().toUpperCase() || fallbackName
+  };
+}
+
+function roleRank(role) {
+  const index = ROLE_ORDER.indexOf(role);
+  return index === -1 ? ROLE_ORDER.length : index;
+}
+
+function runePlayers(players, team) {
+  return players
+    .filter(player => player.team === team)
+    .sort((a, b) => roleRank(a.role) - roleRank(b.role));
+}
+
+function buildRuneRow(player, catalog, index) {
+  const row = document.createElement('li');
+  row.className = 'rune-row';
+
+  // Retrato del campeón
+  const champ = assetWithFallback('rune-champ', '—');
+  const championUrl = player.champion && catalog ? catalog.championUrl(player.champion) : null;
+  setImage(champ.img, championUrl, player.champion || 'Campeón', champ.fallback, String(index + 1));
+
+  // Runa principal (pieza grande)
+  const runeIds = (Array.isArray(player.runes) ? player.runes : []).filter(finite);
+  const key = assetWithFallback('rune-key', 'R');
+  const keystoneUrl = runeIds.length && catalog ? catalog.runeUrl(runeIds[0]) : null;
+  setImage(key.img, keystoneUrl, runeIds.length && catalog ? catalog.runeName(runeIds[0]) : '', key.fallback, 'R');
+
+  // Runas menores: hasta 3 del árbol principal y 2 del secundario
+  const minors = document.createElement('span');
+  minors.className = 'rune-minors';
+  const minorIds = runeIds.slice(1, 6);
+  for (const id of minorIds) {
+    const minor = document.createElement('i');
+    minor.className = 'rune-minor';
+    const image = document.createElement('img');
+    const fallback = document.createElement('span');
+    fallback.className = 'asset-fallback';
+    fallback.hidden = true;
+    wireImageFallback(image, fallback);
+    minor.append(image, fallback);
+    setImage(image, catalog ? catalog.runeUrl(id) : null, catalog ? catalog.runeName(id) : '', fallback, '');
+    minors.append(minor);
+  }
+
+  row.append(champ.wrap, key.wrap, minors);
+  return row;
+}
+
+function buildRunePanel(prefix, players, info, catalog) {
+  const panel = document.createElement('aside');
+  panel.className = `rune-panel rune-panel-${prefix}`;
+
+  const title = document.createElement('div');
+  title.className = 'rune-panel-title';
+  title.textContent = 'Runas';
+
+  const head = document.createElement('div');
+  head.className = 'rune-team-head';
+  const emblem = assetWithFallback('rune-team-emblem', prefix === 'blue' ? 'A' : 'R');
+  const { shortName, fullName } = teamShortName(prefix, info);
+  setImage(emblem.img, info?.[`${prefix}Logo`], `Logo de ${fullName}`, emblem.fallback, shortName.slice(0, 1));
+  setText(emblem.fallback, shortName.slice(0, 1));
+  // En la cabecera del panel va el nombre completo del equipo, no las siglas.
+  const name = document.createElement('strong');
+  name.className = 'rune-team-name';
+  name.textContent = fullName;
+  name.title = fullName;
+  head.append(emblem.wrap, name);
+
+  const list = document.createElement('ul');
+  list.className = 'rune-list';
+  runePlayers(players, prefix === 'blue' ? 1 : 2).forEach((player, index) => {
+    list.append(buildRuneRow(player, catalog, index));
+  });
+
+  panel.append(title, head, list);
+  return panel;
+}
+
+function buildRunePanels(state, catalog) {
+  const players = Array.isArray(state.players) ? state.players : [];
+  const signature = JSON.stringify([
+    state.info?.blueShort, state.info?.blue, state.info?.blueLogo,
+    state.info?.redShort, state.info?.red, state.info?.redLogo,
+    players.map(player => [player.team, player.role, player.champion, (player.runes || []).join('-')])
+  ]);
+  if (signature === runeIntroSignature) return;
+  runeIntroSignature = signature;
+  const blue = byId('rune-side-blue');
+  const red = byId('rune-side-red');
+  blue.replaceChildren(buildRunePanel('blue', players, state.info, catalog));
+  red.replaceChildren(buildRunePanel('red', players, state.info, catalog));
+}
+
+function hideRuneIntro(container) {
+  if (runeIntroPhase !== 'shown') return;
+  runeIntroPhase = 'leaving';
+  window.clearTimeout(runeLeaveTimer);
+  container.classList.remove('is-entering');
+  container.classList.add('is-leaving');
+  runeLeaveTimer = window.setTimeout(() => {
+    container.hidden = true;
+    container.classList.remove('is-leaving');
+    runeIntroPhase = 'hidden';
+  }, RUNE_LEAVE_MS);
+}
+
+function showRuneIntro(container) {
+  window.clearTimeout(runeLeaveTimer);
+  container.classList.remove('is-leaving');
+  // Se obliga a un reflujo para que la animación arranque desde la orilla.
+  container.hidden = true;
+  void container.offsetWidth;
+  container.hidden = false;
+  void container.offsetWidth;
+  container.classList.add('is-entering');
+  runeIntroPhase = 'shown';
+}
+
+function renderRuneIntro(state, catalog) {
+  const container = byId('rune-intro');
+  if (!container) return;
+  const gameTime = state?.meta?.gameTime;
+  const visible = finite(gameTime) && gameTime >= RUNE_INTRO_FROM && gameTime <= RUNE_INTRO_UNTIL;
+
+  if (!visible) {
+    hideRuneIntro(container);
+    return;
+  }
+
+  buildRunePanels(state, catalog);
+  if (runeIntroPhase !== 'shown') showRuneIntro(container);
+}
+
+/* ------------------------------------------------------------------
+   Detección de teamfight
+   Se considera pelea cuando hay al menos FIGHT_MIN jugadores vivos de cada
+   equipo metidos en el mismo choque y uno de los dos lados llega a
+   FIGHT_MIN_MAYOR. Es decir: 4 contra 4, 5 contra 4, 4 contra 5… y también
+   3 contra 4. Un 3 contra 3 no cuenta.
+
+   Rebote (antiparpadeo): la pelea no se enciende ni se apaga de golpe.
+     · entra cuando la condición se sostiene FIGHT_ENTER_S segundos
+     · sale cuando lleva FIGHT_EXIT_S segundos sin cumplirse
+   El rebote se mide con reloj real, así funciona igual en partida, en
+   repetición y en la demo, y no depende de que el reloj del juego avance.
+   Si entre dos estados pasa más de 1 s (pausa, OBS detenido) ese hueco no
+   se cuenta.
+   ------------------------------------------------------------------ */
+const FIGHT_MIN = 3;          // mínimo por lado para que cuente como choque
+const FIGHT_MIN_MAYOR = 4;    // uno de los dos lados tiene que llegar a cuatro
+const FIGHT_GROUP_RADIUS = 1400;
+const FIGHT_CLASH_RADIUS = 2200;
+const FIGHT_ENTER_S = 0.6;
+const FIGHT_EXIT_S = 2.0;
+
+const fightState = {
+  active: false,
+  sostiene: 0,   // segundos que lleva cumpliéndose la condición
+  ausente: 0,    // segundos que lleva sin cumplirse
+  stamp: null,   // reloj del cálculo anterior
+  blue: [],
+  red: []
+};
+
+function worldDistance(a, b) {
+  return Math.hypot(a.x - b.x, a.z - b.z);
+}
+
+function detectFight(players) {
+  const vivos = players.filter(player =>
+    player.alive === true && player.position &&
+    finite(player.position.x) && finite(player.position.z)
+  );
+
+  for (const team of [1, 2]) {
+    const propios = vivos.filter(player => player.team === team);
+    const rivales = vivos.filter(player => player.team !== team);
+    if (propios.length < FIGHT_MIN || rivales.length < FIGHT_MIN) continue;
+
+    for (const ancla of propios) {
+      const grupo = propios.filter(player => worldDistance(player.position, ancla.position) <= FIGHT_GROUP_RADIUS);
+      if (grupo.length < FIGHT_MIN) continue;
+      const centro = {
+        x: grupo.reduce((sum, player) => sum + player.position.x, 0) / grupo.length,
+        z: grupo.reduce((sum, player) => sum + player.position.z, 0) / grupo.length
+      };
+      const enemigos = rivales.filter(player => worldDistance(player.position, centro) <= FIGHT_CLASH_RADIUS);
+      if (enemigos.length < FIGHT_MIN) continue;
+      // Un 3 contra 3 no es pelea: alguno de los dos lados debe llegar a cuatro.
+      if (Math.max(grupo.length, enemigos.length) < FIGHT_MIN_MAYOR) continue;
+      return {
+        blue: (team === 1 ? grupo : enemigos).map(player => player.id).filter(id => id !== null),
+        red: (team === 1 ? enemigos : grupo).map(player => player.id).filter(id => id !== null)
+      };
+    }
+  }
+  return null;
+}
+
+function fightClock() {
+  return typeof performance !== 'undefined' && typeof performance.now === 'function'
+    ? performance.now()
+    : Date.now();
+}
+
+function updateFight(players) {
+  const ahora = fightClock();
+  const paso = fightState.stamp === null
+    ? 0
+    : Math.min(Math.max(ahora - fightState.stamp, 0), 1000) / 1000;
+  fightState.stamp = ahora;
+
+  const deteccion = detectFight(players);
+
+  if (fightState.active) {
+    if (deteccion) {
+      fightState.ausente = 0;
+      fightState.blue = deteccion.blue;
+      fightState.red = deteccion.red;
+    } else {
+      // Se guardan los últimos participantes durante el tiempo de salida para
+      // que las cartas no se vacíen de golpe mientras se retiran.
+      fightState.ausente += paso;
+      if (fightState.ausente >= FIGHT_EXIT_S) {
+        fightState.active = false;
+        fightState.sostiene = 0;
+        fightState.ausente = 0;
+        fightState.blue = [];
+        fightState.red = [];
+      }
+    }
+  } else if (deteccion) {
+    fightState.ausente = 0;
+    fightState.sostiene += paso;
+    if (fightState.sostiene >= FIGHT_ENTER_S) {
+      fightState.active = true;
+      fightState.sostiene = 0;
+      fightState.blue = deteccion.blue;
+      fightState.red = deteccion.red;
+    }
+  } else {
+    fightState.sostiene = 0;
+    fightState.ausente = 0;
+  }
+
+  return fightState.active
+    ? { active: true, blue: fightState.blue, red: fightState.red }
+    : { active: false, blue: [], red: [] };
+}
+
+/* ------------------------------------------------------------------
+   Teamfight
+   El servidor decide cuándo hay pelea y quién está en ella; aquí solo se
+   pinta. La tabla de abajo baja y en su lugar aparecen los recuadros de
+   los que están peleando, uno por uno desde las orillas hacia el centro.
+   ------------------------------------------------------------------ */
+const FIGHT_LEAVE_MS = 340;
+const fightCards = new Map();
+let fightVisible = false;
+let fightLeaveTimer = 0;
+let fightSettleTimer = 0;
+
+function fightPercent(value, max) {
+  if (!finite(value) || !finite(max) || max <= 0) return 0;
+  return Math.max(0, Math.min(100, (value / max) * 100));
+}
+
+function buildFightCard(player, team, catalog) {
+  const card = document.createElement('article');
+  card.className = `fight-card fight-card-${team}`;
+  // El índice de la escalera lo pone syncFightSide, que es quien conoce el orden.
+  card.title = [player.player, player.champion].filter(Boolean).join(' · ');
+
+  // Retrato con el nivel pegado abajo a la izquierda
+  const portrait = assetWithFallback('fight-portrait', '');
+  setImage(
+    portrait.img,
+    player.champion && catalog ? catalog.championUrl(player.champion) : null,
+    player.champion || 'Campeón',
+    portrait.fallback,
+    String(player.champion || '')
+  );
+  const level = document.createElement('span');
+  level.className = 'fight-level';
+  setText(level, finite(player.level) ? player.level : '—');
+  portrait.wrap.append(level);
+
+  // Vida y maná
+  const bars = document.createElement('span');
+  bars.className = 'fight-bars';
+  const hp = document.createElement('i');
+  hp.className = 'fight-bar fight-bar-hp';
+  const hpFill = document.createElement('b');
+  hp.append(hpFill);
+  const mp = document.createElement('i');
+  mp.className = 'fight-bar fight-bar-mp';
+  const mpFill = document.createElement('b');
+  mp.append(mpFill);
+  bars.append(hp, mp);
+
+  // Dos hechizos de invocador y la definitiva en el tercer hueco
+  const spells = document.createElement('span');
+  spells.className = 'fight-spells';
+  const refs = [];
+  for (const [key, isUlt] of [['d', false], ['f', false], ['r', true]]) {
+    const spell = player.spells?.[key] || null;
+    const nombre = spell?.name || null;
+    const slot = assetWithFallback(isUlt ? 'fight-spell is-ult' : 'fight-spell', '');
+    // Si el icono de la definitiva no está disponible se usa el retrato del
+    // campeón: en ningún caso aparece una letra en el hueco del hechizo.
+    const fuentes = nombre ? catalog.spellUrls(nombre, spell.icon) : [];
+    setImage(
+      slot.img,
+      isUlt ? [...fuentes, catalog.championUrl(player.champion)] : fuentes,
+      nombre ? catalog.spellName(nombre) : '',
+      slot.fallback,
+      ''
+    );
+    slot.wrap.title = nombre ? catalog.spellName(nombre) : '';
+    refs.push({ wrap: slot.wrap, key, spell });
+    spells.append(slot.wrap);
+  }
+
+  const referencias = { hpFill, hp, mpFill, mp, refs, level };
+  updateFightCard(referencias, player);
+
+  card.append(portrait.wrap, bars, spells);
+  return { el: card, refs: referencias };
+}
+
+// Vida, maná y enfriamientos cambian varias veces por segundo: se refrescan
+// sin rehacer los recuadros para que no parpadeen.
+function updateFightCard(refs, player) {
+  const hpPct = fightPercent(player.health?.current, player.health?.max);
+  refs.hpFill.style.width = `${hpPct}%`;
+  refs.hp.classList.toggle('is-low', hpPct <= 30);
+  refs.hp.title = `Vida ${Math.round(player.health?.current ?? 0)} / ${Math.round(player.health?.max ?? 0)}`;
+  refs.mpFill.style.width = `${fightPercent(player.resource?.current, player.resource?.max)}%`;
+  refs.mp.title = `Maná ${Math.round(player.resource?.current ?? 0)} / ${Math.round(player.resource?.max ?? 0)}`;
+  setText(refs.level, finite(player.level) ? player.level : '—');
+  for (const ref of refs.refs) {
+    const spell = player.spells?.[ref.key] || null;
+    const enfriando = finite(spell?.remaining) && spell.remaining > 0.05;
+    ref.wrap.classList.toggle('is-cool', Boolean(enfriando));
+  }
+}
+
+function roleOrden(player) {
+  return roleRank(player.role);
+}
+
+// Cada tarjeta es un elemento propio que se conserva entre estados: si el
+// jugador sigue en la pelea no se vuelve a crear (no parpadea). Cuando uno
+// entra, su tarjeta sube; cuando sale, su tarjeta baja y se retira.
+function entrando(card) {
+  window.clearTimeout(card.temporizador);
+  card.el.classList.remove('is-leaving');
+  card.el.classList.add('is-entering');
+  card.temporizador = window.setTimeout(() => card.el.classList.remove('is-entering'), 520);
+}
+
+function saliendo(card) {
+  const el = card.el;
+  window.clearTimeout(card.temporizador);
+  el.classList.remove('is-entering');
+  // Se queda quieta donde estaba mientras baja, sin empujar a las demás.
+  el.style.left = `${el.offsetLeft}px`;
+  el.classList.add('is-leaving');
+  card.temporizador = window.setTimeout(() => el.remove(), 380);
+}
+
+function syncFightSide(players, team, catalog) {
+  const side = byId(`fight-${team}`);
+  if (!side) return;
+  const ordenados = [...players].sort((a, b) => roleOrden(a) - roleOrden(b));
+  side.style.setProperty('--n', String(ordenados.length));
+  const presentes = new Set(ordenados.map(player => player.id));
+
+  // Los que ya no están en la pelea: su tarjeta baja y desaparece.
+  for (const [id, card] of [...fightCards]) {
+    if (card.team !== team || presentes.has(id)) continue;
+    fightCards.delete(id);
+    saliendo(card);
+  }
+
+  // Los que siguen se reutilizan; los nuevos suben desde abajo.
+  let anterior = null;
+  ordenados.forEach((player, index) => {
+    let card = fightCards.get(player.id);
+    if (!card) {
+      card = { ...buildFightCard(player, team, catalog), team, id: player.id };
+      fightCards.set(player.id, card);
+      entrando(card);
+    }
+    card.el.style.setProperty('--i', String(index));
+    // Solo se mueve si de verdad está fuera de su sitio: mover un nodo reinicia
+    // sus animaciones y haría parpadear la tira en cada estado.
+    const enSuSitio = anterior === null
+      ? side.firstElementChild === card.el
+      : anterior.nextElementSibling === card.el;
+    if (!enSuSitio) {
+      if (anterior === null) side.insertBefore(card.el, side.firstElementChild);
+      else side.insertBefore(card.el, anterior.nextElementSibling);
+    }
+    anterior = card.el;
+  });
+}
+
+function hideFightStrip() {
+  const strip = byId('fight-strip');
+  const table = document.querySelector('.scoreboard');
+  if (!strip) return;
+  // Mientras ya está saliendo no se reprograma la salida: si se limpiara el
+  // temporizador en cada estado, la tira no llegaría a ocultarse nunca.
+  if (!fightVisible) return;
+  window.clearTimeout(fightLeaveTimer);
+  fightVisible = false;
+  strip.classList.remove('is-in');
+  strip.classList.add('is-out');
+  if (table) table.classList.remove('is-out');
+  // Al salir se quita la marca de tarjeta nueva para que el hundimiento
+  // general de la tira mande sobre cualquier animación pendiente.
+  strip.querySelectorAll('.fight-card').forEach(el => el.classList.remove('is-entering'));
+  fightLeaveTimer = window.setTimeout(() => {
+    strip.hidden = true;
+    strip.classList.remove('is-out', 'is-settled');
+    fightCards.clear();
+    strip.querySelectorAll('.fight-card').forEach(el => el.remove());
+  }, FIGHT_LEAVE_MS + 320);
+}
+
+// Logo del torneo en el centro de la tira. Si el estado no trae logo, el hueco
+// queda vacío: no se dibuja ningún sustituto.
+function renderFightLogo(info) {
+  const logo = byId('fight-tournament-logo');
+  if (!logo) return;
+  if (!logo._wired) {
+    logo._wired = true;
+    logo.addEventListener('error', () => { logo.hidden = true; });
+  }
+  const fuente = typeof info?.logo === 'string' && info.logo.trim() ? info.logo.trim() : null;
+  if (logo.dataset.fuente === String(fuente)) return;
+  logo.dataset.fuente = String(fuente);
+  if (fuente) {
+    logo.hidden = false;
+    logo.src = fuente;
+  } else {
+    logo.hidden = true;
+    logo.removeAttribute('src');
+  }
+}
+
+function renderFight(state, catalog) {
+  const strip = byId('fight-strip');
+  const table = document.querySelector('.scoreboard');
+  if (!strip) return;
+
+  const players = Array.isArray(state?.players) ? state.players : [];
+  const fight = updateFight(players);
+  renderFightLogo(state?.info);
+  if (fight.active !== true) {
+    hideFightStrip();
+    return;
+  }
+
+  // Solo los que están dentro de la pelea: ni muertos ni los de fuera. El
+  // filtro de vivos también actúa durante la salida, cuando la lista de
+  // participantes se queda congelada unos segundos.
+  const dentro = new Set([...(fight.blue || []), ...(fight.red || [])]);
+  const enPie = player => dentro.has(player.id) && player.alive !== false;
+  const blue = players.filter(player => player.team === 1 && enPie(player));
+  const red = players.filter(player => player.team === 2 && enPie(player));
+  if (!blue.length && !red.length) {
+    hideFightStrip();
+    return;
+  }
+
+  syncFightSide(blue, 'blue', catalog);
+  syncFightSide(red, 'red', catalog);
+
+  for (const player of [...blue, ...red]) {
+    const card = fightCards.get(player.id);
+    if (card) updateFightCard(card.refs, player);
+  }
+
+  window.clearTimeout(fightLeaveTimer);
+  if (!fightVisible) {
+    fightVisible = true;
+    strip.hidden = false;
+    strip.classList.remove('is-out', 'is-settled', 'is-in');
+    void strip.offsetWidth;
+    strip.classList.add('is-in');
+    if (table) table.classList.add('is-out');
+    // Cuando la última tarjeta termina de subir, la tira queda asentada y las
+    // animaciones de entrada dejan de aplicarse a todas.
+    const escalera = 70 * Math.max(blue.length, red.length) + 460;
+    window.clearTimeout(fightSettleTimer);
+    fightSettleTimer = window.setTimeout(() => {
+      if (fightVisible) strip.classList.add('is-settled');
+    }, escalera);
+  }
 }
 
 function renderTeamIdentities(info) {
@@ -156,14 +703,70 @@ function assetWithFallback(className, fallbackText = '—') {
   return { wrap, img, fallback };
 }
 
+/* ------------------------------------------------------------------
+   Experiencia
+   El cliente manda la experiencia de cada campeón, pero según la fuente
+   puede venir como avance DENTRO del nivel o como total acumulado. Se
+   resuelve solo: si el número cuadra con el nivel que informa el juego,
+   se toma como total; si no, como avance del nivel. Con XP_MODE se puede
+   forzar uno de los dos ('auto' | 'nivel' | 'total').
+   ------------------------------------------------------------------ */
+const XP_MODE = 'auto';
+// Si algún día no se quiere la tercera barra, se apaga desde aquí.
+const MOSTRAR_BARRA_XP = true;
+const XP_MAX_LEVEL = 18;
+
+// XP que pide el juego para pasar de un nivel al siguiente.
+function xpParaSubir(level) {
+  if (!finite(level) || level < 1 || level >= XP_MAX_LEVEL) return 0;
+  return 280 + (level - 1) * 100;
+}
+
+// XP acumulada necesaria para estar en `level`.
+function xpAcumulada(level) {
+  let total = 0;
+  for (let n = 1; n < level; n += 1) total += xpParaSubir(n);
+  return total;
+}
+
+// Nivel que corresponde a una cantidad de XP acumulada.
+function nivelPorXp(xp) {
+  let level = 1;
+  while (level < XP_MAX_LEVEL && xp >= xpAcumulada(level + 1)) level += 1;
+  return level;
+}
+
+function progresoExperiencia(player) {
+  const level = finite(player.level) ? player.level : null;
+  const xp = finite(player.experience) ? player.experience : null;
+  if (level === null || xp === null || xp < 0) return null;
+  if (level >= XP_MAX_LEVEL) return { pct: 100, xp, need: 0, level };
+
+  const need = xpParaSubir(level);
+  if (need <= 0) return { pct: 100, xp, need: 0, level };
+
+  let modo = XP_MODE;
+  if (modo === 'auto') {
+    const cuadraComoTotal = nivelPorXp(xp) === level;
+    // Si el número entra en el nivel actual, se toma como avance del nivel;
+    // si además cuadra como total, gana la lectura de avance (es la habitual).
+    modo = xp < need ? 'nivel' : cuadraComoTotal ? 'total' : 'nivel';
+  }
+
+  let dentro = xp;
+  if (modo === 'total') dentro = Math.max(0, xp - xpAcumulada(level));
+  const pct = Math.max(0, Math.min(100, (dentro / need) * 100));
+  return { pct, xp: Math.round(dentro), need, level };
+}
+
 function createPlayerRow(player) {
   const row = document.createElement('article');
   row.className = 'player-row';
 
   const spells = document.createElement('div');
   spells.className = 'icon-stack spell-stack';
-  const spellD = assetWithFallback('spell-icon', 'D');
-  const spellF = assetWithFallback('spell-icon', 'F');
+  const spellD = assetWithFallback('spell-icon', '');
+  const spellF = assetWithFallback('spell-icon', '');
   const cooldownD = document.createElement('span');
   const cooldownF = document.createElement('span');
   cooldownD.className = 'cooldown';
@@ -196,6 +799,36 @@ function createPlayerRow(player) {
   info.className = 'player-info';
   const name = document.createElement('strong');
   name.className = 'player-name';
+
+  // Misión de rol en columna propia, entre el nombre y las estadísticas:
+  // icono oficial de la posición sobre una barra de progreso, que se sustituye
+  // por una palomita al cumplirse. Si el icono no carga queda la inicial.
+  const quest = document.createElement('div');
+  quest.className = 'player-quest';
+  const questSlot = document.createElement('span');
+  questSlot.className = 'quest-slot';
+  const questIcon = document.createElement('img');
+  questIcon.className = 'quest-icon';
+  questIcon.alt = '';
+  const questLetter = document.createElement('span');
+  questLetter.className = 'quest-letter';
+  questLetter.hidden = true;
+  wireImageFallback(questIcon, questLetter);
+  // Mismo numerito que lucen las wards y demás objetos del inventario.
+  const questCount = document.createElement('span');
+  questCount.className = 'quest-count';
+  questCount.hidden = true;
+  questSlot.append(questIcon, questLetter, questCount);
+  const questTrack = document.createElement('span');
+  questTrack.className = 'quest-track';
+  const questFill = document.createElement('span');
+  questTrack.append(questFill);
+  const questCheck = document.createElement('span');
+  questCheck.className = 'quest-check';
+  questCheck.textContent = '✓';
+  questCheck.setAttribute('aria-hidden', 'true');
+  quest.append(questSlot, questTrack, questCheck);
+
   const championName = document.createElement('span');
   championName.className = 'champion-name';
   const bars = document.createElement('div');
@@ -208,7 +841,12 @@ function createPlayerRow(player) {
   resourceBar.className = 'bar bar-resource';
   const resourceFill = document.createElement('span');
   resourceBar.append(resourceFill);
-  bars.append(healthBar, resourceBar);
+  // Tercera barra: la experiencia hacia el siguiente nivel.
+  const xpBar = document.createElement('div');
+  xpBar.className = 'bar bar-xp';
+  const xpFill = document.createElement('span');
+  xpBar.append(xpFill);
+  bars.append(healthBar, resourceBar, xpBar);
   info.append(name, championName, bars);
 
   const kda = document.createElement('span');
@@ -218,6 +856,7 @@ function createPlayerRow(player) {
   const stats = document.createElement('div');
   stats.className = 'player-stats';
   stats.append(cs, kda);
+
   const items = document.createElement('div');
   items.className = 'items';
   const itemSlots = Array.from({ length: 7 }, (_, index) => {
@@ -238,27 +877,118 @@ function createPlayerRow(player) {
   const visualSlots = player.team === 1 ? [...itemSlots].reverse() : itemSlots;
   for (const slot of visualSlots) items.append(slot.slot);
 
-  row.append(spells, runes, championWrap, info, stats, items);
+  row.append(spells, runes, championWrap, info, quest, stats, items);
   return {
     row, spellD, spellF, cooldownD, cooldownF, primaryRune, secondaryRune,
     champion, championFallback, level, name, championName, healthFill,
-    resourceBar, resourceFill, kda, cs, itemSlots
+    resourceBar, resourceFill, xpBar, xpFill, kda, cs, itemSlots,
+    quest, questIcon, questLetter, questCount, questFill, questCheck
   };
 }
 
-function updateSpell(asset, cooldownElement, spell, key) {
+// El castigo tiene tres caras y el cliente no siempre manda el icono de la
+// etapa actual: se resuelve con los tratos que le faltan a la mascota.
+const SMITE_ICON_BY_STAGE = {
+  smite: './assets/spells/summoner_smite.png',
+  unleashed: './assets/spells/unleashed_smite.png'
+};
+// La última etapa toma el color del objeto de jungla comprado.
+const SMITE_PRIMAL_BY_PET = {
+  1101: './assets/spells/1101_smite.png', // Garra ígnea (rojo)
+  1102: './assets/spells/1102_smite.png', // Caminabrisas (azul)
+  1103: './assets/spells/1103_smite.png'  // Brincamontes (verde)
+};
+
+function smiteIconFile(spell, quest) {
+  const icon = String(spell?.icon || '').toLowerCase();
+  const bag = `${spell?.name || ''} ${icon}`.toLowerCase();
+  if (!/smite|castigo|aplastar/.test(bag)) return null;
+  // Si la mascota ya se consumió, el objeto desaparece del inventario y el
+  // propio icono del cliente (1101/1102/1103) dice cuál era.
+  const iconPetId = Number((icon.match(/^(11\d\d)_smite/) || [])[1]) || null;
+  // Al llegar a 0 la mascota se consume y con ella el objeto: la misión de
+  // jungla queda cumplida, así que la última etapa se deduce de ahí.
+  const finished = quest?.role === 'jungle' && quest?.done === true;
+  const stage = quest?.smiteStage || (finished || iconPetId ? 'primal' : null);
+  if (!stage) return null;
+  if (stage === 'primal') {
+    const petId = finite(quest?.petId) ? quest.petId
+      : finite(quest?.lastPetId) ? quest.lastPetId
+      : iconPetId;
+    return SMITE_PRIMAL_BY_PET[petId] || SMITE_PRIMAL_BY_PET[1101];
+  }
+  return SMITE_ICON_BY_STAGE[stage] || null;
+}
+
+function updateSpell(asset, cooldownElement, spell, key, quest) {
   const remaining = finite(spell?.remaining) ? spell.remaining : 0;
   const spellName = spell?.name || null;
+  const localSmiteIcon = smiteIconFile(spell, quest);
   setImage(
     asset.img,
-    spellName ? activeCatalog.spellUrls(spellName, spell?.icon) : null,
+    localSmiteIcon || (spellName ? activeCatalog.spellUrls(spellName, spell?.icon) : null),
     spellName ? activeCatalog.spellName(spellName) : `Hechizo ${key.toUpperCase()}`,
     asset.fallback,
-    key.toUpperCase()
+    // Sin letra de respaldo: si el icono no está publicado, el hueco queda
+    // vacío en vez de mostrar una «D» o una «F» que no significa nada.
+    ''
   );
   asset.wrap.title = spellName ? activeCatalog.spellName(spellName) : `Hechizo ${key.toUpperCase()}`;
   cooldownElement.hidden = remaining <= 0.05;
   if (remaining > 0.05) setText(cooldownElement, Math.ceil(remaining));
+}
+
+const QUEST_ROLE_LABELS = {
+  top: { short: 'T', name: 'Calle superior', icon: './assets/ui/role-top.png' },
+  jungle: { short: 'J', name: 'Jungla', icon: './assets/ui/role-jungle.png' },
+  mid: { short: 'M', name: 'Calle central', icon: './assets/ui/role-mid.png' },
+  bot: { short: 'B', name: 'Calle inferior', icon: './assets/ui/role-bot.png' },
+  support: { short: 'S', name: 'Apoyo', icon: './assets/ui/role-support.png' }
+};
+
+function updatePlayerQuest(refs, quest) {
+  const role = quest?.role;
+  const label = QUEST_ROLE_LABELS[role];
+  refs.quest.hidden = !label;
+  if (!label) {
+    refs.quest.removeAttribute('title');
+    return;
+  }
+
+  const done = quest.done === true;
+  const known = finite(quest.value) && finite(quest.max) && quest.max > 0;
+  refs.quest.classList.toggle('done', done);
+  // Jungla y apoyo no publican progreso: se oculta la barra en vez de pintar
+  // un relleno inventado.
+  refs.quest.classList.toggle('no-progress', !known);
+
+  if (refs.questIcon.dataset.role !== role) {
+    refs.questIcon.dataset.role = role;
+    refs.questIcon._failed = false;
+    refs.questIcon.hidden = false;
+    refs.questIcon.src = label.icon;
+  }
+  setText(refs.questLetter, label.short);
+
+  // Contador propio del objeto (jungla y apoyo): se pinta igual que el de un
+  // objeto del inventario, sin interpretarlo como porcentaje.
+  const count = finite(quest.count) ? quest.count : null;
+  refs.questCount.hidden = count === null;
+  if (count !== null) setText(refs.questCount, count);
+
+  if (!done && known) {
+    const percent = Math.max(0, Math.min(100, (quest.value / quest.max) * 100));
+    refs.questFill.style.width = `${percent}%`;
+  }
+
+  refs.quest.title = done
+    ? `Misión de rol cumplida (${label.name})`
+    : known
+      ? `Misión de rol de ${label.name} · ${quest.value}/${quest.max}`
+      : count !== null
+        ? `Misión de rol de ${label.name} · contador del objeto: ${count}`
+        : `Misión de rol de ${label.name} · el juego no publica el progreso`;
+  refs.quest.setAttribute('aria-label', refs.quest.title);
 }
 
 function updatePlayerRow(refs, player) {
@@ -279,8 +1009,14 @@ function updatePlayerRow(refs, player) {
     (player.champion || '?').slice(0, 1)
   );
 
-  updateSpell(refs.spellD, refs.cooldownD, player.spells?.d, 'd');
-  updateSpell(refs.spellF, refs.cooldownF, player.spells?.f, 'f');
+  // Se recuerda el objeto de jungla visto para conservar el color del castigo
+  // cuando el juego lo consume al completar la misión.
+  if (finite(player.quest?.petId)) refs.lastPetId = player.quest.petId;
+  const questForSpells = player.quest
+    ? { ...player.quest, lastPetId: refs.lastPetId ?? null }
+    : null;
+  updateSpell(refs.spellD, refs.cooldownD, player.spells?.d, 'd', questForSpells);
+  updateSpell(refs.spellF, refs.cooldownF, player.spells?.f, 'f', questForSpells);
 
   const runeIds = Array.isArray(player.runes) ? player.runes : [];
   const primaryId = runeIds[0];
@@ -306,11 +1042,24 @@ function updatePlayerRow(refs, player) {
   refs.resourceBar.hidden = !hasResource;
   if (hasResource) setBar(refs.resourceFill, player.resource.current, player.resource.max);
 
+  // Experiencia: sin dato no se dibuja nada, no se inventa el avance.
+  const xp = MOSTRAR_BARRA_XP ? progresoExperiencia(player) : null;
+  refs.xpBar.hidden = !xp;
+  if (xp) {
+    refs.xpFill.style.transform = `scaleX(${Math.max(0, Math.min(1, xp.pct / 100))})`;
+    refs.xpBar.title = xp.need > 0
+      ? `Experiencia ${xp.xp} / ${xp.need} · nivel ${xp.level}`
+      : `Experiencia · nivel ${xp.level} (máximo)`;
+    refs.xpBar.classList.toggle('is-full', xp.pct >= 100);
+  }
+
   const kills = finite(player.kda?.kills) ? player.kda.kills : '—';
   const deaths = finite(player.kda?.deaths) ? player.kda.deaths : '—';
   const assists = finite(player.kda?.assists) ? player.kda.assists : '—';
   setText(refs.kda, `${kills}/${deaths}/${assists}`);
   setText(refs.cs, finite(player.cs?.total) ? player.cs.total : '—');
+
+  updatePlayerQuest(refs, player.quest);
 
   const items = Array.isArray(player.items) ? player.items : [];
   refs.itemSlots.forEach((slot, index) => {
@@ -392,6 +1141,25 @@ function renderObjective(kind, element, state) {
   element.hidden = !camp && !objectives.active?.[kind];
 }
 
+// El dragón usa como icono el tipo que corresponde: el del dragón vivo en el
+// pozo o, si aún no ha salido, el del próximo en aparecer.
+function renderDragonObjective(state) {
+  const element = byId('objective-dragon');
+  if (!element) return;
+  const objectives = state.objectives || {};
+  const active = Boolean(objectives.active?.dragon);
+  const type = active
+    ? objectives.dragonType || objectives.upcomingDragonType
+    : objectives.upcomingDragonType;
+  const icon = byId('objective-dragon-icon');
+  if (icon) {
+    const source = dragonIconSource(type);
+    if (icon.getAttribute('src') !== source) icon.src = source;
+    icon.title = type ? `Dragón: ${type}` : 'Próximo dragón';
+  }
+  renderObjective('dragon', element, state);
+}
+
 function renderSecondaryObjective(state) {
   const element = byId('objective-secondary');
   const objectives = state.objectives || {};
@@ -404,7 +1172,6 @@ function renderSecondaryObjective(state) {
     element.hidden = true;
     return;
   }
-  setText(element.querySelector('small'), labels[kind]);
   const icon = byId('objective-secondary-icon');
   const iconName = SECONDARY_OBJECTIVE_ICONS[kind];
   icon.hidden = !iconName;
@@ -422,16 +1189,12 @@ function renderGoldMatchups(bluePlayers, redPlayers) {
   while (container.children.length < 5) {
     const row = document.createElement('div');
     row.className = 'matchup-row';
-    const blue = document.createElement('span');
-    blue.className = 'individual-gold blue';
     const difference = document.createElement('span');
     difference.className = 'lane-difference';
     const role = document.createElement('small');
     const value = document.createElement('strong');
     difference.append(role, value);
-    const red = document.createElement('span');
-    red.className = 'individual-gold red';
-    row.append(blue, difference, red);
+    row.append(difference);
     container.append(row);
   }
 
@@ -442,8 +1205,6 @@ function renderGoldMatchups(bluePlayers, redPlayers) {
     if (row.hidden) return;
     const blueGold = bluePlayer?.gold?.total;
     const redGold = redPlayer?.gold?.total;
-    setText(row.querySelector('.individual-gold.blue'), formatGold(blueGold));
-    setText(row.querySelector('.individual-gold.red'), formatGold(redGold));
     setText(row.querySelector('small'), roleLabels[index] || 'LINEA');
     const differenceElement = row.querySelector('strong');
     differenceElement.classList.remove('advantage-blue', 'advantage-red');
@@ -486,7 +1247,6 @@ function renderDragonHistory(prefix, objectives) {
 function renderSeries(score) {
   const candidate = String(score?.format || 'BO1').toUpperCase();
   const format = ['BO1', 'BO3', 'BO5'].includes(candidate) ? candidate : 'BO1';
-  const visible = format !== 'BO1';
   const maxWins = format === 'BO5' ? 3 : format === 'BO3' ? 2 : 1;
   const totalGames = maxWins * 2 - 1;
   const wins = {};
@@ -494,9 +1254,16 @@ function renderSeries(score) {
   for (const prefix of ['blue', 'red']) {
     const element = byId(`${prefix}-series-score`);
     wins[prefix] = Math.min(maxWins, Math.max(0, Math.floor(numberOr(score?.[prefix], 0))));
-    setText(element, wins[prefix]);
-    element.hidden = !visible;
-    element.setAttribute('aria-label', `${wins[prefix]} victorias en la serie`);
+    // Un cuadro por victoria necesaria: BO1 → 1, BO3 → 2, BO5 → 3. Los ganados
+    // van rellenos con el color del equipo.
+    while (element.children.length < maxWins) element.append(document.createElement('i'));
+    while (element.children.length > maxWins) element.lastElementChild.remove();
+    [...element.children].forEach((pip, index) => {
+      pip.className = `series-pip ${prefix}${index < wins[prefix] ? ' filled' : ''}`;
+    });
+    element.hidden = false;
+    element.title = `${wins[prefix]} de ${maxWins} victorias en la serie`;
+    element.setAttribute('aria-label', `${wins[prefix]} de ${maxWins} victorias en la serie`);
   }
   const seriesComplete = wins.blue >= maxWins || wins.red >= maxWins;
   const gameNumber = Math.min(wins.blue + wins.red + 1, totalGames);
@@ -527,12 +1294,22 @@ function renderTeams(teams) {
   setText(byId('blue-towers'), blueTowers);
   setText(byId('red-towers'), redTowers);
 
+  // La ventaja de oro se muestra debajo del oro del equipo que la tiene; el
+  // otro lado queda sin marca. Si van empatados, no se muestra en ninguno.
+  const blueLead = byId('blue-gold-lead');
+  const redLead = byId('red-gold-lead');
   if (finite(blue.totalGold) && finite(red.totalGold)) {
     const difference = blue.totalGold - red.totalGold;
-    const leader = difference > 0 ? 'AZUL' : difference < 0 ? 'ROJO' : '';
-    setText(byId('gold-lead'), leader ? `${leader} +${formatGold(Math.abs(difference))}` : '±0.0K');
+    const amount = difference === 0 ? '' : `+${formatGold(Math.abs(difference))}`;
+    blueLead.hidden = difference <= 0;
+    redLead.hidden = difference >= 0;
+    if (difference !== 0) {
+      setText(blueLead, amount);
+      setText(redLead, amount);
+    }
   } else {
-    setText(byId('gold-lead'), '—');
+    blueLead.hidden = true;
+    redLead.hidden = true;
   }
 }
 
@@ -543,19 +1320,14 @@ export function renderIngameState(state, catalog) {
   const players = Array.isArray(state.players) ? state.players : [];
   renderTeams(teams);
   renderTeamIdentities(state.info);
+  renderPatch(catalog);
   renderSeries(state.score);
+  renderRuneIntro(state, catalog);
+  renderFight(state, catalog);
   setText(byId('game-time'), formatTime(state.meta?.gameTime));
 
-  renderObjective('dragon', byId('objective-dragon'), state);
+  renderDragonObjective(state);
   renderSecondaryObjective(state);
-  const dragonType = state.objectives?.upcomingDragonType;
-  const dragonTypeIcon = byId('objective-dragon-type');
-  dragonTypeIcon.hidden = !DRAGON_ICONS[dragonType];
-  if (!dragonTypeIcon.hidden) {
-    const src = dragonIconSource(dragonType);
-    if (dragonTypeIcon.getAttribute('src') !== src) dragonTypeIcon.src = src;
-    dragonTypeIcon.title = `Próximo dragón: ${dragonType}`;
-  }
 
   const blueContainer = byId('blue-players');
   const redContainer = byId('red-players');

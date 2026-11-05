@@ -1,0 +1,589 @@
+{
+  "schemaVersion": 1,
+  "gameId": "1760392126",
+  "source": "lcu-end-of-game",
+  "capturedAt": "2026-11-04T20:42:33.492Z",
+  "gameCreation": null,
+  "gameDuration": 1304,
+  "gameNumber": 1,
+  "format": "BO3",
+  "info": {
+    "tournament": "GAMEGROUNDS",
+    "blue": "UPA ESPORTS",
+    "red": "ANAHUAC MAYAB",
+    "blueShort": "UPA",
+    "redShort": "AMY",
+    "blueLogo": "/uploads/blue-1793563196018.png",
+    "redLogo": "/uploads/red-1793563200939.png",
+    "logo": "https://i.postimg.cc/GTPr1MVF/Gamergrounds-isotipo-Mesa-de-trabajo-1-copia-15.png",
+    "bg": ""
+  },
+  "sideTeams": null,
+  "winner": "blue",
+  "teams": {
+    "blue": {
+      "side": "blue",
+      "result": "VICTORIA",
+      "kills": 0,
+      "players": [
+        {
+          "participantId": null,
+          "player": "Manolo Melenas",
+          "championId": 31,
+          "champion": "Cho'Gath",
+          "championAlias": "Chogath",
+          "role": "",
+          "teamId": 100,
+          "win": true,
+          "kda": {
+            "kills": 0,
+            "deaths": 0,
+            "assists": 0
+          },
+          "damage": {
+            "champions": 0,
+            "total": 15276,
+            "taken": 457,
+            "mitigated": 426,
+            "physical": 0,
+            "magic": 0,
+            "true": 0
+          },
+          "healing": 371,
+          "cs": 10,
+          "gold": 82977,
+          "vision": {
+            "score": 0,
+            "wardsPlaced": 0,
+            "wardsKilled": 0,
+            "controlWards": 0
+          },
+          "items": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "spells": [
+            4,
+            12
+          ],
+          "runes": [
+            null,
+            null
+          ],
+          "level": 18,
+          "timeCCingOthers": 0,
+          "turretKills": 0,
+          "inhibitorKills": 0,
+          "objectivesStolen": 0
+        },
+        {
+          "participantId": null,
+          "player": "Ziggs",
+          "championId": 115,
+          "champion": "Ziggs",
+          "championAlias": "Ziggs",
+          "role": "",
+          "teamId": 100,
+          "win": true,
+          "kda": {
+            "kills": 0,
+            "deaths": 2,
+            "assists": 0
+          },
+          "damage": {
+            "champions": 2269,
+            "total": 8625,
+            "taken": 6019,
+            "mitigated": 1833,
+            "physical": 829,
+            "magic": 1440,
+            "true": 0
+          },
+          "healing": 1576,
+          "cs": 9,
+          "gold": 2926,
+          "vision": {
+            "score": 0,
+            "wardsPlaced": 0,
+            "wardsKilled": 0,
+            "controlWards": 1
+          },
+          "items": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "spells": [
+            4,
+            12
+          ],
+          "runes": [
+            null,
+            null
+          ],
+          "level": 8,
+          "timeCCingOthers": 10,
+          "turretKills": 0,
+          "inhibitorKills": 0,
+          "objectivesStolen": 0
+        },
+        {
+          "participantId": null,
+          "player": "KogMaw",
+          "championId": 96,
+          "champion": "Kog'Maw",
+          "championAlias": "KogMaw",
+          "role": "",
+          "teamId": 100,
+          "win": true,
+          "kda": {
+            "kills": 0,
+            "deaths": 0,
+            "assists": 0
+          },
+          "damage": {
+            "champions": 1891,
+            "total": 11138,
+            "taken": 4720,
+            "mitigated": 2188,
+            "physical": 1440,
+            "magic": 450,
+            "true": 0
+          },
+          "healing": 2224,
+          "cs": 20,
+          "gold": 3417,
+          "vision": {
+            "score": 0,
+            "wardsPlaced": 0,
+            "wardsKilled": 0,
+            "controlWards": 1
+          },
+          "items": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "spells": [
+            21,
+            4
+          ],
+          "runes": [
+            null,
+            null
+          ],
+          "level": 9,
+          "timeCCingOthers": 3,
+          "turretKills": 0,
+          "inhibitorKills": 0,
+          "objectivesStolen": 0
+        },
+        {
+          "participantId": null,
+          "player": "Vex",
+          "championId": 711,
+          "champion": "Vex",
+          "championAlias": "Vex",
+          "role": "",
+          "teamId": 100,
+          "win": true,
+          "kda": {
+            "kills": 0,
+            "deaths": 1,
+            "assists": 0
+          },
+          "damage": {
+            "champions": 2236,
+            "total": 25838,
+            "taken": 5466,
+            "mitigated": 1997,
+            "physical": 657,
+            "magic": 1419,
+            "true": 160
+          },
+          "healing": 1799,
+          "cs": 28,
+          "gold": 3719,
+          "vision": {
+            "score": 0,
+            "wardsPlaced": 0,
+            "wardsKilled": 0,
+            "controlWards": 1
+          },
+          "items": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "spells": [
+            4,
+            14
+          ],
+          "runes": [
+            null,
+            null
+          ],
+          "level": 7,
+          "timeCCingOthers": 8,
+          "turretKills": 0,
+          "inhibitorKills": 0,
+          "objectivesStolen": 0
+        },
+        {
+          "participantId": null,
+          "player": "Veigar",
+          "championId": 45,
+          "champion": "Veigar",
+          "championAlias": "Veigar",
+          "role": "",
+          "teamId": 100,
+          "win": true,
+          "kda": {
+            "kills": 0,
+            "deaths": 1,
+            "assists": 0
+          },
+          "damage": {
+            "champions": 2049,
+            "total": 13628,
+            "taken": 5117,
+            "mitigated": 1613,
+            "physical": 715,
+            "magic": 1334,
+            "true": 0
+          },
+          "healing": 1780,
+          "cs": 16,
+          "gold": 3899,
+          "vision": {
+            "score": 1,
+            "wardsPlaced": 0,
+            "wardsKilled": 0,
+            "controlWards": 0
+          },
+          "items": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "spells": [
+            4,
+            14
+          ],
+          "runes": [
+            null,
+            null
+          ],
+          "level": 6,
+          "timeCCingOthers": 16,
+          "turretKills": 0,
+          "inhibitorKills": 0,
+          "objectivesStolen": 0
+        }
+      ]
+    },
+    "red": {
+      "side": "red",
+      "result": "DERROTA",
+      "kills": 4,
+      "players": [
+        {
+          "participantId": null,
+          "player": "Maokai",
+          "championId": 57,
+          "champion": "Maokai",
+          "championAlias": "Maokai",
+          "role": "",
+          "teamId": 200,
+          "win": false,
+          "kda": {
+            "kills": 1,
+            "deaths": 0,
+            "assists": 0
+          },
+          "damage": {
+            "champions": 1008,
+            "total": 36978,
+            "taken": 5248,
+            "mitigated": 2141,
+            "physical": 329,
+            "magic": 679,
+            "true": 0
+          },
+          "healing": 3614,
+          "cs": 26,
+          "gold": 3730,
+          "vision": {
+            "score": 1,
+            "wardsPlaced": 0,
+            "wardsKilled": 0,
+            "controlWards": 1
+          },
+          "items": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "spells": [
+            4,
+            11
+          ],
+          "runes": [
+            null,
+            null
+          ],
+          "level": 7,
+          "timeCCingOthers": 10,
+          "turretKills": 0,
+          "inhibitorKills": 0,
+          "objectivesStolen": 0
+        },
+        {
+          "participantId": null,
+          "player": "Mordekaiser",
+          "championId": 82,
+          "champion": "Mordekaiser",
+          "championAlias": "Mordekaiser",
+          "role": "",
+          "teamId": 200,
+          "win": false,
+          "kda": {
+            "kills": 1,
+            "deaths": 0,
+            "assists": 0
+          },
+          "damage": {
+            "champions": 3087,
+            "total": 31650,
+            "taken": 3838,
+            "mitigated": 2527,
+            "physical": 1065,
+            "magic": 1596,
+            "true": 425
+          },
+          "healing": 1358,
+          "cs": 43,
+          "gold": 4329,
+          "vision": {
+            "score": 0,
+            "wardsPlaced": 0,
+            "wardsKilled": 0,
+            "controlWards": 1
+          },
+          "items": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "spells": [
+            4,
+            14
+          ],
+          "runes": [
+            null,
+            null
+          ],
+          "level": 10,
+          "timeCCingOthers": 5,
+          "turretKills": 1,
+          "inhibitorKills": 0,
+          "objectivesStolen": 0
+        },
+        {
+          "participantId": null,
+          "player": "Malphite",
+          "championId": 54,
+          "champion": "Malphite",
+          "championAlias": "Malphite",
+          "role": "",
+          "teamId": 200,
+          "win": false,
+          "kda": {
+            "kills": 0,
+            "deaths": 0,
+            "assists": 2
+          },
+          "damage": {
+            "champions": 3748,
+            "total": 20007,
+            "taken": 2008,
+            "mitigated": 4726,
+            "physical": 790,
+            "magic": 2531,
+            "true": 427
+          },
+          "healing": 464,
+          "cs": 25,
+          "gold": 4905,
+          "vision": {
+            "score": 0,
+            "wardsPlaced": 0,
+            "wardsKilled": 0,
+            "controlWards": 2
+          },
+          "items": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "spells": [
+            4,
+            14
+          ],
+          "runes": [
+            null,
+            null
+          ],
+          "level": 9,
+          "timeCCingOthers": 10,
+          "turretKills": 2,
+          "inhibitorKills": 0,
+          "objectivesStolen": 0
+        },
+        {
+          "participantId": null,
+          "player": "Volibear",
+          "championId": 106,
+          "champion": "Volibear",
+          "championAlias": "Volibear",
+          "role": "",
+          "teamId": 200,
+          "win": false,
+          "kda": {
+            "kills": 1,
+            "deaths": 0,
+            "assists": 0
+          },
+          "damage": {
+            "champions": 2950,
+            "total": 14760,
+            "taken": 3875,
+            "mitigated": 2004,
+            "physical": 309,
+            "magic": 2640,
+            "true": 0
+          },
+          "healing": 1568,
+          "cs": 31,
+          "gold": 4904,
+          "vision": {
+            "score": 2,
+            "wardsPlaced": 1,
+            "wardsKilled": 0,
+            "controlWards": 1
+          },
+          "items": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "spells": [
+            4,
+            11
+          ],
+          "runes": [
+            null,
+            null
+          ],
+          "level": 8,
+          "timeCCingOthers": 8,
+          "turretKills": 0,
+          "inhibitorKills": 0,
+          "objectivesStolen": 0
+        },
+        {
+          "participantId": null,
+          "player": "Sion",
+          "championId": 14,
+          "champion": "Sion",
+          "championAlias": "Sion",
+          "role": "",
+          "teamId": 200,
+          "win": false,
+          "kda": {
+            "kills": 1,
+            "deaths": 0,
+            "assists": 0
+          },
+          "damage": {
+            "champions": 3279,
+            "total": 59363,
+            "taken": 3298,
+            "mitigated": 2858,
+            "physical": 2053,
+            "magic": 1225,
+            "true": 0
+          },
+          "healing": 778,
+          "cs": 94,
+          "gold": 5820,
+          "vision": {
+            "score": 0,
+            "wardsPlaced": 0,
+            "wardsKilled": 0,
+            "controlWards": 1
+          },
+          "items": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "spells": [
+            4,
+            12
+          ],
+          "runes": [
+            null,
+            null
+          ],
+          "level": 11,
+          "timeCCingOthers": 5,
+          "turretKills": 1,
+          "inhibitorKills": 0,
+          "objectivesStolen": 0
+        }
+      ]
+    }
+  }
+}

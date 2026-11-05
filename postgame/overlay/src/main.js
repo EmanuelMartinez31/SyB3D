@@ -3,7 +3,7 @@
 
 import { loadCatalog } from './catalog.js';
 import { renderPostgame } from './render.js';
-import { createPostgameModels } from './models.js';
+import { createPostgameModels, cargarAjustesDeEscala } from './models.js';
 
 // ============================================================================
 // 1. ESTADO DE LA PANTALLA
@@ -99,6 +99,8 @@ async function start() {
   resizeStage();
   addEventListener('resize', resizeStage);
   catalog = await loadCatalog();
+  // Ajustes de tamaño por campeón fijados desde ajustar-modelos.html.
+  await cargarAjustesDeEscala();
   models = createPostgameModels(document.getElementById('webgl'));
   window.__postgameDebug = () => ({
     visible: !stage.hidden,

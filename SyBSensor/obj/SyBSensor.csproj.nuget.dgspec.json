@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "F:\\Streams\\OBS\\Broadcast\\SyBSensor\\SyBSensor.csproj": {}
+    "F:\\Streams\\OBS\\Broadcast\\SyB3D+HUD\\SyBSensor\\SyBSensor.csproj": {}
   },
   "projects": {
-    "F:\\Streams\\OBS\\Broadcast\\SyBSensor\\SyBSensor.csproj": {
+    "F:\\Streams\\OBS\\Broadcast\\SyB3D+HUD\\SyBSensor\\SyBSensor.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "F:\\Streams\\OBS\\Broadcast\\SyBSensor\\SyBSensor.csproj",
+        "projectUniqueName": "F:\\Streams\\OBS\\Broadcast\\SyB3D+HUD\\SyBSensor\\SyBSensor.csproj",
         "projectName": "SyBSensor",
-        "projectPath": "F:\\Streams\\OBS\\Broadcast\\SyBSensor\\SyBSensor.csproj",
+        "projectPath": "F:\\Streams\\OBS\\Broadcast\\SyB3D+HUD\\SyBSensor\\SyBSensor.csproj",
         "packagesPath": "C:\\Users\\31ema\\.nuget\\packages\\",
-        "outputPath": "F:\\Streams\\OBS\\Broadcast\\SyBSensor\\obj\\",
+        "outputPath": "F:\\Streams\\OBS\\Broadcast\\SyB3D+HUD\\SyBSensor\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\31ema\\AppData\\Roaming\\NuGet\\NuGet.Config"

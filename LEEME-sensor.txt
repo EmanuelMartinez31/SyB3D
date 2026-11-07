@@ -1,0 +1,42 @@
+SENSOR DENTRO DEL PROYECTO · 2 ARCHIVOS
+========================================
+
+Copia estos dos archivos sobre la raíz del proyecto:
+  F:\Streams\OBS\Broadcast\SyB3D+HUD
+
+  iniciar.bat   <- busca el sensor dentro o al lado (antes solo al lado)
+  LEEME.txt     <- instrucción actualizada
+
+Y mueve la carpeta del sensor dentro:
+  F:\Streams\OBS\Broadcast\SyB3D+HUD\SyBSensor
+
+Antes de moverlo:
+  · cierra la ventana del sensor (Windows bloquea los archivos si está abierto);
+  · después de moverlo, BORRA las carpetas bin y obj que haya dentro de
+    SyBSensor. Guardan rutas del sitio viejo y «dotnet run» puede fallar con
+    errores raros;
+  · que no queden dos copias del sensor: dos sensores enviando a la vez meten
+    snapshots duplicados en el ingame.
+
+Nada más hay que tocar. El proyecto no sabe dónde vive el sensor: todo va por
+HTTP a http://localhost:3000/sensor, y el panel lo vigila por /status. Los
+overlays, OBS, el draft, el ingame, la postpartida y la cinemática funcionan
+igual con el sensor dentro o fuera.
+
+QUÉ HACE EL iniciar.bat NUEVO
+-----------------------------
+Busca el sensor en este orden y se queda con el primero que encuentre:
+
+  SyB3D+HUD\SyBSensor
+  SyB3D+HUD\SyBSensor\SyBSensor
+  ..\SyBSensor
+  ..\SyBSensor\SyBSensor
+
+Si encuentra un SyBSensor.csproj, lo arranca con «dotnet run» (como antes).
+Si encuentra un SyBSensor.exe, abre ese ejecutable.
+Y si no encuentra nada, avisa y sigue: el servidor arranca igual, solo no abre
+el sensor.
+
+En la ventana se ve una línea «SyBSensor encontrado en: ...» para que sepas qué
+carpeta usó. Si esa ruta no es la que esperabas, es que quedó una copia vieja
+en otro sitio.

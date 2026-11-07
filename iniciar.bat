@@ -25,26 +25,52 @@ if errorlevel 1 (
 )
 
 :iniciar
+rem ---------------------------------------------------------------------------
+rem SyBSensor se busca primero DENTRO de este proyecto y despues al lado, asi
+rem funciona tanto si la carpeta esta en SyB3D+HUD\SyBSensor como si sigue
+rem siendo vecina (SyBSensor junto a SyB3D+HUD). Tambien se admite que el
+rem proyecto .NET este un nivel mas abajo (SyBSensor\SyBSensor).
+rem ---------------------------------------------------------------------------
 set "SENSOR_DIR="
-if exist "%~dp0..\SyBSensor\SyBSensor.csproj" set "SENSOR_DIR=%~dp0..\SyBSensor"
-if exist "%~dp0..\SyBSensor\SyBSensor\SyBSensor.csproj" set "SENSOR_DIR=%~dp0..\SyBSensor\SyBSensor"
-if not defined SENSOR_DIR goto sensor_listo
-where dotnet >nul 2>&1
-if errorlevel 1 (
-  echo [AVISO] No se encontro dotnet; SyBSensor no se inicio automaticamente.
+set "SENSOR_CS="
+set "SENSOR_EXE="
+for %%R in (
+  "%~dp0SyBSensor"
+  "%~dp0SyBSensor\SyBSensor"
+  "%~dp0..\SyBSensor"
+  "%~dp0..\SyBSensor\SyBSensor"
+) do (
+  if not defined SENSOR_DIR (
+    if exist "%%~R\SyBSensor.csproj" (
+      set "SENSOR_DIR=%%~R"
+      set "SENSOR_CS=1"
+    ) else (
+      if exist "%%~R\SyBSensor.exe" (
+        set "SENSOR_DIR=%%~R"
+        set "SENSOR_EXE=1"
+      )
+    )
+  )
+)
+if not defined SENSOR_DIR (
+  echo [AVISO] No se encontro la carpeta de SyBSensor.
+  echo         Se busco en: SyB3D+HUD\SyBSensor y en la carpeta de al lado.
+  echo         Arranca el sensor a mano; el overlay lo recibira igual.
   goto sensor_listo
 )
-
-rem Aviso si LeagueBroadcast tiene una lblib mas nueva que la ya compilada.
-set "LB_LBLIB=%LOCALAPPDATA%\LeagueBroadcast\current\lblib.dll"
-set "BIN_LBLIB=%SENSOR_DIR%\bin\Release\net10.0-windows\lblib.dll"
-if exist "%LB_LBLIB%" if exist "%BIN_LBLIB%" (
-  for /f %%A in ('powershell -NoProfile -Command "if ((Get-Item '%LB_LBLIB%').LastWriteTime -gt (Get-Item '%BIN_LBLIB%').LastWriteTime) { 'SI' } else { 'NO' }"') do set "LBLIB_VIEJA=%%A"
-  if /I "%LBLIB_VIEJA%"=="SI" echo [AVISO] LeagueBroadcast tiene una lblib mas nueva; se actualizara al compilar.
+echo SyBSensor encontrado en: %SENSOR_DIR%
+if defined SENSOR_EXE goto sensor_exe
+where dotnet >nul 2>&1
+if errorlevel 1 (
+  echo [AVISO] No se encontro dotnet; el sensor no se inicio automaticamente.
+  goto sensor_listo
 )
-
 echo Iniciando SyBSensor en su propia ventana...
 start "SyBSensor" /D "%SENSOR_DIR%" cmd /k "timeout /t 2 /nobreak >nul && dotnet run"
+goto sensor_listo
+:sensor_exe
+echo Iniciando SyBSensor en su propia ventana...
+start "SyBSensor" /D "%SENSOR_DIR%" cmd /k "SyBSensor.exe"
 :sensor_listo
 
 if exist "draft\models" goto modelos_listos

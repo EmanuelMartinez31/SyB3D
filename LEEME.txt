@@ -10,9 +10,13 @@ INSTALACIÓN
    F:\Streams\OBS\Broadcast\SyB3D
    iniciar.bat copiará automáticamente su carpeta models a SyB3D+HUD\draft\models.
    Después de esa copia, la carpeta unificada tendrá sus propios modelos 3D.
-3. Conserva SyBSensor como carpeta vecina:
-   F:\Streams\OBS\Broadcast\SyBSensor
-   El proyecto puede estar directamente ahí o dentro de SyBSensor\SyBSensor.
+3. SyBSensor puede estar DENTRO de este proyecto o al lado; da igual:
+   F:\Streams\OBS\Broadcast\SyB3D+HUD\SyBSensor      (dentro, recomendado)
+   F:\Streams\OBS\Broadcast\SyBSensor                 (al lado, como antes)
+   El proyecto .NET puede estar directamente ahí o un nivel más abajo
+   (SyBSensor\SyBSensor). iniciar.bat lo busca en ese orden y arranca solo.
+   Si el sensor ya está compilado (hay un SyBSensor.exe), lo abre tal cual;
+   si hay proyecto .csproj, lo arranca con «dotnet run».
 4. Haz doble clic en:
    iniciar.bat
    La primera vez instalará las dependencias automáticamente. Después abrirá el servidor

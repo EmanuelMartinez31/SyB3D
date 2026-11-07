@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>SyBSensor</AssemblyName>
+    <LbDir>C:\Users\31ema\AppData\Local\LeagueBroadcast\current\</LbDir>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Farsight"><HintPath>$(LbDir)Farsight.dll</HintPath></Reference>
+    <Reference Include="BlueBottleClient.Common"><HintPath>$(LbDir)BlueBottleClient.Common.dll</HintPath></Reference>
+    <Reference Include="BlueBottleClient.GameLib"><HintPath>$(LbDir)BlueBottleClient.GameLib.dll</HintPath></Reference>
+    <Reference Include="AWSSDK.Core"><HintPath>$(LbDir)AWSSDK.Core.dll</HintPath></Reference>
+    <Reference Include="AWSSDK.CognitoIdentity"><HintPath>$(LbDir)AWSSDK.CognitoIdentity.dll</HintPath></Reference>
+    <Reference Include="AWSSDK.S3"><HintPath>$(LbDir)AWSSDK.S3.dll</HintPath></Reference>
+    <Reference Include="FlatSharp.Runtime"><HintPath>$(LbDir)FlatSharp.Runtime.dll</HintPath></Reference>
+    <Reference Include="Microsoft.Extensions.Logging.Abstractions"><HintPath>$(LbDir)Microsoft.Extensions.Logging.Abstractions.dll</HintPath></Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <LbDeps Include="$(LbDir)FlatSharp*.dll;$(LbDir)Microsoft.Extensions.Logging*.dll;$(LbDir)lblib.dll;$(LbDir)BlueBottleClient.Common.dll;$(LbDir)BlueBottleClient.GameLib.dll;$(LbDir)AWSSDK*.dll;$(LbDir)System.IdentityModel.Tokens.Jwt.dll;$(LbDir)Microsoft.IdentityModel*.dll" />
+  </ItemGroup>
+  <Target Name="CopyLbDeps" AfterTargets="Build" BeforeTargets="Run">
+  <Copy SourceFiles="@(LbDeps)" DestinationFolder="$(OutDir)" SkipUnchangedFiles="true" />
+</Target>
+</Project>

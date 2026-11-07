@@ -262,6 +262,45 @@ function smiteStageFor(remaining) {
   return 'smite';
 }
 
+// CONTADOR DE REAPARICIÓN
+// El sensor publica hero.RespawnTime, pero según la versión del juego ese valor
+// puede ser el instante de juego en que reaparece (absoluto) o los segundos que
+// le faltan (cuenta atrás). En vez de elegir a ciegas, se observa cómo cambia el
+// valor mientras avanza el tiempo de juego:
+//   · el valor baja al mismo ritmo que el reloj  → es cuenta atrás
+//   · el valor se queda quieto mientras corre    → es un instante absoluto
+// Así funciona con las dos variantes sin tocar el sensor.
+const respawnTracking = new Map();
+
+function respawnSecondsLeft(hero, gameTime) {
+  const bruto = finiteNumber(hero?.RespawnTime);
+  const ahora = finiteNumber(gameTime);
+  const id = hero?.Info?.NetworkId ?? hero?.NameAndTagline ?? null;
+  if (bruto === null || bruto <= 0) {
+    if (id !== null) respawnTracking.delete(id);
+    return null;
+  }
+  if (ahora === null) return Math.round(bruto * 10) / 10;
+
+  const previo = id !== null ? respawnTracking.get(id) : null;
+  let modo = previo?.modo ?? null;
+  if (previo) {
+    const pasoReloj = ahora - previo.gameTime;
+    if (pasoReloj > 0.05) {
+      const pasoValor = bruto - previo.valor;
+      const tolerancia = Math.max(0.8, pasoReloj * 0.6);
+      if (Math.abs(pasoValor + pasoReloj) <= tolerancia) modo = 'cuenta';
+      else if (Math.abs(pasoValor) <= tolerancia) modo = 'absoluta';
+    }
+  }
+  if (!modo) modo = bruto <= ahora ? 'cuenta' : 'absoluta';
+
+  if (id !== null) respawnTracking.set(id, { valor: bruto, gameTime: ahora, modo });
+
+  const restante = modo === 'cuenta' ? bruto : bruto - ahora;
+  return Math.max(0, Math.round(restante * 10) / 10);
+}
+
 function compactPlayer(hero, gameTime) {
   const info = hero.Info || {};
   const common = hero.Common || {};
@@ -308,6 +347,8 @@ function compactPlayer(hero, gameTime) {
       type: hero.ResourceType ?? null
     },
     alive: common.IsAlive ?? null,
+    // Solo tiene sentido mientras está muerto; el HUD lo pinta sobre el icono.
+    respawnIn: common.IsAlive === false ? respawnSecondsLeft(hero, gameTime) : null,
     zombie: common.IsZombie ?? null,
     recalling: common.IsRecalling ?? null,
     targetable: common.IsTargetable ?? null,

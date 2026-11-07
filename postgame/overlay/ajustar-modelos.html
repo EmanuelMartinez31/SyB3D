@@ -31,6 +31,7 @@
     .celda.falta-modelo canvas { opacity: .5; }
     .celda .pie .nombre { flex: 1; font-size: 12px; font-weight: 600; letter-spacing: .03em; }
     .celda .pie .valor { font: 600 12px ui-monospace, monospace; color: #9fd6ff; min-width: 42px; text-align: right; }
+    .celda .pie .valor.tope { color: #f0c674; }
     .celda .pie button { padding: 4px 9px; font-size: 13px; line-height: 1; }
     .nota { margin-top: 18px; font-size: 12px; color: #8fa0bb; line-height: 1.6; max-width: 1000px; }
     code { background: #101725; padding: 1px 5px; border: 1px solid #223047; font-size: 11px; color: #cfe0ff; }
@@ -95,7 +96,7 @@
     import * as THREE from 'three';
     import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
     import { clone as cloneSkeleton } from 'three/addons/utils/SkeletonUtils.js';
-    import { measureBody, computeFit, escalaGuardada, cargarAjustesDeEscala, tamanoRelativo } from './src/models.js';
+    import { encuadrarModelo, tamanoRelativo, escalaGuardada, cargarAjustesDeEscala } from './src/models.js';
 
     const ANCHO = 238;
     const ALTO = 236;
@@ -147,27 +148,24 @@
       });
       modelo.rotation.y = 0.32;
       modelo.updateMatrixWorld(true);
-      const cuerpo = measureBody(modelo);
-      const cajaTotal = new THREE.Box3().setFromObject(modelo).getSize(new THREE.Vector3());
-      // 1 = tamaño propio del campeón; el ajuste manual se aplica después.
-      const { fit } = computeFit(cuerpo.size, ANCHO / ALTO, 1, cajaTotal.x, cajaTotal.y);
       const extra = Number(ajustes[jugador.clave] ?? 1);
-      modelo.scale.multiplyScalar(fit * tamanoRelativo(jugador.campeon) * extra);
-      modelo.updateMatrixWorld(true);
-      const caja = new THREE.Box3().setFromObject(modelo);
-      const centro = caja.getCenter(new THREE.Vector3());
-      modelo.position.x -= centro.x;
-      modelo.position.z -= centro.z;
-      modelo.updateMatrixWorld(true);
-      modelo.position.y -= new THREE.Box3().setFromObject(modelo).min.y;
-      modelo.updateMatrixWorld(true);
+      // El modelo entra en la escena ANTES de encuadrar: el encuadre mide lo que
+      // de verdad se dibuja, igual que en el HUD.
       escena.add(modelo);
+      // Exactamente el mismo encuadre que el HUD: tamaño propio del campeón
+      // (tabla TAMANO_CAMPEON) × ajuste manual, con el tope del recuadro.
+      const encuadre = encuadrarModelo(modelo, ANCHO / ALTO, tamanoRelativo(jugador.campeon), extra, {
+        renderer,
+        scene: escena,
+        camera: camara
+      });
 
       camara.aspect = ANCHO / ALTO;
       camara.updateProjectionMatrix();
       renderer.setSize(ANCHO, ALTO, false);
       renderer.render(escena, camara);
       lienzo.getContext('2d').drawImage(renderer.domElement, 0, 0, ANCHO, ALTO);
+      return encuadre;
     }
 
     async function dibujar() {
@@ -190,10 +188,20 @@
 
         const valor = celda.querySelector('.valor');
         const repintar = async () => {
-          valor.textContent = `${Math.round((Number(ajustes[jugador.clave] ?? 1)) * 100)}%`;
+          const pedido = Number(ajustes[jugador.clave] ?? 1);
+          valor.textContent = `${Math.round(pedido * 100)}%`;
+          valor.classList.remove('tope');
           if (!archivo) return;
           try {
-            await pintar(celda, jugador, archivo);
+            const encuadre = await pintar(celda, jugador, archivo);
+            // Si el modelo ya no puede crecer más sin salirse del recuadro, se
+            // avisa en la propia celda en vez de dejar que suba el número sin
+            // que pase nada en pantalla.
+            if (encuadre?.tope) {
+              valor.textContent = `${Math.round(encuadre.aplicado * 100)}% máx`;
+              valor.classList.add('tope');
+              valor.title = 'Ya ocupa todo el recuadro: más grande se saldría.';
+            }
           } catch (error) {
             valor.textContent = 'sin GLB';
           }

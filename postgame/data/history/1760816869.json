@@ -1,0 +1,759 @@
+{
+  "schemaVersion": 1,
+  "gameId": "1760816869",
+  "source": "lcu-end-of-game",
+  "capturedAt": "2026-11-06T20:50:56.847Z",
+  "gameCreation": null,
+  "gameDuration": 131,
+  "gameNumber": 3,
+  "format": "BO5",
+  "info": {
+    "tournament": "GAMEGROUNDS",
+    "blue": "UPA ESPORTS",
+    "red": "ANAHUAC MAYAB",
+    "blueShort": "UPA",
+    "redShort": "AMY",
+    "blueLogo": "/uploads/blue-1793563196018.png",
+    "redLogo": "/uploads/red-1793563200939.png",
+    "logo": "https://i.postimg.cc/GTPr1MVF/Gamergrounds-isotipo-Mesa-de-trabajo-1-copia-15.png",
+    "bg": ""
+  },
+  "sideTeams": null,
+  "winner": "blue",
+  "teams": {
+    "blue": {
+      "side": "blue",
+      "result": "VICTORIA",
+      "kills": 4,
+      "players": [
+        {
+          "participantId": null,
+          "player": "OneRyMeFui RKS",
+          "championId": 875,
+          "champion": "Sett",
+          "championAlias": "Sett",
+          "role": "TOP",
+          "teamId": 100,
+          "win": true,
+          "kda": {
+            "kills": 1,
+            "deaths": 0,
+            "assists": 2
+          },
+          "damage": {
+            "champions": 798,
+            "total": 1350,
+            "taken": 1061,
+            "mitigated": 647,
+            "physical": 431,
+            "magic": 0,
+            "true": 366
+          },
+          "healing": 399,
+          "cs": 1,
+          "gold": 2442,
+          "vision": {
+            "score": 0,
+            "wardsPlaced": 0,
+            "wardsKilled": 0,
+            "controlWards": 0
+          },
+          "items": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "spells": [
+            4,
+            32
+          ],
+          "runes": [
+            null,
+            null
+          ],
+          "runePage": {
+            "primary": null,
+            "secondary": null,
+            "keystone": null,
+            "picks": [
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "shards": [
+              null,
+              null,
+              null
+            ]
+          },
+          "level": 5,
+          "timeCCingOthers": 0,
+          "turretKills": 0,
+          "inhibitorKills": 0,
+          "objectivesStolen": 0
+        },
+        {
+          "participantId": null,
+          "player": "SopadeCaracol",
+          "championId": 89,
+          "champion": "Leona",
+          "championAlias": "Leona",
+          "role": "JUNGLE",
+          "teamId": 100,
+          "win": true,
+          "kda": {
+            "kills": 1,
+            "deaths": 0,
+            "assists": 3
+          },
+          "damage": {
+            "champions": 766,
+            "total": 1457,
+            "taken": 1166,
+            "mitigated": 837,
+            "physical": 315,
+            "magic": 365,
+            "true": 85
+          },
+          "healing": 0,
+          "cs": 1,
+          "gold": 2347,
+          "vision": {
+            "score": 0,
+            "wardsPlaced": 0,
+            "wardsKilled": 0,
+            "controlWards": 0
+          },
+          "items": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "spells": [
+            4,
+            32
+          ],
+          "runes": [
+            null,
+            null
+          ],
+          "runePage": {
+            "primary": null,
+            "secondary": null,
+            "keystone": null,
+            "picks": [
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "shards": [
+              null,
+              null,
+              null
+            ]
+          },
+          "level": 5,
+          "timeCCingOthers": 4,
+          "turretKills": 0,
+          "inhibitorKills": 0,
+          "objectivesStolen": 0
+        },
+        {
+          "participantId": null,
+          "player": "KeriaSerFakerRKS",
+          "championId": 901,
+          "champion": "Smolder",
+          "championAlias": "Smolder",
+          "role": "MIDDLE",
+          "teamId": 100,
+          "win": true,
+          "kda": {
+            "kills": 2,
+            "deaths": 0,
+            "assists": 1
+          },
+          "damage": {
+            "champions": 535,
+            "total": 2084,
+            "taken": 533,
+            "mitigated": 194,
+            "physical": 527,
+            "magic": 8,
+            "true": 0
+          },
+          "healing": 0,
+          "cs": 4,
+          "gold": 2585,
+          "vision": {
+            "score": 0,
+            "wardsPlaced": 0,
+            "wardsKilled": 0,
+            "controlWards": 0
+          },
+          "items": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "spells": [
+            4,
+            32
+          ],
+          "runes": [
+            null,
+            null
+          ],
+          "runePage": {
+            "primary": null,
+            "secondary": null,
+            "keystone": null,
+            "picks": [
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "shards": [
+              null,
+              null,
+              null
+            ]
+          },
+          "level": 5,
+          "timeCCingOthers": 0,
+          "turretKills": 0,
+          "inhibitorKills": 0,
+          "objectivesStolen": 0
+        },
+        {
+          "participantId": null,
+          "player": "Gyozaki",
+          "championId": 107,
+          "champion": "Rengar",
+          "championAlias": "Rengar",
+          "role": "BOTTOM",
+          "teamId": 100,
+          "win": true,
+          "kda": {
+            "kills": 0,
+            "deaths": 0,
+            "assists": 4
+          },
+          "damage": {
+            "champions": 1094,
+            "total": 1422,
+            "taken": 1073,
+            "mitigated": 643,
+            "physical": 913,
+            "magic": 180,
+            "true": 0
+          },
+          "healing": 166,
+          "cs": 0,
+          "gold": 2157,
+          "vision": {
+            "score": 0,
+            "wardsPlaced": 0,
+            "wardsKilled": 0,
+            "controlWards": 0
+          },
+          "items": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "spells": [
+            13,
+            4
+          ],
+          "runes": [
+            null,
+            null
+          ],
+          "runePage": {
+            "primary": null,
+            "secondary": null,
+            "keystone": null,
+            "picks": [
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "shards": [
+              null,
+              null,
+              null
+            ]
+          },
+          "level": 5,
+          "timeCCingOthers": 0,
+          "turretKills": 0,
+          "inhibitorKills": 0,
+          "objectivesStolen": 0
+        },
+        {
+          "participantId": null,
+          "player": "w3ke",
+          "championId": 127,
+          "champion": "Lissandra",
+          "championAlias": "Lissandra",
+          "role": "UTILITY",
+          "teamId": 100,
+          "win": true,
+          "kda": {
+            "kills": 0,
+            "deaths": 0,
+            "assists": 4
+          },
+          "damage": {
+            "champions": 895,
+            "total": 5547,
+            "taken": 299,
+            "mitigated": 92,
+            "physical": 107,
+            "magic": 710,
+            "true": 78
+          },
+          "healing": 24,
+          "cs": 6,
+          "gold": 2296,
+          "vision": {
+            "score": 0,
+            "wardsPlaced": 0,
+            "wardsKilled": 0,
+            "controlWards": 0
+          },
+          "items": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "spells": [
+            4,
+            14
+          ],
+          "runes": [
+            null,
+            null
+          ],
+          "runePage": {
+            "primary": null,
+            "secondary": null,
+            "keystone": null,
+            "picks": [
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "shards": [
+              null,
+              null,
+              null
+            ]
+          },
+          "level": 5,
+          "timeCCingOthers": 2,
+          "turretKills": 0,
+          "inhibitorKills": 0,
+          "objectivesStolen": 0
+        }
+      ]
+    },
+    "red": {
+      "side": "red",
+      "result": "DERROTA",
+      "kills": 0,
+      "players": [
+        {
+          "participantId": null,
+          "player": "KaiserImpactX",
+          "championId": 805,
+          "champion": "Locke",
+          "championAlias": "Locke",
+          "role": "TOP",
+          "teamId": 200,
+          "win": false,
+          "kda": {
+            "kills": 0,
+            "deaths": 1,
+            "assists": 0
+          },
+          "damage": {
+            "champions": 723,
+            "total": 930,
+            "taken": 1082,
+            "mitigated": 742,
+            "physical": 39,
+            "magic": 684,
+            "true": 0
+          },
+          "healing": 38,
+          "cs": 0,
+          "gold": 2072,
+          "vision": {
+            "score": 0,
+            "wardsPlaced": 0,
+            "wardsKilled": 0,
+            "controlWards": 0
+          },
+          "items": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "spells": [
+            32,
+            4
+          ],
+          "runes": [
+            null,
+            null
+          ],
+          "runePage": {
+            "primary": null,
+            "secondary": null,
+            "keystone": null,
+            "picks": [
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "shards": [
+              null,
+              null,
+              null
+            ]
+          },
+          "level": 5,
+          "timeCCingOthers": 1,
+          "turretKills": 0,
+          "inhibitorKills": 0,
+          "objectivesStolen": 0
+        },
+        {
+          "participantId": null,
+          "player": "ElRompeOrtos9000",
+          "championId": 74,
+          "champion": "Heimerdinger",
+          "championAlias": "Heimerdinger",
+          "role": "JUNGLE",
+          "teamId": 200,
+          "win": false,
+          "kda": {
+            "kills": 0,
+            "deaths": 2,
+            "assists": 0
+          },
+          "damage": {
+            "champions": 1146,
+            "total": 3158,
+            "taken": 1792,
+            "mitigated": 373,
+            "physical": 0,
+            "magic": 1146,
+            "true": 0
+          },
+          "healing": 6,
+          "cs": 6,
+          "gold": 2141,
+          "vision": {
+            "score": 0,
+            "wardsPlaced": 0,
+            "wardsKilled": 0,
+            "controlWards": 0
+          },
+          "items": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "spells": [
+            13,
+            4
+          ],
+          "runes": [
+            null,
+            null
+          ],
+          "runePage": {
+            "primary": null,
+            "secondary": null,
+            "keystone": null,
+            "picks": [
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "shards": [
+              null,
+              null,
+              null
+            ]
+          },
+          "level": 4,
+          "timeCCingOthers": 4,
+          "turretKills": 0,
+          "inhibitorKills": 0,
+          "objectivesStolen": 0
+        },
+        {
+          "participantId": null,
+          "player": "Manolo Melenas",
+          "championId": 121,
+          "champion": "Kha'Zix",
+          "championAlias": "Khazix",
+          "role": "MIDDLE",
+          "teamId": 200,
+          "win": false,
+          "kda": {
+            "kills": 0,
+            "deaths": 1,
+            "assists": 0
+          },
+          "damage": {
+            "champions": 967,
+            "total": 1505,
+            "taken": 1197,
+            "mitigated": 878,
+            "physical": 877,
+            "magic": 65,
+            "true": 25
+          },
+          "healing": 157,
+          "cs": 3,
+          "gold": 2114,
+          "vision": {
+            "score": 0,
+            "wardsPlaced": 0,
+            "wardsKilled": 0,
+            "controlWards": 0
+          },
+          "items": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "spells": [
+            4,
+            32
+          ],
+          "runes": [
+            null,
+            null
+          ],
+          "runePage": {
+            "primary": null,
+            "secondary": null,
+            "keystone": null,
+            "picks": [
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "shards": [
+              null,
+              null,
+              null
+            ]
+          },
+          "level": 4,
+          "timeCCingOthers": 0,
+          "turretKills": 0,
+          "inhibitorKills": 0,
+          "objectivesStolen": 0
+        },
+        {
+          "participantId": null,
+          "player": "IIAleDM80II",
+          "championId": 50,
+          "champion": "Swain",
+          "championAlias": "Swain",
+          "role": "BOTTOM",
+          "teamId": 200,
+          "win": false,
+          "kda": {
+            "kills": 0,
+            "deaths": 0,
+            "assists": 0
+          },
+          "damage": {
+            "champions": 486,
+            "total": 938,
+            "taken": 97,
+            "mitigated": 94,
+            "physical": 40,
+            "magic": 446,
+            "true": 0
+          },
+          "healing": 0,
+          "cs": 0,
+          "gold": 2036,
+          "vision": {
+            "score": 0,
+            "wardsPlaced": 0,
+            "wardsKilled": 0,
+            "controlWards": 0
+          },
+          "items": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "spells": [
+            4,
+            13
+          ],
+          "runes": [
+            null,
+            null
+          ],
+          "runePage": {
+            "primary": null,
+            "secondary": null,
+            "keystone": null,
+            "picks": [
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "shards": [
+              null,
+              null,
+              null
+            ]
+          },
+          "level": 4,
+          "timeCCingOthers": 1,
+          "turretKills": 0,
+          "inhibitorKills": 0,
+          "objectivesStolen": 0
+        },
+        {
+          "participantId": null,
+          "player": "ElChisus",
+          "championId": 54,
+          "champion": "Malphite",
+          "championAlias": "Malphite",
+          "role": "UTILITY",
+          "teamId": 200,
+          "win": false,
+          "kda": {
+            "kills": 0,
+            "deaths": 0,
+            "assists": 0
+          },
+          "damage": {
+            "champions": 0,
+            "total": 0,
+            "taken": 0,
+            "mitigated": 0,
+            "physical": 0,
+            "magic": 0,
+            "true": 0
+          },
+          "healing": 0,
+          "cs": 0,
+          "gold": 2012,
+          "vision": {
+            "score": 0,
+            "wardsPlaced": 0,
+            "wardsKilled": 0,
+            "controlWards": 0
+          },
+          "items": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "spells": [
+            4,
+            6
+          ],
+          "runes": [
+            null,
+            null
+          ],
+          "runePage": {
+            "primary": null,
+            "secondary": null,
+            "keystone": null,
+            "picks": [
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "shards": [
+              null,
+              null,
+              null
+            ]
+          },
+          "level": 4,
+          "timeCCingOthers": 0,
+          "turretKills": 0,
+          "inhibitorKills": 0,
+          "objectivesStolen": 0
+        }
+      ]
+    }
+  }
+}

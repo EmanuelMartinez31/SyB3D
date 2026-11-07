@@ -793,7 +793,12 @@ function createPlayerRow(player) {
   wireImageFallback(champion, championFallback);
   const level = document.createElement('span');
   level.className = 'champion-level';
-  championWrap.append(champion, championFallback, level);
+  // Contador de reaparición: encima del icono del campeón, solo mientras está
+  // muerto. Se crea siempre y se oculta con [hidden] para no tocar el DOM luego.
+  const respawn = document.createElement('span');
+  respawn.className = 'respawn-timer';
+  respawn.hidden = true;
+  championWrap.append(champion, championFallback, level, respawn);
 
   const info = document.createElement('div');
   info.className = 'player-info';
@@ -880,7 +885,7 @@ function createPlayerRow(player) {
   row.append(spells, runes, championWrap, info, quest, stats, items);
   return {
     row, spellD, spellF, cooldownD, cooldownF, primaryRune, secondaryRune,
-    champion, championFallback, level, name, championName, healthFill,
+    champion, championFallback, level, respawn, name, championName, healthFill,
     resourceBar, resourceFill, xpBar, xpFill, kda, cs, itemSlots,
     quest, questIcon, questLetter, questCount, questFill, questCheck
   };
@@ -991,8 +996,28 @@ function updatePlayerQuest(refs, quest) {
   refs.quest.setAttribute('aria-label', refs.quest.title);
 }
 
+// Formato del contador: segundos sueltos por debajo de un minuto y m:ss a
+// partir de ahí. Se redondea hacia arriba para que nunca muestre 0 y siga vivo.
+function formatRespawn(seconds) {
+  const total = Math.max(1, Math.ceil(seconds));
+  if (total < 60) return String(total);
+  return `${Math.floor(total / 60)}:${String(total % 60).padStart(2, '0')}`;
+}
+
+function updateRespawnTimer(element, player) {
+  const muerto = player.alive === false;
+  const segundos = finite(player.respawnIn) ? player.respawnIn : null;
+  const visible = muerto && segundos !== null && segundos > 0;
+  element.hidden = !visible;
+  if (!visible) return;
+  const texto = formatRespawn(segundos);
+  setText(element, texto);
+  element.title = `Reaparece en ${Math.ceil(segundos)} s`;
+}
+
 function updatePlayerRow(refs, player) {
   refs.row.classList.toggle('dead', player.alive === false);
+  updateRespawnTimer(refs.respawn, player);
   refs.row.setAttribute('aria-label', `${displayName(player)}, ${player.champion || 'campeón'}`);
   const playerName = displayName(player);
   setText(refs.name, playerName);

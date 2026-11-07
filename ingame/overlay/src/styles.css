@@ -142,7 +142,20 @@ img{display:block;max-width:100%}
 .player-row:nth-child(even){background:oklch(0.25 0.023 285 / 0.36)}
 .team-blue .player-row{grid-template-columns:174px 60px 24px minmax(60px,1fr) 40px 24px 24px;grid-template-areas:'items stats quest info champion runes spells';box-shadow:inset 1px 0 var(--team-blue)}
 .team-red .player-row{box-shadow:inset -1px 0 var(--team-red)}
-.player-row.dead{opacity:.58}
+.player-row.dead> *:not(.champion-wrap){opacity:.55;filter:grayscale(.5)}
+.player-row.dead .champion-icon,.player-row.dead .asset-fallback.champion-icon{opacity:.55;filter:grayscale(1) brightness(.85)}
+.player-row.dead .champion-level{opacity:.7}
+/* Contador de reaparición: colgado del borde inferior del icono del campeón.
+   Abajo no hay nada del HUD, así que nunca tapa el KDA ni el CS; el nivel se
+   corre a la derecha para dejarle el centro libre. */
+.respawn-timer{
+  position:absolute;z-index:4;left:-2px;bottom:-6px;
+  min-width:22px;height:15px;display:grid;place-items:center;padding:0 3px;
+  background:oklch(0.13 0.02 285 / 0.97);border:1px solid var(--p-red-300);
+  color:oklch(0.95 0.10 25);font:700 11px/1 var(--font-number);letter-spacing:.02em;
+  box-shadow:0 0 0 1px oklch(0.09 0.015 285 / 0.9),0 0 8px oklch(0.55 0.17 25 / .45);
+}
+.player-row.dead .champion-level{right:-4px;bottom:-3px}
 .icon-stack{height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
 .spell-stack{grid-area:spells}
 .rune-stack{grid-area:runes}

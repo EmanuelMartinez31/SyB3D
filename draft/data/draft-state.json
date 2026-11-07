@@ -1,8 +1,110 @@
 {
   "version": 1,
   "state": {
-    "picks": [],
-    "bans": [],
+    "picks": [
+      {
+        "type": "pick",
+        "team": "blue",
+        "champion": "Sion"
+      },
+      {
+        "type": "pick",
+        "team": "red",
+        "champion": "Sivir"
+      },
+      {
+        "type": "pick",
+        "team": "red",
+        "champion": "Skarner"
+      },
+      {
+        "type": "pick",
+        "team": "blue",
+        "champion": "Smolder"
+      },
+      {
+        "type": "pick",
+        "team": "blue",
+        "champion": "Sona"
+      },
+      {
+        "type": "pick",
+        "team": "red",
+        "champion": "Soraka"
+      },
+      {
+        "type": "pick",
+        "team": "red",
+        "champion": "Taliyah"
+      },
+      {
+        "type": "pick",
+        "team": "blue",
+        "champion": "Talon"
+      },
+      {
+        "type": "pick",
+        "team": "blue",
+        "champion": "Taric"
+      },
+      {
+        "type": "pick",
+        "team": "red",
+        "champion": "Teemo"
+      }
+    ],
+    "bans": [
+      {
+        "type": "ban",
+        "team": "blue",
+        "champion": "Seraphine"
+      },
+      {
+        "type": "ban",
+        "team": "red",
+        "champion": "Sett"
+      },
+      {
+        "type": "ban",
+        "team": "blue",
+        "champion": "Shaco"
+      },
+      {
+        "type": "ban",
+        "team": "red",
+        "champion": "Shen"
+      },
+      {
+        "type": "ban",
+        "team": "blue",
+        "champion": "Shyvana"
+      },
+      {
+        "type": "ban",
+        "team": "red",
+        "champion": "Singed"
+      },
+      {
+        "type": "ban",
+        "team": "red",
+        "champion": "Swain"
+      },
+      {
+        "type": "ban",
+        "team": "blue",
+        "champion": "Sylas"
+      },
+      {
+        "type": "ban",
+        "team": "red",
+        "champion": "Syndra"
+      },
+      {
+        "type": "ban",
+        "team": "blue",
+        "champion": "Tahm Kench"
+      }
+    ],
     "info": {
       "tournament": "GAMEGROUNDS",
       "blue": "UPA ESPORTS",
@@ -16,8 +118,8 @@
     },
     "score": {
       "format": "BO5",
-      "blue": 1,
-      "red": 2
+      "blue": 2,
+      "red": 0
     },
     "roster": null,
     "history": {
@@ -26,14 +128,24 @@
         "Aphelios",
         "Ashe",
         "Brand",
-        "Braum"
+        "Braum",
+        "Jax",
+        "Jinx",
+        "K'Sante",
+        "Kayle",
+        "Lillia"
       ],
       "red": [
         "Anivia",
         "Annie",
         "Aurelion Sol",
         "Blitzcrank",
-        "Briar"
+        "Briar",
+        "Jayce",
+        "Jhin",
+        "Kai'Sa",
+        "Katarina",
+        "Lissandra"
       ]
     },
     "histTeams": {
@@ -42,14 +154,24 @@
         "Aphelios",
         "Ashe",
         "Brand",
-        "Braum"
+        "Braum",
+        "Jax",
+        "Jinx",
+        "K'Sante",
+        "Kayle",
+        "Lillia"
       ],
       "ANAHUAC MAYAB": [
         "Anivia",
         "Annie",
         "Aurelion Sol",
         "Blitzcrank",
-        "Briar"
+        "Briar",
+        "Jayce",
+        "Jhin",
+        "Kai'Sa",
+        "Katarina",
+        "Lissandra"
       ]
     },
     "teamBind": {},
@@ -57,9 +179,15 @@
     "fearless": true,
     "lcuEnabled": false
   },
-  "seriesRevision": 43,
+  "seriesRevision": 44,
   "countedGames": [
-    "LA1-1760404331"
+    "LA1-1760404331",
+    "LA1-1760441918"
   ],
-  "pendingWinners": []
+  "pendingWinners": [
+    [
+      "LA1-1760727003",
+      "red"
+    ]
+  ]
 }

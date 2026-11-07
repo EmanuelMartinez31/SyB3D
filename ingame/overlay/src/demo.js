@@ -1,5 +1,13 @@
 const ROLE_ORDER = ['top', 'jungle', 'mid', 'bot', 'support'];
 
+// En el demo nadie muere de verdad, así que el contador de reaparición se
+// simula: baja como lo haría en una partida y vuelve a empezar al llegar a cero.
+const DEMO_RESPAWN_SECONDS = 25;
+function demoRespawnIn(offsetSeconds) {
+  const ciclo = (Date.now() / 1000 + offsetSeconds) % DEMO_RESPAWN_SECONDS;
+  return Math.max(1, Math.round(DEMO_RESPAWN_SECONDS - ciclo));
+}
+
 const BLUE = [
   ['SyB Kaze', 'Aatrox', 11, 4, 1, 3, 148, 10350, 21100, [6631, 3047, 3071, 3742, 0, 0, 3364]],
   ['SyB Nami', 'Vi', 10, 2, 2, 7, 121, 8750, 19800, [6632, 3026, 3111, 3074, 0, 0, 3364]],
@@ -59,6 +67,7 @@ function makePlayer(row, team, index) {
     health: { current: maxHealth * (0.68 + index * 0.055), max: maxHealth },
     resource: { current: maxResource * 0.72, max: maxResource, type: maxResource ? 'mana' : 'none' },
     alive: !(team === 2 && index === 4),
+    respawnIn: team === 2 && index === 4 ? demoRespawnIn(0) : null,
     zombie: false,
     recalling: false,
     targetable: true,
@@ -129,6 +138,11 @@ export function advanceDemoState(state, elapsedSeconds) {
     if (typeof camp.remaining === 'number') camp.remaining = Math.max(0, camp.remaining - elapsedSeconds);
   }
   for (const player of state.players) {
+    // El muerto del demo reaparece: la cuenta atrás baja y vuelve a empezar.
+    if (player.alive === false && typeof player.respawnIn === 'number') {
+      player.respawnIn = player.respawnIn - elapsedSeconds;
+      if (player.respawnIn <= 0.5) player.respawnIn = DEMO_RESPAWN_SECONDS;
+    }
     for (const key of ['d', 'f']) {
       const current = player.spells[key];
       if (current && typeof current.remaining === 'number') {

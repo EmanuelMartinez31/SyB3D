@@ -713,6 +713,10 @@ const DECK_FROM = 5;
 const DECK_STEP = 5;
 const DECK_UNTIL = DECK_FROM + DECK_STEP * ROLE_ORDER.length; // 30 s
 const DECK_LEAVE_MS = 420;
+// La primera vez que aparecen, las fichas suben desde abajo con el mismo
+// tiempo que usan las runas al entrar (560 ms). Se deja un poco más para
+// quitar la clase cuando la animación ya ha terminado del todo.
+const DECK_RISE_MS = 620;
 const DECK_ROLE_LABEL = {
   top: 'TOP', jungle: 'JUNGLA', mid: 'MID', bot: 'ADC', support: 'SOPORTE'
 };
@@ -725,6 +729,7 @@ let deckHoldsTable = false;
 let deckRoleKey = '';
 let deckSignature = '';
 let deckHideTimer = 0;
+let deckRiseTimer = 0;
 let deckShown = false;
 let deckPlayers = [];
 let deckArtReady = false;
@@ -857,12 +862,19 @@ function setDeckActive(active) {
   if (active) {
     window.clearTimeout(deckHideTimer);
     container.hidden = false;
-    // La primera vez que se muestran se aplica sin animación: antes se veía
-    // un pequeño salto al entrar.
+    // La primera vez que se muestran, las fichas suben desde abajo: se le pone
+    // la clase que lanza la animación y se le quita en cuanto termina, para que
+    // a partir de ahí manden los cambios de rol de siempre. Del resto se encarga
+    // el CSS, igual que en las runas.
     const primeraVez = !deckShown;
     if (primeraVez) {
       deckShown = true;
       container.classList.add('is-instant');
+      container.classList.add('is-rising');
+      window.clearTimeout(deckRiseTimer);
+      deckRiseTimer = window.setTimeout(() => {
+        container.classList.remove('is-rising');
+      }, DECK_RISE_MS);
     }
     void container.offsetWidth;
     container.classList.remove('is-out');

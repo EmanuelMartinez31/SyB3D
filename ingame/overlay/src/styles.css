@@ -346,7 +346,8 @@ img{display:block;max-width:100%}
   opacity:0;
   transition:opacity 260ms ease;
 }
-/* Primera aparición: sin animación de entrada, para que no dé el salto. */
+/* Primera aparición: el bloque se coloca sin transición y la entrada la hace
+   la propia ficha (ver la animación deck-rise), para que no dé el salto. */
 .deck-intro.is-instant,
 .deck-intro.is-instant .deck-card{transition:none}
 .deck-intro.is-in{opacity:1}
@@ -370,6 +371,17 @@ img{display:block;max-width:100%}
 .deck-card.is-active{
   opacity:1;transform:translateY(0);
   transition:opacity 240ms ease 90ms,transform 320ms cubic-bezier(.18,.82,.24,1) 90ms;
+}
+/* Primera aparición: las fichas suben desde abajo, con el mismo tiempo y la
+   misma curva que usan las runas al entrar, pero en vertical en vez de
+   lateral. Solo la primera vez; los cambios de rol siguen con su relevo corto
+   de siempre. */
+.deck-intro.is-rising .deck-card.is-active{
+  animation:deck-rise 560ms cubic-bezier(.18,.82,.24,1) both;
+}
+@keyframes deck-rise{
+  from{opacity:0;transform:translateY(104%)}
+  to{opacity:1;transform:translateY(0)}
 }
 
 .deck-art{position:absolute;inset:0;display:block;overflow:hidden}

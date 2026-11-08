@@ -319,8 +319,12 @@ function playerDisplayName(hero, info, gameId, liveName = null) {
     rememberedNamesGame = gameId;
   }
   const id = info.NetworkId ?? null;
-  const raw = String(hero?.NameAndTagline ?? info.Name ?? '').trim()
-    || String(liveName || '').trim();
+  let raw = String(hero?.NameAndTagline ?? info.Name ?? '').trim();
+  // El juego a veces entrega como «nombre del jugador» el nombre del CAMPEÓN
+  // (pasa con bots y con jugadores cuyo nombre no resuelve: «Rammus»). Eso no
+  // es un nombre: se descarta y se sigue con las demás fuentes.
+  if (raw && skinName(raw) === skinName(hero?.Common?.Identifier)) raw = '';
+  raw = raw || String(liveName || '').trim();
   if (raw) {
     if (id !== null) rememberedNames.set(String(id), raw);
     return raw;
@@ -333,7 +337,8 @@ function playerDisplayName(hero, info, gameId, liveName = null) {
 function compactPlayer(hero, gameTime, gameId) {
   const info = hero.Info || {};
   // De dónde salió el nombre. Solo lo lee el panel de diagnóstico (?debug=1).
-  const nombreSensor = String(hero?.NameAndTagline ?? info.Name ?? '').trim();
+  const crudo = String(hero?.NameAndTagline ?? info.Name ?? '').trim();
+  const nombreSensor = crudo && skinName(crudo) !== skinName(hero?.Common?.Identifier) ? crudo : '';
   const nombreCliente = liveNameFor(info.Team, hero?.Common?.Identifier) || '';
   const nameFrom = nombreSensor ? 'sensor'
     : (nombreCliente ? 'cliente'
@@ -416,6 +421,8 @@ let liveSkinsInFlight = false;
 let liveSkinsFails = 0;
 let liveSkinsLastPoll = 0;
 let liveSkinsLogged = '';
+// Lo último que publicó el cliente del juego, para el informe de diagnóstico.
+const liveDiag = { at: null, cuantos: 0, error: null, muestra: [] };
 let liveSkinsError = null;
 
 // El cliente publica el nombre visible («Cho'Gath») y el sensor el identificador
@@ -480,21 +487,30 @@ async function refreshLiveSkins() {
   liveSkinsInFlight = true;
   try {
     const list = await getLiveClientJson(LIVE_CLIENT_PATH);
-    if (!Array.isArray(list)) throw new Error('respuesta inesperada');
+    if (!Array.isArray(list)) throw new Error(`respuesta inesperada (${typeof list})`);
     liveSkinsError = null;
+    // Se guardan dos jugadores tal cual los publica el juego: si algo no
+    // cuadra, en el informe se ve exactamente qué manda.
+    liveDiag.at = new Date().toISOString();
+    liveDiag.cuantos = list.length;
+    liveDiag.muestra = list.slice(0, 2).map(entry => ({ ...entry, items: undefined, runes: undefined, summonerSpells: undefined, scores: undefined }));
     const next = new Map();
     const nextNames = new Map();
     for (const entry of list) {
       const teamName = String(entry?.team || '').toUpperCase();
       const team = teamName === 'ORDER' ? 1 : teamName === 'CHAOS' ? 2 : null;
-      const skin = Number(entry?.skinID);
       const champion = skinName(entry?.championName || entry?.rawChampionName);
-      if (team === null || !champion) continue;
-      if (Number.isFinite(skin) && skin >= 0) next.set(`${team}-${champion}`, skin);
-      const nombre = String(entry?.riotId || entry?.summonerName || '').trim();
-      if (nombre) nextNames.set(`${team}-${champion}`, nombre);
+      if (!champion) continue;
+      const skin = Number(entry?.skinID);
+      if (team !== null && Number.isFinite(skin) && skin >= 0) next.set(`${team}-${champion}`, skin);
+      const nombre = String(entry?.summonerName || entry?.riotId || '').trim();
+      if (nombre) {
+        if (team !== null) nextNames.set(`${team}-${champion}`, nombre);
+        // Sin equipo también sirve como último recurso, por campeón.
+        nextNames.set(`*-${champion}`, nombre);
+      }
     }
-    if (!next.size) throw new Error('lista vacía');
+    // Nada de lanzar error si no hay skins: los nombres valen por sí solos.
     liveSkins.clear();
     for (const [key, value] of next) liveSkins.set(key, value);
     liveNames.clear();
@@ -504,15 +520,18 @@ async function refreshLiveSkins() {
     const firma = [...liveSkins].map(([key, value]) => `${key}=${value}`).join(' | ');
     if (firma !== liveSkinsLogged) {
       liveSkinsLogged = firma;
-      console.log(`Skins del cliente: ${firma}`);
-      const nombres = [...liveNames].map(([key, value]) => `${key}=${value}`).join(' | ');
+      console.log(`Skins del cliente: ${firma || 'ninguna'}`);
+      const nombres = [...liveNames].filter(([key]) => !key.startsWith('*'))
+        .map(([key, value]) => `${key}=${value}`).join(' | ');
       if (nombres) console.log(`Nombres del cliente: ${nombres}`);
     }
-  } catch {
+  } catch (error) {
     // Tras varios fallos seguidos se olvida lo anterior: mejor el arte base que
     // arrastrar la skin de una partida que ya terminó.
     liveSkinsFails += 1;
-    liveSkinsError = error?.code || error?.message || 'error desconocido';
+    liveSkinsError = error?.code || error?.message || String(error);
+    liveDiag.at = new Date().toISOString();
+    liveDiag.error = liveSkinsError;
     if (liveSkinsError !== liveSkinsLogged) {
       liveSkinsLogged = liveSkinsError;
       console.log(`Skins del cliente: no se pudo leer 127.0.0.1:2999 (${liveSkinsError})`);
@@ -534,8 +553,13 @@ function skinForPlayer(player) {
 
 // Nombre del jugador según el cliente del juego (el mismo de la lista de skins).
 function liveNameFor(team, champion) {
-  if (team === null || team === undefined || !champion) return null;
-  return liveNames.get(`${team}-${skinName(champion)}`) || null;
+  if (!champion) return null;
+  const clave = skinName(champion);
+  if (team !== null && team !== undefined) {
+    const nombre = liveNames.get(`${team}-${clave}`);
+    if (nombre) return nombre;
+  }
+  return liveNames.get(`*-${clave}`) || null;
 }
 
 const LANE_NAMES = { 0: 'bot', 1: 'mid', 2: 'top' };
@@ -1508,6 +1532,59 @@ app.get('/gameinfo', (req, res) => {
   res.json(latest);
 });
 
+// ============================================================================
+// INFORME DE DIAGNÓSTICO EN DISCO
+// Mientras hay partida se escribe ingame/data/diag.json cada pocos segundos.
+// No hay que capturar nada durante el juego: al terminar, ese archivo dice qué
+// skins y qué nombres publicó el cliente, qué mandó el sensor y qué error hubo
+// al leer la API del juego. Es lo que hace falta para arreglar un fallo de skin.
+// ============================================================================
+const DIAG_PATH = path.join(__dirname, 'data', 'diag.json');
+let diagDirty = false;
+let diagWriting = false;
+let diagUltimo = '';
+function diagActual() {
+  return JSON.stringify({
+    actualizado: new Date().toISOString(),
+    partida: latestState?.meta?.gameId ?? null,
+    apiDelJuego: {
+      direccion: 'https://127.0.0.1:2999/liveclientdata/playerlist',
+      responde: liveSkinsError === null && liveSkins.size > 0,
+      error: liveSkinsError,
+      ultimaLectura: liveDiag.at,
+      jugadoresRecibidos: liveDiag.cuantos,
+      muestraCruda: liveDiag.muestra
+    },
+    skins: Object.fromEntries(liveSkins),
+    nombres: Object.fromEntries([...liveNames].filter(([clave]) => !clave.startsWith('*'))),
+    jugadores: (latestState?.players || []).map(player => ({
+      team: player.team,
+      role: player.role,
+      campeon: player.champion,
+      skin: player.skin ?? null,
+      nombre: player.player ?? null,
+      nombreDesde: player.nameFrom ?? null
+    }))
+  }, null, 2);
+}
+const diagTimer = setInterval(async () => {
+  if (diagWriting || latestState === null) return;
+  const texto = diagActual();
+  if (texto === diagUltimo) return;
+  diagUltimo = texto;
+  diagWriting = true;
+  const temporal = `${DIAG_PATH}.tmp`;
+  try {
+    await fs.promises.writeFile(temporal, texto);
+    await fs.promises.rename(temporal, DIAG_PATH);
+  } catch (error) {
+    console.error('No se pudo escribir el informe de diagnóstico:', error.message);
+  } finally {
+    diagWriting = false;
+  }
+}, 3000);
+diagTimer.unref();
+
 app.get('/ingame', (req, res) => {
   if (latestState === null) return res.status(404).json({ error: 'Todavía no llega GameInfo' });
   res.json(latestState);
@@ -1526,17 +1603,13 @@ app.get('/ingame/diag', async (req, res) => {
     nombre: player.player ?? null,
     nombreDesde: player.nameFrom ?? null
   }));
-  const datos = {
-    partida: latestState ? (latestState.meta?.gameId ?? null) : null,
-    apiDelJuego: {
-      direccion: 'https://127.0.0.1:2999/liveclientdata/playerlist',
-      responde: liveSkinsError === null && liveSkins.size > 0,
-      error: liveSkinsError
-    },
-    skinsPublicadas: Object.fromEntries(liveSkins),
-    nombresPublicados: Object.fromEntries(liveNames),
-    jugadores
-  };
+  const datos = JSON.parse(diagActual());
+  delete datos.actualizado;
+  datos.jugadores = jugadores;
+  datos.skinsPublicadas = datos.skins;
+  datos.nombresPublicados = datos.nombres;
+  delete datos.skins;
+  delete datos.nombres;
   if (req.query.json === '1') return res.json(datos);
 
   // Página legible: se abre en el navegador y se lee de un vistazo.
@@ -1568,6 +1641,7 @@ app.get('/ingame/diag', async (req, res) => {
 </style>
 <h1>Diagnóstico de las fichas</h1>
 <p>Partida: <code>${escapar(datos.partida)}</code> · skins conocidas: ${liveSkins.size} · nombres conocidos: ${liveNames.size}</p>
+<p style="margin-bottom:18px">Si algo falla, mándale a quien te ayuda el archivo <code>ingame\data\diag.json</code>: se escribe solo mientras hay partida.</p>
 <div class="caja ${bien ? 'ok' : 'mal'}">
   <b>API del juego (127.0.0.1:2999):</b> ${bien ? 'responde y publica las skins' : 'NO responde'}
   ${datos.apiDelJuego.error ? ` — ${escapar(datos.apiDelJuego.error)}` : ''}
@@ -1575,6 +1649,8 @@ app.get('/ingame/diag', async (req, res) => {
 <table><tr><th>Equipo</th><th>Rol</th><th>Campeón</th><th>Skin</th><th>Nombre</th><th>Nombre desde</th></tr>${filas}</table>
 <p style="margin-top:18px">Skins: <code>${escapar(JSON.stringify(datos.skinsPublicadas))}</code></p>
 <p>Nombres: <code>${escapar(JSON.stringify(datos.nombresPublicados))}</code></p>
+<h1 style="margin-top:26px;font-size:15px">Lo que publica el juego (2 jugadores tal cual)</h1>
+<pre style="white-space:pre-wrap;word-break:break-all;color:#9ea3b0;font-size:12px">${escapar(JSON.stringify(datos.apiDelJuego.muestraCruda, null, 1))}</pre>
 </html>`);
 });
 

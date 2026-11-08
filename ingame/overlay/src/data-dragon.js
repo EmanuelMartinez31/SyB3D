@@ -114,6 +114,8 @@ async function ddragonSkinCatalog(identifier) {
   const campeon = datos?.data?.[archivo] || Object.values(datos?.data || {})[0];
   const byId = new Map();
   const byNum = new Map();
+  const byName = new Map();
+  const entradas = [];
   let base = null;
   for (const skin of Array.isArray(campeon?.skins) ? campeon.skins : []) {
     const id = Number(skin?.id);
@@ -123,13 +125,32 @@ async function ddragonSkinCatalog(identifier) {
       num,
       // Ruta de Data Dragon: img/champion/splash/{Archivo}_{num}.jpg
       url: null,
-      nombre: skin?.name || ''
+      nombre: skin?.name || '',
+      // Skin de la que sale este croma (ver más abajo).
+      padre: null
     };
     if (Number.isFinite(id)) byId.set(id, entrada);
     if (Number.isFinite(num)) byNum.set(num, entrada);
+    const clave = skinKey(entrada.nombre);
+    if (clave) byName.set(clave, entrada);
+    entradas.push(entrada);
     if (num === 0) base = entrada;
   }
-  return byId.size ? { byId, byNum, base } : null;
+
+  // CROMAS: muchas skins tienen variantes de color que se llaman igual que la
+  // original más un paréntesis: «Tahm Kench pergaminos de Shan Hai (cuarzo
+  // rosa)». Esas variantes NO tienen arte de carga propio en Data Dragon, así
+  // que su dirección da 404 y la ficha se caía al arte base. Aquí se apunta
+  // cuál es la skin original de cada croma: la que se llama igual sin el
+  // paréntesis. Con eso la ficha enseña el arte de la skin de verdad.
+  for (const entrada of entradas) {
+    const sinParentesis = String(entrada.nombre || '').replace(/\s*\([^)]*\)\s*$/, '');
+    if (sinParentesis === entrada.nombre) continue;
+    const original = byName.get(skinKey(sinParentesis));
+    if (original && original !== entrada) entrada.padre = original.num;
+  }
+
+  return byId.size ? { byId, byNum, byName, base } : null;
 }
 
 // Catálogo de skins de un campeón. `numericKey` es el número de campeón de
@@ -259,20 +280,25 @@ export async function loadGameCatalog() {
       if (numero > 0) {
         // 1) Data Dragon con el número correcto de la skin.
         if (resuelta && Number.isFinite(resuelta.num)) push(`${ddragon}_${resuelta.num}.jpg`);
-        // 2) Data Dragon con el número tal cual lo mandó el juego.
+        // 2) Si esa skin es un CROMA (una variante de color), su arte propio no
+        //    existe: se usa el de la skin original. Es lo que hacía que Tahm
+        //    Kench «Shan Hai (cuarzo rosa)» y Ekko «True Damage (obsidiana)»
+        //    salieran sin su arte y se quedaran con el base.
+        if (resuelta && Number.isFinite(resuelta.padre)) push(`${ddragon}_${resuelta.padre}.jpg`);
+        // 3) Data Dragon con el número tal cual lo mandó el juego.
         push(`${ddragon}_${numero}.jpg`);
-        // 3) El cliente manda el id largo (223030 = campeón 223 + skin 30) y
+        // 4) El cliente manda el id largo (223030 = campeón 223 + skin 30) y
         //    Data Dragon numera la skin con la parte de la derecha. Este paso
         //    NO necesita el catálogo: es la red que salva la ficha cuando el
         //    catálogo no llega (sin internet, Community Dragon bloqueado…).
         if (numero > 1000) push(`${ddragon}_${numero % 1000}.jpg`);
-        // 4) El arte de Community Dragon de esa skin exacta.
+        // 5) El arte de Community Dragon de esa skin exacta.
         if (resuelta?.url) push(resuelta.url);
       }
-      // 5) Arte base (Data Dragon y Community Dragon).
+      // 6) Arte base (Data Dragon y Community Dragon).
       push(`${ddragon}_0.jpg`);
       if (catalogo?.base?.url) push(catalogo.base.url);
-      // 6) Último recurso: el retrato del campeón. Nunca queda el hueco vacío.
+      // 7) Último recurso: el retrato del campeón. Nunca queda el hueco vacío.
       push(cuadrado);
       return candidatos;
     },

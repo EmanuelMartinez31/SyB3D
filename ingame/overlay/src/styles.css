@@ -130,7 +130,11 @@ img{display:block;max-width:100%}
 }
 .objective{
   position:relative;width:146px;height:38px;
-  display:flex;flex-direction:row-reverse;align-items:center;justify-content:space-between;
+  /* El orden de cada recuadro lo pone el marcado, sin trucos:
+       vacuarvas (izquierda):  icono  →  tiempo
+       dragón (derecha):       tiempo →  icono
+     Así cada uno mira hacia su esquina. */
+  display:flex;align-items:center;justify-content:space-between;
   gap:9px;padding:5px 10px;background:var(--panel-soft);border:1px solid var(--line);
   clip-path:polygon(0 0,100% 0,calc(100% - 8px) 100%,0 100%);
 }

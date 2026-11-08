@@ -301,8 +301,43 @@ function respawnSecondsLeft(hero, gameTime) {
   return Math.max(0, Math.round(restante * 10) / 10);
 }
 
-function compactPlayer(hero, gameTime) {
+// NOMBRE DEL JUGADOR, CON MEMORIA
+// El juego no siempre publica el nombre (repeticiones antiguas, modo observador,
+// jugadores anónimos). Cuando llega vacío se recupera el último nombre conocido
+// de ese mismo jugador, para que no desaparezca a media partida. La memoria se
+// vacía al empezar otra partida.
+const rememberedNames = new Map();
+// Los nombres de la partida anterior se guardan aparte y se usan solo si los
+// nuevos todavía no han llegado: así, si el número de partida cambia a mitad
+// (cosa que pasa al reconectar), no se queda la ficha sin nombre.
+let previousNames = new Map();
+let rememberedNamesGame = null;
+
+function playerDisplayName(hero, info, gameId, liveName = null) {
+  if (gameId !== rememberedNamesGame) {
+    previousNames = rememberedNames;
+    rememberedNamesGame = gameId;
+  }
+  const id = info.NetworkId ?? null;
+  const raw = String(hero?.NameAndTagline ?? info.Name ?? '').trim()
+    || String(liveName || '').trim();
+  if (raw) {
+    if (id !== null) rememberedNames.set(String(id), raw);
+    return raw;
+  }
+  if (id !== null && rememberedNames.has(String(id))) return rememberedNames.get(String(id));
+  if (id !== null && previousNames.has(String(id))) return previousNames.get(String(id));
+  return null;
+}
+
+function compactPlayer(hero, gameTime, gameId) {
   const info = hero.Info || {};
+  // De dónde salió el nombre. Solo lo lee el panel de diagnóstico (?debug=1).
+  const nombreSensor = String(hero?.NameAndTagline ?? info.Name ?? '').trim();
+  const nombreCliente = liveNameFor(info.Team, hero?.Common?.Identifier) || '';
+  const nameFrom = nombreSensor ? 'sensor'
+    : (nombreCliente ? 'cliente'
+      : ((rememberedNames.has(String(info.NetworkId)) || previousNames.has(String(info.NetworkId))) ? 'memoria' : 'ninguno'));
   const common = hero.Common || {};
   const spells = {};
   for (const key of ['Q', 'W', 'E', 'R', 'D', 'F']) {
@@ -318,7 +353,8 @@ function compactPlayer(hero, gameTime) {
     role,
     quest: compactQuest(hero, role),
     champion: common.Identifier ?? null,
-    player: hero.NameAndTagline ?? info.Name ?? null,
+    player: playerDisplayName(hero, info, gameId, liveNameFor(info.Team, common.Identifier)),
+    nameFrom,
     position: compactPosition(info.Position),
     level: common.Level ?? null,
     experience: hero.Experience ?? null,
@@ -358,6 +394,148 @@ function compactPlayer(hero, gameTime) {
     runes: Array.isArray(hero.Perks) ? hero.Perks.map(perk => perk.Id ?? null) : [],
     spells
   };
+}
+
+// ============================================================================
+// SKINS DEL CLIENTE
+// El sensor no envía la skin de cada campeón, pero el cliente del juego sí la
+// publica en su API local: 127.0.0.1:2999/liveclientdata/playerlist.
+// Se consulta cada pocos segundos y se guarda un mapa equipo+campeón → skin.
+//
+// Si el cliente no responde (partida sin empezar, repetición antigua, cliente
+// cerrado) el mapa se queda vacío y las fichas usan el arte base del campeón:
+// esto nunca puede romper ni frenar el HUD, solo mejora el retrato.
+// ============================================================================
+const LIVE_CLIENT_PATH = '/liveclientdata/playerlist';
+const LIVE_SKINS_EVERY_MS = 3000;
+const liveSkins = new Map();
+// La misma respuesta trae el nombre de cada jugador (summonerName / riotId).
+// El sensor a veces lo entrega vacío; el cliente del juego, no.
+const liveNames = new Map();
+let liveSkinsInFlight = false;
+let liveSkinsFails = 0;
+let liveSkinsLastPoll = 0;
+let liveSkinsLogged = '';
+let liveSkinsError = null;
+
+// El cliente publica el nombre visible («Cho'Gath») y el sensor el identificador
+// interno («Chogath»). Al normalizar los dos coinciden casi siempre; estos son
+// los pocos campeones cuyo nombre visible no se parece al identificador.
+const SKIN_ALIASES = {
+  wukong: 'monkeyking',
+  nunuwillump: 'nunu',
+  nunuandwillump: 'nunu',
+  renataglasc: 'renata'
+};
+
+function skinName(value) {
+  const base = String(value || '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-zA-Z0-9]/g, '')
+    .toLowerCase();
+  return SKIN_ALIASES[base] || base;
+}
+
+function getLiveClientJson(path) {
+  return new Promise((resolve, reject) => {
+    const request = https.request({
+      hostname: '127.0.0.1',
+      port: 2999,
+      path,
+      method: 'GET',
+      // Certificado propio del cliente del juego, igual que en /replay.
+      rejectUnauthorized: false
+    }, response => {
+      if ((response.statusCode || 0) < 200 || (response.statusCode || 0) >= 300) {
+        request.destroy(new Error(`HTTP ${response.statusCode}`));
+        return;
+      }
+      const chunks = [];
+      let size = 0;
+      response.on('data', chunk => {
+        size += chunk.length;
+        if (size > 1024 * 1024) {
+          request.destroy(new Error('Respuesta demasiado grande'));
+          return;
+        }
+        chunks.push(chunk);
+      });
+      response.on('end', () => {
+        try {
+          resolve(JSON.parse(Buffer.concat(chunks).toString('utf8')));
+        } catch (error) {
+          reject(error);
+        }
+      });
+    });
+    request.setTimeout(1500, () => request.destroy(new Error('sin respuesta')));
+    request.on('error', reject);
+    request.end();
+  });
+}
+
+async function refreshLiveSkins() {
+  if (liveSkinsInFlight) return;
+  liveSkinsInFlight = true;
+  try {
+    const list = await getLiveClientJson(LIVE_CLIENT_PATH);
+    if (!Array.isArray(list)) throw new Error('respuesta inesperada');
+    liveSkinsError = null;
+    const next = new Map();
+    const nextNames = new Map();
+    for (const entry of list) {
+      const teamName = String(entry?.team || '').toUpperCase();
+      const team = teamName === 'ORDER' ? 1 : teamName === 'CHAOS' ? 2 : null;
+      const skin = Number(entry?.skinID);
+      const champion = skinName(entry?.championName || entry?.rawChampionName);
+      if (team === null || !champion) continue;
+      if (Number.isFinite(skin) && skin >= 0) next.set(`${team}-${champion}`, skin);
+      const nombre = String(entry?.riotId || entry?.summonerName || '').trim();
+      if (nombre) nextNames.set(`${team}-${champion}`, nombre);
+    }
+    if (!next.size) throw new Error('lista vacía');
+    liveSkins.clear();
+    for (const [key, value] of next) liveSkins.set(key, value);
+    liveNames.clear();
+    for (const [key, value] of nextNames) liveNames.set(key, value);
+    liveSkinsFails = 0;
+    // Una sola línea por partida en la consola: lo que el cliente publicó.
+    const firma = [...liveSkins].map(([key, value]) => `${key}=${value}`).join(' | ');
+    if (firma !== liveSkinsLogged) {
+      liveSkinsLogged = firma;
+      console.log(`Skins del cliente: ${firma}`);
+      const nombres = [...liveNames].map(([key, value]) => `${key}=${value}`).join(' | ');
+      if (nombres) console.log(`Nombres del cliente: ${nombres}`);
+    }
+  } catch {
+    // Tras varios fallos seguidos se olvida lo anterior: mejor el arte base que
+    // arrastrar la skin de una partida que ya terminó.
+    liveSkinsFails += 1;
+    liveSkinsError = error?.code || error?.message || 'error desconocido';
+    if (liveSkinsError !== liveSkinsLogged) {
+      liveSkinsLogged = liveSkinsError;
+      console.log(`Skins del cliente: no se pudo leer 127.0.0.1:2999 (${liveSkinsError})`);
+    }
+    if (liveSkinsFails >= 3) {
+      liveSkins.clear();
+      liveNames.clear();
+    }
+  } finally {
+    liveSkinsInFlight = false;
+  }
+}
+
+function skinForPlayer(player) {
+  if (!player || !player.champion) return null;
+  const skin = liveSkins.get(`${player.team}-${skinName(player.champion)}`);
+  return Number.isFinite(skin) ? skin : null;
+}
+
+// Nombre del jugador según el cliente del juego (el mismo de la lista de skins).
+function liveNameFor(team, champion) {
+  if (team === null || team === undefined || !champion) return null;
+  return liveNames.get(`${team}-${skinName(champion)}`) || null;
 }
 
 const LANE_NAMES = { 0: 'bot', 1: 'mid', 2: 'top' };
@@ -804,8 +982,10 @@ function updateObjectiveScores(game) {
 
 function buildIngameState(game, meta) {
   const gameTime = finiteNumber(game.GameTime);
+  const gameId = game.GameId ?? null;
   const players = (Array.isArray(game.Heroes) ? game.Heroes : [])
-    .map(hero => compactPlayer(hero, gameTime));
+    .map(hero => compactPlayer(hero, gameTime, gameId))
+    .map(player => ({ ...player, skin: skinForPlayer(player) }));
   const turrets = (Array.isArray(game.Turrets) ? game.Turrets : []).map(compactTurret);
   const inhibitors = (Array.isArray(game.BarracksDampeners) ? game.BarracksDampeners : []).map(compactInhibitor);
   const nexus = (Array.isArray(game.Hqs) ? game.Hqs : []).map(compactNexus);
@@ -1333,6 +1513,71 @@ app.get('/ingame', (req, res) => {
   res.json(latestState);
 });
 
+// Diagnóstico de las fichas: dice qué llegó y de dónde. Se abre en el navegador
+// (http://localhost:3000/ingame/diag) mientras hay partida y se ve en una sola
+// pantalla si el cliente del juego responde, qué skins publica y qué nombres
+// tiene cada jugador.
+app.get('/ingame/diag', async (req, res) => {
+  const jugadores = (latestState?.players || []).map(player => ({
+    team: player.team,
+    role: player.role,
+    campeon: player.champion,
+    skin: player.skin ?? null,
+    nombre: player.player ?? null,
+    nombreDesde: player.nameFrom ?? null
+  }));
+  const datos = {
+    partida: latestState ? (latestState.meta?.gameId ?? null) : null,
+    apiDelJuego: {
+      direccion: 'https://127.0.0.1:2999/liveclientdata/playerlist',
+      responde: liveSkinsError === null && liveSkins.size > 0,
+      error: liveSkinsError
+    },
+    skinsPublicadas: Object.fromEntries(liveSkins),
+    nombresPublicados: Object.fromEntries(liveNames),
+    jugadores
+  };
+  if (req.query.json === '1') return res.json(datos);
+
+  // Página legible: se abre en el navegador y se lee de un vistazo.
+  const escapar = valor => String(valor === null || valor === undefined ? '—' : valor)
+    .replace(/[&<>"]/g, caracter => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[caracter]));
+  const bien = datos.apiDelJuego.responde;
+  const filas = jugadores.map(jugador => `<tr>
+    <td>${jugador.team === 1 ? 'AZUL' : 'ROJO'}</td>
+    <td>${escapar(String(jugador.role || '').toUpperCase())}</td>
+    <td>${escapar(jugador.campeon)}</td>
+    <td class="num">${escapar(jugador.skin)}</td>
+    <td>${escapar(jugador.nombre)}</td>
+    <td>${escapar(jugador.nombreDesde)}</td>
+  </tr>`).join('');
+  res.type('html').send(`<!doctype html><html lang="es"><meta charset="utf-8">
+<title>Diagnóstico de fichas</title>
+<style>
+ body{font:14px/1.5 Segoe UI,Arial,sans-serif;background:#14151a;color:#e9e9ee;margin:0;padding:28px}
+ h1{font-size:19px;margin:0 0 4px}
+ p{margin:0 0 18px;color:#a9abb6}
+ .caja{padding:14px 16px;border-radius:8px;margin-bottom:18px;font-size:15px}
+ .ok{background:#14301c;border:1px solid #2e7d4f}
+ .mal{background:#3a1719;border:1px solid #9c3b3f}
+ table{border-collapse:collapse;width:100%;max-width:1000px}
+ th,td{text-align:left;padding:7px 10px;border-bottom:1px solid #2a2c35}
+ th{color:#a9abb6;font-weight:600;font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+ td.num{font-variant-numeric:tabular-nums;color:#e8c05a}
+ code{background:#1e2028;padding:2px 6px;border-radius:4px}
+</style>
+<h1>Diagnóstico de las fichas</h1>
+<p>Partida: <code>${escapar(datos.partida)}</code> · skins conocidas: ${liveSkins.size} · nombres conocidos: ${liveNames.size}</p>
+<div class="caja ${bien ? 'ok' : 'mal'}">
+  <b>API del juego (127.0.0.1:2999):</b> ${bien ? 'responde y publica las skins' : 'NO responde'}
+  ${datos.apiDelJuego.error ? ` — ${escapar(datos.apiDelJuego.error)}` : ''}
+</div>
+<table><tr><th>Equipo</th><th>Rol</th><th>Campeón</th><th>Skin</th><th>Nombre</th><th>Nombre desde</th></tr>${filas}</table>
+<p style="margin-top:18px">Skins: <code>${escapar(JSON.stringify(datos.skinsPublicadas))}</code></p>
+<p>Nombres: <code>${escapar(JSON.stringify(datos.nombresPublicados))}</code></p>
+</html>`);
+});
+
 app.get('/hud/status', async (req, res) => {
   try {
     const result = await getReplayRenderStatus();
@@ -1402,6 +1647,20 @@ return {
     const draftTimer = setInterval(syncDraftState, 1000);
     draftTimer.unref();
     void syncDraftState();
+    // Las skins solo se consultan con partida en marcha: si el sensor dejó de
+    // enviar (partida terminada, cliente cerrado) no se pregunta nada.
+    // Al principio se pregunta cada segundo, que la presentación empieza en el
+    // segundo 5 y la skin tiene que estar lista antes. Cuando ya están las diez
+    // se baja a una consulta cada 3 s.
+    const skinTimer = setInterval(() => {
+      if (latestState === null || !lastReceivedAt) return;
+      if (Date.now() - Date.parse(lastReceivedAt) > 15000) return;
+      const listo = liveSkins.size >= 10;
+      if (Date.now() - liveSkinsLastPoll < (listo ? LIVE_SKINS_EVERY_MS : 1000)) return;
+      liveSkinsLastPoll = Date.now();
+      void refreshLiveSkins();
+    }, 1000);
+    skinTimer.unref();
   }
 };
 };

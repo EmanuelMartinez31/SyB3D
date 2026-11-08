@@ -111,16 +111,39 @@ img{display:block;max-width:100%}
 .objective-counter img{width:24px;height:24px;object-fit:contain;filter:drop-shadow(0 1px 2px oklch(0.10 0.02 285 / 0.65))}
 .objective-counter strong{font:600 13px/1 var(--font-number);margin-top:5px}
 
-.objectives{position:absolute;z-index:15;left:16px;top:14px;width:146px;display:flex;flex-direction:column;gap:6px}
-.objective{position:relative;height:38px;display:flex;align-items:center;gap:9px;padding:5px 10px;background:var(--panel-soft);border:1px solid var(--line);clip-path:polygon(0 0,100% 0,calc(100% - 8px) 100%,0 100%)}
+/* Panel de diagnóstico de las fichas (?debug=1). Va en el centro de la
+   pantalla, que en partida está vacío, y no se muestra nunca sin ese parámetro. */
+.card-debug{
+  position:absolute;z-index:40;left:50%;top:120px;transform:translateX(-50%);
+  padding:12px 16px;background:oklch(0.12 0.02 285 / 0.92);border:1px solid var(--accent);
+  color:var(--text);font:500 11px/1.6 var(--font-number);white-space:pre;
+  letter-spacing:.01em;pointer-events:none;
+}
+
+/* Una esquina cada uno: vacuarvas arriba a la izquierda, dragón arriba a la
+   derecha. Dentro de cada recuadro, el contador a la izquierda y el icono a la
+   derecha. */
+.objectives{
+  position:absolute;z-index:15;left:16px;right:16px;top:14px;width:auto;
+  display:flex;align-items:flex-start;justify-content:space-between;
+  pointer-events:none;
+}
+.objective{
+  position:relative;width:146px;height:38px;
+  display:flex;flex-direction:row-reverse;align-items:center;justify-content:space-between;
+  gap:9px;padding:5px 10px;background:var(--panel-soft);border:1px solid var(--line);
+  clip-path:polygon(0 0,100% 0,calc(100% - 8px) 100%,0 100%);
+}
+/* El de la derecha se inclina hacia el otro lado, para que mire hacia fuera. */
+.objective-dragon{clip-path:polygon(8px 0,100% 0,100% 100%,0 100%)}
 .objective-icon{width:26px;height:26px;flex:0 0 auto;object-fit:contain;filter:drop-shadow(0 1px 2px oklch(0.10 0.02 285 / 0.55))}
 .objective-copy{display:flex;flex-direction:column}
 .objective-copy strong{font:600 18px/1 var(--font-number);white-space:nowrap}
 
-.connection{position:absolute;z-index:25;right:22px;top:18px;padding:7px 12px;background:var(--panel-bg);border:1px solid var(--accent);color:var(--accent);font:600 11px/1 var(--font-number);letter-spacing:.10em;transition:opacity 180ms ease-out}
+.connection{position:absolute;z-index:25;right:22px;top:62px;padding:7px 12px;background:var(--panel-bg);border:1px solid var(--accent);color:var(--accent);font:600 11px/1 var(--font-number);letter-spacing:.10em;transition:opacity 180ms ease-out}
 .connection.connected{opacity:0;pointer-events:none}
 .connection.error{color:var(--p-red-300);border-color:var(--p-red-300)}
-.demo-badge{position:absolute;z-index:25;right:22px;top:18px;padding:7px 12px;background:var(--panel-bg);border:1px solid var(--accent);color:var(--accent);font:600 11px/1 var(--font-number);letter-spacing:.08em}
+.demo-badge{position:absolute;z-index:25;right:22px;top:62px;padding:7px 12px;background:var(--panel-bg);border:1px solid var(--accent);color:var(--accent);font:600 11px/1 var(--font-number);letter-spacing:.08em}
 [hidden]{display:none!important}
 
 .scoreboard{
@@ -301,6 +324,100 @@ img{display:block;max-width:100%}
    ------------------------------------------------------------------ */
 .scoreboard{transition:transform 420ms cubic-bezier(.65,0,.85,.3)}
 .scoreboard.is-out{transform:translateY(104%)}
+
+/* ------------------------------------------------------------------
+   FICHAS DE PRESENTACIÓN DEL INICIO
+   Dos fichas grandes, azul a la izquierda y roja a la derecha, con el arte
+   2D del campeón y el nombre del jugador. Ocupan el sitio de la tabla, que
+   en ese momento no se ve.
+   ------------------------------------------------------------------ */
+.deck-intro{
+  position:absolute;z-index:19;left:50%;bottom:0;
+  /* Mismo ancho y misma altura que la tabla de estadísticas: las orillas de
+     las fichas caen justo sobre las orillas de la tabla (906 px). */
+  width:906px;
+  display:flex;align-items:flex-end;justify-content:center;gap:0;
+  padding:0 0 16px;pointer-events:none;
+  transform:translateX(-50%);
+  opacity:0;
+  transition:opacity 260ms ease;
+}
+/* Primera aparición: sin animación de entrada, para que no dé el salto. */
+.deck-intro.is-instant,
+.deck-intro.is-instant .deck-card{transition:none}
+.deck-intro.is-in{opacity:1}
+.deck-intro.is-out{opacity:0;transform:translate(-50%,26px);transition:opacity 380ms ease,transform 420ms cubic-bezier(.65,0,.85,.3)}
+
+.deck-side{position:relative;height:242px;flex:1 1 0;min-width:0}
+
+/* Cada ficha vive apilada en su lado: solo la del rol que toca está activa. */
+.deck-card{
+  position:absolute;inset:0;overflow:hidden;
+  background:oklch(0.14 0.02 285 / 0.94);
+  border:1px solid oklch(0.42 0.03 285 / 0.75);
+  opacity:0;
+  transform:translateY(26px);
+  /* Salida rápida y entrada un poco más lenta: nunca se ven dos fichas
+     mezcladas cuando cambia el rol. */
+  transition:opacity 140ms ease,transform 200ms cubic-bezier(.65,0,.85,.3);
+}
+.deck-card-blue{clip-path:polygon(0 0,100% 0,100% calc(100% - 18px),calc(100% - 18px) 100%,0 100%);border-left:3px solid var(--team-blue)}
+.deck-card-red{clip-path:polygon(18px 0,100% 0,100% 100%,0 100%,0 18px);border-right:3px solid var(--team-red)}
+.deck-card.is-active{
+  opacity:1;transform:translateY(0);
+  transition:opacity 240ms ease 90ms,transform 320ms cubic-bezier(.18,.82,.24,1) 90ms;
+}
+
+.deck-art{position:absolute;inset:0;display:block;overflow:hidden}
+.deck-art img{
+  width:100%;height:100%;object-fit:cover;object-position:center 18%;display:block;
+  /* La imagen se dibuja cuando ya está descargada: así no hay salto al
+     aparecer la ficha. */
+  opacity:0;transition:opacity 220ms ease;
+}
+.deck-art.is-ready img{opacity:1}
+.deck-card-red .deck-art img{object-position:center 22%}
+
+.deck-foot{
+  position:absolute;left:0;right:0;bottom:0;
+  display:flex;flex-direction:column;gap:3px;
+  padding:46px 18px 13px;
+  background:linear-gradient(180deg,transparent,oklch(0.08 0.015 285 / 0.90) 58%,oklch(0.08 0.015 285 / 0.97));
+}
+.deck-name{
+  font:800 27px/1 var(--font-ui);letter-spacing:.015em;color:var(--text);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.deck-champ{
+  font:600 12px/1 var(--font-ui);letter-spacing:.20em;text-transform:uppercase;
+  color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.deck-card-red .deck-foot{text-align:right;align-items:flex-end}
+
+/* El rol que se está presentando, entre las dos fichas. */
+.deck-role{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:10px;width:128px;height:242px;flex:0 0 auto;
+}
+.deck-role-label{
+  position:relative;display:block;
+  font:800 15px/1 var(--font-ui);letter-spacing:.22em;text-transform:uppercase;
+  color:var(--accent);text-align:center;white-space:nowrap;
+}
+/* Dos filetes finos enmarcan el rol que se presenta. */
+.deck-role-label::before,.deck-role-label::after{
+  content:'';position:absolute;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,oklch(0.88 0.14 95 / 0.55),transparent);
+}
+.deck-role-label::before{top:-10px}
+.deck-role-label::after{bottom:-10px}
+/* El VS, debajo del rol. */
+.deck-vs{
+  font:900 32px/1 var(--font-ui);font-style:italic;letter-spacing:.10em;
+  color:var(--accent);opacity:1;margin-top:14px;
+  /* Contorno oscuro: se lee igual sobre partida clara que sobre oscura. */
+  text-shadow:0 2px 0 oklch(0.12 0.02 285 / 0.85),0 0 14px oklch(0.88 0.14 95 / 0.45);
+}
 
 /* La tira no dibuja ningún fondo: cada campeón va en su propia tarjeta suelta
    sobre la partida, separadas por unos píxeles. */

@@ -18,14 +18,17 @@
 <body>
   <main id="viewport" aria-label="HUD de partida League of Legends">
     <div id="stage">
+      <!-- Los dos temporizadores van en las esquinas: vacuarvas a la
+           izquierda y dragón a la derecha. En cada uno, el contador va a la
+           izquierda y el icono a la derecha. -->
       <section class="objectives" aria-label="Temporizadores de objetivos">
-        <div id="objective-dragon" class="objective objective-dragon">
-          <img id="objective-dragon-icon" class="objective-icon" src="./assets/objectives/dragon.png" alt="" aria-hidden="true">
-          <span class="objective-copy"><strong>--:--</strong></span>
-        </div>
         <div id="objective-secondary" class="objective objective-grubs">
-          <img id="objective-secondary-icon" class="objective-icon" src="./assets/objectives/grub.png" alt="" aria-hidden="true">
           <span class="objective-copy"><strong>--:--</strong></span>
+          <img id="objective-secondary-icon" class="objective-icon" src="./assets/objectives/grub.png" alt="" aria-hidden="true">
+        </div>
+        <div id="objective-dragon" class="objective objective-dragon">
+          <span class="objective-copy"><strong>--:--</strong></span>
+          <img id="objective-dragon-icon" class="objective-icon" src="./assets/objectives/dragon.png" alt="" aria-hidden="true">
         </div>
       </section>
 
@@ -115,6 +118,15 @@
         <div id="rune-side-blue" class="rune-side"></div>
         <div id="rune-side-red" class="rune-side"></div>
       </div>
+
+      <section id="deck-intro" class="deck-intro" aria-label="Presentación de los jugadores" hidden>
+        <div id="deck-blue" class="deck-side deck-side-blue"></div>
+        <div class="deck-role">
+          <span id="deck-role-label" class="deck-role-label"></span>
+          <span class="deck-vs" aria-hidden="true">VS</span>
+        </div>
+        <div id="deck-red" class="deck-side deck-side-red"></div>
+      </section>
 
       <section id="fight-strip" class="fight-strip" aria-label="Teamfight en curso" hidden>
         <div class="fight-side fight-side-blue" id="fight-blue"></div>

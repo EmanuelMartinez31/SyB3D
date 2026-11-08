@@ -1,11 +1,11 @@
 {
-  "actualizado": "2026-11-08T21:53:26.572Z",
+  "actualizado": "2026-11-08T22:00:54.754Z",
   "partida": "LA1-1760727003",
   "apiDelJuego": {
     "direccion": "https://127.0.0.1:2999/liveclientdata/playerlist",
     "responde": true,
     "error": null,
-    "ultimaLectura": "2026-11-08T21:53:25.733Z",
+    "ultimaLectura": "2026-11-08T22:00:53.477Z",
     "jugadoresRecibidos": 10,
     "muestraCruda": [
       {

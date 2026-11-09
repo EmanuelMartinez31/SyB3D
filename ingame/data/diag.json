@@ -1,18 +1,18 @@
 {
-  "actualizado": "2026-11-09T18:35:46.865Z",
+  "actualizado": "2026-11-09T18:58:02.886Z",
   "partida": "LA1-1761164762",
   "apiDelJuego": {
     "direccion": "https://127.0.0.1:2999/liveclientdata/playerlist",
-    "responde": false,
-    "error": "ECONNREFUSED",
-    "ultimaLectura": "2026-11-09T18:35:46.744Z",
+    "responde": true,
+    "error": null,
+    "ultimaLectura": "2026-11-09T18:58:00.866Z",
     "jugadoresRecibidos": 10,
     "muestraCruda": [
       {
         "championName": "Zaahen",
         "isBot": false,
         "isDead": false,
-        "level": 18,
+        "level": 1,
         "position": "TOP",
         "rawChampionName": "game_character_displayname_Zaahen",
         "rawSkinName": "game_character_displayname_Zaahen",
@@ -20,8 +20,8 @@
         "riotId": "Guerra2009#LAN",
         "riotIdGameName": "Guerra2009",
         "riotIdTagLine": "LAN",
-        "screenPositionBottom": "939.8595581,505.7414246",
-        "screenPositionCenter": "940.1334229,476.3002014",
+        "screenPositionBottom": "407.3292847,105.1674500",
+        "screenPositionCenter": "418.1430359,70.6377640",
         "skinID": 0,
         "skinName": "Zaahen",
         "summonerName": "Guerra2009#LAN",
@@ -31,7 +31,7 @@
         "championName": "Taliyah",
         "isBot": false,
         "isDead": false,
-        "level": 17,
+        "level": 1,
         "position": "JUNGLE",
         "rawChampionName": "game_character_displayname_Taliyah",
         "rawSkinName": "game_character_displayname_Taliyah",
@@ -39,8 +39,8 @@
         "riotId": "Banedeodo#0406",
         "riotIdGameName": "Banedeodo",
         "riotIdTagLine": "0406",
-        "screenPositionBottom": "883.5818481,553.4677124",
-        "screenPositionCenter": "885.0415649,511.1947021",
+        "screenPositionBottom": "1174.7514648,486.7776184",
+        "screenPositionCenter": "1172.2131348,461.4080200",
         "skinID": 0,
         "skinName": "Taliyah",
         "summonerName": "Banedeodo#0406",
@@ -48,8 +48,30 @@
       }
     ]
   },
-  "skins": {},
-  "nombres": {},
+  "skins": {
+    "1-zaahen": 0,
+    "1-taliyah": 0,
+    "1-smolder": 0,
+    "1-tahmkench": 37,
+    "1-lulu": 27,
+    "2-mordekaiser": 42,
+    "2-aatrox": 33,
+    "2-ryze": 5,
+    "2-vayne": 67,
+    "2-seraphine": 69
+  },
+  "nombres": {
+    "1-zaahen": "Guerra2009#LAN",
+    "1-taliyah": "Banedeodo#0406",
+    "1-smolder": "Arock#NEET",
+    "1-tahmkench": "Manolo Melenas#CAST",
+    "1-lulu": "SG Coso Amorta#Coso",
+    "2-mordekaiser": "MzerSetogaya#Koi",
+    "2-aatrox": "Satono Diamond#Senk",
+    "2-ryze": "Mejiro McQueen#McQ",
+    "2-vayne": "Frisnacks#kev",
+    "2-seraphine": "Honeymoon#NYX"
+  },
   "jugadores": [
     {
       "team": 1,

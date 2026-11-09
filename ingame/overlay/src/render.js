@@ -1436,7 +1436,8 @@ function renderObjective(kind, element, state) {
   const camp = objectiveCamp(objectives, kind);
   const timer = element.querySelector('strong');
   if (objectives.active?.[kind]) {
-    setText(timer, 'EN JUEGO');
+    // Mientras el objetivo está en el mapa se rotula solo «VIVO».
+    setText(timer, 'VIVO');
   } else if (camp && finite(camp.remaining)) {
     setText(timer, formatTime(camp.remaining));
   } else {

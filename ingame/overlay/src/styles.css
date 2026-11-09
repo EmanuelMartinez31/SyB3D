@@ -159,8 +159,11 @@ img{display:block;max-width:100%}
   display:flex;align-items:flex-start;justify-content:space-between;
   pointer-events:none;
 }
+/* El ancho se ajusta al contenido real: icono 26 + hueco 9 + el texto más
+   largo («07:40» = 55 px) + 20 de relleno + 2 de borde = 112 px. Antes medía
+   146 px y sobraban casi 35 px vacíos a un lado. */
 .objective{
-  position:relative;width:146px;height:38px;
+  position:relative;width:112px;height:38px;
   /* El orden de cada recuadro lo pone el marcado, sin trucos:
        vacuarvas (izquierda):  icono  →  tiempo
        dragón (derecha):       tiempo →  icono
@@ -482,21 +485,24 @@ img{display:block;max-width:100%}
 
 /* La tira no dibuja ningún fondo: cada campeón va en su propia tarjeta suelta
    sobre la partida, separadas por unos píxeles. */
-/* La tira se encoge al contenido: los dos equipos quedan pegados y el logo
-   ocupa el hueco del centro, a la misma altura que las tarjetas. */
+/* La tira ocupa todo el ancho y el logo va en una columna FIJA al centro: su
+   sitio no depende nunca de cuántas fichas haya. Los dos laterales se reparten
+   el resto a partes iguales y las fichas se pegan al logo, así que crecen
+   hacia afuera y lo que cambia de sitio son las fichas, no el logo. */
 .fight-strip{
-  position:absolute;z-index:19;left:50%;bottom:0;
-  width:max-content;transform:translateX(-50%);
+  position:absolute;z-index:19;left:0;right:0;bottom:0;
   display:flex;align-items:flex-end;justify-content:center;gap:12px;
   padding:0 0 10px;pointer-events:none;
 }
-.fight-side{position:relative;display:flex;align-items:flex-end;gap:10px}
-.fight-side-red{flex-direction:row-reverse}
+/* Cada lado mide lo mismo (mitad y mitad del espacio libre) y pega sus fichas
+   al centro: el azul hacia la derecha y el rojo hacia la izquierda. */
+.fight-side{position:relative;display:flex;align-items:flex-end;gap:10px;flex:1 1 0;min-width:0;justify-content:flex-end}
+.fight-side-red{flex-direction:row-reverse;justify-content:flex-end}
 
-/* El logo del torneo, entre los dos equipos y centrado con las tarjetas. */
+/* El logo del torneo: columna fija, siempre en el centro del escenario. */
 .fight-center{
   align-self:stretch;display:flex;align-items:center;justify-content:center;
-  width:156px;flex:0 0 auto;
+  width:156px;flex:0 0 156px;
 }
 .fight-logo{
   display:block;max-width:156px;max-height:104px;object-fit:contain;opacity:.92;

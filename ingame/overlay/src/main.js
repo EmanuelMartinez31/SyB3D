@@ -1,6 +1,6 @@
 import { loadGameCatalog } from './data-dragon.js';
 import { createDemoState, advanceDemoState, aplicarBuffDemo } from './demo.js';
-import { renderIngameState } from './render.js';
+import { renderIngameState, setCardDebug } from './render.js';
 import { createVoidGrubAlert } from './voidgrub-alert.js';
 import { createDragonAlert } from './dragon-alert.js';
 import { createBaronAlert } from './baron-alert.js';
@@ -9,6 +9,8 @@ import { createHeraldAlert } from './herald-alert.js';
 const params = new URLSearchParams(window.location.search);
 const localHost = ['localhost', '127.0.0.1', '::1'].includes(window.location.hostname);
 const forceLive = params.get('live') === '1';
+// ?debug=1 enciende el panel de diagnóstico de las fichas.
+setCardDebug(params.get('debug') === '1');
 const demoMode = params.get('demo') === '1' || (!forceLive && !localHost && window.location.protocol !== 'file:');
 const connection = document.getElementById('connection');
 const demoBadge = document.getElementById('demo-badge');
@@ -152,6 +154,11 @@ async function start() {
     const requestedFormat = String(params.get('bo') || 'BO3').toUpperCase();
     const demoFormat = ['BO1', 'BO3', 'BO5'].includes(requestedFormat) ? requestedFormat : 'BO3';
     let state = createDemoState(demoFormat);
+    // ?t=12 arranca el demo en ese segundo del reloj. Sirve para revisar el
+    // inicio de partida (fichas y runas) sin esperar a una partida real:
+    // ?demo=1&t=12 deja las fichas del TOP en pantalla.
+    const jumpTo = Number(params.get('t'));
+    if (Number.isFinite(jumpTo) && jumpTo >= 0) state.meta.gameTime = jumpTo;
     const demoObjectiveTeam = params.get('team') === 'red' ? 2 : 1;
     renderIngameState(state, catalog);
     if (params.get('grubs') === '1') {

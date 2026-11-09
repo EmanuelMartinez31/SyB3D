@@ -63,7 +63,9 @@ let objectiveTracking = {
   dragonNotice: null,
   baronNotice: null,
   heraldNotice: null,
-  respawnAt: new Map()
+  respawnAt: new Map(),
+  buffWindows: { 1: null, 2: null },
+  seenBuffNames: new Set()
 };
 
 function normalizeNonFinite(value) {
@@ -83,16 +85,13 @@ function finiteNumber(value) {
 
 // ============================================================================
 // BUFFS DE OBJETIVO: BARÓN Y DRAGÓN ANCESTRAL
-// El juego publica los buffs de cada campeón en Common.Buffs con su ventana
-// StartTime/EndTime en milisegundos de tiempo de partida. El HUD necesita
-// saber quién lleva el buff y cuánto le queda. Como los nombres internos no
-// están documentados, el buff se reconoce por tres pistas: el nombre, la
-// duración publicada por el propio juego (180 s barón, 150 s ancestral) y el
-// hecho de que lo lleven varios miembros del mismo equipo.
+// Los datos vienen del propio juego. El evento de muerte del objetivo da el
+// equipo, el instante y quién estaba vivo; el buff que el juego publica en
+// Common.Buffs (StartTime/EndTime en ms) afina la hora exacta de fin.
+// No se adivina por duración: un campamento duraba parecido y pintaba marcos.
 // ============================================================================
 const OBJECTIVE_BUFF_SECONDS = { baron: 180, elder: 150 };
 let objectiveBuffSignature = '';
-const OBJECTIVE_BUFF_TOLERANCE = 4;   // holgura al comparar la duración, en s
 const OBJECTIVE_BUFF_MIN_SECONDS = 60;  // ignora buffs demasiado cortos
 const OBJECTIVE_BUFF_MAX_SECONDS = 400; // ignora auras y buffs permanentes
 
@@ -105,13 +104,7 @@ function compactObjectiveBuff(buff) {
   if (end === null || start === null || end <= start) return null;
   const seconds = (end - start) / 1000;
   if (seconds < OBJECTIVE_BUFF_MIN_SECONDS || seconds > OBJECTIVE_BUFF_MAX_SECONDS) return null;
-  if (!objectiveBuffKindByName(name) && !objectiveBuffDurationMatches(seconds)) return null;
   return { name, start, end, seconds };
-}
-
-function objectiveBuffDurationMatches(seconds) {
-  return Object.values(OBJECTIVE_BUFF_SECONDS)
-    .some(target => Math.abs(seconds - target) <= OBJECTIVE_BUFF_TOLERANCE);
 }
 
 // Lista mínima que viaja al HUD: solo los buffs con una ventana compatible con
@@ -121,7 +114,17 @@ function compactHeroBuffs(common) {
   const out = [];
   for (const buff of raw) {
     const compact = compactObjectiveBuff(buff);
-    if (compact) out.push({ name: compact.name, start: compact.start, end: compact.end });
+    if (!compact) continue;
+    // Rastro de depuración: una línea por nombre de buff nuevo, con su
+    // duración real. Es lo que permite ver en partida cómo los llama el juego.
+    const vistos = objectiveTracking?.seenBuffNames;
+    if (vistos && !vistos.has(compact.name)) {
+      vistos.add(compact.name);
+      console.log(`Buff visto | ${compact.name || '(sin nombre)'} | ${compact.seconds.toFixed(1)}s`);
+    }
+    if (objectiveBuffKindByName(compact.name)) {
+      out.push({ name: compact.name, start: compact.start, end: compact.end });
+    }
   }
   return out;
 }
@@ -135,91 +138,110 @@ function objectiveBuffKindByName(name) {
   return null;
 }
 
-function objectiveBuffKind(candidate) {
-  const byName = objectiveBuffKindByName(candidate.name);
-  if (byName) return byName;
-  for (const [kind, seconds] of Object.entries(OBJECTIVE_BUFF_SECONDS)) {
-    if (Math.abs(candidate.seconds - seconds) <= OBJECTIVE_BUFF_TOLERANCE) return kind;
-  }
-  return null;
-}
+// El buff de objetivo se decide con DOS fuentes de datos reales:
+//   1. el evento de muerte del objetivo (DeathEvents/ObjectiveStealEvents), que
+//      ya alimenta las alertas 3D y los contadores: da el equipo, el instante y
+//      quién estaba vivo en ese momento;
+//   2. el buff que el propio juego publica en Common.Buffs, si trae en el
+//      nombre «baron» o «elder»: sirve para afinar la hora exacta de fin.
+// Nunca se adivina por duración: eso hacía que un campamento pintara marcos.
+function resolveObjectiveBuffs(players, gameTime) {
+  const now = finiteNumber(gameTime);
 
-// Los buffs candidatos de cada héroe se recolectan primero y se validan en
-// equipo: un buff personal que casualmente dure 180 s no debe pintar marcos.
-function detectObjectiveBuffs(players, gameTime) {
-  const perPlayer = new Map();
-  const carriers = { 1: { baron: 0, elder: 0 }, 2: { baron: 0, elder: 0 } };
-  const explicit = { 1: { baron: false, elder: false }, 2: { baron: false, elder: false } };
-  const latest = { 1: { baron: null, elder: null }, 2: { baron: null, elder: null } };
-
+  // Evidencia por nombre (solo barón / ancestral, descartando debuffs).
+  const evidencia = { 1: null, 2: null };
   for (const player of players) {
     if (player?.team !== 1 && player?.team !== 2) continue;
-    // El barón y el ancestral se pierden al morir: en el juego el buff
-    // desaparece del muerto, pero si el snapshot se retrasa no debe contar.
-    if (player.alive === false) continue;
-    let chosen = null;
-    for (const raw of Array.isArray(player.buffs) ? player.buffs : []) {
-      const candidate = compactObjectiveBuff(raw);
+    for (const buff of Array.isArray(player.buffs) ? player.buffs : []) {
+      const candidate = compactObjectiveBuff(buff);
       if (!candidate) continue;
-      const kind = objectiveBuffKind(candidate);
+      if (player.alive === false) continue;
+      const kind = objectiveBuffKindByName(candidate.name);
       if (!kind) continue;
-      carriers[player.team][kind] += 1;
-      if (objectiveBuffKindByName(candidate.name)) explicit[player.team][kind] = true;
-      if (latest[player.team][kind] === null || candidate.end > latest[player.team][kind].end) {
-        // Se conserva la duración que publica el juego: si Riot la cambia, la
-        // barra del HUD sigue cuadrando sin tocar el código.
-        latest[player.team][kind] = { end: candidate.end, seconds: candidate.seconds };
-      }
-      if (!chosen || candidate.end > chosen.end) {
-        chosen = { kind, end: candidate.end, seconds: candidate.seconds };
+      const actual = evidencia[player.team];
+      if (!actual || candidate.end > actual.end) {
+        evidencia[player.team] = { kind, end: candidate.end, seconds: candidate.seconds };
       }
     }
-    if (chosen) perPlayer.set(player.id, chosen);
   }
 
-  const now = finiteNumber(gameTime);
-  const teamBuffs = { 1: null, 2: null };
-  const registro = [];
+  const equipo = { 1: null, 2: null };
   for (const team of [1, 2]) {
-    let best = null;
-    for (const kind of ['baron', 'elder']) {
-      // Uno solo ya vale si el nombre lo delata; si no, hacen falta dos
-      // portadores del mismo equipo para descartar falsos positivos.
-      const valid = explicit[team][kind] || carriers[team][kind] >= 2;
-      if (!valid || latest[team][kind] === null) continue;
-      const { end, seconds } = latest[team][kind];
-      const remaining = now === null ? null : Math.max(0, (end - now * 1000) / 1000);
-      if (remaining !== null && remaining <= 0.05) continue;
-      const candidate = {
-        kind,
-        remaining,
-        endsAt: Math.round(end) / 1000,
-        duration: seconds,
-        carriers: carriers[team][kind]
+    const ventana = objectiveTracking.buffWindows?.[team] || null;
+    const ev = evidencia[team];
+    let fuente = null;
+    // La ventana del evento manda: es la que conoce al equipo que lo mató.
+    if (ventana && now !== null && now < ventana.endsAt) {
+      fuente = {
+        kind: ventana.kind,
+        endsAt: ventana.endsAt,
+        duration: ventana.duration,
+        source: 'evento',
+        eligible: ventana.eligible,
+        lost: ventana.lost
       };
-      if (!best || candidate.remaining > best.remaining) best = candidate;
-      registro.push(`${team}:${kind}:${carriers[team][kind]}`);
     }
-    teamBuffs[team] = best;
+    // El buff del juego, cuando existe, solo puede alargar/confirmar la ventana
+    // del mismo objetivo (por si el evento llegó tarde).
+    if (ev) {
+      const fin = ev.end / 1000;
+      if (!fuente || (ev.kind === fuente.kind && fin > fuente.endsAt + 2)) {
+        fuente = {
+          kind: ev.kind,
+          endsAt: fin,
+          duration: ev.seconds,
+          source: 'buff',
+          eligible: null
+        };
+      }
+    }
+    if (!fuente) continue;
+    const remaining = now === null ? null : Math.max(0, fuente.endsAt - now);
+    if (remaining !== null && remaining <= 0.05) continue;
+    equipo[team] = { ...fuente, remaining };
   }
-  // Rastro de una línea por cambio: sirve para confirmar en partida real con
-  // qué nombre publica el juego los buffs, sin llenar la consola.
-  const firma = registro.sort().join('|');
+
+  // Marco por jugador: vivos, dentro del reparto que hizo el juego y sin
+  // haber muerto desde entonces (el buff se pierde al morir).
+  for (const player of players) {
+    const buff = player?.team === 1 || player?.team === 2 ? equipo[player.team] : null;
+    let visible = false;
+    if (buff && player.alive === false && buff.eligible?.has(player.id)) {
+      buff.lost.add(player.id);
+    }
+    if (buff && player.alive !== false) {
+      visible = buff.eligible
+        ? buff.eligible.has(player.id) && !buff.lost.has(player.id)
+        : Array.isArray(player.buffs)
+          && player.buffs.some(item => objectiveBuffKindByName(item?.name) === buff.kind);
+    }
+    player.objectiveBuff = visible ? buff.kind : null;
+  }
+
+  const firma = [1, 2]
+    .map(team => (equipo[team] ? `${team}:${equipo[team].kind}:${Math.round(equipo[team].remaining)}` : ''))
+    .filter(Boolean)
+    .join('|');
   if (firma !== objectiveBuffSignature) {
     objectiveBuffSignature = firma;
-    if (firma) console.log(`Buff de objetivo detectado | ${firma}`);
-    else console.log('Buff de objetivo finalizado');
+    console.log(firma ? `Buff de objetivo activo | ${firma}` : 'Buff de objetivo finalizado');
   }
 
-  for (const player of players) {
-    const chosen = perPlayer.get(player.id) || null;
-    const teamBuff = player?.team === 1 || player?.team === 2 ? teamBuffs[player.team] : null;
-    // El marco solo se pinta en vivos y mientras el equipo conserve el buff.
-    const visible = player.alive !== false && chosen && teamBuff && teamBuff.kind === chosen.kind;
-    player.objectiveBuff = visible ? chosen.kind : null;
-  }
+  // La ventana interna (con el set de elegibles) no viaja al HUD.
+  return {
+    1: equipo[1] ? sinElegibles(equipo[1]) : null,
+    2: equipo[2] ? sinElegibles(equipo[2]) : null
+  };
+}
 
-  return teamBuffs;
+function sinElegibles(buff) {
+  return {
+    kind: buff.kind,
+    remaining: buff.remaining,
+    endsAt: Math.round(buff.endsAt),
+    duration: buff.duration,
+    source: buff.source
+  };
 }
 
 function compactPosition(position) {
@@ -448,26 +470,42 @@ function respawnSecondsLeft(hero, gameTime) {
 // de ese mismo jugador, para que no desaparezca a media partida. La memoria se
 // vacía al empezar otra partida.
 const rememberedNames = new Map();
+// Los nombres de la partida anterior se guardan aparte y se usan solo si los
+// nuevos todavía no han llegado: así, si el número de partida cambia a mitad
+// (cosa que pasa al reconectar), no se queda la ficha sin nombre.
+let previousNames = new Map();
 let rememberedNamesGame = null;
 
 function playerDisplayName(hero, info, gameId, liveName = null) {
   if (gameId !== rememberedNamesGame) {
-    rememberedNames.clear();
+    previousNames = rememberedNames;
     rememberedNamesGame = gameId;
   }
   const id = info.NetworkId ?? null;
-  const raw = String(hero?.NameAndTagline ?? info.Name ?? '').trim()
-    || String(liveName || '').trim();
+  let raw = String(hero?.NameAndTagline ?? info.Name ?? '').trim();
+  // El juego a veces entrega como «nombre del jugador» el nombre del CAMPEÓN
+  // (pasa con bots y con jugadores cuyo nombre no resuelve: «Rammus»). Eso no
+  // es un nombre: se descarta y se sigue con las demás fuentes.
+  if (raw && skinName(raw) === skinName(hero?.Common?.Identifier)) raw = '';
+  raw = raw || String(liveName || '').trim();
   if (raw) {
     if (id !== null) rememberedNames.set(String(id), raw);
     return raw;
   }
   if (id !== null && rememberedNames.has(String(id))) return rememberedNames.get(String(id));
+  if (id !== null && previousNames.has(String(id))) return previousNames.get(String(id));
   return null;
 }
 
 function compactPlayer(hero, gameTime, gameId) {
   const info = hero.Info || {};
+  // De dónde salió el nombre. Solo lo lee el panel de diagnóstico (?debug=1).
+  const crudo = String(hero?.NameAndTagline ?? info.Name ?? '').trim();
+  const nombreSensor = crudo && skinName(crudo) !== skinName(hero?.Common?.Identifier) ? crudo : '';
+  const nombreCliente = liveNameFor(info.Team, hero?.Common?.Identifier) || '';
+  const nameFrom = nombreSensor ? 'sensor'
+    : (nombreCliente ? 'cliente'
+      : ((rememberedNames.has(String(info.NetworkId)) || previousNames.has(String(info.NetworkId))) ? 'memoria' : 'ninguno'));
   const common = hero.Common || {};
   const spells = {};
   for (const key of ['Q', 'W', 'E', 'R', 'D', 'F']) {
@@ -484,6 +522,7 @@ function compactPlayer(hero, gameTime, gameId) {
     quest: compactQuest(hero, role),
     champion: common.Identifier ?? null,
     player: playerDisplayName(hero, info, gameId, liveNameFor(info.Team, common.Identifier)),
+    nameFrom,
     position: compactPosition(info.Position),
     level: common.Level ?? null,
     experience: hero.Experience ?? null,
@@ -548,6 +587,9 @@ let liveSkinsInFlight = false;
 let liveSkinsFails = 0;
 let liveSkinsLastPoll = 0;
 let liveSkinsLogged = '';
+// Lo último que publicó el cliente del juego, para el informe de diagnóstico.
+const liveDiag = { at: null, cuantos: 0, error: null, muestra: [] };
+let liveSkinsError = null;
 
 // El cliente publica el nombre visible («Cho'Gath») y el sensor el identificador
 // interno («Chogath»). Al normalizar los dos coinciden casi siempre; estos son
@@ -611,20 +653,30 @@ async function refreshLiveSkins() {
   liveSkinsInFlight = true;
   try {
     const list = await getLiveClientJson(LIVE_CLIENT_PATH);
-    if (!Array.isArray(list)) throw new Error('respuesta inesperada');
+    if (!Array.isArray(list)) throw new Error(`respuesta inesperada (${typeof list})`);
+    liveSkinsError = null;
+    // Se guardan dos jugadores tal cual los publica el juego: si algo no
+    // cuadra, en el informe se ve exactamente qué manda.
+    liveDiag.at = new Date().toISOString();
+    liveDiag.cuantos = list.length;
+    liveDiag.muestra = list.slice(0, 2).map(entry => ({ ...entry, items: undefined, runes: undefined, summonerSpells: undefined, scores: undefined }));
     const next = new Map();
     const nextNames = new Map();
     for (const entry of list) {
       const teamName = String(entry?.team || '').toUpperCase();
       const team = teamName === 'ORDER' ? 1 : teamName === 'CHAOS' ? 2 : null;
-      const skin = Number(entry?.skinID);
       const champion = skinName(entry?.championName || entry?.rawChampionName);
-      if (team === null || !champion) continue;
-      if (Number.isFinite(skin) && skin >= 0) next.set(`${team}-${champion}`, skin);
-      const nombre = String(entry?.riotId || entry?.summonerName || '').trim();
-      if (nombre) nextNames.set(`${team}-${champion}`, nombre);
+      if (!champion) continue;
+      const skin = Number(entry?.skinID);
+      if (team !== null && Number.isFinite(skin) && skin >= 0) next.set(`${team}-${champion}`, skin);
+      const nombre = String(entry?.summonerName || entry?.riotId || '').trim();
+      if (nombre) {
+        if (team !== null) nextNames.set(`${team}-${champion}`, nombre);
+        // Sin equipo también sirve como último recurso, por campeón.
+        nextNames.set(`*-${champion}`, nombre);
+      }
     }
-    if (!next.size) throw new Error('lista vacía');
+    // Nada de lanzar error si no hay skins: los nombres valen por sí solos.
     liveSkins.clear();
     for (const [key, value] of next) liveSkins.set(key, value);
     liveNames.clear();
@@ -634,18 +686,25 @@ async function refreshLiveSkins() {
     const firma = [...liveSkins].map(([key, value]) => `${key}=${value}`).join(' | ');
     if (firma !== liveSkinsLogged) {
       liveSkinsLogged = firma;
-      console.log(`Skins del cliente: ${firma}`);
-      const nombres = [...liveNames].map(([key, value]) => `${key}=${value}`).join(' | ');
+      console.log(`Skins del cliente: ${firma || 'ninguna'}`);
+      const nombres = [...liveNames].filter(([key]) => !key.startsWith('*'))
+        .map(([key, value]) => `${key}=${value}`).join(' | ');
       if (nombres) console.log(`Nombres del cliente: ${nombres}`);
     }
-  } catch {
+  } catch (error) {
     // Tras varios fallos seguidos se olvida lo anterior: mejor el arte base que
     // arrastrar la skin de una partida que ya terminó.
     liveSkinsFails += 1;
+    liveSkinsError = error?.code || error?.message || String(error);
+    liveDiag.at = new Date().toISOString();
+    liveDiag.error = liveSkinsError;
+    if (liveSkinsError !== liveSkinsLogged) {
+      liveSkinsLogged = liveSkinsError;
+      console.log(`Skins del cliente: no se pudo leer 127.0.0.1:2999 (${liveSkinsError})`);
+    }
     if (liveSkinsFails >= 3) {
       liveSkins.clear();
       liveNames.clear();
-      liveSkinsLogged = '';
     }
   } finally {
     liveSkinsInFlight = false;
@@ -660,8 +719,13 @@ function skinForPlayer(player) {
 
 // Nombre del jugador según el cliente del juego (el mismo de la lista de skins).
 function liveNameFor(team, champion) {
-  if (team === null || team === undefined || !champion) return null;
-  return liveNames.get(`${team}-${skinName(champion)}`) || null;
+  if (!champion) return null;
+  const clave = skinName(champion);
+  if (team !== null && team !== undefined) {
+    const nombre = liveNames.get(`${team}-${clave}`);
+    if (nombre) return nombre;
+  }
+  return liveNames.get(`*-${clave}`) || null;
 }
 
 const LANE_NAMES = { 0: 'bot', 1: 'mid', 2: 'top' };
@@ -962,7 +1026,11 @@ function resetObjectiveTracking(gameId) {
     dragonNotice: null,
     baronNotice: null,
     heraldNotice: null,
-    respawnAt: new Map()
+    respawnAt: new Map(),
+    // Ventanas de buff de objetivo por equipo, abiertas con la muerte real
+    // del barón o del ancestral. Guardan también quién estaba vivo entonces.
+    buffWindows: { 1: null, 2: null },
+    seenBuffNames: new Set()
   };
 }
 
@@ -1015,6 +1083,33 @@ function updateObjectiveScores(game) {
     }
   }
 
+  // Reparto real del buff: el juego se lo da a los miembros vivos del equipo
+  // que mata el objetivo, y se pierde al morir. Se congela ese reparto aquí.
+  const abrirVentanaBuff = (buffKind, at, securedByTeam) => {
+    if (at === null || (securedByTeam !== 1 && securedByTeam !== 2)) return;
+    const duration = OBJECTIVE_BUFF_SECONDS[buffKind];
+    if (!duration) return;
+    const eligible = new Set();
+    for (const hero of Array.isArray(game.Heroes) ? game.Heroes : []) {
+      const info = hero?.Info || {};
+      const common = hero?.Common || {};
+      if (info.Team !== securedByTeam || common.IsAlive === false) continue;
+      const id = finiteNumber(info.NetworkId);
+      if (id !== null) eligible.add(id);
+    }
+    objectiveTracking.buffWindows[securedByTeam] = {
+      kind: buffKind,
+      startAt: at,
+      endsAt: at + duration,
+      duration,
+      eligible,
+      // Quien muere con el buff lo pierde para siempre: aunque reviva, no lo
+      // recupera. Se apunta aquí para no volver a pintarle el marco.
+      lost: new Set()
+    };
+    console.log(`Buff de objetivo | equipo=${securedByTeam} | ${buffKind} | ventana=${duration}s | vivos=${eligible.size}`);
+  };
+
   const trackDefeat = (kind, eventTime, objectiveId, killerId) => {
     if (!kind) return;
     const id = finiteNumber(objectiveId);
@@ -1038,6 +1133,10 @@ function updateObjectiveScores(game) {
         team: securedByTeam
       };
       console.log(`Aviso 3D de dragón activado | juego=${gameId ?? 'desconocido'} | tipo=${objectiveTracking.dragonNotice.dragonType || 'desconocido'}`);
+      // Solo el dragón ancestral reparte el buff temporal de 150 s.
+      if (objectiveTracking.dragonNotice.dragonType === 'Elder') {
+        abrirVentanaBuff('elder', at, securedByTeam);
+      }
     }
     if (at !== null && kind === 'baron') {
       objectiveTracking.respawnAt.set(kind, at + 360);
@@ -1049,6 +1148,7 @@ function updateObjectiveScores(game) {
         team: securedByTeam
       };
       console.log(`Aviso 3D de Barón activado | juego=${gameId ?? 'desconocido'}`);
+      abrirVentanaBuff('baron', at, securedByTeam);
     }
     if (at !== null && kind === 'riftHerald') {
       objectiveTracking.heraldNotice = {
@@ -1118,7 +1218,7 @@ function buildIngameState(game, meta) {
   const objectiveScores = updateObjectiveScores(game);
   // Se resuelve después de tener a los jugadores: el buff pertenece al equipo
   // que mató el objetivo, así que se valida por equipo y luego por campeón.
-  const buffsDeObjetivo = detectObjectiveBuffs(players, gameTime);
+  const buffsDeObjetivo = resolveObjectiveBuffs(players, gameTime);
 
   const teams = [1, 2].map((team, index) => {
     const members = players.filter(player => player.team === team);
@@ -1641,9 +1741,126 @@ app.get('/gameinfo', (req, res) => {
   res.json(latest);
 });
 
+// ============================================================================
+// INFORME DE DIAGNÓSTICO EN DISCO
+// Mientras hay partida se escribe ingame/data/diag.json cada pocos segundos.
+// No hay que capturar nada durante el juego: al terminar, ese archivo dice qué
+// skins y qué nombres publicó el cliente, qué mandó el sensor y qué error hubo
+// al leer la API del juego. Es lo que hace falta para arreglar un fallo de skin.
+// ============================================================================
+const DIAG_PATH = path.join(__dirname, 'data', 'diag.json');
+let diagDirty = false;
+let diagWriting = false;
+let diagUltimo = '';
+function diagActual() {
+  return JSON.stringify({
+    actualizado: new Date().toISOString(),
+    partida: latestState?.meta?.gameId ?? null,
+    apiDelJuego: {
+      direccion: 'https://127.0.0.1:2999/liveclientdata/playerlist',
+      responde: liveSkinsError === null && liveSkins.size > 0,
+      error: liveSkinsError,
+      ultimaLectura: liveDiag.at,
+      jugadoresRecibidos: liveDiag.cuantos,
+      muestraCruda: liveDiag.muestra
+    },
+    skins: Object.fromEntries(liveSkins),
+    nombres: Object.fromEntries([...liveNames].filter(([clave]) => !clave.startsWith('*'))),
+    jugadores: (latestState?.players || []).map(player => ({
+      team: player.team,
+      role: player.role,
+      campeon: player.champion,
+      skin: player.skin ?? null,
+      nombre: player.player ?? null,
+      nombreDesde: player.nameFrom ?? null
+    }))
+  }, null, 2);
+}
+const diagTimer = setInterval(async () => {
+  if (diagWriting || latestState === null) return;
+  const texto = diagActual();
+  if (texto === diagUltimo) return;
+  diagUltimo = texto;
+  diagWriting = true;
+  const temporal = `${DIAG_PATH}.tmp`;
+  try {
+    await fs.promises.writeFile(temporal, texto);
+    await fs.promises.rename(temporal, DIAG_PATH);
+  } catch (error) {
+    console.error('No se pudo escribir el informe de diagnóstico:', error.message);
+  } finally {
+    diagWriting = false;
+  }
+}, 3000);
+diagTimer.unref();
+
 app.get('/ingame', (req, res) => {
   if (latestState === null) return res.status(404).json({ error: 'Todavía no llega GameInfo' });
   res.json(latestState);
+});
+
+// Diagnóstico de las fichas: dice qué llegó y de dónde. Se abre en el navegador
+// (http://localhost:3000/ingame/diag) mientras hay partida y se ve en una sola
+// pantalla si el cliente del juego responde, qué skins publica y qué nombres
+// tiene cada jugador.
+app.get('/ingame/diag', async (req, res) => {
+  const jugadores = (latestState?.players || []).map(player => ({
+    team: player.team,
+    role: player.role,
+    campeon: player.champion,
+    skin: player.skin ?? null,
+    nombre: player.player ?? null,
+    nombreDesde: player.nameFrom ?? null
+  }));
+  const datos = JSON.parse(diagActual());
+  delete datos.actualizado;
+  datos.jugadores = jugadores;
+  datos.skinsPublicadas = datos.skins;
+  datos.nombresPublicados = datos.nombres;
+  delete datos.skins;
+  delete datos.nombres;
+  if (req.query.json === '1') return res.json(datos);
+
+  // Página legible: se abre en el navegador y se lee de un vistazo.
+  const escapar = valor => String(valor === null || valor === undefined ? '—' : valor)
+    .replace(/[&<>"]/g, caracter => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[caracter]));
+  const bien = datos.apiDelJuego.responde;
+  const filas = jugadores.map(jugador => `<tr>
+    <td>${jugador.team === 1 ? 'AZUL' : 'ROJO'}</td>
+    <td>${escapar(String(jugador.role || '').toUpperCase())}</td>
+    <td>${escapar(jugador.campeon)}</td>
+    <td class="num">${escapar(jugador.skin)}</td>
+    <td>${escapar(jugador.nombre)}</td>
+    <td>${escapar(jugador.nombreDesde)}</td>
+  </tr>`).join('');
+  res.type('html').send(`<!doctype html><html lang="es"><meta charset="utf-8">
+<title>Diagnóstico de fichas</title>
+<style>
+ body{font:14px/1.5 Segoe UI,Arial,sans-serif;background:#14151a;color:#e9e9ee;margin:0;padding:28px}
+ h1{font-size:19px;margin:0 0 4px}
+ p{margin:0 0 18px;color:#a9abb6}
+ .caja{padding:14px 16px;border-radius:8px;margin-bottom:18px;font-size:15px}
+ .ok{background:#14301c;border:1px solid #2e7d4f}
+ .mal{background:#3a1719;border:1px solid #9c3b3f}
+ table{border-collapse:collapse;width:100%;max-width:1000px}
+ th,td{text-align:left;padding:7px 10px;border-bottom:1px solid #2a2c35}
+ th{color:#a9abb6;font-weight:600;font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+ td.num{font-variant-numeric:tabular-nums;color:#e8c05a}
+ code{background:#1e2028;padding:2px 6px;border-radius:4px}
+</style>
+<h1>Diagnóstico de las fichas</h1>
+<p>Partida: <code>${escapar(datos.partida)}</code> · skins conocidas: ${liveSkins.size} · nombres conocidos: ${liveNames.size}</p>
+<p style="margin-bottom:18px">Si algo falla, mándale a quien te ayuda el archivo <code>ingame\data\diag.json</code>: se escribe solo mientras hay partida.</p>
+<div class="caja ${bien ? 'ok' : 'mal'}">
+  <b>API del juego (127.0.0.1:2999):</b> ${bien ? 'responde y publica las skins' : 'NO responde'}
+  ${datos.apiDelJuego.error ? ` — ${escapar(datos.apiDelJuego.error)}` : ''}
+</div>
+<table><tr><th>Equipo</th><th>Rol</th><th>Campeón</th><th>Skin</th><th>Nombre</th><th>Nombre desde</th></tr>${filas}</table>
+<p style="margin-top:18px">Skins: <code>${escapar(JSON.stringify(datos.skinsPublicadas))}</code></p>
+<p>Nombres: <code>${escapar(JSON.stringify(datos.nombresPublicados))}</code></p>
+<h1 style="margin-top:26px;font-size:15px">Lo que publica el juego (2 jugadores tal cual)</h1>
+<pre style="white-space:pre-wrap;word-break:break-all;color:#9ea3b0;font-size:12px">${escapar(JSON.stringify(datos.apiDelJuego.muestraCruda, null, 1))}</pre>
+</html>`);
 });
 
 app.get('/hud/status', async (req, res) => {

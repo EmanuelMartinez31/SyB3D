@@ -9,324 +9,9 @@
       "IsWardOrPlant": false,
       "Info": {
         "IsNeutral": true,
-        "Name": "PlantSatchel",
-        "NetworkId": 1073742365,
-        "Index": 132249,
-        "Position": {
-          "x": 8659,
-          "y": 53.657677,
-          "z": 11535
-        },
-        "Rotation": null,
-        "Team": 3
-      },
-      "Common": {
-        "IsAlive": true,
-        "IsZombie": false,
-        "IsRecalling": false,
-        "IsTargetable": false,
-        "Identifier": "SRU_Plant_Satchel",
-        "CurrentAttack": "",
-        "Status": 1,
-        "Health": 1,
-        "MaxHealth": 1,
-        "Armor": null,
-        "MagicResist": null,
-        "Level": 1,
-        "AttackSpeedMultiplier": null,
-        "MovementSpeed": null,
-        "DataStack": null,
-        "Buffs": [],
-        "Animations": null,
-        "SubmeshVisiblityMask": 0,
-        "AttackSpeedBonus": null,
-        "AnimationState": null
-      },
-      "TypeInfo": 0,
-      "Bones": null
-    },
-    {
-      "IsClone": false,
-      "IsLaneMinion": false,
-      "IsEliteMinion": false,
-      "IsEpicMinion": false,
-      "IsJungleMinion": false,
-      "IsWardOrPlant": false,
-      "Info": {
-        "IsNeutral": true,
-        "Name": "HiddenMinion",
-        "NetworkId": 1073742366,
-        "Index": 132253,
-        "Position": {
-          "x": 8659,
-          "y": 53.657677,
-          "z": 11535
-        },
-        "Rotation": null,
-        "Team": 3
-      },
-      "Common": {
-        "IsAlive": true,
-        "IsZombie": false,
-        "IsRecalling": false,
-        "IsTargetable": false,
-        "Identifier": "TestCubeRenderNoFOW",
-        "CurrentAttack": "",
-        "Status": 1,
-        "Health": 100,
-        "MaxHealth": 100,
-        "Armor": null,
-        "MagicResist": null,
-        "Level": 1,
-        "AttackSpeedMultiplier": null,
-        "MovementSpeed": null,
-        "DataStack": null,
-        "Buffs": [],
-        "Animations": null,
-        "SubmeshVisiblityMask": 0,
-        "AttackSpeedBonus": null,
-        "AnimationState": null
-      },
-      "TypeInfo": 0,
-      "Bones": null
-    },
-    {
-      "IsClone": false,
-      "IsLaneMinion": false,
-      "IsEliteMinion": false,
-      "IsEpicMinion": false,
-      "IsJungleMinion": false,
-      "IsWardOrPlant": false,
-      "Info": {
-        "IsNeutral": true,
-        "Name": "PlantSatchel",
-        "NetworkId": 1073742363,
-        "Index": 132254,
-        "Position": {
-          "x": 10373,
-          "y": 51.73402,
-          "z": 7628
-        },
-        "Rotation": null,
-        "Team": 3
-      },
-      "Common": {
-        "IsAlive": true,
-        "IsZombie": false,
-        "IsRecalling": false,
-        "IsTargetable": false,
-        "Identifier": "SRU_Plant_Satchel",
-        "CurrentAttack": "",
-        "Status": 1,
-        "Health": 1,
-        "MaxHealth": 1,
-        "Armor": null,
-        "MagicResist": null,
-        "Level": 1,
-        "AttackSpeedMultiplier": null,
-        "MovementSpeed": null,
-        "DataStack": null,
-        "Buffs": [],
-        "Animations": null,
-        "SubmeshVisiblityMask": 0,
-        "AttackSpeedBonus": null,
-        "AnimationState": null
-      },
-      "TypeInfo": 0,
-      "Bones": null
-    },
-    {
-      "IsClone": false,
-      "IsLaneMinion": false,
-      "IsEliteMinion": false,
-      "IsEpicMinion": false,
-      "IsJungleMinion": false,
-      "IsWardOrPlant": false,
-      "Info": {
-        "IsNeutral": true,
-        "Name": "HiddenMinion",
-        "NetworkId": 1073742364,
-        "Index": 132259,
-        "Position": {
-          "x": 10373,
-          "y": 51.73402,
-          "z": 7628
-        },
-        "Rotation": null,
-        "Team": 3
-      },
-      "Common": {
-        "IsAlive": true,
-        "IsZombie": false,
-        "IsRecalling": false,
-        "IsTargetable": false,
-        "Identifier": "TestCubeRenderNoFOW",
-        "CurrentAttack": "",
-        "Status": 1,
-        "Health": 100,
-        "MaxHealth": 100,
-        "Armor": null,
-        "MagicResist": null,
-        "Level": 1,
-        "AttackSpeedMultiplier": null,
-        "MovementSpeed": null,
-        "DataStack": null,
-        "Buffs": [],
-        "Animations": null,
-        "SubmeshVisiblityMask": 0,
-        "AttackSpeedBonus": null,
-        "AnimationState": null
-      },
-      "TypeInfo": 0,
-      "Bones": null
-    },
-    {
-      "IsClone": false,
-      "IsLaneMinion": false,
-      "IsEliteMinion": false,
-      "IsEpicMinion": false,
-      "IsJungleMinion": false,
-      "IsWardOrPlant": false,
-      "Info": {
-        "IsNeutral": true,
-        "Name": "PlantSatchel",
-        "NetworkId": 1073742361,
-        "Index": 132262,
-        "Position": {
-          "x": 6141,
-          "y": 50.523113,
-          "z": 3402
-        },
-        "Rotation": null,
-        "Team": 3
-      },
-      "Common": {
-        "IsAlive": true,
-        "IsZombie": false,
-        "IsRecalling": false,
-        "IsTargetable": false,
-        "Identifier": "SRU_Plant_Satchel",
-        "CurrentAttack": "",
-        "Status": 1,
-        "Health": 1,
-        "MaxHealth": 1,
-        "Armor": null,
-        "MagicResist": null,
-        "Level": 1,
-        "AttackSpeedMultiplier": null,
-        "MovementSpeed": null,
-        "DataStack": null,
-        "Buffs": [],
-        "Animations": null,
-        "SubmeshVisiblityMask": 0,
-        "AttackSpeedBonus": null,
-        "AnimationState": null
-      },
-      "TypeInfo": 0,
-      "Bones": null
-    },
-    {
-      "IsClone": false,
-      "IsLaneMinion": false,
-      "IsEliteMinion": false,
-      "IsEpicMinion": false,
-      "IsJungleMinion": false,
-      "IsWardOrPlant": false,
-      "Info": {
-        "IsNeutral": true,
-        "Name": "HiddenMinion",
-        "NetworkId": 1073742362,
-        "Index": 132263,
-        "Position": {
-          "x": 6141,
-          "y": 50.523113,
-          "z": 3402
-        },
-        "Rotation": null,
-        "Team": 3
-      },
-      "Common": {
-        "IsAlive": true,
-        "IsZombie": false,
-        "IsRecalling": false,
-        "IsTargetable": false,
-        "Identifier": "TestCubeRenderNoFOW",
-        "CurrentAttack": "",
-        "Status": 1,
-        "Health": 100,
-        "MaxHealth": 100,
-        "Armor": null,
-        "MagicResist": null,
-        "Level": 1,
-        "AttackSpeedMultiplier": null,
-        "MovementSpeed": null,
-        "DataStack": null,
-        "Buffs": [],
-        "Animations": null,
-        "SubmeshVisiblityMask": 0,
-        "AttackSpeedBonus": null,
-        "AnimationState": null
-      },
-      "TypeInfo": 0,
-      "Bones": null
-    },
-    {
-      "IsClone": false,
-      "IsLaneMinion": false,
-      "IsEliteMinion": false,
-      "IsEpicMinion": false,
-      "IsJungleMinion": false,
-      "IsWardOrPlant": false,
-      "Info": {
-        "IsNeutral": true,
-        "Name": "PlantSatchel",
-        "NetworkId": 1073742358,
-        "Index": 132276,
-        "Position": {
-          "x": 4385.8037,
-          "y": 50.715893,
-          "z": 7244.583
-        },
-        "Rotation": null,
-        "Team": 3
-      },
-      "Common": {
-        "IsAlive": true,
-        "IsZombie": false,
-        "IsRecalling": false,
-        "IsTargetable": false,
-        "Identifier": "SRU_Plant_Satchel",
-        "CurrentAttack": "",
-        "Status": 1,
-        "Health": 1,
-        "MaxHealth": 1,
-        "Armor": null,
-        "MagicResist": null,
-        "Level": 1,
-        "AttackSpeedMultiplier": null,
-        "MovementSpeed": null,
-        "DataStack": null,
-        "Buffs": [],
-        "Animations": null,
-        "SubmeshVisiblityMask": 0,
-        "AttackSpeedBonus": null,
-        "AnimationState": null
-      },
-      "TypeInfo": 0,
-      "Bones": null
-    },
-    {
-      "IsClone": false,
-      "IsLaneMinion": false,
-      "IsEliteMinion": false,
-      "IsEpicMinion": false,
-      "IsJungleMinion": false,
-      "IsWardOrPlant": false,
-      "Info": {
-        "IsNeutral": true,
         "Name": "HiddenMinion",
         "NetworkId": 1073742359,
-        "Index": 132277,
+        "Index": 197813,
         "Position": {
           "x": 4385.8037,
           "y": 50.715893,
@@ -603,8 +288,8 @@
         "Buffs": [
           {
             "Name": "camprespawncountdownvisible",
-            "StartTime": 0.4721664,
-            "EndTime": 60.472168,
+            "StartTime": 0.3350984,
+            "EndTime": 60.3351,
             "Count": 1,
             "Type": 1
           }
@@ -709,8 +394,8 @@
         "Buffs": [
           {
             "Name": "camprespawncountdownvisible",
-            "StartTime": 0.4721664,
-            "EndTime": 60.472168,
+            "StartTime": 0.3350984,
+            "EndTime": 60.3351,
             "Count": 1,
             "Type": 1
           }
@@ -815,8 +500,8 @@
         "Buffs": [
           {
             "Name": "camprespawncountdownvisible",
-            "StartTime": 0.4721664,
-            "EndTime": 60.472168,
+            "StartTime": 0.3350984,
+            "EndTime": 60.3351,
             "Count": 1,
             "Type": 1
           }
@@ -868,8 +553,8 @@
         "Buffs": [
           {
             "Name": "camprespawncountdownvisible",
-            "StartTime": 0.4721664,
-            "EndTime": 60.472168,
+            "StartTime": 0.3350984,
+            "EndTime": 60.3351,
             "Count": 1,
             "Type": 1
           }
@@ -927,6 +612,321 @@
             "Type": 0
           }
         ],
+        "Animations": null,
+        "SubmeshVisiblityMask": 0,
+        "AttackSpeedBonus": null,
+        "AnimationState": null
+      },
+      "TypeInfo": 0,
+      "Bones": null
+    },
+    {
+      "IsClone": false,
+      "IsLaneMinion": false,
+      "IsEliteMinion": false,
+      "IsEpicMinion": false,
+      "IsJungleMinion": false,
+      "IsWardOrPlant": false,
+      "Info": {
+        "IsNeutral": true,
+        "Name": "PlantSatchel",
+        "NetworkId": 1073742365,
+        "Index": 132510,
+        "Position": {
+          "x": 8659,
+          "y": 53.657677,
+          "z": 11535
+        },
+        "Rotation": null,
+        "Team": 3
+      },
+      "Common": {
+        "IsAlive": true,
+        "IsZombie": false,
+        "IsRecalling": false,
+        "IsTargetable": false,
+        "Identifier": "SRU_Plant_Satchel",
+        "CurrentAttack": "",
+        "Status": 1,
+        "Health": 1,
+        "MaxHealth": 1,
+        "Armor": null,
+        "MagicResist": null,
+        "Level": 1,
+        "AttackSpeedMultiplier": null,
+        "MovementSpeed": null,
+        "DataStack": null,
+        "Buffs": [],
+        "Animations": null,
+        "SubmeshVisiblityMask": 0,
+        "AttackSpeedBonus": null,
+        "AnimationState": null
+      },
+      "TypeInfo": 0,
+      "Bones": null
+    },
+    {
+      "IsClone": false,
+      "IsLaneMinion": false,
+      "IsEliteMinion": false,
+      "IsEpicMinion": false,
+      "IsJungleMinion": false,
+      "IsWardOrPlant": false,
+      "Info": {
+        "IsNeutral": true,
+        "Name": "HiddenMinion",
+        "NetworkId": 1073742366,
+        "Index": 132520,
+        "Position": {
+          "x": 8659,
+          "y": 53.657677,
+          "z": 11535
+        },
+        "Rotation": null,
+        "Team": 3
+      },
+      "Common": {
+        "IsAlive": true,
+        "IsZombie": false,
+        "IsRecalling": false,
+        "IsTargetable": false,
+        "Identifier": "TestCubeRenderNoFOW",
+        "CurrentAttack": "",
+        "Status": 1,
+        "Health": 100,
+        "MaxHealth": 100,
+        "Armor": null,
+        "MagicResist": null,
+        "Level": 1,
+        "AttackSpeedMultiplier": null,
+        "MovementSpeed": null,
+        "DataStack": null,
+        "Buffs": [],
+        "Animations": null,
+        "SubmeshVisiblityMask": 0,
+        "AttackSpeedBonus": null,
+        "AnimationState": null
+      },
+      "TypeInfo": 0,
+      "Bones": null
+    },
+    {
+      "IsClone": false,
+      "IsLaneMinion": false,
+      "IsEliteMinion": false,
+      "IsEpicMinion": false,
+      "IsJungleMinion": false,
+      "IsWardOrPlant": false,
+      "Info": {
+        "IsNeutral": true,
+        "Name": "PlantSatchel",
+        "NetworkId": 1073742363,
+        "Index": 132526,
+        "Position": {
+          "x": 10373,
+          "y": 51.73402,
+          "z": 7628
+        },
+        "Rotation": null,
+        "Team": 3
+      },
+      "Common": {
+        "IsAlive": true,
+        "IsZombie": false,
+        "IsRecalling": false,
+        "IsTargetable": false,
+        "Identifier": "SRU_Plant_Satchel",
+        "CurrentAttack": "",
+        "Status": 1,
+        "Health": 1,
+        "MaxHealth": 1,
+        "Armor": null,
+        "MagicResist": null,
+        "Level": 1,
+        "AttackSpeedMultiplier": null,
+        "MovementSpeed": null,
+        "DataStack": null,
+        "Buffs": [],
+        "Animations": null,
+        "SubmeshVisiblityMask": 0,
+        "AttackSpeedBonus": null,
+        "AnimationState": null
+      },
+      "TypeInfo": 0,
+      "Bones": null
+    },
+    {
+      "IsClone": false,
+      "IsLaneMinion": false,
+      "IsEliteMinion": false,
+      "IsEpicMinion": false,
+      "IsJungleMinion": false,
+      "IsWardOrPlant": false,
+      "Info": {
+        "IsNeutral": true,
+        "Name": "HiddenMinion",
+        "NetworkId": 1073742364,
+        "Index": 132538,
+        "Position": {
+          "x": 10373,
+          "y": 51.73402,
+          "z": 7628
+        },
+        "Rotation": null,
+        "Team": 3
+      },
+      "Common": {
+        "IsAlive": true,
+        "IsZombie": false,
+        "IsRecalling": false,
+        "IsTargetable": false,
+        "Identifier": "TestCubeRenderNoFOW",
+        "CurrentAttack": "",
+        "Status": 1,
+        "Health": 100,
+        "MaxHealth": 100,
+        "Armor": null,
+        "MagicResist": null,
+        "Level": 1,
+        "AttackSpeedMultiplier": null,
+        "MovementSpeed": null,
+        "DataStack": null,
+        "Buffs": [],
+        "Animations": null,
+        "SubmeshVisiblityMask": 0,
+        "AttackSpeedBonus": null,
+        "AnimationState": null
+      },
+      "TypeInfo": 0,
+      "Bones": null
+    },
+    {
+      "IsClone": false,
+      "IsLaneMinion": false,
+      "IsEliteMinion": false,
+      "IsEpicMinion": false,
+      "IsJungleMinion": false,
+      "IsWardOrPlant": false,
+      "Info": {
+        "IsNeutral": true,
+        "Name": "PlantSatchel",
+        "NetworkId": 1073742361,
+        "Index": 132539,
+        "Position": {
+          "x": 6141,
+          "y": 50.523113,
+          "z": 3402
+        },
+        "Rotation": null,
+        "Team": 3
+      },
+      "Common": {
+        "IsAlive": true,
+        "IsZombie": false,
+        "IsRecalling": false,
+        "IsTargetable": false,
+        "Identifier": "SRU_Plant_Satchel",
+        "CurrentAttack": "",
+        "Status": 1,
+        "Health": 1,
+        "MaxHealth": 1,
+        "Armor": null,
+        "MagicResist": null,
+        "Level": 1,
+        "AttackSpeedMultiplier": null,
+        "MovementSpeed": null,
+        "DataStack": null,
+        "Buffs": [],
+        "Animations": null,
+        "SubmeshVisiblityMask": 0,
+        "AttackSpeedBonus": null,
+        "AnimationState": null
+      },
+      "TypeInfo": 0,
+      "Bones": null
+    },
+    {
+      "IsClone": false,
+      "IsLaneMinion": false,
+      "IsEliteMinion": false,
+      "IsEpicMinion": false,
+      "IsJungleMinion": false,
+      "IsWardOrPlant": false,
+      "Info": {
+        "IsNeutral": true,
+        "Name": "HiddenMinion",
+        "NetworkId": 1073742362,
+        "Index": 132549,
+        "Position": {
+          "x": 6141,
+          "y": 50.523113,
+          "z": 3402
+        },
+        "Rotation": null,
+        "Team": 3
+      },
+      "Common": {
+        "IsAlive": true,
+        "IsZombie": false,
+        "IsRecalling": false,
+        "IsTargetable": false,
+        "Identifier": "TestCubeRenderNoFOW",
+        "CurrentAttack": "",
+        "Status": 1,
+        "Health": 100,
+        "MaxHealth": 100,
+        "Armor": null,
+        "MagicResist": null,
+        "Level": 1,
+        "AttackSpeedMultiplier": null,
+        "MovementSpeed": null,
+        "DataStack": null,
+        "Buffs": [],
+        "Animations": null,
+        "SubmeshVisiblityMask": 0,
+        "AttackSpeedBonus": null,
+        "AnimationState": null
+      },
+      "TypeInfo": 0,
+      "Bones": null
+    },
+    {
+      "IsClone": false,
+      "IsLaneMinion": false,
+      "IsEliteMinion": false,
+      "IsEpicMinion": false,
+      "IsJungleMinion": false,
+      "IsWardOrPlant": false,
+      "Info": {
+        "IsNeutral": true,
+        "Name": "PlantSatchel",
+        "NetworkId": 1073742358,
+        "Index": 132550,
+        "Position": {
+          "x": 4385.8037,
+          "y": 50.715893,
+          "z": 7244.583
+        },
+        "Rotation": null,
+        "Team": 3
+      },
+      "Common": {
+        "IsAlive": true,
+        "IsZombie": false,
+        "IsRecalling": false,
+        "IsTargetable": false,
+        "Identifier": "SRU_Plant_Satchel",
+        "CurrentAttack": "",
+        "Status": 1,
+        "Health": 1,
+        "MaxHealth": 1,
+        "Armor": null,
+        "MagicResist": null,
+        "Level": 1,
+        "AttackSpeedMultiplier": null,
+        "MovementSpeed": null,
+        "DataStack": null,
+        "Buffs": [],
         "Animations": null,
         "SubmeshVisiblityMask": 0,
         "AttackSpeedBonus": null,
@@ -1500,8 +1500,8 @@
         "Buffs": [
           {
             "Name": "camprespawncountdownvisible",
-            "StartTime": 0.4721664,
-            "EndTime": 60.472168,
+            "StartTime": 0.3350984,
+            "EndTime": 60.3351,
             "Count": 1,
             "Type": 1
           }
@@ -1606,8 +1606,8 @@
         "Buffs": [
           {
             "Name": "camprespawncountdownvisible",
-            "StartTime": 0.4721664,
-            "EndTime": 60.472168,
+            "StartTime": 0.3350984,
+            "EndTime": 60.3351,
             "Count": 1,
             "Type": 1
           }
@@ -1712,8 +1712,8 @@
         "Buffs": [
           {
             "Name": "camprespawncountdownvisible",
-            "StartTime": 0.4721664,
-            "EndTime": 60.472168,
+            "StartTime": 0.3350984,
+            "EndTime": 60.3351,
             "Count": 1,
             "Type": 1
           }
@@ -1765,8 +1765,8 @@
         "Buffs": [
           {
             "Name": "camprespawncountdownvisible",
-            "StartTime": 0.4721664,
-            "EndTime": 60.472168,
+            "StartTime": 0.3350984,
+            "EndTime": 60.3351,
             "Count": 1,
             "Type": 1
           }
@@ -1845,9 +1845,9 @@
         "NetworkId": 1073742348,
         "Index": 132537,
         "Position": {
-          "x": 137.19238,
+          "x": 424.2777,
           "y": 183.5748,
-          "z": 669.78625
+          "z": 574.5613
         },
         "Rotation": null,
         "Team": 1
@@ -1935,9 +1935,9 @@
         "NetworkId": 1073742354,
         "Index": 132553,
         "Position": {
-          "x": 13905.62,
-          "y": 171.5695,
-          "z": 14553.54
+          "x": 14181.27,
+          "y": 171.58017,
+          "z": 14392.117
         },
         "Rotation": null,
         "Team": 2
@@ -1978,7 +1978,7 @@
         "IsNeutral": true,
         "Name": "PlantSatchel",
         "NetworkId": 1073742358,
-        "Index": 132276,
+        "Index": 132550,
         "Position": {
           "x": 4385.8037,
           "y": 50.715893,
@@ -2023,7 +2023,7 @@
         "IsNeutral": true,
         "Name": "HiddenMinion",
         "NetworkId": 1073742359,
-        "Index": 132277,
+        "Index": 197813,
         "Position": {
           "x": 4385.8037,
           "y": 50.715893,
@@ -2068,7 +2068,7 @@
         "IsNeutral": true,
         "Name": "PlantSatchel",
         "NetworkId": 1073742361,
-        "Index": 132262,
+        "Index": 132539,
         "Position": {
           "x": 6141,
           "y": 50.523113,
@@ -2113,7 +2113,7 @@
         "IsNeutral": true,
         "Name": "HiddenMinion",
         "NetworkId": 1073742362,
-        "Index": 132263,
+        "Index": 132549,
         "Position": {
           "x": 6141,
           "y": 50.523113,
@@ -2158,7 +2158,7 @@
         "IsNeutral": true,
         "Name": "PlantSatchel",
         "NetworkId": 1073742363,
-        "Index": 132254,
+        "Index": 132526,
         "Position": {
           "x": 10373,
           "y": 51.73402,
@@ -2203,7 +2203,7 @@
         "IsNeutral": true,
         "Name": "HiddenMinion",
         "NetworkId": 1073742364,
-        "Index": 132259,
+        "Index": 132538,
         "Position": {
           "x": 10373,
           "y": 51.73402,
@@ -2248,7 +2248,7 @@
         "IsNeutral": true,
         "Name": "PlantSatchel",
         "NetworkId": 1073742365,
-        "Index": 132249,
+        "Index": 132510,
         "Position": {
           "x": 8659,
           "y": 53.657677,
@@ -2293,7 +2293,7 @@
         "IsNeutral": true,
         "Name": "HiddenMinion",
         "NetworkId": 1073742366,
-        "Index": 132253,
+        "Index": 132520,
         "Position": {
           "x": 8659,
           "y": 53.657677,
@@ -2308,96 +2308,6 @@
         "IsRecalling": false,
         "IsTargetable": false,
         "Identifier": "TestCubeRenderNoFOW",
-        "CurrentAttack": "",
-        "Status": 1,
-        "Health": 100,
-        "MaxHealth": 100,
-        "Armor": null,
-        "MagicResist": null,
-        "Level": 1,
-        "AttackSpeedMultiplier": null,
-        "MovementSpeed": null,
-        "DataStack": null,
-        "Buffs": [],
-        "Animations": null,
-        "SubmeshVisiblityMask": 0,
-        "AttackSpeedBonus": null,
-        "AnimationState": null
-      },
-      "TypeInfo": 0,
-      "Bones": null
-    },
-    "1073742367": {
-      "IsClone": false,
-      "IsLaneMinion": false,
-      "IsEliteMinion": false,
-      "IsEpicMinion": false,
-      "IsJungleMinion": false,
-      "IsWardOrPlant": false,
-      "Info": {
-        "IsNeutral": false,
-        "Name": "HiddenMinion",
-        "NetworkId": 1073742367,
-        "Index": 197779,
-        "Position": {
-          "x": 192.26012,
-          "y": 182.1325,
-          "z": 298.15048
-        },
-        "Rotation": null,
-        "Team": 1
-      },
-      "Common": {
-        "IsAlive": true,
-        "IsZombie": false,
-        "IsRecalling": false,
-        "IsTargetable": false,
-        "Identifier": "SRU_Jungle_Companions",
-        "CurrentAttack": "",
-        "Status": 1,
-        "Health": 1500,
-        "MaxHealth": 1500,
-        "Armor": null,
-        "MagicResist": null,
-        "Level": 1,
-        "AttackSpeedMultiplier": null,
-        "MovementSpeed": null,
-        "DataStack": null,
-        "Buffs": [],
-        "Animations": null,
-        "SubmeshVisiblityMask": 0,
-        "AttackSpeedBonus": null,
-        "AnimationState": null
-      },
-      "TypeInfo": 0,
-      "Bones": null
-    },
-    "1073742368": {
-      "IsClone": false,
-      "IsLaneMinion": false,
-      "IsEliteMinion": false,
-      "IsEpicMinion": false,
-      "IsJungleMinion": false,
-      "IsWardOrPlant": false,
-      "Info": {
-        "IsNeutral": false,
-        "Name": "HiddenMinion",
-        "NetworkId": 1073742368,
-        "Index": 197780,
-        "Position": {
-          "x": 3893.851,
-          "y": 51.899223,
-          "z": 7869.825
-        },
-        "Rotation": null,
-        "Team": 1
-      },
-      "Common": {
-        "IsAlive": true,
-        "IsZombie": false,
-        "IsRecalling": false,
-        "IsTargetable": false,
-        "Identifier": "TestCubeRender",
         "CurrentAttack": "",
         "Status": 1,
         "Health": 100,
@@ -2498,7 +2408,7 @@
         "Index": 4,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 9.188691,
+        "Cooldown": 13.5657,
         "IsToggled": false
       },
       "F": {
@@ -2512,7 +2422,7 @@
         "Index": 5,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 9.188691,
+        "Cooldown": 13.5657,
         "IsToggled": false
       },
       "NameAndTagline": "Guerra2009#LAN",
@@ -2526,9 +2436,9 @@
         "NetworkId": 1073741998,
         "Index": 66561,
         "Position": {
-          "x": 422,
-          "y": 182.21703,
-          "z": 480
+          "x": 603.6285,
+          "y": 183.5748,
+          "z": 611.984
         },
         "Rotation": null,
         "Team": 1
@@ -2643,15 +2553,8 @@
           },
           {
             "Name": "srhomeguardspeed",
-            "StartTime": 0.4721664,
-            "EndTime": 25000.473,
-            "Count": 1,
-            "Type": 15
-          },
-          {
-            "Name": "s4spawnlockspeed",
-            "StartTime": 5.611109,
-            "EndTime": 21.611109,
+            "StartTime": 0.3350984,
+            "EndTime": 25000.336,
             "Count": 1,
             "Type": 15
           }
@@ -2739,7 +2642,7 @@
           "Index": 4,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 9.188691,
+          "Cooldown": 13.5657,
           "IsToggled": false
         },
         {
@@ -2753,7 +2656,7 @@
           "Index": 5,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 9.188691,
+          "Cooldown": 13.5657,
           "IsToggled": false
         },
         {
@@ -3081,13 +2984,13 @@
         "Icon": "Summoner_smite.dds",
         "ReadyAt": 15,
         "MaxCooldown": 15,
-        "AmmoReadyAt": 5.611109,
+        "AmmoReadyAt": 1.3467107,
         "AmmoCooldown": 0,
         "InitAtTime": null,
         "Index": 4,
         "Level": 1,
         "AmmoCount": 1,
-        "Cooldown": 9.188691,
+        "Cooldown": 13.5657,
         "IsToggled": false
       },
       "F": {
@@ -3101,7 +3004,7 @@
         "Index": 5,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 9.188691,
+        "Cooldown": 13.5657,
         "IsToggled": false
       },
       "NameAndTagline": "Banedeodo#0406",
@@ -3115,9 +3018,9 @@
         "NetworkId": 1073741999,
         "Index": 66568,
         "Position": {
-          "x": 266.07794,
+          "x": 662.6285,
           "y": 182.13254,
-          "z": 251.09436
+          "z": 285.984
         },
         "Rotation": null,
         "Team": 1
@@ -3169,8 +3072,8 @@
           },
           {
             "Name": "taliyahpwallspeedfullyramped",
-            "StartTime": 1.0341783,
-            "EndTime": 25001.033,
+            "StartTime": 0.8962745,
+            "EndTime": 25000.896,
             "Count": 1,
             "Type": 2
           },
@@ -3224,13 +3127,6 @@
             "Type": 1
           },
           {
-            "Name": "s4spawnlockspeed",
-            "StartTime": 5.611109,
-            "EndTime": 21.611109,
-            "Count": 1,
-            "Type": 15
-          },
-          {
             "Name": "challengeschampiontrackerbuff",
             "StartTime": 0,
             "EndTime": 25000,
@@ -3267,24 +3163,17 @@
           },
           {
             "Name": "taliyahpwallspeedbuff",
-            "StartTime": 0.4721664,
-            "EndTime": 25000.473,
+            "StartTime": 0.3350984,
+            "EndTime": 25000.336,
             "Count": 1,
             "Type": 2
           },
           {
             "Name": "srhomeguardspeed",
-            "StartTime": 0.4721664,
-            "EndTime": 25000.473,
+            "StartTime": 0.3350984,
+            "EndTime": 25000.336,
             "Count": 1,
             "Type": 15
-          },
-          {
-            "Name": "ItemMonsterBurn",
-            "StartTime": 3.8327756,
-            "EndTime": 25003.832,
-            "Count": 35,
-            "Type": 27
           }
         ],
         "Animations": null,
@@ -3294,7 +3183,7 @@
       },
       "HeroIndex": 1,
       "RespawnTime": 0,
-      "Gold": 0,
+      "Gold": 500,
       "TotalGold": 500,
       "GoldGivenOnDeath": 0,
       "Experience": 0,
@@ -3364,13 +3253,13 @@
           "Icon": "Summoner_smite.dds",
           "ReadyAt": 15,
           "MaxCooldown": 15,
-          "AmmoReadyAt": 5.611109,
+          "AmmoReadyAt": 1.3467107,
           "AmmoCooldown": 0,
           "InitAtTime": null,
           "Index": 4,
           "Level": 1,
           "AmmoCount": 1,
-          "Cooldown": 9.188691,
+          "Cooldown": 13.5657,
           "IsToggled": false
         },
         {
@@ -3384,33 +3273,33 @@
           "Index": 5,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 9.188691,
+          "Cooldown": 13.5657,
           "IsToggled": false
         },
         {
-          "Name": "BaseSpell",
-          "Icon": "",
-          "ReadyAt": 3.8327756,
+          "Name": null,
+          "Icon": null,
+          "ReadyAt": 0,
           "MaxCooldown": 0,
           "AmmoReadyAt": 0,
           "AmmoCooldown": 0,
           "InitAtTime": null,
           "Index": 6,
-          "Level": 1,
+          "Level": 0,
           "AmmoCount": 0,
           "Cooldown": 0,
           "IsToggled": false
         },
         {
-          "Name": "Item2003",
-          "Icon": "",
-          "ReadyAt": 3.8327756,
+          "Name": null,
+          "Icon": null,
+          "ReadyAt": 0,
           "MaxCooldown": 0,
           "AmmoReadyAt": 0,
           "AmmoCooldown": 0,
           "InitAtTime": null,
           "Index": 7,
-          "Level": 1,
+          "Level": 0,
           "AmmoCount": 0,
           "Cooldown": 0,
           "IsToggled": false
@@ -3529,68 +3418,6 @@
         }
       ],
       "Items": [
-        {
-          "ItemAssets": [],
-          "Stats": {
-            "Data": [
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0
-            ]
-          },
-          "CombineCost": 450,
-          "Id": 1102,
-          "Count": 1,
-          "Stacks": 1,
-          "Charges": 35,
-          "Slot": 0,
-          "ItemAssetHashes": [
-            17629432669606332000
-          ]
-        },
-        {
-          "ItemAssets": [],
-          "Stats": {
-            "Data": [
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0
-            ]
-          },
-          "CombineCost": 50,
-          "Id": 2003,
-          "Count": 1,
-          "Stacks": 1,
-          "Charges": 0,
-          "Slot": 1,
-          "ItemAssetHashes": [
-            7038541256734867000
-          ]
-        },
         {
           "ItemAssets": [],
           "Stats": {
@@ -3780,7 +3607,7 @@
         "Index": 4,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 9.188691,
+        "Cooldown": 13.5657,
         "IsToggled": false
       },
       "F": {
@@ -3794,7 +3621,7 @@
         "Index": 5,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 9.188691,
+        "Cooldown": 13.5657,
         "IsToggled": false
       },
       "NameAndTagline": "Arock#NEET",
@@ -3932,15 +3759,8 @@
           },
           {
             "Name": "srhomeguardspeed",
-            "StartTime": 0.4721664,
-            "EndTime": 25000.473,
-            "Count": 1,
-            "Type": 15
-          },
-          {
-            "Name": "s4spawnlockspeed",
-            "StartTime": 5.611109,
-            "EndTime": 21.611109,
+            "StartTime": 0.3350984,
+            "EndTime": 25000.336,
             "Count": 1,
             "Type": 15
           }
@@ -4028,7 +3848,7 @@
           "Index": 4,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 9.188691,
+          "Cooldown": 13.5657,
           "IsToggled": false
         },
         {
@@ -4042,7 +3862,7 @@
           "Index": 5,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 9.188691,
+          "Cooldown": 13.5657,
           "IsToggled": false
         },
         {
@@ -4376,7 +4196,7 @@
         "Index": 4,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 9.188691,
+        "Cooldown": 13.5657,
         "IsToggled": false
       },
       "F": {
@@ -4390,7 +4210,7 @@
         "Index": 5,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 9.188691,
+        "Cooldown": 13.5657,
         "IsToggled": false
       },
       "NameAndTagline": "Manolo Melenas#CAST",
@@ -4507,15 +4327,8 @@
           },
           {
             "Name": "srhomeguardspeed",
-            "StartTime": 0.4721664,
-            "EndTime": 25000.473,
-            "Count": 1,
-            "Type": 15
-          },
-          {
-            "Name": "s4spawnlockspeed",
-            "StartTime": 5.611109,
-            "EndTime": 21.611109,
+            "StartTime": 0.3350984,
+            "EndTime": 25000.336,
             "Count": 1,
             "Type": 15
           }
@@ -4603,7 +4416,7 @@
           "Index": 4,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 9.188691,
+          "Cooldown": 13.5657,
           "IsToggled": false
         },
         {
@@ -4617,7 +4430,7 @@
           "Index": 5,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 9.188691,
+          "Cooldown": 13.5657,
           "IsToggled": false
         },
         {
@@ -4921,7 +4734,7 @@
         "AmmoCooldown": 0,
         "InitAtTime": null,
         "Index": 2,
-        "Level": 1,
+        "Level": 0,
         "AmmoCount": 0,
         "Cooldown": 0,
         "IsToggled": false
@@ -4951,7 +4764,7 @@
         "Index": 4,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 9.188691,
+        "Cooldown": 13.5657,
         "IsToggled": false
       },
       "F": {
@@ -4965,7 +4778,7 @@
         "Index": 5,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 9.188691,
+        "Cooldown": 13.5657,
         "IsToggled": false
       },
       "NameAndTagline": "SG Coso Amorta#Coso",
@@ -5131,24 +4944,17 @@
           },
           {
             "Name": "srhomeguardspeed",
-            "StartTime": 0.4721664,
-            "EndTime": 25000.473,
+            "StartTime": 0.3350984,
+            "EndTime": 25000.336,
             "Count": 1,
             "Type": 15
           },
           {
             "Name": "S14_Support_Gold_Display",
-            "StartTime": 1.0341783,
-            "EndTime": 250001.03,
+            "StartTime": 0.8962745,
+            "EndTime": 250000.89,
             "Count": 0,
             "Type": 27
-          },
-          {
-            "Name": "s4spawnlockspeed",
-            "StartTime": 5.611109,
-            "EndTime": 21.611109,
-            "Count": 1,
-            "Type": 15
           }
         ],
         "Animations": null,
@@ -5158,7 +4964,7 @@
       },
       "HeroIndex": 4,
       "RespawnTime": 0,
-      "Gold": 0,
+      "Gold": 100,
       "TotalGold": 500,
       "GoldGivenOnDeath": 0,
       "Experience": 0,
@@ -5204,7 +5010,7 @@
           "AmmoCooldown": 0,
           "InitAtTime": null,
           "Index": 2,
-          "Level": 1,
+          "Level": 0,
           "AmmoCount": 0,
           "Cooldown": 0,
           "IsToggled": false
@@ -5234,7 +5040,7 @@
           "Index": 4,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 9.188691,
+          "Cooldown": 13.5657,
           "IsToggled": false
         },
         {
@@ -5248,7 +5054,7 @@
           "Index": 5,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 9.188691,
+          "Cooldown": 13.5657,
           "IsToggled": false
         },
         {
@@ -5266,15 +5072,15 @@
           "IsToggled": false
         },
         {
-          "Name": "Item2003",
-          "Icon": "",
-          "ReadyAt": 4.483778,
+          "Name": null,
+          "Icon": null,
+          "ReadyAt": 0,
           "MaxCooldown": 0,
           "AmmoReadyAt": 0,
           "AmmoCooldown": 0,
           "InitAtTime": null,
           "Index": 7,
-          "Level": 1,
+          "Level": 0,
           "AmmoCount": 0,
           "Cooldown": 0,
           "IsToggled": false
@@ -5336,16 +5142,16 @@
           "IsToggled": false
         },
         {
-          "Name": "TrinketTotemLvl1",
-          "Icon": "",
-          "ReadyAt": 4.846641,
+          "Name": null,
+          "Icon": null,
+          "ReadyAt": 0,
           "MaxCooldown": 0,
-          "AmmoReadyAt": 171.8227,
-          "AmmoCooldown": 190.90909,
+          "AmmoReadyAt": 0,
+          "AmmoCooldown": 0,
           "InitAtTime": null,
           "Index": 12,
-          "Level": 1,
-          "AmmoCount": 1,
+          "Level": 0,
+          "AmmoCount": 0,
           "Cooldown": 0,
           "IsToggled": false
         },
@@ -5422,68 +5228,6 @@
           "Slot": 0,
           "ItemAssetHashes": [
             5271059740853038000
-          ]
-        },
-        {
-          "ItemAssets": [],
-          "Stats": {
-            "Data": [
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0
-            ]
-          },
-          "CombineCost": 50,
-          "Id": 2003,
-          "Count": 2,
-          "Stacks": 1,
-          "Charges": 0,
-          "Slot": 1,
-          "ItemAssetHashes": [
-            7038541256734867000
-          ]
-        },
-        {
-          "ItemAssets": [],
-          "Stats": {
-            "Data": [
-              0,
-              3,
-              90,
-              190.90909,
-              2,
-              3,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0
-            ]
-          },
-          "CombineCost": 0,
-          "Id": 3340,
-          "Count": 1,
-          "Stacks": 1,
-          "Charges": 0,
-          "Slot": 6,
-          "ItemAssetHashes": [
-            18370826185826360000
           ]
         },
         {
@@ -5675,7 +5419,7 @@
         "Index": 4,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 9.188691,
+        "Cooldown": 13.5657,
         "IsToggled": false
       },
       "F": {
@@ -5689,7 +5433,7 @@
         "Index": 5,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 9.188691,
+        "Cooldown": 13.5657,
         "IsToggled": false
       },
       "NameAndTagline": "MzerSetogaya#Koi",
@@ -5820,15 +5564,8 @@
           },
           {
             "Name": "srhomeguardspeed",
-            "StartTime": 0.4721664,
-            "EndTime": 25000.473,
-            "Count": 1,
-            "Type": 15
-          },
-          {
-            "Name": "s4spawnlockspeed",
-            "StartTime": 5.786284,
-            "EndTime": 21.786283,
+            "StartTime": 0.3350984,
+            "EndTime": 25000.336,
             "Count": 1,
             "Type": 15
           }
@@ -5840,7 +5577,7 @@
       },
       "HeroIndex": 5,
       "RespawnTime": 0,
-      "Gold": 0,
+      "Gold": 500,
       "TotalGold": 500,
       "GoldGivenOnDeath": 0,
       "Experience": 0,
@@ -5916,7 +5653,7 @@
           "Index": 4,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 9.188691,
+          "Cooldown": 13.5657,
           "IsToggled": false
         },
         {
@@ -5930,33 +5667,33 @@
           "Index": 5,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 9.188691,
+          "Cooldown": 13.5657,
           "IsToggled": false
         },
         {
-          "Name": "BaseSpell",
-          "Icon": "",
-          "ReadyAt": 5.786284,
+          "Name": null,
+          "Icon": null,
+          "ReadyAt": 0,
           "MaxCooldown": 0,
           "AmmoReadyAt": 0,
           "AmmoCooldown": 0,
           "InitAtTime": null,
           "Index": 6,
-          "Level": 1,
+          "Level": 0,
           "AmmoCount": 0,
           "Cooldown": 0,
           "IsToggled": false
         },
         {
-          "Name": "Item2003",
-          "Icon": "",
-          "ReadyAt": 5.786284,
+          "Name": null,
+          "Icon": null,
+          "ReadyAt": 0,
           "MaxCooldown": 0,
           "AmmoReadyAt": 0,
           "AmmoCooldown": 0,
           "InitAtTime": null,
           "Index": 7,
-          "Level": 1,
+          "Level": 0,
           "AmmoCount": 0,
           "Cooldown": 0,
           "IsToggled": false
@@ -6075,68 +5812,6 @@
         }
       ],
       "Items": [
-        {
-          "ItemAssets": [],
-          "Stats": {
-            "Data": [
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0
-            ]
-          },
-          "CombineCost": 400,
-          "Id": 1056,
-          "Count": 1,
-          "Stacks": 1,
-          "Charges": 0,
-          "Slot": 0,
-          "ItemAssetHashes": [
-            5395878754205209000
-          ]
-        },
-        {
-          "ItemAssets": [],
-          "Stats": {
-            "Data": [
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0
-            ]
-          },
-          "CombineCost": 50,
-          "Id": 2003,
-          "Count": 2,
-          "Stacks": 1,
-          "Charges": 0,
-          "Slot": 1,
-          "ItemAssetHashes": [
-            7038541256734867000
-          ]
-        },
         {
           "ItemAssets": [],
           "Stats": {
@@ -6326,7 +6001,7 @@
         "Index": 4,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 9.188691,
+        "Cooldown": 13.5657,
         "IsToggled": false
       },
       "F": {
@@ -6334,13 +6009,13 @@
         "Icon": "Summoner_smite.dds",
         "ReadyAt": 15,
         "MaxCooldown": 15,
-        "AmmoReadyAt": 5.611109,
+        "AmmoReadyAt": 1.3467107,
         "AmmoCooldown": 0,
         "InitAtTime": null,
         "Index": 5,
         "Level": 1,
         "AmmoCount": 1,
-        "Cooldown": 9.188691,
+        "Cooldown": 13.5657,
         "IsToggled": false
       },
       "NameAndTagline": "Satono Diamond#Senk",
@@ -6513,22 +6188,15 @@
           },
           {
             "Name": "aatroxbannerwings",
-            "StartTime": 5.611109,
-            "EndTime": 6.611109,
+            "StartTime": 1.3467107,
+            "EndTime": 2.3467107,
             "Count": 1,
             "Type": 1
           },
           {
             "Name": "srhomeguardspeed",
-            "StartTime": 0.4721664,
-            "EndTime": 25000.473,
-            "Count": 1,
-            "Type": 15
-          },
-          {
-            "Name": "s4spawnlockspeed",
-            "StartTime": 5.611109,
-            "EndTime": 21.611109,
+            "StartTime": 0.3350984,
+            "EndTime": 25000.336,
             "Count": 1,
             "Type": 15
           }
@@ -6616,7 +6284,7 @@
           "Index": 4,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 9.188691,
+          "Cooldown": 13.5657,
           "IsToggled": false
         },
         {
@@ -6624,13 +6292,13 @@
           "Icon": "Summoner_smite.dds",
           "ReadyAt": 15,
           "MaxCooldown": 15,
-          "AmmoReadyAt": 5.611109,
+          "AmmoReadyAt": 1.3467107,
           "AmmoCooldown": 0,
           "InitAtTime": null,
           "Index": 5,
           "Level": 1,
           "AmmoCount": 1,
-          "Cooldown": 9.188691,
+          "Cooldown": 13.5657,
           "IsToggled": false
         },
         {
@@ -6964,7 +6632,7 @@
         "Index": 4,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 9.188691,
+        "Cooldown": 13.5657,
         "IsToggled": false
       },
       "F": {
@@ -6978,7 +6646,7 @@
         "Index": 5,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 9.188691,
+        "Cooldown": 13.5657,
         "IsToggled": false
       },
       "NameAndTagline": "Mejiro McQueen#McQ",
@@ -7116,15 +6784,8 @@
           },
           {
             "Name": "srhomeguardspeed",
-            "StartTime": 0.4721664,
-            "EndTime": 25000.473,
-            "Count": 1,
-            "Type": 15
-          },
-          {
-            "Name": "s4spawnlockspeed",
-            "StartTime": 5.611109,
-            "EndTime": 21.611109,
+            "StartTime": 0.3350984,
+            "EndTime": 25000.336,
             "Count": 1,
             "Type": 15
           }
@@ -7212,7 +6873,7 @@
           "Index": 4,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 9.188691,
+          "Cooldown": 13.5657,
           "IsToggled": false
         },
         {
@@ -7226,7 +6887,7 @@
           "Index": 5,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 9.188691,
+          "Cooldown": 13.5657,
           "IsToggled": false
         },
         {
@@ -7560,7 +7221,7 @@
         "Index": 4,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 9.188691,
+        "Cooldown": 13.5657,
         "IsToggled": false
       },
       "F": {
@@ -7574,7 +7235,7 @@
         "Index": 5,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 9.188691,
+        "Cooldown": 13.5657,
         "IsToggled": false
       },
       "NameAndTagline": "Frisnacks#kev",
@@ -7698,15 +7359,8 @@
           },
           {
             "Name": "srhomeguardspeed",
-            "StartTime": 0.4721664,
-            "EndTime": 25000.473,
-            "Count": 1,
-            "Type": 15
-          },
-          {
-            "Name": "s4spawnlockspeed",
-            "StartTime": 5.611109,
-            "EndTime": 21.611109,
+            "StartTime": 0.3350984,
+            "EndTime": 25000.336,
             "Count": 1,
             "Type": 15
           }
@@ -7794,7 +7448,7 @@
           "Index": 4,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 9.188691,
+          "Cooldown": 13.5657,
           "IsToggled": false
         },
         {
@@ -7808,7 +7462,7 @@
           "Index": 5,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 9.188691,
+          "Cooldown": 13.5657,
           "IsToggled": false
         },
         {
@@ -8142,7 +7796,7 @@
         "Index": 4,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 9.188691,
+        "Cooldown": 13.5657,
         "IsToggled": false
       },
       "F": {
@@ -8156,7 +7810,7 @@
         "Index": 5,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 9.188691,
+        "Cooldown": 13.5657,
         "IsToggled": false
       },
       "NameAndTagline": "Honeymoon#NYX",
@@ -8336,24 +7990,17 @@
           },
           {
             "Name": "srhomeguardspeed",
-            "StartTime": 0.4721664,
-            "EndTime": 25000.473,
+            "StartTime": 0.3350984,
+            "EndTime": 25000.336,
             "Count": 1,
             "Type": 15
           },
           {
             "Name": "S14_Support_Gold_Display",
-            "StartTime": 1.0341783,
-            "EndTime": 250001.03,
+            "StartTime": 0.8962745,
+            "EndTime": 250000.89,
             "Count": 0,
             "Type": 27
-          },
-          {
-            "Name": "s4spawnlockspeed",
-            "StartTime": 5.611109,
-            "EndTime": 21.611109,
-            "Count": 1,
-            "Type": 15
           }
         ],
         "Animations": null,
@@ -8439,7 +8086,7 @@
           "Index": 4,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 9.188691,
+          "Cooldown": 13.5657,
           "IsToggled": false
         },
         {
@@ -8453,7 +8100,7 @@
           "Index": 5,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 9.188691,
+          "Cooldown": 13.5657,
           "IsToggled": false
         },
         {
@@ -8748,9 +8395,9 @@
       "Assists": 0
     }
   },
-  "GameTime": 5.811309,
+  "GameTime": 1.4343007,
   "PlaybackSpeed": 1,
-  "UtcTime": 1794247636334,
+  "UtcTime": 1794249061644,
   "Camera": null,
   "TeamStats": [
     {
@@ -8845,7 +8492,7 @@
         "Index": 4,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 9.188691,
+        "Cooldown": 13.5657,
         "IsToggled": false
       },
       "F": {
@@ -8859,7 +8506,7 @@
         "Index": 5,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 9.188691,
+        "Cooldown": 13.5657,
         "IsToggled": false
       },
       "NameAndTagline": "Guerra2009#LAN",
@@ -8873,9 +8520,9 @@
         "NetworkId": 1073741998,
         "Index": 66561,
         "Position": {
-          "x": 422,
-          "y": 182.21703,
-          "z": 480
+          "x": 603.6285,
+          "y": 183.5748,
+          "z": 611.984
         },
         "Rotation": null,
         "Team": 1
@@ -8990,15 +8637,8 @@
           },
           {
             "Name": "srhomeguardspeed",
-            "StartTime": 0.4721664,
-            "EndTime": 25000.473,
-            "Count": 1,
-            "Type": 15
-          },
-          {
-            "Name": "s4spawnlockspeed",
-            "StartTime": 5.611109,
-            "EndTime": 21.611109,
+            "StartTime": 0.3350984,
+            "EndTime": 25000.336,
             "Count": 1,
             "Type": 15
           }
@@ -9086,7 +8726,7 @@
           "Index": 4,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 9.188691,
+          "Cooldown": 13.5657,
           "IsToggled": false
         },
         {
@@ -9100,7 +8740,7 @@
           "Index": 5,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 9.188691,
+          "Cooldown": 13.5657,
           "IsToggled": false
         },
         {
@@ -9428,13 +9068,13 @@
         "Icon": "Summoner_smite.dds",
         "ReadyAt": 15,
         "MaxCooldown": 15,
-        "AmmoReadyAt": 5.611109,
+        "AmmoReadyAt": 1.3467107,
         "AmmoCooldown": 0,
         "InitAtTime": null,
         "Index": 4,
         "Level": 1,
         "AmmoCount": 1,
-        "Cooldown": 9.188691,
+        "Cooldown": 13.5657,
         "IsToggled": false
       },
       "F": {
@@ -9448,7 +9088,7 @@
         "Index": 5,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 9.188691,
+        "Cooldown": 13.5657,
         "IsToggled": false
       },
       "NameAndTagline": "Banedeodo#0406",
@@ -9462,9 +9102,9 @@
         "NetworkId": 1073741999,
         "Index": 66568,
         "Position": {
-          "x": 266.07794,
+          "x": 662.6285,
           "y": 182.13254,
-          "z": 251.09436
+          "z": 285.984
         },
         "Rotation": null,
         "Team": 1
@@ -9516,8 +9156,8 @@
           },
           {
             "Name": "taliyahpwallspeedfullyramped",
-            "StartTime": 1.0341783,
-            "EndTime": 25001.033,
+            "StartTime": 0.8962745,
+            "EndTime": 25000.896,
             "Count": 1,
             "Type": 2
           },
@@ -9571,13 +9211,6 @@
             "Type": 1
           },
           {
-            "Name": "s4spawnlockspeed",
-            "StartTime": 5.611109,
-            "EndTime": 21.611109,
-            "Count": 1,
-            "Type": 15
-          },
-          {
             "Name": "challengeschampiontrackerbuff",
             "StartTime": 0,
             "EndTime": 25000,
@@ -9614,24 +9247,17 @@
           },
           {
             "Name": "taliyahpwallspeedbuff",
-            "StartTime": 0.4721664,
-            "EndTime": 25000.473,
+            "StartTime": 0.3350984,
+            "EndTime": 25000.336,
             "Count": 1,
             "Type": 2
           },
           {
             "Name": "srhomeguardspeed",
-            "StartTime": 0.4721664,
-            "EndTime": 25000.473,
+            "StartTime": 0.3350984,
+            "EndTime": 25000.336,
             "Count": 1,
             "Type": 15
-          },
-          {
-            "Name": "ItemMonsterBurn",
-            "StartTime": 3.8327756,
-            "EndTime": 25003.832,
-            "Count": 35,
-            "Type": 27
           }
         ],
         "Animations": null,
@@ -9641,7 +9267,7 @@
       },
       "HeroIndex": 1,
       "RespawnTime": 0,
-      "Gold": 0,
+      "Gold": 500,
       "TotalGold": 500,
       "GoldGivenOnDeath": 0,
       "Experience": 0,
@@ -9711,13 +9337,13 @@
           "Icon": "Summoner_smite.dds",
           "ReadyAt": 15,
           "MaxCooldown": 15,
-          "AmmoReadyAt": 5.611109,
+          "AmmoReadyAt": 1.3467107,
           "AmmoCooldown": 0,
           "InitAtTime": null,
           "Index": 4,
           "Level": 1,
           "AmmoCount": 1,
-          "Cooldown": 9.188691,
+          "Cooldown": 13.5657,
           "IsToggled": false
         },
         {
@@ -9731,33 +9357,33 @@
           "Index": 5,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 9.188691,
+          "Cooldown": 13.5657,
           "IsToggled": false
         },
         {
-          "Name": "BaseSpell",
-          "Icon": "",
-          "ReadyAt": 3.8327756,
+          "Name": null,
+          "Icon": null,
+          "ReadyAt": 0,
           "MaxCooldown": 0,
           "AmmoReadyAt": 0,
           "AmmoCooldown": 0,
           "InitAtTime": null,
           "Index": 6,
-          "Level": 1,
+          "Level": 0,
           "AmmoCount": 0,
           "Cooldown": 0,
           "IsToggled": false
         },
         {
-          "Name": "Item2003",
-          "Icon": "",
-          "ReadyAt": 3.8327756,
+          "Name": null,
+          "Icon": null,
+          "ReadyAt": 0,
           "MaxCooldown": 0,
           "AmmoReadyAt": 0,
           "AmmoCooldown": 0,
           "InitAtTime": null,
           "Index": 7,
-          "Level": 1,
+          "Level": 0,
           "AmmoCount": 0,
           "Cooldown": 0,
           "IsToggled": false
@@ -9876,68 +9502,6 @@
         }
       ],
       "Items": [
-        {
-          "ItemAssets": [],
-          "Stats": {
-            "Data": [
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0
-            ]
-          },
-          "CombineCost": 450,
-          "Id": 1102,
-          "Count": 1,
-          "Stacks": 1,
-          "Charges": 35,
-          "Slot": 0,
-          "ItemAssetHashes": [
-            17629432669606332000
-          ]
-        },
-        {
-          "ItemAssets": [],
-          "Stats": {
-            "Data": [
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0
-            ]
-          },
-          "CombineCost": 50,
-          "Id": 2003,
-          "Count": 1,
-          "Stacks": 1,
-          "Charges": 0,
-          "Slot": 1,
-          "ItemAssetHashes": [
-            7038541256734867000
-          ]
-        },
         {
           "ItemAssets": [],
           "Stats": {
@@ -10127,7 +9691,7 @@
         "Index": 4,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 9.188691,
+        "Cooldown": 13.5657,
         "IsToggled": false
       },
       "F": {
@@ -10141,7 +9705,7 @@
         "Index": 5,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 9.188691,
+        "Cooldown": 13.5657,
         "IsToggled": false
       },
       "NameAndTagline": "Arock#NEET",
@@ -10279,15 +9843,8 @@
           },
           {
             "Name": "srhomeguardspeed",
-            "StartTime": 0.4721664,
-            "EndTime": 25000.473,
-            "Count": 1,
-            "Type": 15
-          },
-          {
-            "Name": "s4spawnlockspeed",
-            "StartTime": 5.611109,
-            "EndTime": 21.611109,
+            "StartTime": 0.3350984,
+            "EndTime": 25000.336,
             "Count": 1,
             "Type": 15
           }
@@ -10375,7 +9932,7 @@
           "Index": 4,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 9.188691,
+          "Cooldown": 13.5657,
           "IsToggled": false
         },
         {
@@ -10389,7 +9946,7 @@
           "Index": 5,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 9.188691,
+          "Cooldown": 13.5657,
           "IsToggled": false
         },
         {
@@ -10723,7 +10280,7 @@
         "Index": 4,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 9.188691,
+        "Cooldown": 13.5657,
         "IsToggled": false
       },
       "F": {
@@ -10737,7 +10294,7 @@
         "Index": 5,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 9.188691,
+        "Cooldown": 13.5657,
         "IsToggled": false
       },
       "NameAndTagline": "Manolo Melenas#CAST",
@@ -10854,15 +10411,8 @@
           },
           {
             "Name": "srhomeguardspeed",
-            "StartTime": 0.4721664,
-            "EndTime": 25000.473,
-            "Count": 1,
-            "Type": 15
-          },
-          {
-            "Name": "s4spawnlockspeed",
-            "StartTime": 5.611109,
-            "EndTime": 21.611109,
+            "StartTime": 0.3350984,
+            "EndTime": 25000.336,
             "Count": 1,
             "Type": 15
           }
@@ -10950,7 +10500,7 @@
           "Index": 4,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 9.188691,
+          "Cooldown": 13.5657,
           "IsToggled": false
         },
         {
@@ -10964,7 +10514,7 @@
           "Index": 5,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 9.188691,
+          "Cooldown": 13.5657,
           "IsToggled": false
         },
         {
@@ -11268,7 +10818,7 @@
         "AmmoCooldown": 0,
         "InitAtTime": null,
         "Index": 2,
-        "Level": 1,
+        "Level": 0,
         "AmmoCount": 0,
         "Cooldown": 0,
         "IsToggled": false
@@ -11298,7 +10848,7 @@
         "Index": 4,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 9.188691,
+        "Cooldown": 13.5657,
         "IsToggled": false
       },
       "F": {
@@ -11312,7 +10862,7 @@
         "Index": 5,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 9.188691,
+        "Cooldown": 13.5657,
         "IsToggled": false
       },
       "NameAndTagline": "SG Coso Amorta#Coso",
@@ -11478,24 +11028,17 @@
           },
           {
             "Name": "srhomeguardspeed",
-            "StartTime": 0.4721664,
-            "EndTime": 25000.473,
+            "StartTime": 0.3350984,
+            "EndTime": 25000.336,
             "Count": 1,
             "Type": 15
           },
           {
             "Name": "S14_Support_Gold_Display",
-            "StartTime": 1.0341783,
-            "EndTime": 250001.03,
+            "StartTime": 0.8962745,
+            "EndTime": 250000.89,
             "Count": 0,
             "Type": 27
-          },
-          {
-            "Name": "s4spawnlockspeed",
-            "StartTime": 5.611109,
-            "EndTime": 21.611109,
-            "Count": 1,
-            "Type": 15
           }
         ],
         "Animations": null,
@@ -11505,7 +11048,7 @@
       },
       "HeroIndex": 4,
       "RespawnTime": 0,
-      "Gold": 0,
+      "Gold": 100,
       "TotalGold": 500,
       "GoldGivenOnDeath": 0,
       "Experience": 0,
@@ -11551,7 +11094,7 @@
           "AmmoCooldown": 0,
           "InitAtTime": null,
           "Index": 2,
-          "Level": 1,
+          "Level": 0,
           "AmmoCount": 0,
           "Cooldown": 0,
           "IsToggled": false
@@ -11581,7 +11124,7 @@
           "Index": 4,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 9.188691,
+          "Cooldown": 13.5657,
           "IsToggled": false
         },
         {
@@ -11595,7 +11138,7 @@
           "Index": 5,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 9.188691,
+          "Cooldown": 13.5657,
           "IsToggled": false
         },
         {
@@ -11613,15 +11156,15 @@
           "IsToggled": false
         },
         {
-          "Name": "Item2003",
-          "Icon": "",
-          "ReadyAt": 4.483778,
+          "Name": null,
+          "Icon": null,
+          "ReadyAt": 0,
           "MaxCooldown": 0,
           "AmmoReadyAt": 0,
           "AmmoCooldown": 0,
           "InitAtTime": null,
           "Index": 7,
-          "Level": 1,
+          "Level": 0,
           "AmmoCount": 0,
           "Cooldown": 0,
           "IsToggled": false
@@ -11683,16 +11226,16 @@
           "IsToggled": false
         },
         {
-          "Name": "TrinketTotemLvl1",
-          "Icon": "",
-          "ReadyAt": 4.846641,
+          "Name": null,
+          "Icon": null,
+          "ReadyAt": 0,
           "MaxCooldown": 0,
-          "AmmoReadyAt": 171.8227,
-          "AmmoCooldown": 190.90909,
+          "AmmoReadyAt": 0,
+          "AmmoCooldown": 0,
           "InitAtTime": null,
           "Index": 12,
-          "Level": 1,
-          "AmmoCount": 1,
+          "Level": 0,
+          "AmmoCount": 0,
           "Cooldown": 0,
           "IsToggled": false
         },
@@ -11769,68 +11312,6 @@
           "Slot": 0,
           "ItemAssetHashes": [
             5271059740853038000
-          ]
-        },
-        {
-          "ItemAssets": [],
-          "Stats": {
-            "Data": [
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0
-            ]
-          },
-          "CombineCost": 50,
-          "Id": 2003,
-          "Count": 2,
-          "Stacks": 1,
-          "Charges": 0,
-          "Slot": 1,
-          "ItemAssetHashes": [
-            7038541256734867000
-          ]
-        },
-        {
-          "ItemAssets": [],
-          "Stats": {
-            "Data": [
-              0,
-              3,
-              90,
-              190.90909,
-              2,
-              3,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0
-            ]
-          },
-          "CombineCost": 0,
-          "Id": 3340,
-          "Count": 1,
-          "Stacks": 1,
-          "Charges": 0,
-          "Slot": 6,
-          "ItemAssetHashes": [
-            18370826185826360000
           ]
         },
         {
@@ -12022,7 +11503,7 @@
         "Index": 4,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 9.188691,
+        "Cooldown": 13.5657,
         "IsToggled": false
       },
       "F": {
@@ -12036,7 +11517,7 @@
         "Index": 5,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 9.188691,
+        "Cooldown": 13.5657,
         "IsToggled": false
       },
       "NameAndTagline": "MzerSetogaya#Koi",
@@ -12167,15 +11648,8 @@
           },
           {
             "Name": "srhomeguardspeed",
-            "StartTime": 0.4721664,
-            "EndTime": 25000.473,
-            "Count": 1,
-            "Type": 15
-          },
-          {
-            "Name": "s4spawnlockspeed",
-            "StartTime": 5.786284,
-            "EndTime": 21.786283,
+            "StartTime": 0.3350984,
+            "EndTime": 25000.336,
             "Count": 1,
             "Type": 15
           }
@@ -12187,7 +11661,7 @@
       },
       "HeroIndex": 5,
       "RespawnTime": 0,
-      "Gold": 0,
+      "Gold": 500,
       "TotalGold": 500,
       "GoldGivenOnDeath": 0,
       "Experience": 0,
@@ -12263,7 +11737,7 @@
           "Index": 4,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 9.188691,
+          "Cooldown": 13.5657,
           "IsToggled": false
         },
         {
@@ -12277,33 +11751,33 @@
           "Index": 5,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 9.188691,
+          "Cooldown": 13.5657,
           "IsToggled": false
         },
         {
-          "Name": "BaseSpell",
-          "Icon": "",
-          "ReadyAt": 5.786284,
+          "Name": null,
+          "Icon": null,
+          "ReadyAt": 0,
           "MaxCooldown": 0,
           "AmmoReadyAt": 0,
           "AmmoCooldown": 0,
           "InitAtTime": null,
           "Index": 6,
-          "Level": 1,
+          "Level": 0,
           "AmmoCount": 0,
           "Cooldown": 0,
           "IsToggled": false
         },
         {
-          "Name": "Item2003",
-          "Icon": "",
-          "ReadyAt": 5.786284,
+          "Name": null,
+          "Icon": null,
+          "ReadyAt": 0,
           "MaxCooldown": 0,
           "AmmoReadyAt": 0,
           "AmmoCooldown": 0,
           "InitAtTime": null,
           "Index": 7,
-          "Level": 1,
+          "Level": 0,
           "AmmoCount": 0,
           "Cooldown": 0,
           "IsToggled": false
@@ -12422,68 +11896,6 @@
         }
       ],
       "Items": [
-        {
-          "ItemAssets": [],
-          "Stats": {
-            "Data": [
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0
-            ]
-          },
-          "CombineCost": 400,
-          "Id": 1056,
-          "Count": 1,
-          "Stacks": 1,
-          "Charges": 0,
-          "Slot": 0,
-          "ItemAssetHashes": [
-            5395878754205209000
-          ]
-        },
-        {
-          "ItemAssets": [],
-          "Stats": {
-            "Data": [
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0
-            ]
-          },
-          "CombineCost": 50,
-          "Id": 2003,
-          "Count": 2,
-          "Stacks": 1,
-          "Charges": 0,
-          "Slot": 1,
-          "ItemAssetHashes": [
-            7038541256734867000
-          ]
-        },
         {
           "ItemAssets": [],
           "Stats": {
@@ -12673,7 +12085,7 @@
         "Index": 4,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 9.188691,
+        "Cooldown": 13.5657,
         "IsToggled": false
       },
       "F": {
@@ -12681,13 +12093,13 @@
         "Icon": "Summoner_smite.dds",
         "ReadyAt": 15,
         "MaxCooldown": 15,
-        "AmmoReadyAt": 5.611109,
+        "AmmoReadyAt": 1.3467107,
         "AmmoCooldown": 0,
         "InitAtTime": null,
         "Index": 5,
         "Level": 1,
         "AmmoCount": 1,
-        "Cooldown": 9.188691,
+        "Cooldown": 13.5657,
         "IsToggled": false
       },
       "NameAndTagline": "Satono Diamond#Senk",
@@ -12860,22 +12272,15 @@
           },
           {
             "Name": "aatroxbannerwings",
-            "StartTime": 5.611109,
-            "EndTime": 6.611109,
+            "StartTime": 1.3467107,
+            "EndTime": 2.3467107,
             "Count": 1,
             "Type": 1
           },
           {
             "Name": "srhomeguardspeed",
-            "StartTime": 0.4721664,
-            "EndTime": 25000.473,
-            "Count": 1,
-            "Type": 15
-          },
-          {
-            "Name": "s4spawnlockspeed",
-            "StartTime": 5.611109,
-            "EndTime": 21.611109,
+            "StartTime": 0.3350984,
+            "EndTime": 25000.336,
             "Count": 1,
             "Type": 15
           }
@@ -12963,7 +12368,7 @@
           "Index": 4,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 9.188691,
+          "Cooldown": 13.5657,
           "IsToggled": false
         },
         {
@@ -12971,13 +12376,13 @@
           "Icon": "Summoner_smite.dds",
           "ReadyAt": 15,
           "MaxCooldown": 15,
-          "AmmoReadyAt": 5.611109,
+          "AmmoReadyAt": 1.3467107,
           "AmmoCooldown": 0,
           "InitAtTime": null,
           "Index": 5,
           "Level": 1,
           "AmmoCount": 1,
-          "Cooldown": 9.188691,
+          "Cooldown": 13.5657,
           "IsToggled": false
         },
         {
@@ -13311,7 +12716,7 @@
         "Index": 4,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 9.188691,
+        "Cooldown": 13.5657,
         "IsToggled": false
       },
       "F": {
@@ -13325,7 +12730,7 @@
         "Index": 5,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 9.188691,
+        "Cooldown": 13.5657,
         "IsToggled": false
       },
       "NameAndTagline": "Mejiro McQueen#McQ",
@@ -13463,15 +12868,8 @@
           },
           {
             "Name": "srhomeguardspeed",
-            "StartTime": 0.4721664,
-            "EndTime": 25000.473,
-            "Count": 1,
-            "Type": 15
-          },
-          {
-            "Name": "s4spawnlockspeed",
-            "StartTime": 5.611109,
-            "EndTime": 21.611109,
+            "StartTime": 0.3350984,
+            "EndTime": 25000.336,
             "Count": 1,
             "Type": 15
           }
@@ -13559,7 +12957,7 @@
           "Index": 4,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 9.188691,
+          "Cooldown": 13.5657,
           "IsToggled": false
         },
         {
@@ -13573,7 +12971,7 @@
           "Index": 5,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 9.188691,
+          "Cooldown": 13.5657,
           "IsToggled": false
         },
         {
@@ -13907,7 +13305,7 @@
         "Index": 4,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 9.188691,
+        "Cooldown": 13.5657,
         "IsToggled": false
       },
       "F": {
@@ -13921,7 +13319,7 @@
         "Index": 5,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 9.188691,
+        "Cooldown": 13.5657,
         "IsToggled": false
       },
       "NameAndTagline": "Frisnacks#kev",
@@ -14045,15 +13443,8 @@
           },
           {
             "Name": "srhomeguardspeed",
-            "StartTime": 0.4721664,
-            "EndTime": 25000.473,
-            "Count": 1,
-            "Type": 15
-          },
-          {
-            "Name": "s4spawnlockspeed",
-            "StartTime": 5.611109,
-            "EndTime": 21.611109,
+            "StartTime": 0.3350984,
+            "EndTime": 25000.336,
             "Count": 1,
             "Type": 15
           }
@@ -14141,7 +13532,7 @@
           "Index": 4,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 9.188691,
+          "Cooldown": 13.5657,
           "IsToggled": false
         },
         {
@@ -14155,7 +13546,7 @@
           "Index": 5,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 9.188691,
+          "Cooldown": 13.5657,
           "IsToggled": false
         },
         {
@@ -14489,7 +13880,7 @@
         "Index": 4,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 9.188691,
+        "Cooldown": 13.5657,
         "IsToggled": false
       },
       "F": {
@@ -14503,7 +13894,7 @@
         "Index": 5,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 9.188691,
+        "Cooldown": 13.5657,
         "IsToggled": false
       },
       "NameAndTagline": "Honeymoon#NYX",
@@ -14683,24 +14074,17 @@
           },
           {
             "Name": "srhomeguardspeed",
-            "StartTime": 0.4721664,
-            "EndTime": 25000.473,
+            "StartTime": 0.3350984,
+            "EndTime": 25000.336,
             "Count": 1,
             "Type": 15
           },
           {
             "Name": "S14_Support_Gold_Display",
-            "StartTime": 1.0341783,
-            "EndTime": 250001.03,
+            "StartTime": 0.8962745,
+            "EndTime": 250000.89,
             "Count": 0,
             "Type": 27
-          },
-          {
-            "Name": "s4spawnlockspeed",
-            "StartTime": 5.611109,
-            "EndTime": 21.611109,
-            "Count": 1,
-            "Type": 15
           }
         ],
         "Animations": null,
@@ -14786,7 +14170,7 @@
           "Index": 4,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 9.188691,
+          "Cooldown": 13.5657,
           "IsToggled": false
         },
         {
@@ -14800,7 +14184,7 @@
           "Index": 5,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 9.188691,
+          "Cooldown": 13.5657,
           "IsToggled": false
         },
         {
@@ -15149,415 +14533,10 @@
       "IsJungleMinion": false,
       "IsWardOrPlant": false,
       "Info": {
-        "IsNeutral": false,
-        "Name": "HiddenMinion",
-        "NetworkId": 1073742367,
-        "Index": 197779,
-        "Position": {
-          "x": 192.26012,
-          "y": 182.1325,
-          "z": 298.15048
-        },
-        "Rotation": null,
-        "Team": 1
-      },
-      "Common": {
-        "IsAlive": true,
-        "IsZombie": false,
-        "IsRecalling": false,
-        "IsTargetable": false,
-        "Identifier": "SRU_Jungle_Companions",
-        "CurrentAttack": "",
-        "Status": 1,
-        "Health": 1500,
-        "MaxHealth": 1500,
-        "Armor": null,
-        "MagicResist": null,
-        "Level": 1,
-        "AttackSpeedMultiplier": null,
-        "MovementSpeed": null,
-        "DataStack": null,
-        "Buffs": [],
-        "Animations": null,
-        "SubmeshVisiblityMask": 0,
-        "AttackSpeedBonus": null,
-        "AnimationState": null
-      },
-      "TypeInfo": 0,
-      "Bones": null
-    },
-    {
-      "IsClone": false,
-      "IsLaneMinion": false,
-      "IsEliteMinion": false,
-      "IsEpicMinion": false,
-      "IsJungleMinion": false,
-      "IsWardOrPlant": false,
-      "Info": {
-        "IsNeutral": false,
-        "Name": "HiddenMinion",
-        "NetworkId": 1073742368,
-        "Index": 197780,
-        "Position": {
-          "x": 3893.851,
-          "y": 51.899223,
-          "z": 7869.825
-        },
-        "Rotation": null,
-        "Team": 1
-      },
-      "Common": {
-        "IsAlive": true,
-        "IsZombie": false,
-        "IsRecalling": false,
-        "IsTargetable": false,
-        "Identifier": "TestCubeRender",
-        "CurrentAttack": "",
-        "Status": 1,
-        "Health": 100,
-        "MaxHealth": 100,
-        "Armor": null,
-        "MagicResist": null,
-        "Level": 1,
-        "AttackSpeedMultiplier": null,
-        "MovementSpeed": null,
-        "DataStack": null,
-        "Buffs": [],
-        "Animations": null,
-        "SubmeshVisiblityMask": 0,
-        "AttackSpeedBonus": null,
-        "AnimationState": null
-      },
-      "TypeInfo": 0,
-      "Bones": null
-    },
-    {
-      "IsClone": false,
-      "IsLaneMinion": false,
-      "IsEliteMinion": false,
-      "IsEpicMinion": false,
-      "IsJungleMinion": false,
-      "IsWardOrPlant": false,
-      "Info": {
-        "IsNeutral": true,
-        "Name": "PlantSatchel",
-        "NetworkId": 1073742365,
-        "Index": 132249,
-        "Position": {
-          "x": 8659,
-          "y": 53.657677,
-          "z": 11535
-        },
-        "Rotation": null,
-        "Team": 3
-      },
-      "Common": {
-        "IsAlive": true,
-        "IsZombie": false,
-        "IsRecalling": false,
-        "IsTargetable": false,
-        "Identifier": "SRU_Plant_Satchel",
-        "CurrentAttack": "",
-        "Status": 1,
-        "Health": 1,
-        "MaxHealth": 1,
-        "Armor": null,
-        "MagicResist": null,
-        "Level": 1,
-        "AttackSpeedMultiplier": null,
-        "MovementSpeed": null,
-        "DataStack": null,
-        "Buffs": [],
-        "Animations": null,
-        "SubmeshVisiblityMask": 0,
-        "AttackSpeedBonus": null,
-        "AnimationState": null
-      },
-      "TypeInfo": 0,
-      "Bones": null
-    },
-    {
-      "IsClone": false,
-      "IsLaneMinion": false,
-      "IsEliteMinion": false,
-      "IsEpicMinion": false,
-      "IsJungleMinion": false,
-      "IsWardOrPlant": false,
-      "Info": {
-        "IsNeutral": true,
-        "Name": "HiddenMinion",
-        "NetworkId": 1073742366,
-        "Index": 132253,
-        "Position": {
-          "x": 8659,
-          "y": 53.657677,
-          "z": 11535
-        },
-        "Rotation": null,
-        "Team": 3
-      },
-      "Common": {
-        "IsAlive": true,
-        "IsZombie": false,
-        "IsRecalling": false,
-        "IsTargetable": false,
-        "Identifier": "TestCubeRenderNoFOW",
-        "CurrentAttack": "",
-        "Status": 1,
-        "Health": 100,
-        "MaxHealth": 100,
-        "Armor": null,
-        "MagicResist": null,
-        "Level": 1,
-        "AttackSpeedMultiplier": null,
-        "MovementSpeed": null,
-        "DataStack": null,
-        "Buffs": [],
-        "Animations": null,
-        "SubmeshVisiblityMask": 0,
-        "AttackSpeedBonus": null,
-        "AnimationState": null
-      },
-      "TypeInfo": 0,
-      "Bones": null
-    },
-    {
-      "IsClone": false,
-      "IsLaneMinion": false,
-      "IsEliteMinion": false,
-      "IsEpicMinion": false,
-      "IsJungleMinion": false,
-      "IsWardOrPlant": false,
-      "Info": {
-        "IsNeutral": true,
-        "Name": "PlantSatchel",
-        "NetworkId": 1073742363,
-        "Index": 132254,
-        "Position": {
-          "x": 10373,
-          "y": 51.73402,
-          "z": 7628
-        },
-        "Rotation": null,
-        "Team": 3
-      },
-      "Common": {
-        "IsAlive": true,
-        "IsZombie": false,
-        "IsRecalling": false,
-        "IsTargetable": false,
-        "Identifier": "SRU_Plant_Satchel",
-        "CurrentAttack": "",
-        "Status": 1,
-        "Health": 1,
-        "MaxHealth": 1,
-        "Armor": null,
-        "MagicResist": null,
-        "Level": 1,
-        "AttackSpeedMultiplier": null,
-        "MovementSpeed": null,
-        "DataStack": null,
-        "Buffs": [],
-        "Animations": null,
-        "SubmeshVisiblityMask": 0,
-        "AttackSpeedBonus": null,
-        "AnimationState": null
-      },
-      "TypeInfo": 0,
-      "Bones": null
-    },
-    {
-      "IsClone": false,
-      "IsLaneMinion": false,
-      "IsEliteMinion": false,
-      "IsEpicMinion": false,
-      "IsJungleMinion": false,
-      "IsWardOrPlant": false,
-      "Info": {
-        "IsNeutral": true,
-        "Name": "HiddenMinion",
-        "NetworkId": 1073742364,
-        "Index": 132259,
-        "Position": {
-          "x": 10373,
-          "y": 51.73402,
-          "z": 7628
-        },
-        "Rotation": null,
-        "Team": 3
-      },
-      "Common": {
-        "IsAlive": true,
-        "IsZombie": false,
-        "IsRecalling": false,
-        "IsTargetable": false,
-        "Identifier": "TestCubeRenderNoFOW",
-        "CurrentAttack": "",
-        "Status": 1,
-        "Health": 100,
-        "MaxHealth": 100,
-        "Armor": null,
-        "MagicResist": null,
-        "Level": 1,
-        "AttackSpeedMultiplier": null,
-        "MovementSpeed": null,
-        "DataStack": null,
-        "Buffs": [],
-        "Animations": null,
-        "SubmeshVisiblityMask": 0,
-        "AttackSpeedBonus": null,
-        "AnimationState": null
-      },
-      "TypeInfo": 0,
-      "Bones": null
-    },
-    {
-      "IsClone": false,
-      "IsLaneMinion": false,
-      "IsEliteMinion": false,
-      "IsEpicMinion": false,
-      "IsJungleMinion": false,
-      "IsWardOrPlant": false,
-      "Info": {
-        "IsNeutral": true,
-        "Name": "PlantSatchel",
-        "NetworkId": 1073742361,
-        "Index": 132262,
-        "Position": {
-          "x": 6141,
-          "y": 50.523113,
-          "z": 3402
-        },
-        "Rotation": null,
-        "Team": 3
-      },
-      "Common": {
-        "IsAlive": true,
-        "IsZombie": false,
-        "IsRecalling": false,
-        "IsTargetable": false,
-        "Identifier": "SRU_Plant_Satchel",
-        "CurrentAttack": "",
-        "Status": 1,
-        "Health": 1,
-        "MaxHealth": 1,
-        "Armor": null,
-        "MagicResist": null,
-        "Level": 1,
-        "AttackSpeedMultiplier": null,
-        "MovementSpeed": null,
-        "DataStack": null,
-        "Buffs": [],
-        "Animations": null,
-        "SubmeshVisiblityMask": 0,
-        "AttackSpeedBonus": null,
-        "AnimationState": null
-      },
-      "TypeInfo": 0,
-      "Bones": null
-    },
-    {
-      "IsClone": false,
-      "IsLaneMinion": false,
-      "IsEliteMinion": false,
-      "IsEpicMinion": false,
-      "IsJungleMinion": false,
-      "IsWardOrPlant": false,
-      "Info": {
-        "IsNeutral": true,
-        "Name": "HiddenMinion",
-        "NetworkId": 1073742362,
-        "Index": 132263,
-        "Position": {
-          "x": 6141,
-          "y": 50.523113,
-          "z": 3402
-        },
-        "Rotation": null,
-        "Team": 3
-      },
-      "Common": {
-        "IsAlive": true,
-        "IsZombie": false,
-        "IsRecalling": false,
-        "IsTargetable": false,
-        "Identifier": "TestCubeRenderNoFOW",
-        "CurrentAttack": "",
-        "Status": 1,
-        "Health": 100,
-        "MaxHealth": 100,
-        "Armor": null,
-        "MagicResist": null,
-        "Level": 1,
-        "AttackSpeedMultiplier": null,
-        "MovementSpeed": null,
-        "DataStack": null,
-        "Buffs": [],
-        "Animations": null,
-        "SubmeshVisiblityMask": 0,
-        "AttackSpeedBonus": null,
-        "AnimationState": null
-      },
-      "TypeInfo": 0,
-      "Bones": null
-    },
-    {
-      "IsClone": false,
-      "IsLaneMinion": false,
-      "IsEliteMinion": false,
-      "IsEpicMinion": false,
-      "IsJungleMinion": false,
-      "IsWardOrPlant": false,
-      "Info": {
-        "IsNeutral": true,
-        "Name": "PlantSatchel",
-        "NetworkId": 1073742358,
-        "Index": 132276,
-        "Position": {
-          "x": 4385.8037,
-          "y": 50.715893,
-          "z": 7244.583
-        },
-        "Rotation": null,
-        "Team": 3
-      },
-      "Common": {
-        "IsAlive": true,
-        "IsZombie": false,
-        "IsRecalling": false,
-        "IsTargetable": false,
-        "Identifier": "SRU_Plant_Satchel",
-        "CurrentAttack": "",
-        "Status": 1,
-        "Health": 1,
-        "MaxHealth": 1,
-        "Armor": null,
-        "MagicResist": null,
-        "Level": 1,
-        "AttackSpeedMultiplier": null,
-        "MovementSpeed": null,
-        "DataStack": null,
-        "Buffs": [],
-        "Animations": null,
-        "SubmeshVisiblityMask": 0,
-        "AttackSpeedBonus": null,
-        "AnimationState": null
-      },
-      "TypeInfo": 0,
-      "Bones": null
-    },
-    {
-      "IsClone": false,
-      "IsLaneMinion": false,
-      "IsEliteMinion": false,
-      "IsEpicMinion": false,
-      "IsJungleMinion": false,
-      "IsWardOrPlant": false,
-      "Info": {
         "IsNeutral": true,
         "Name": "HiddenMinion",
         "NetworkId": 1073742359,
-        "Index": 132277,
+        "Index": 197813,
         "Position": {
           "x": 4385.8037,
           "y": 50.715893,
@@ -16152,8 +15131,8 @@
         "Buffs": [
           {
             "Name": "camprespawncountdownvisible",
-            "StartTime": 0.4721664,
-            "EndTime": 60.472168,
+            "StartTime": 0.3350984,
+            "EndTime": 60.3351,
             "Count": 1,
             "Type": 1
           }
@@ -16258,8 +15237,8 @@
         "Buffs": [
           {
             "Name": "camprespawncountdownvisible",
-            "StartTime": 0.4721664,
-            "EndTime": 60.472168,
+            "StartTime": 0.3350984,
+            "EndTime": 60.3351,
             "Count": 1,
             "Type": 1
           }
@@ -16364,8 +15343,8 @@
         "Buffs": [
           {
             "Name": "camprespawncountdownvisible",
-            "StartTime": 0.4721664,
-            "EndTime": 60.472168,
+            "StartTime": 0.3350984,
+            "EndTime": 60.3351,
             "Count": 1,
             "Type": 1
           }
@@ -16417,8 +15396,8 @@
         "Buffs": [
           {
             "Name": "camprespawncountdownvisible",
-            "StartTime": 0.4721664,
-            "EndTime": 60.472168,
+            "StartTime": 0.3350984,
+            "EndTime": 60.3351,
             "Count": 1,
             "Type": 1
           }
@@ -16492,14 +15471,149 @@
       "IsJungleMinion": false,
       "IsWardOrPlant": false,
       "Info": {
+        "IsNeutral": true,
+        "Name": "PlantSatchel",
+        "NetworkId": 1073742365,
+        "Index": 132510,
+        "Position": {
+          "x": 8659,
+          "y": 53.657677,
+          "z": 11535
+        },
+        "Rotation": null,
+        "Team": 3
+      },
+      "Common": {
+        "IsAlive": true,
+        "IsZombie": false,
+        "IsRecalling": false,
+        "IsTargetable": false,
+        "Identifier": "SRU_Plant_Satchel",
+        "CurrentAttack": "",
+        "Status": 1,
+        "Health": 1,
+        "MaxHealth": 1,
+        "Armor": null,
+        "MagicResist": null,
+        "Level": 1,
+        "AttackSpeedMultiplier": null,
+        "MovementSpeed": null,
+        "DataStack": null,
+        "Buffs": [],
+        "Animations": null,
+        "SubmeshVisiblityMask": 0,
+        "AttackSpeedBonus": null,
+        "AnimationState": null
+      },
+      "TypeInfo": 0,
+      "Bones": null
+    },
+    {
+      "IsClone": false,
+      "IsLaneMinion": false,
+      "IsEliteMinion": false,
+      "IsEpicMinion": false,
+      "IsJungleMinion": false,
+      "IsWardOrPlant": false,
+      "Info": {
+        "IsNeutral": true,
+        "Name": "HiddenMinion",
+        "NetworkId": 1073742366,
+        "Index": 132520,
+        "Position": {
+          "x": 8659,
+          "y": 53.657677,
+          "z": 11535
+        },
+        "Rotation": null,
+        "Team": 3
+      },
+      "Common": {
+        "IsAlive": true,
+        "IsZombie": false,
+        "IsRecalling": false,
+        "IsTargetable": false,
+        "Identifier": "TestCubeRenderNoFOW",
+        "CurrentAttack": "",
+        "Status": 1,
+        "Health": 100,
+        "MaxHealth": 100,
+        "Armor": null,
+        "MagicResist": null,
+        "Level": 1,
+        "AttackSpeedMultiplier": null,
+        "MovementSpeed": null,
+        "DataStack": null,
+        "Buffs": [],
+        "Animations": null,
+        "SubmeshVisiblityMask": 0,
+        "AttackSpeedBonus": null,
+        "AnimationState": null
+      },
+      "TypeInfo": 0,
+      "Bones": null
+    },
+    {
+      "IsClone": false,
+      "IsLaneMinion": false,
+      "IsEliteMinion": false,
+      "IsEpicMinion": false,
+      "IsJungleMinion": false,
+      "IsWardOrPlant": false,
+      "Info": {
+        "IsNeutral": true,
+        "Name": "PlantSatchel",
+        "NetworkId": 1073742363,
+        "Index": 132526,
+        "Position": {
+          "x": 10373,
+          "y": 51.73402,
+          "z": 7628
+        },
+        "Rotation": null,
+        "Team": 3
+      },
+      "Common": {
+        "IsAlive": true,
+        "IsZombie": false,
+        "IsRecalling": false,
+        "IsTargetable": false,
+        "Identifier": "SRU_Plant_Satchel",
+        "CurrentAttack": "",
+        "Status": 1,
+        "Health": 1,
+        "MaxHealth": 1,
+        "Armor": null,
+        "MagicResist": null,
+        "Level": 1,
+        "AttackSpeedMultiplier": null,
+        "MovementSpeed": null,
+        "DataStack": null,
+        "Buffs": [],
+        "Animations": null,
+        "SubmeshVisiblityMask": 0,
+        "AttackSpeedBonus": null,
+        "AnimationState": null
+      },
+      "TypeInfo": 0,
+      "Bones": null
+    },
+    {
+      "IsClone": false,
+      "IsLaneMinion": false,
+      "IsEliteMinion": false,
+      "IsEpicMinion": false,
+      "IsJungleMinion": false,
+      "IsWardOrPlant": false,
+      "Info": {
         "IsNeutral": false,
         "Name": "PerksPerxie",
         "NetworkId": 1073742348,
         "Index": 132537,
         "Position": {
-          "x": 137.19238,
+          "x": 424.2777,
           "y": 183.5748,
-          "z": 669.78625
+          "z": 574.5613
         },
         "Rotation": null,
         "Team": 1
@@ -16537,14 +15651,194 @@
       "IsJungleMinion": false,
       "IsWardOrPlant": false,
       "Info": {
+        "IsNeutral": true,
+        "Name": "HiddenMinion",
+        "NetworkId": 1073742364,
+        "Index": 132538,
+        "Position": {
+          "x": 10373,
+          "y": 51.73402,
+          "z": 7628
+        },
+        "Rotation": null,
+        "Team": 3
+      },
+      "Common": {
+        "IsAlive": true,
+        "IsZombie": false,
+        "IsRecalling": false,
+        "IsTargetable": false,
+        "Identifier": "TestCubeRenderNoFOW",
+        "CurrentAttack": "",
+        "Status": 1,
+        "Health": 100,
+        "MaxHealth": 100,
+        "Armor": null,
+        "MagicResist": null,
+        "Level": 1,
+        "AttackSpeedMultiplier": null,
+        "MovementSpeed": null,
+        "DataStack": null,
+        "Buffs": [],
+        "Animations": null,
+        "SubmeshVisiblityMask": 0,
+        "AttackSpeedBonus": null,
+        "AnimationState": null
+      },
+      "TypeInfo": 0,
+      "Bones": null
+    },
+    {
+      "IsClone": false,
+      "IsLaneMinion": false,
+      "IsEliteMinion": false,
+      "IsEpicMinion": false,
+      "IsJungleMinion": false,
+      "IsWardOrPlant": false,
+      "Info": {
+        "IsNeutral": true,
+        "Name": "PlantSatchel",
+        "NetworkId": 1073742361,
+        "Index": 132539,
+        "Position": {
+          "x": 6141,
+          "y": 50.523113,
+          "z": 3402
+        },
+        "Rotation": null,
+        "Team": 3
+      },
+      "Common": {
+        "IsAlive": true,
+        "IsZombie": false,
+        "IsRecalling": false,
+        "IsTargetable": false,
+        "Identifier": "SRU_Plant_Satchel",
+        "CurrentAttack": "",
+        "Status": 1,
+        "Health": 1,
+        "MaxHealth": 1,
+        "Armor": null,
+        "MagicResist": null,
+        "Level": 1,
+        "AttackSpeedMultiplier": null,
+        "MovementSpeed": null,
+        "DataStack": null,
+        "Buffs": [],
+        "Animations": null,
+        "SubmeshVisiblityMask": 0,
+        "AttackSpeedBonus": null,
+        "AnimationState": null
+      },
+      "TypeInfo": 0,
+      "Bones": null
+    },
+    {
+      "IsClone": false,
+      "IsLaneMinion": false,
+      "IsEliteMinion": false,
+      "IsEpicMinion": false,
+      "IsJungleMinion": false,
+      "IsWardOrPlant": false,
+      "Info": {
+        "IsNeutral": true,
+        "Name": "HiddenMinion",
+        "NetworkId": 1073742362,
+        "Index": 132549,
+        "Position": {
+          "x": 6141,
+          "y": 50.523113,
+          "z": 3402
+        },
+        "Rotation": null,
+        "Team": 3
+      },
+      "Common": {
+        "IsAlive": true,
+        "IsZombie": false,
+        "IsRecalling": false,
+        "IsTargetable": false,
+        "Identifier": "TestCubeRenderNoFOW",
+        "CurrentAttack": "",
+        "Status": 1,
+        "Health": 100,
+        "MaxHealth": 100,
+        "Armor": null,
+        "MagicResist": null,
+        "Level": 1,
+        "AttackSpeedMultiplier": null,
+        "MovementSpeed": null,
+        "DataStack": null,
+        "Buffs": [],
+        "Animations": null,
+        "SubmeshVisiblityMask": 0,
+        "AttackSpeedBonus": null,
+        "AnimationState": null
+      },
+      "TypeInfo": 0,
+      "Bones": null
+    },
+    {
+      "IsClone": false,
+      "IsLaneMinion": false,
+      "IsEliteMinion": false,
+      "IsEpicMinion": false,
+      "IsJungleMinion": false,
+      "IsWardOrPlant": false,
+      "Info": {
+        "IsNeutral": true,
+        "Name": "PlantSatchel",
+        "NetworkId": 1073742358,
+        "Index": 132550,
+        "Position": {
+          "x": 4385.8037,
+          "y": 50.715893,
+          "z": 7244.583
+        },
+        "Rotation": null,
+        "Team": 3
+      },
+      "Common": {
+        "IsAlive": true,
+        "IsZombie": false,
+        "IsRecalling": false,
+        "IsTargetable": false,
+        "Identifier": "SRU_Plant_Satchel",
+        "CurrentAttack": "",
+        "Status": 1,
+        "Health": 1,
+        "MaxHealth": 1,
+        "Armor": null,
+        "MagicResist": null,
+        "Level": 1,
+        "AttackSpeedMultiplier": null,
+        "MovementSpeed": null,
+        "DataStack": null,
+        "Buffs": [],
+        "Animations": null,
+        "SubmeshVisiblityMask": 0,
+        "AttackSpeedBonus": null,
+        "AnimationState": null
+      },
+      "TypeInfo": 0,
+      "Bones": null
+    },
+    {
+      "IsClone": false,
+      "IsLaneMinion": false,
+      "IsEliteMinion": false,
+      "IsEpicMinion": false,
+      "IsJungleMinion": false,
+      "IsWardOrPlant": false,
+      "Info": {
         "IsNeutral": false,
         "Name": "PerksPerxie",
         "NetworkId": 1073742354,
         "Index": 132553,
         "Position": {
-          "x": 13905.62,
-          "y": 171.5695,
-          "z": 14553.54
+          "x": 14181.27,
+          "y": 171.58017,
+          "z": 14392.117
         },
         "Rotation": null,
         "Team": 2
@@ -17664,7 +16958,7 @@
   "Missiles": [],
   "ParticleEmitters": [
     {
-      "index": 132248,
+      "index": 132274,
       "networkId": 1073742360,
       "name": "Dragon_Indicator_Chemtech",
       "position": {

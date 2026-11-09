@@ -5,104 +5,104 @@
       {
         "type": "pick",
         "team": "blue",
-        "champion": "Sion"
+        "champion": "Nocturne"
       },
       {
         "type": "pick",
         "team": "red",
-        "champion": "Sivir"
+        "champion": "Rammus"
       },
       {
         "type": "pick",
         "team": "red",
-        "champion": "Skarner"
+        "champion": "Ryze"
       },
       {
         "type": "pick",
         "team": "blue",
-        "champion": "Smolder"
+        "champion": "Shyvana"
       },
       {
         "type": "pick",
         "team": "blue",
-        "champion": "Sona"
+        "champion": "Yasuo"
       },
       {
         "type": "pick",
         "team": "red",
-        "champion": "Soraka"
+        "champion": "Ziggs"
       },
       {
         "type": "pick",
         "team": "red",
-        "champion": "Taliyah"
+        "champion": "Yasuo"
       },
       {
         "type": "pick",
         "team": "blue",
-        "champion": "Talon"
+        "champion": "Vladimir"
       },
       {
         "type": "pick",
         "team": "blue",
-        "champion": "Taric"
+        "champion": "Urgot"
       },
       {
         "type": "pick",
         "team": "red",
-        "champion": "Teemo"
+        "champion": "Volibear"
       }
     ],
     "bans": [
       {
         "type": "ban",
         "team": "blue",
-        "champion": "Seraphine"
+        "champion": "Gnar"
       },
       {
         "type": "ban",
         "team": "red",
-        "champion": "Sett"
+        "champion": "Janna"
       },
       {
         "type": "ban",
         "team": "blue",
-        "champion": "Shaco"
+        "champion": "Karthus"
       },
       {
         "type": "ban",
         "team": "red",
-        "champion": "Shen"
+        "champion": "Kled"
       },
       {
         "type": "ban",
         "team": "blue",
-        "champion": "Shyvana"
+        "champion": "Lucian"
       },
       {
         "type": "ban",
         "team": "red",
-        "champion": "Singed"
+        "champion": "Morgana"
       },
       {
         "type": "ban",
         "team": "red",
-        "champion": "Swain"
+        "champion": "Urgot"
       },
       {
         "type": "ban",
         "team": "blue",
-        "champion": "Sylas"
+        "champion": "Tristana"
       },
       {
         "type": "ban",
         "team": "red",
-        "champion": "Syndra"
+        "champion": "Veigar"
       },
       {
         "type": "ban",
         "team": "blue",
-        "champion": "Tahm Kench"
+        "champion": "Viego"
       }
     ],
     "info": {
@@ -119,7 +119,7 @@
     "score": {
       "format": "BO5",
       "blue": 2,
-      "red": 0
+      "red": 2
     },
     "roster": null,
     "history": {
@@ -133,7 +133,12 @@
         "Jinx",
         "K'Sante",
         "Kayle",
-        "Lillia"
+        "Lillia",
+        "Sion",
+        "Smolder",
+        "Sona",
+        "Talon",
+        "Taric"
       ],
       "red": [
         "Anivia",
@@ -145,7 +150,12 @@
         "Jhin",
         "Kai'Sa",
         "Katarina",
-        "Lissandra"
+        "Lissandra",
+        "Sivir",
+        "Skarner",
+        "Soraka",
+        "Taliyah",
+        "Teemo"
       ]
     },
     "histTeams": {
@@ -159,7 +169,12 @@
         "Jinx",
         "K'Sante",
         "Kayle",
-        "Lillia"
+        "Lillia",
+        "Sion",
+        "Smolder",
+        "Sona",
+        "Talon",
+        "Taric"
       ],
       "ANAHUAC MAYAB": [
         "Anivia",
@@ -171,7 +186,12 @@
         "Jhin",
         "Kai'Sa",
         "Katarina",
-        "Lissandra"
+        "Lissandra",
+        "Sivir",
+        "Skarner",
+        "Soraka",
+        "Taliyah",
+        "Teemo"
       ]
     },
     "teamBind": {},
@@ -179,15 +199,16 @@
     "fearless": true,
     "lcuEnabled": false
   },
-  "seriesRevision": 44,
+  "seriesRevision": 45,
   "countedGames": [
     "LA1-1760404331",
-    "LA1-1760441918"
+    "LA1-1760441918",
+    "LA1-1760727003"
   ],
   "pendingWinners": [
     [
-      "LA1-1760727003",
-      "red"
+      "LA1-1761176969",
+      "blue"
     ]
   ]
 }

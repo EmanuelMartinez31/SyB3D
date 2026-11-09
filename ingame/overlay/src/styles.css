@@ -519,6 +519,18 @@ img{display:block;max-width:100%}
 }
 .fight-card-blue{border-top:2px solid var(--p-blue-300)}
 .fight-card-red{border-top:2px solid var(--p-red-300)}
+/* El jugador que cae no se va de la tira: su ficha se queda donde está, en
+   gris y apagada. Nunca lleva contador de reaparición (solo lo tiene la tabla
+   de abajo). Al revivir vuelve sola al color, sin entrar de nuevo. */
+.fight-card.is-dead{
+  filter:grayscale(1) brightness(.58);
+  opacity:.55;
+  transition:filter 260ms ease,opacity 260ms ease;
+}
+.fight-card.is-dead .fight-bars,
+.fight-card.is-dead .fight-spells{opacity:.35}
+.fight-card.is-dead .fight-portrait{background:oklch(0.16 0.01 285 / .95)}
+.fight-card.is-dead .fight-level{border-color:oklch(0.45 0.02 285 / .9);color:var(--text-muted)}
 
 .fight-portrait{position:relative;display:block;width:84px;height:84px;background:oklch(0.12 0.02 285 / .9)}
 .fight-portrait img{display:block;width:100%;height:100%;object-fit:cover}
@@ -727,3 +739,83 @@ img{display:block;max-width:100%}
 @keyframes rune-leave-left{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(-104%)}}
 @keyframes rune-enter-right{from{opacity:0;transform:translateX(104%)}to{opacity:1;transform:translateX(0)}}
 @keyframes rune-leave-right{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(104%)}}
+
+
+/* ------------------------------------------------------------------
+   Barra de presentación del inicio
+   Del segundo 0 al 30 —el mismo tramo en el que la tabla se aparta— el
+   marcador y la banda de objetivos se retiran y en su sitio queda esta barra
+   ancha: escudo y nombre de cada equipo, el VS y el logo del torneo en el
+   centro. El fondo deja pasar ~70 % de la imagen del juego.
+   ------------------------------------------------------------------ */
+/* Los dos temporizadores de las esquinas (vacularbas a la izquierda y dragón a
+   la derecha) se van deslizándose hacia fuera y vuelven entrando desde su
+   lateral, cada uno por su orilla. */
+.objective{
+  transition:transform 470ms cubic-bezier(.18,.82,.24,1) 150ms,
+    opacity 260ms ease 150ms,visibility 0s linear 0s;
+}
+.objectives.is-intro-out .objective{
+  opacity:0;visibility:hidden;
+  transition:transform 320ms cubic-bezier(.65,0,.85,.3),opacity 200ms ease,
+    visibility 0s linear 320ms;
+}
+.objectives.is-intro-out .objective-grubs{transform:translateX(-190%)}
+.objectives.is-intro-out .objective-dragon{transform:translateX(190%)}
+
+.topbar,.objective-ribbon{
+  transition:opacity 260ms ease,transform 300ms cubic-bezier(.65,0,.85,.3),visibility 0s;
+}
+.topbar.is-intro-out,.objective-ribbon.is-intro-out{
+  opacity:0;transform:translateY(-104%);visibility:hidden;
+  transition:opacity 200ms ease,transform 240ms cubic-bezier(.65,0,.85,.3),visibility 0s linear 240ms;
+}
+.intro-banner{
+  position:absolute;z-index:21;left:50%;top:0;width:1180px;height:196px;
+  display:grid;grid-template-columns:1fr 300px 1fr;align-items:center;
+  background:oklch(0.14 0.018 285 / 0.30);
+  border:1px solid oklch(0.78 0.02 285 / 0.22);border-top:0;
+  clip-path:polygon(0 0,100% 0,calc(100% - 26px) 100%,26px 100%);
+  filter:drop-shadow(0 6px 12px oklch(0.10 0.02 285 / 0.30));
+  opacity:0;transform:translate(-50%,-16px);pointer-events:none;
+  transition:opacity 300ms ease,transform 420ms cubic-bezier(.18,.82,.24,1);
+}
+.intro-banner::before{
+  content:'';position:absolute;left:0;right:0;top:0;height:3px;
+  background:linear-gradient(90deg,var(--team-blue) 0 47%,
+    oklch(0.78 0.02 285 / 0.35) 47% 53%,var(--team-red) 53% 100%);
+}
+.intro-banner.is-in{opacity:1;transform:translate(-50%,0);transition-delay:90ms}
+.intro-banner.is-out{opacity:0;transform:translate(-50%,-18px);transition-delay:0s}
+.intro-banner[hidden]{display:none}
+.intro-side{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;min-width:0;padding:0 20px}
+/* Sin marco ni recuadro: el escudo va suelto y grande, como en la referencia. */
+.intro-emblem{width:136px;height:136px;display:grid;place-items:center}
+.intro-side-blue .intro-emblem{color:var(--p-blue-300)}
+.intro-side-red .intro-emblem{color:var(--p-red-300)}
+.intro-logo{
+  width:136px;height:136px;object-fit:contain;
+  filter:drop-shadow(0 4px 12px oklch(0.08 0.02 285 / 0.55));
+}
+.intro-emblem-letter{
+  font:800 84px/1 var(--font-ui);
+  text-shadow:0 4px 12px oklch(0.08 0.02 285 / 0.55);
+}
+.intro-name{
+  max-width:400px;font-size:33px;line-height:1;letter-spacing:.04em;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  text-shadow:0 2px 8px oklch(0.08 0.02 285 / 0.60);
+}
+.intro-center{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
+  height:100%;border-inline:1px solid oklch(0.78 0.02 285 / 0.16);
+}
+/* El logo del torneo manda en el centro: es bastante mas grande que el VS. */
+.intro-tournament{
+  max-width:210px;max-height:104px;object-fit:contain;
+  filter:drop-shadow(0 3px 10px oklch(0.08 0.02 285 / 0.55));
+}
+.intro-vs{
+  font:800 38px/1 var(--font-ui);letter-spacing:.10em;color:var(--text-muted);
+  transform:skewX(-8deg);text-shadow:0 2px 8px oklch(0.08 0.02 285 / 0.55);
+}

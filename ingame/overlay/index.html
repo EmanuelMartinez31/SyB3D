@@ -71,6 +71,31 @@
         </section>
       </header>
 
+      <!-- Barra de presentación del inicio. Mientras están las runas y las
+           fichas (del segundo 0 al 30) el marcador y la banda de objetivos se
+           retiran y aquí quedan el escudo y el nombre de cada equipo, el VS y
+           el logo del torneo, sobre un fondo muy transparente. -->
+      <section id="intro-banner" class="intro-banner" aria-label="Equipos de la partida" hidden>
+        <div class="intro-side intro-side-blue">
+          <div class="intro-emblem">
+            <img id="intro-blue-logo" class="intro-logo" alt="" hidden>
+            <span id="intro-blue-emblem" class="intro-emblem-letter">A</span>
+          </div>
+          <strong id="intro-blue-name" class="intro-name">AZUL</strong>
+        </div>
+        <div class="intro-center">
+          <img id="intro-tournament-logo" class="intro-tournament" alt="" hidden>
+          <span class="intro-vs" aria-hidden="true">VS</span>
+        </div>
+        <div class="intro-side intro-side-red">
+          <div class="intro-emblem">
+            <img id="intro-red-logo" class="intro-logo" alt="" hidden>
+            <span id="intro-red-emblem" class="intro-emblem-letter">R</span>
+          </div>
+          <strong id="intro-red-name" class="intro-name">ROJO</strong>
+        </div>
+      </section>
+
       <section class="objective-ribbon" aria-label="Objetivos conseguidos por equipo">
         <div class="team-objective-tray blue" aria-label="Objetivos del equipo azul">
           <span class="objective-counter" title="Vacularbas"><img src="./assets/objectives/grub.png" alt="" aria-hidden="true"><strong id="blue-grubs-score">0</strong></span>

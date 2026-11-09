@@ -2677,12 +2677,12 @@
   {
     "path": "$.MinionMap.1073742241.Common.Buffs[0].StartTime",
     "type": "number",
-    "value": 0.3976857
+    "value": 0.4359054
   },
   {
     "path": "$.MinionMap.1073742241.Common.Buffs[0].EndTime",
     "type": "number",
-    "value": 60.397686
+    "value": 60.435905
   },
   {
     "path": "$.MinionMap.1073742241.Common.Buffs[0].Count",
@@ -3137,12 +3137,12 @@
   {
     "path": "$.MinionMap.1073742243.Common.Buffs[0].StartTime",
     "type": "number",
-    "value": 0.3976857
+    "value": 0.4359054
   },
   {
     "path": "$.MinionMap.1073742243.Common.Buffs[0].EndTime",
     "type": "number",
-    "value": 60.397686
+    "value": 60.435905
   },
   {
     "path": "$.MinionMap.1073742243.Common.Buffs[0].Count",
@@ -3597,12 +3597,12 @@
   {
     "path": "$.MinionMap.1073742245.Common.Buffs[0].StartTime",
     "type": "number",
-    "value": 0.3976857
+    "value": 0.4359054
   },
   {
     "path": "$.MinionMap.1073742245.Common.Buffs[0].EndTime",
     "type": "number",
-    "value": 60.397686
+    "value": 60.435905
   },
   {
     "path": "$.MinionMap.1073742245.Common.Buffs[0].Count",
@@ -3827,12 +3827,12 @@
   {
     "path": "$.MinionMap.1073742246.Common.Buffs[0].StartTime",
     "type": "number",
-    "value": 0.3976857
+    "value": 0.4359054
   },
   {
     "path": "$.MinionMap.1073742246.Common.Buffs[0].EndTime",
     "type": "number",
-    "value": 60.397686
+    "value": 60.435905
   },
   {
     "path": "$.MinionMap.1073742246.Common.Buffs[0].Count",
@@ -6088,7 +6088,7 @@
   {
     "path": "$.HeroMap.1073741998.D.Cooldown",
     "type": "number",
-    "value": 13.363164
+    "value": 11.416718
   },
   {
     "path": "$.HeroMap.1073741998.D.IsToggled",
@@ -6152,7 +6152,7 @@
   {
     "path": "$.HeroMap.1073741998.F.Cooldown",
     "type": "number",
-    "value": 13.363164
+    "value": 11.416718
   },
   {
     "path": "$.HeroMap.1073741998.F.IsToggled",
@@ -6948,7 +6948,7 @@
   {
     "path": "$.HeroMap.1073741999.D.Cooldown",
     "type": "number",
-    "value": 13.363164
+    "value": 11.416718
   },
   {
     "path": "$.HeroMap.1073741999.D.IsToggled",
@@ -6982,7 +6982,7 @@
   {
     "path": "$.HeroMap.1073741999.F.AmmoReadyAt",
     "type": "number",
-    "value": 1.5993062
+    "value": 3.4706657
   },
   {
     "path": "$.HeroMap.1073741999.F.AmmoCooldown",
@@ -7012,7 +7012,7 @@
   {
     "path": "$.HeroMap.1073741999.F.Cooldown",
     "type": "number",
-    "value": 13.363164
+    "value": 11.416718
   },
   {
     "path": "$.HeroMap.1073741999.F.IsToggled",
@@ -7808,7 +7808,7 @@
   {
     "path": "$.HeroMap.1073742000.D.Cooldown",
     "type": "number",
-    "value": 13.363164
+    "value": 11.416718
   },
   {
     "path": "$.HeroMap.1073742000.D.IsToggled",
@@ -7872,7 +7872,7 @@
   {
     "path": "$.HeroMap.1073742000.F.Cooldown",
     "type": "number",
-    "value": 13.363164
+    "value": 11.416718
   },
   {
     "path": "$.HeroMap.1073742000.F.IsToggled",
@@ -8668,7 +8668,7 @@
   {
     "path": "$.HeroMap.1073742001.D.Cooldown",
     "type": "number",
-    "value": 13.363164
+    "value": 11.416718
   },
   {
     "path": "$.HeroMap.1073742001.D.IsToggled",
@@ -8732,7 +8732,7 @@
   {
     "path": "$.HeroMap.1073742001.F.Cooldown",
     "type": "number",
-    "value": 13.363164
+    "value": 11.416718
   },
   {
     "path": "$.HeroMap.1073742001.F.IsToggled",
@@ -9528,7 +9528,7 @@
   {
     "path": "$.HeroMap.1073742002.D.Cooldown",
     "type": "number",
-    "value": 13.363164
+    "value": 11.416718
   },
   {
     "path": "$.HeroMap.1073742002.D.IsToggled",
@@ -9592,7 +9592,7 @@
   {
     "path": "$.HeroMap.1073742002.F.Cooldown",
     "type": "number",
-    "value": 13.363164
+    "value": 11.416718
   },
   {
     "path": "$.HeroMap.1073742002.F.IsToggled",
@@ -10388,7 +10388,7 @@
   {
     "path": "$.HeroMap.1073742003.D.Cooldown",
     "type": "number",
-    "value": 13.363164
+    "value": 11.416718
   },
   {
     "path": "$.HeroMap.1073742003.D.IsToggled",
@@ -10452,7 +10452,7 @@
   {
     "path": "$.HeroMap.1073742003.F.Cooldown",
     "type": "number",
-    "value": 13.363164
+    "value": 11.416718
   },
   {
     "path": "$.HeroMap.1073742003.F.IsToggled",
@@ -11218,7 +11218,7 @@
   {
     "path": "$.HeroMap.1073742004.D.AmmoReadyAt",
     "type": "number",
-    "value": 1.5993062
+    "value": 3.4706657
   },
   {
     "path": "$.HeroMap.1073742004.D.AmmoCooldown",
@@ -11248,7 +11248,7 @@
   {
     "path": "$.HeroMap.1073742004.D.Cooldown",
     "type": "number",
-    "value": 13.363164
+    "value": 11.416718
   },
   {
     "path": "$.HeroMap.1073742004.D.IsToggled",
@@ -11312,7 +11312,7 @@
   {
     "path": "$.HeroMap.1073742004.F.Cooldown",
     "type": "number",
-    "value": 13.363164
+    "value": 11.416718
   },
   {
     "path": "$.HeroMap.1073742004.F.IsToggled",
@@ -12108,7 +12108,7 @@
   {
     "path": "$.HeroMap.1073742005.D.Cooldown",
     "type": "number",
-    "value": 13.363164
+    "value": 11.416718
   },
   {
     "path": "$.HeroMap.1073742005.D.IsToggled",
@@ -12172,7 +12172,7 @@
   {
     "path": "$.HeroMap.1073742005.F.Cooldown",
     "type": "number",
-    "value": 13.363164
+    "value": 11.416718
   },
   {
     "path": "$.HeroMap.1073742005.F.IsToggled",
@@ -12968,7 +12968,7 @@
   {
     "path": "$.HeroMap.1073742006.D.Cooldown",
     "type": "number",
-    "value": 13.363164
+    "value": 11.416718
   },
   {
     "path": "$.HeroMap.1073742006.D.IsToggled",
@@ -13032,7 +13032,7 @@
   {
     "path": "$.HeroMap.1073742006.F.Cooldown",
     "type": "number",
-    "value": 13.363164
+    "value": 11.416718
   },
   {
     "path": "$.HeroMap.1073742006.F.IsToggled",
@@ -13562,7 +13562,7 @@
   {
     "path": "$.HeroMap.1073742007.Q.Level",
     "type": "number",
-    "value": 0
+    "value": 1
   },
   {
     "path": "$.HeroMap.1073742007.Q.AmmoCount",
@@ -13828,7 +13828,7 @@
   {
     "path": "$.HeroMap.1073742007.D.Cooldown",
     "type": "number",
-    "value": 13.363164
+    "value": 11.416718
   },
   {
     "path": "$.HeroMap.1073742007.D.IsToggled",
@@ -13892,7 +13892,7 @@
   {
     "path": "$.HeroMap.1073742007.F.Cooldown",
     "type": "number",
-    "value": 13.363164
+    "value": 11.416718
   },
   {
     "path": "$.HeroMap.1073742007.F.IsToggled",
@@ -14212,7 +14212,7 @@
   {
     "path": "$.HeroMap.1073742007.Spells[0].Level",
     "type": "number",
-    "value": 0
+    "value": 1
   },
   {
     "path": "$.HeroMap.1073742007.Spells[0].AmmoCount",
@@ -14359,7 +14359,7 @@
   {
     "path": "$.GameTime",
     "type": "number",
-    "value": 1.6368362
+    "value": 3.5832827
   },
   {
     "path": "$.PlaybackSpeed",
@@ -14369,7 +14369,7 @@
   {
     "path": "$.UtcTime",
     "type": "number",
-    "value": 1794261604200
+    "value": 1794263547454
   },
   {
     "path": "$.Camera",
@@ -14786,7 +14786,7 @@
   {
     "path": "$.Heroes[0].D.Cooldown",
     "type": "number",
-    "value": 13.363164
+    "value": 11.416718
   },
   {
     "path": "$.Heroes[0].D.IsToggled",
@@ -14850,7 +14850,7 @@
   {
     "path": "$.Heroes[0].F.Cooldown",
     "type": "number",
-    "value": 13.363164
+    "value": 11.416718
   },
   {
     "path": "$.Heroes[0].F.IsToggled",

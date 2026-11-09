@@ -517,7 +517,7 @@ function buildFightCard(player, team, catalog) {
     spells.append(slot.wrap);
   }
 
-  const referencias = { hpFill, hp, mpFill, mp, refs, level, portrait: portrait.wrap };
+  const referencias = { el: card, hpFill, hp, mpFill, mp, refs, level, portrait: portrait.wrap };
   updateFightCard(referencias, player);
 
   card.append(portrait.wrap, bars, spells);
@@ -534,8 +534,12 @@ function updateFightCard(refs, player) {
   refs.mpFill.style.width = `${fightPercent(player.resource?.current, player.resource?.max)}%`;
   refs.mp.title = `Maná ${Math.round(player.resource?.current ?? 0)} / ${Math.round(player.resource?.max ?? 0)}`;
   setText(refs.level, finite(player.level) ? player.level : '—');
+  // El muerto NO se retira: su ficha se queda en su sitio, en gris. Aquí no
+  // hay contador de reaparición (eso es solo de la tabla de abajo).
+  const muerto = player.alive === false;
+  if (refs.el) refs.el.classList.toggle('is-dead', muerto);
   // Mismo marco que la tabla, aplicado al retrato de la ficha.
-  const buff = player.alive === false ? null : player.objectiveBuff || null;
+  const buff = muerto ? null : player.objectiveBuff || null;
   refs.portrait.classList.toggle('buff-baron', buff === 'baron');
   refs.portrait.classList.toggle('buff-elder', buff === 'elder');
   refs.portrait.title = buff === 'baron'
@@ -666,13 +670,11 @@ function renderFight(state, catalog) {
     return;
   }
 
-  // Solo los que están dentro de la pelea: ni muertos ni los de fuera. El
-  // filtro de vivos también actúa durante la salida, cuando la lista de
-  // participantes se queda congelada unos segundos.
-  const dentro = new Set([...(fight.blue || []), ...(fight.red || [])]);
-  const enPie = player => dentro.has(player.id) && player.alive !== false;
-  const blue = players.filter(player => player.team === 1 && enPie(player));
-  const red = players.filter(player => player.team === 2 && enPie(player));
+  // La tira enseña SIEMPRE los cinco de cada equipo, estén o no metidos en la
+  // pelea: el que cae no desaparece, su ficha se queda en su sitio en gris.
+  // Quién empieza la pelea lo sigue decidiendo el servidor (updateFight).
+  const blue = players.filter(player => player.team === 1);
+  const red = players.filter(player => player.team === 2);
   if (!blue.length && !red.length) {
     hideFightStrip();
     return;
@@ -1707,6 +1709,117 @@ function renderCardDebug(state) {
   ].join('\n');
 }
 
+/* ------------------------------------------------------------------
+   Barra de presentación del inicio
+   Del segundo 0 al 30 —el mismo tramo en el que la tabla se aparta— el
+   marcador y la banda de objetivos se retiran y en su sitio queda esta barra
+   ancha y casi transparente: escudo y nombre de cada equipo, el VS y el logo
+   del torneo en el centro. En cuanto las runas y las fichas se van, la barra
+   sale y el marcador vuelve a su sitio.
+   ------------------------------------------------------------------ */
+const INTRO_FROM = 0;
+const INTRO_UNTIL = DECK_UNTIL;   // 30 s: lo mismo que las runas y las fichas
+const INTRO_LEAVE_MS = 300;
+const introLogoAssets = new Set();
+let introShown = false;
+let introLeaveTimer = 0;
+let introChromeHeld = false;
+let introSignature = '';
+
+// El marcador, la banda de objetivos y los dos temporizadores de las esquinas
+// entran y salen juntos. Los temporizadores lo hacen deslizándose por su
+// lateral: el de las vacularbas por la izquierda y el del dragón por la derecha
+// (el desplazamiento se lo pone el CSS).
+function setIntroChrome(held) {
+  if (held === introChromeHeld) return;
+  introChromeHeld = held;
+  document.querySelectorAll('.topbar, .objective-ribbon, .objectives').forEach(element => {
+    element.classList.toggle('is-intro-out', held);
+  });
+}
+
+function updateIntroBanner(state) {
+  const info = state?.info || {};
+  const signature = JSON.stringify([
+    info.blue, info.blueShort, info.blueLogo, info.red, info.redShort, info.redLogo,
+    info.logo, info.tournament
+  ]);
+  if (signature === introSignature) return;
+  introSignature = signature;
+
+  for (const prefix of ['blue', 'red']) {
+    const img = byId(`intro-${prefix}-logo`);
+    const letter = byId(`intro-${prefix}-emblem`);
+    const name = byId(`intro-${prefix}-name`);
+    if (!img || !letter) continue;
+    if (!introLogoAssets.has(prefix)) {
+      wireImageFallback(img, letter);
+      introLogoAssets.add(prefix);
+    }
+    const { fullName, shortName } = teamShortName(prefix, info);
+    setText(letter, shortName.slice(0, 1));
+    if (name) {
+      setText(name, fullName);
+      name.title = fullName;
+    }
+    // Debajo del escudo va el nombre completo del equipo, no las siglas.
+    setImage(img, info?.[`${prefix}Logo`], `Logo de ${fullName}`, letter, shortName.slice(0, 1));
+  }
+
+  const torneo = byId('intro-tournament-logo');
+  if (torneo) {
+    if (!torneo._wired) {
+      torneo._wired = true;
+      torneo.addEventListener('error', () => { torneo.hidden = true; });
+    }
+    const fuente = typeof info.logo === 'string' && info.logo.trim() ? info.logo.trim() : '';
+    if (fuente) {
+      if (torneo.getAttribute('src') !== fuente) torneo.src = fuente;
+      torneo.alt = info.tournament ? `Logo de ${info.tournament}` : 'Logo del torneo';
+      torneo.hidden = false;
+    } else {
+      torneo.hidden = true;
+      torneo.removeAttribute('src');
+    }
+  }
+}
+
+function showIntroBanner(container) {
+  window.clearTimeout(introLeaveTimer);
+  container.hidden = false;
+  void container.offsetWidth;
+  container.classList.remove('is-out');
+  container.classList.add('is-in');
+  introShown = true;
+}
+
+function hideIntroBanner(container) {
+  if (!introShown) return;
+  introShown = false;
+  container.classList.remove('is-in');
+  container.classList.add('is-out');
+  window.clearTimeout(introLeaveTimer);
+  introLeaveTimer = window.setTimeout(() => {
+    if (introShown) return;
+    container.hidden = true;
+    container.classList.remove('is-out');
+  }, INTRO_LEAVE_MS);
+}
+
+function renderIntroBanner(state) {
+  const container = byId('intro-banner');
+  if (!container) return;
+  const gameTime = state?.meta?.gameTime;
+  const visible = finite(gameTime) && gameTime >= INTRO_FROM && gameTime < INTRO_UNTIL;
+  setIntroChrome(visible);
+  if (!visible) {
+    hideIntroBanner(container);
+    return;
+  }
+  updateIntroBanner(state);
+  if (!introShown) showIntroBanner(container);
+}
+
 export function renderIngameState(state, catalog) {
   if (!state || typeof state !== 'object') return;
   if (cardDebug) renderCardDebug(state);
@@ -1719,6 +1832,7 @@ export function renderIngameState(state, catalog) {
   renderSeries(state.score);
   renderRuneIntro(state, catalog);
   renderDeck(state, catalog);
+  renderIntroBanner(state);
   renderFight(state, catalog);
   setText(byId('game-time'), formatTime(state.meta?.gameTime));
 

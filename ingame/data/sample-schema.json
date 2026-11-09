@@ -54,17 +54,17 @@
   {
     "path": "$.NeutralMinions[0].Info.Name",
     "type": "string",
-    "value": "HiddenMinion"
+    "value": "PlantSatchel"
   },
   {
     "path": "$.NeutralMinions[0].Info.NetworkId",
     "type": "number",
-    "value": 1073742343
+    "value": 1073742365
   },
   {
     "path": "$.NeutralMinions[0].Info.Index",
     "type": "number",
-    "value": 197790
+    "value": 132249
   },
   {
     "path": "$.NeutralMinions[0].Info.Position",
@@ -73,17 +73,17 @@
   {
     "path": "$.NeutralMinions[0].Info.Position.x",
     "type": "number",
-    "value": 6141
+    "value": 8659
   },
   {
     "path": "$.NeutralMinions[0].Info.Position.y",
     "type": "number",
-    "value": 50.523113
+    "value": 53.657677
   },
   {
     "path": "$.NeutralMinions[0].Info.Position.z",
     "type": "number",
-    "value": 3402
+    "value": 11535
   },
   {
     "path": "$.NeutralMinions[0].Info.Rotation",
@@ -122,7 +122,7 @@
   {
     "path": "$.NeutralMinions[0].Common.Identifier",
     "type": "string",
-    "value": "TestCubeRenderNoFOW"
+    "value": "SRU_Plant_Satchel"
   },
   {
     "path": "$.NeutralMinions[0].Common.CurrentAttack",
@@ -137,12 +137,12 @@
   {
     "path": "$.NeutralMinions[0].Common.Health",
     "type": "number",
-    "value": 100
+    "value": 1
   },
   {
     "path": "$.NeutralMinions[0].Common.MaxHealth",
     "type": "number",
-    "value": 100
+    "value": 1
   },
   {
     "path": "$.NeutralMinions[0].Common.Armor",
@@ -279,7 +279,7 @@
   {
     "path": "$.MinionMap.1073742009.Info.Index",
     "type": "number",
-    "value": 66775
+    "value": 66784
   },
   {
     "path": "$.MinionMap.1073742009.Info.Position",
@@ -509,7 +509,7 @@
   {
     "path": "$.MinionMap.1073742010.Info.Index",
     "type": "number",
-    "value": 66776
+    "value": 66785
   },
   {
     "path": "$.MinionMap.1073742010.Info.Position",
@@ -739,7 +739,7 @@
   {
     "path": "$.MinionMap.1073742011.Info.Index",
     "type": "number",
-    "value": 66777
+    "value": 66786
   },
   {
     "path": "$.MinionMap.1073742011.Info.Position",
@@ -969,7 +969,7 @@
   {
     "path": "$.MinionMap.1073742012.Info.Index",
     "type": "number",
-    "value": 66778
+    "value": 66787
   },
   {
     "path": "$.MinionMap.1073742012.Info.Position",
@@ -1199,7 +1199,7 @@
   {
     "path": "$.MinionMap.1073742013.Info.Index",
     "type": "number",
-    "value": 66779
+    "value": 66788
   },
   {
     "path": "$.MinionMap.1073742013.Info.Position",
@@ -1429,7 +1429,7 @@
   {
     "path": "$.MinionMap.1073742014.Info.Index",
     "type": "number",
-    "value": 66780
+    "value": 66789
   },
   {
     "path": "$.MinionMap.1073742014.Info.Position",
@@ -1659,7 +1659,7 @@
   {
     "path": "$.MinionMap.1073742068.Info.Index",
     "type": "number",
-    "value": 66781
+    "value": 66790
   },
   {
     "path": "$.MinionMap.1073742068.Info.Position",
@@ -1805,6 +1805,696 @@
     "value": null
   },
   {
+    "path": "$.MinionMap.1073742238",
+    "type": "object"
+  },
+  {
+    "path": "$.MinionMap.1073742238.IsClone",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742238.IsLaneMinion",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742238.IsEliteMinion",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742238.IsEpicMinion",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742238.IsJungleMinion",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742238.IsWardOrPlant",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742238.Info",
+    "type": "object"
+  },
+  {
+    "path": "$.MinionMap.1073742238.Info.IsNeutral",
+    "type": "boolean",
+    "value": true
+  },
+  {
+    "path": "$.MinionMap.1073742238.Info.Name",
+    "type": "string",
+    "value": "AatroxWCenterMinion"
+  },
+  {
+    "path": "$.MinionMap.1073742238.Info.NetworkId",
+    "type": "number",
+    "value": 1073742238
+  },
+  {
+    "path": "$.MinionMap.1073742238.Info.Index",
+    "type": "number",
+    "value": 66791
+  },
+  {
+    "path": "$.MinionMap.1073742238.Info.Position",
+    "type": "object"
+  },
+  {
+    "path": "$.MinionMap.1073742238.Info.Position.x",
+    "type": "number",
+    "value": 421.31067
+  },
+  {
+    "path": "$.MinionMap.1073742238.Info.Position.y",
+    "type": "number",
+    "value": 183.47618
+  },
+  {
+    "path": "$.MinionMap.1073742238.Info.Position.z",
+    "type": "number",
+    "value": 432.4967
+  },
+  {
+    "path": "$.MinionMap.1073742238.Info.Rotation",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742238.Info.Team",
+    "type": "number",
+    "value": 3
+  },
+  {
+    "path": "$.MinionMap.1073742238.Common",
+    "type": "object"
+  },
+  {
+    "path": "$.MinionMap.1073742238.Common.IsAlive",
+    "type": "boolean",
+    "value": true
+  },
+  {
+    "path": "$.MinionMap.1073742238.Common.IsZombie",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742238.Common.IsRecalling",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742238.Common.IsTargetable",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742238.Common.Identifier",
+    "type": "string",
+    "value": "TestCubeRender"
+  },
+  {
+    "path": "$.MinionMap.1073742238.Common.CurrentAttack",
+    "type": "string",
+    "value": ""
+  },
+  {
+    "path": "$.MinionMap.1073742238.Common.Status",
+    "type": "number",
+    "value": 1
+  },
+  {
+    "path": "$.MinionMap.1073742238.Common.Health",
+    "type": "number",
+    "value": 100
+  },
+  {
+    "path": "$.MinionMap.1073742238.Common.MaxHealth",
+    "type": "number",
+    "value": 100
+  },
+  {
+    "path": "$.MinionMap.1073742238.Common.Armor",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742238.Common.MagicResist",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742238.Common.Level",
+    "type": "number",
+    "value": 1
+  },
+  {
+    "path": "$.MinionMap.1073742238.Common.AttackSpeedMultiplier",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742238.Common.MovementSpeed",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742238.Common.DataStack",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742238.Common.Buffs",
+    "type": "array",
+    "length": 1
+  },
+  {
+    "path": "$.MinionMap.1073742238.Common.Buffs[0]",
+    "type": "object"
+  },
+  {
+    "path": "$.MinionMap.1073742238.Common.Buffs[0].Name",
+    "type": "string",
+    "value": "CampCleanupManager"
+  },
+  {
+    "path": "$.MinionMap.1073742238.Common.Buffs[0].StartTime",
+    "type": "number",
+    "value": 0
+  },
+  {
+    "path": "$.MinionMap.1073742238.Common.Buffs[0].EndTime",
+    "type": "number",
+    "value": 25000
+  },
+  {
+    "path": "$.MinionMap.1073742238.Common.Buffs[0].Count",
+    "type": "number",
+    "value": 1
+  },
+  {
+    "path": "$.MinionMap.1073742238.Common.Buffs[0].Type",
+    "type": "number",
+    "value": 0
+  },
+  {
+    "path": "$.MinionMap.1073742238.Common.Animations",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742238.Common.SubmeshVisiblityMask",
+    "type": "number",
+    "value": 0
+  },
+  {
+    "path": "$.MinionMap.1073742238.Common.AttackSpeedBonus",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742238.Common.AnimationState",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742238.TypeInfo",
+    "type": "number",
+    "value": 0
+  },
+  {
+    "path": "$.MinionMap.1073742238.Bones",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742239",
+    "type": "object"
+  },
+  {
+    "path": "$.MinionMap.1073742239.IsClone",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742239.IsLaneMinion",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742239.IsEliteMinion",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742239.IsEpicMinion",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742239.IsJungleMinion",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742239.IsWardOrPlant",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742239.Info",
+    "type": "object"
+  },
+  {
+    "path": "$.MinionMap.1073742239.Info.IsNeutral",
+    "type": "boolean",
+    "value": true
+  },
+  {
+    "path": "$.MinionMap.1073742239.Info.Name",
+    "type": "string",
+    "value": "Minion_Dragon Crab"
+  },
+  {
+    "path": "$.MinionMap.1073742239.Info.NetworkId",
+    "type": "number",
+    "value": 1073742239
+  },
+  {
+    "path": "$.MinionMap.1073742239.Info.Index",
+    "type": "number",
+    "value": 66792
+  },
+  {
+    "path": "$.MinionMap.1073742239.Info.Position",
+    "type": "object"
+  },
+  {
+    "path": "$.MinionMap.1073742239.Info.Position.x",
+    "type": "number",
+    "value": 10500
+  },
+  {
+    "path": "$.MinionMap.1073742239.Info.Position.y",
+    "type": "number",
+    "value": -71.24
+  },
+  {
+    "path": "$.MinionMap.1073742239.Info.Position.z",
+    "type": "number",
+    "value": 5170
+  },
+  {
+    "path": "$.MinionMap.1073742239.Info.Rotation",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742239.Info.Team",
+    "type": "number",
+    "value": 3
+  },
+  {
+    "path": "$.MinionMap.1073742239.Common",
+    "type": "object"
+  },
+  {
+    "path": "$.MinionMap.1073742239.Common.IsAlive",
+    "type": "boolean",
+    "value": true
+  },
+  {
+    "path": "$.MinionMap.1073742239.Common.IsZombie",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742239.Common.IsRecalling",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742239.Common.IsTargetable",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742239.Common.Identifier",
+    "type": "string",
+    "value": "SRU_CampRespawnMarker"
+  },
+  {
+    "path": "$.MinionMap.1073742239.Common.CurrentAttack",
+    "type": "string",
+    "value": ""
+  },
+  {
+    "path": "$.MinionMap.1073742239.Common.Status",
+    "type": "number",
+    "value": 1
+  },
+  {
+    "path": "$.MinionMap.1073742239.Common.Health",
+    "type": "number",
+    "value": 1000
+  },
+  {
+    "path": "$.MinionMap.1073742239.Common.MaxHealth",
+    "type": "number",
+    "value": 1000
+  },
+  {
+    "path": "$.MinionMap.1073742239.Common.Armor",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742239.Common.MagicResist",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742239.Common.Level",
+    "type": "number",
+    "value": 1
+  },
+  {
+    "path": "$.MinionMap.1073742239.Common.AttackSpeedMultiplier",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742239.Common.MovementSpeed",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742239.Common.DataStack",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742239.Common.Buffs",
+    "type": "array",
+    "length": 1
+  },
+  {
+    "path": "$.MinionMap.1073742239.Common.Buffs[0]",
+    "type": "object"
+  },
+  {
+    "path": "$.MinionMap.1073742239.Common.Buffs[0].Name",
+    "type": "string",
+    "value": "camprespawncountdownhidden"
+  },
+  {
+    "path": "$.MinionMap.1073742239.Common.Buffs[0].StartTime",
+    "type": "number",
+    "value": 0
+  },
+  {
+    "path": "$.MinionMap.1073742239.Common.Buffs[0].EndTime",
+    "type": "number",
+    "value": 115
+  },
+  {
+    "path": "$.MinionMap.1073742239.Common.Buffs[0].Count",
+    "type": "number",
+    "value": 1
+  },
+  {
+    "path": "$.MinionMap.1073742239.Common.Buffs[0].Type",
+    "type": "number",
+    "value": 1
+  },
+  {
+    "path": "$.MinionMap.1073742239.Common.Animations",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742239.Common.SubmeshVisiblityMask",
+    "type": "number",
+    "value": 0
+  },
+  {
+    "path": "$.MinionMap.1073742239.Common.AttackSpeedBonus",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742239.Common.AnimationState",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742239.TypeInfo",
+    "type": "number",
+    "value": 0
+  },
+  {
+    "path": "$.MinionMap.1073742239.Bones",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742240",
+    "type": "object"
+  },
+  {
+    "path": "$.MinionMap.1073742240.IsClone",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742240.IsLaneMinion",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742240.IsEliteMinion",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742240.IsEpicMinion",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742240.IsJungleMinion",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742240.IsWardOrPlant",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742240.Info",
+    "type": "object"
+  },
+  {
+    "path": "$.MinionMap.1073742240.Info.IsNeutral",
+    "type": "boolean",
+    "value": true
+  },
+  {
+    "path": "$.MinionMap.1073742240.Info.Name",
+    "type": "string",
+    "value": "Minion_Dragon"
+  },
+  {
+    "path": "$.MinionMap.1073742240.Info.NetworkId",
+    "type": "number",
+    "value": 1073742240
+  },
+  {
+    "path": "$.MinionMap.1073742240.Info.Index",
+    "type": "number",
+    "value": 66793
+  },
+  {
+    "path": "$.MinionMap.1073742240.Info.Position",
+    "type": "object"
+  },
+  {
+    "path": "$.MinionMap.1073742240.Info.Position.x",
+    "type": "number",
+    "value": 9987.674
+  },
+  {
+    "path": "$.MinionMap.1073742240.Info.Position.y",
+    "type": "number",
+    "value": -71.2406
+  },
+  {
+    "path": "$.MinionMap.1073742240.Info.Position.z",
+    "type": "number",
+    "value": 4447.761
+  },
+  {
+    "path": "$.MinionMap.1073742240.Info.Rotation",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742240.Info.Team",
+    "type": "number",
+    "value": 3
+  },
+  {
+    "path": "$.MinionMap.1073742240.Common",
+    "type": "object"
+  },
+  {
+    "path": "$.MinionMap.1073742240.Common.IsAlive",
+    "type": "boolean",
+    "value": true
+  },
+  {
+    "path": "$.MinionMap.1073742240.Common.IsZombie",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742240.Common.IsRecalling",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742240.Common.IsTargetable",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742240.Common.Identifier",
+    "type": "string",
+    "value": "SRU_CampRespawnMarker"
+  },
+  {
+    "path": "$.MinionMap.1073742240.Common.CurrentAttack",
+    "type": "string",
+    "value": ""
+  },
+  {
+    "path": "$.MinionMap.1073742240.Common.Status",
+    "type": "number",
+    "value": 1
+  },
+  {
+    "path": "$.MinionMap.1073742240.Common.Health",
+    "type": "number",
+    "value": 1000
+  },
+  {
+    "path": "$.MinionMap.1073742240.Common.MaxHealth",
+    "type": "number",
+    "value": 1000
+  },
+  {
+    "path": "$.MinionMap.1073742240.Common.Armor",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742240.Common.MagicResist",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742240.Common.Level",
+    "type": "number",
+    "value": 1
+  },
+  {
+    "path": "$.MinionMap.1073742240.Common.AttackSpeedMultiplier",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742240.Common.MovementSpeed",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742240.Common.DataStack",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742240.Common.Buffs",
+    "type": "array",
+    "length": 1
+  },
+  {
+    "path": "$.MinionMap.1073742240.Common.Buffs[0]",
+    "type": "object"
+  },
+  {
+    "path": "$.MinionMap.1073742240.Common.Buffs[0].Name",
+    "type": "string",
+    "value": "camprespawncountdownhidden"
+  },
+  {
+    "path": "$.MinionMap.1073742240.Common.Buffs[0].StartTime",
+    "type": "number",
+    "value": 0
+  },
+  {
+    "path": "$.MinionMap.1073742240.Common.Buffs[0].EndTime",
+    "type": "number",
+    "value": 240
+  },
+  {
+    "path": "$.MinionMap.1073742240.Common.Buffs[0].Count",
+    "type": "number",
+    "value": 1
+  },
+  {
+    "path": "$.MinionMap.1073742240.Common.Buffs[0].Type",
+    "type": "number",
+    "value": 1
+  },
+  {
+    "path": "$.MinionMap.1073742240.Common.Animations",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742240.Common.SubmeshVisiblityMask",
+    "type": "number",
+    "value": 0
+  },
+  {
+    "path": "$.MinionMap.1073742240.Common.AttackSpeedBonus",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742240.Common.AnimationState",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742240.TypeInfo",
+    "type": "number",
+    "value": 0
+  },
+  {
+    "path": "$.MinionMap.1073742240.Bones",
+    "type": "null",
+    "value": null
+  },
+  {
     "path": "$.MinionMap.1073742241",
     "type": "object"
   },
@@ -1850,7 +2540,7 @@
   {
     "path": "$.MinionMap.1073742241.Info.Name",
     "type": "string",
-    "value": "AatroxWCenterMinion"
+    "value": "Minion_Order Red"
   },
   {
     "path": "$.MinionMap.1073742241.Info.NetworkId",
@@ -1860,7 +2550,7 @@
   {
     "path": "$.MinionMap.1073742241.Info.Index",
     "type": "number",
-    "value": 66782
+    "value": 66794
   },
   {
     "path": "$.MinionMap.1073742241.Info.Position",
@@ -1869,17 +2559,17 @@
   {
     "path": "$.MinionMap.1073742241.Info.Position.x",
     "type": "number",
-    "value": 421.31067
+    "value": 7815.244
   },
   {
     "path": "$.MinionMap.1073742241.Info.Position.y",
     "type": "number",
-    "value": 183.47618
+    "value": 53.865505
   },
   {
     "path": "$.MinionMap.1073742241.Info.Position.z",
     "type": "number",
-    "value": 432.4967
+    "value": 3930.187
   },
   {
     "path": "$.MinionMap.1073742241.Info.Rotation",
@@ -1918,7 +2608,7 @@
   {
     "path": "$.MinionMap.1073742241.Common.Identifier",
     "type": "string",
-    "value": "TestCubeRender"
+    "value": "SRU_CampRespawnMarker"
   },
   {
     "path": "$.MinionMap.1073742241.Common.CurrentAttack",
@@ -1933,12 +2623,12 @@
   {
     "path": "$.MinionMap.1073742241.Common.Health",
     "type": "number",
-    "value": 100
+    "value": 1000
   },
   {
     "path": "$.MinionMap.1073742241.Common.MaxHealth",
     "type": "number",
-    "value": 100
+    "value": 1000
   },
   {
     "path": "$.MinionMap.1073742241.Common.Armor",
@@ -1982,17 +2672,17 @@
   {
     "path": "$.MinionMap.1073742241.Common.Buffs[0].Name",
     "type": "string",
-    "value": "CampCleanupManager"
+    "value": "camprespawncountdownvisible"
   },
   {
     "path": "$.MinionMap.1073742241.Common.Buffs[0].StartTime",
     "type": "number",
-    "value": 0
+    "value": 0.4721664
   },
   {
     "path": "$.MinionMap.1073742241.Common.Buffs[0].EndTime",
     "type": "number",
-    "value": 25000
+    "value": 60.472168
   },
   {
     "path": "$.MinionMap.1073742241.Common.Buffs[0].Count",
@@ -2002,7 +2692,7 @@
   {
     "path": "$.MinionMap.1073742241.Common.Buffs[0].Type",
     "type": "number",
-    "value": 0
+    "value": 1
   },
   {
     "path": "$.MinionMap.1073742241.Common.Animations",
@@ -2080,7 +2770,7 @@
   {
     "path": "$.MinionMap.1073742242.Info.Name",
     "type": "string",
-    "value": "Minion_Dragon Crab"
+    "value": "Minion_Baron Crab"
   },
   {
     "path": "$.MinionMap.1073742242.Info.NetworkId",
@@ -2090,7 +2780,7 @@
   {
     "path": "$.MinionMap.1073742242.Info.Index",
     "type": "number",
-    "value": 66783
+    "value": 66795
   },
   {
     "path": "$.MinionMap.1073742242.Info.Position",
@@ -2099,17 +2789,17 @@
   {
     "path": "$.MinionMap.1073742242.Info.Position.x",
     "type": "number",
-    "value": 10500
+    "value": 4400
   },
   {
     "path": "$.MinionMap.1073742242.Info.Position.y",
     "type": "number",
-    "value": -71.24
+    "value": -69.17303
   },
   {
     "path": "$.MinionMap.1073742242.Info.Position.z",
     "type": "number",
-    "value": 5170
+    "value": 9600
   },
   {
     "path": "$.MinionMap.1073742242.Info.Rotation",
@@ -2310,7 +3000,7 @@
   {
     "path": "$.MinionMap.1073742243.Info.Name",
     "type": "string",
-    "value": "Minion_Dragon"
+    "value": "Minion_Order Blue"
   },
   {
     "path": "$.MinionMap.1073742243.Info.NetworkId",
@@ -2320,7 +3010,7 @@
   {
     "path": "$.MinionMap.1073742243.Info.Index",
     "type": "number",
-    "value": 66784
+    "value": 66796
   },
   {
     "path": "$.MinionMap.1073742243.Info.Position",
@@ -2329,17 +3019,17 @@
   {
     "path": "$.MinionMap.1073742243.Info.Position.x",
     "type": "number",
-    "value": 9987.674
+    "value": 3813.851
   },
   {
     "path": "$.MinionMap.1073742243.Info.Position.y",
     "type": "number",
-    "value": -71.2406
+    "value": 52.099476
   },
   {
     "path": "$.MinionMap.1073742243.Info.Position.z",
     "type": "number",
-    "value": 4447.761
+    "value": 7909.825
   },
   {
     "path": "$.MinionMap.1073742243.Info.Rotation",
@@ -2442,17 +3132,17 @@
   {
     "path": "$.MinionMap.1073742243.Common.Buffs[0].Name",
     "type": "string",
-    "value": "camprespawncountdownhidden"
+    "value": "camprespawncountdownvisible"
   },
   {
     "path": "$.MinionMap.1073742243.Common.Buffs[0].StartTime",
     "type": "number",
-    "value": 0
+    "value": 0.4721664
   },
   {
     "path": "$.MinionMap.1073742243.Common.Buffs[0].EndTime",
     "type": "number",
-    "value": 240
+    "value": 60.472168
   },
   {
     "path": "$.MinionMap.1073742243.Common.Buffs[0].Count",
@@ -2540,7 +3230,7 @@
   {
     "path": "$.MinionMap.1073742244.Info.Name",
     "type": "string",
-    "value": "Minion_Order Red"
+    "value": "Minion_Horde"
   },
   {
     "path": "$.MinionMap.1073742244.Info.NetworkId",
@@ -2550,7 +3240,7 @@
   {
     "path": "$.MinionMap.1073742244.Info.Index",
     "type": "number",
-    "value": 66785
+    "value": 66797
   },
   {
     "path": "$.MinionMap.1073742244.Info.Position",
@@ -2559,17 +3249,17 @@
   {
     "path": "$.MinionMap.1073742244.Info.Position.x",
     "type": "number",
-    "value": 7815.244
+    "value": 4909.565
   },
   {
     "path": "$.MinionMap.1073742244.Info.Position.y",
     "type": "number",
-    "value": 53.865505
+    "value": -56.251316
   },
   {
     "path": "$.MinionMap.1073742244.Info.Position.z",
     "type": "number",
-    "value": 3930.187
+    "value": 10487.323
   },
   {
     "path": "$.MinionMap.1073742244.Info.Rotation",
@@ -2672,17 +3362,17 @@
   {
     "path": "$.MinionMap.1073742244.Common.Buffs[0].Name",
     "type": "string",
-    "value": "camprespawncountdownvisible"
+    "value": "camprespawncountdownhidden"
   },
   {
     "path": "$.MinionMap.1073742244.Common.Buffs[0].StartTime",
     "type": "number",
-    "value": 0.347407
+    "value": 0
   },
   {
     "path": "$.MinionMap.1073742244.Common.Buffs[0].EndTime",
     "type": "number",
-    "value": 60.34741
+    "value": 420
   },
   {
     "path": "$.MinionMap.1073742244.Common.Buffs[0].Count",
@@ -2770,7 +3460,7 @@
   {
     "path": "$.MinionMap.1073742245.Info.Name",
     "type": "string",
-    "value": "Minion_Baron Crab"
+    "value": "Minion_Chaos Blue"
   },
   {
     "path": "$.MinionMap.1073742245.Info.NetworkId",
@@ -2780,7 +3470,7 @@
   {
     "path": "$.MinionMap.1073742245.Info.Index",
     "type": "number",
-    "value": 66786
+    "value": 66798
   },
   {
     "path": "$.MinionMap.1073742245.Info.Position",
@@ -2789,17 +3479,17 @@
   {
     "path": "$.MinionMap.1073742245.Info.Position.x",
     "type": "number",
-    "value": 4400
+    "value": 11051.729
   },
   {
     "path": "$.MinionMap.1073742245.Info.Position.y",
     "type": "number",
-    "value": -69.17303
+    "value": 51.28
   },
   {
     "path": "$.MinionMap.1073742245.Info.Position.z",
     "type": "number",
-    "value": 9600
+    "value": 6890.844
   },
   {
     "path": "$.MinionMap.1073742245.Info.Rotation",
@@ -2902,17 +3592,17 @@
   {
     "path": "$.MinionMap.1073742245.Common.Buffs[0].Name",
     "type": "string",
-    "value": "camprespawncountdownhidden"
+    "value": "camprespawncountdownvisible"
   },
   {
     "path": "$.MinionMap.1073742245.Common.Buffs[0].StartTime",
     "type": "number",
-    "value": 0
+    "value": 0.4721664
   },
   {
     "path": "$.MinionMap.1073742245.Common.Buffs[0].EndTime",
     "type": "number",
-    "value": 115
+    "value": 60.472168
   },
   {
     "path": "$.MinionMap.1073742245.Common.Buffs[0].Count",
@@ -3000,7 +3690,7 @@
   {
     "path": "$.MinionMap.1073742246.Info.Name",
     "type": "string",
-    "value": "Minion_Order Blue"
+    "value": "Minion_Chaos Red"
   },
   {
     "path": "$.MinionMap.1073742246.Info.NetworkId",
@@ -3010,7 +3700,7 @@
   {
     "path": "$.MinionMap.1073742246.Info.Index",
     "type": "number",
-    "value": 66787
+    "value": 66799
   },
   {
     "path": "$.MinionMap.1073742246.Info.Position",
@@ -3019,17 +3709,17 @@
   {
     "path": "$.MinionMap.1073742246.Info.Position.x",
     "type": "number",
-    "value": 3813.851
+    "value": 7081.869
   },
   {
     "path": "$.MinionMap.1073742246.Info.Position.y",
     "type": "number",
-    "value": 52.099476
+    "value": 56.21793
   },
   {
     "path": "$.MinionMap.1073742246.Info.Position.z",
     "type": "number",
-    "value": 7909.825
+    "value": 10900.547
   },
   {
     "path": "$.MinionMap.1073742246.Info.Rotation",
@@ -3137,12 +3827,12 @@
   {
     "path": "$.MinionMap.1073742246.Common.Buffs[0].StartTime",
     "type": "number",
-    "value": 0.347407
+    "value": 0.4721664
   },
   {
     "path": "$.MinionMap.1073742246.Common.Buffs[0].EndTime",
     "type": "number",
-    "value": 60.34741
+    "value": 60.472168
   },
   {
     "path": "$.MinionMap.1073742246.Common.Buffs[0].Count",
@@ -3230,7 +3920,7 @@
   {
     "path": "$.MinionMap.1073742247.Info.Name",
     "type": "string",
-    "value": "Minion_Horde"
+    "value": "DragonSigil"
   },
   {
     "path": "$.MinionMap.1073742247.Info.NetworkId",
@@ -3240,7 +3930,7 @@
   {
     "path": "$.MinionMap.1073742247.Info.Index",
     "type": "number",
-    "value": 66788
+    "value": 66800
   },
   {
     "path": "$.MinionMap.1073742247.Info.Position",
@@ -3249,17 +3939,17 @@
   {
     "path": "$.MinionMap.1073742247.Info.Position.x",
     "type": "number",
-    "value": 4909.565
+    "value": 9452
   },
   {
     "path": "$.MinionMap.1073742247.Info.Position.y",
     "type": "number",
-    "value": -56.251316
+    "value": -71.2406
   },
   {
     "path": "$.MinionMap.1073742247.Info.Position.z",
     "type": "number",
-    "value": 10487.323
+    "value": 4778
   },
   {
     "path": "$.MinionMap.1073742247.Info.Rotation",
@@ -3298,7 +3988,7 @@
   {
     "path": "$.MinionMap.1073742247.Common.Identifier",
     "type": "string",
-    "value": "SRU_CampRespawnMarker"
+    "value": "TestCube"
   },
   {
     "path": "$.MinionMap.1073742247.Common.CurrentAttack",
@@ -3313,12 +4003,12 @@
   {
     "path": "$.MinionMap.1073742247.Common.Health",
     "type": "number",
-    "value": 1000
+    "value": 540
   },
   {
     "path": "$.MinionMap.1073742247.Common.MaxHealth",
     "type": "number",
-    "value": 1000
+    "value": 540
   },
   {
     "path": "$.MinionMap.1073742247.Common.Armor",
@@ -3362,7 +4052,7 @@
   {
     "path": "$.MinionMap.1073742247.Common.Buffs[0].Name",
     "type": "string",
-    "value": "camprespawncountdownhidden"
+    "value": "DragonBuffAir"
   },
   {
     "path": "$.MinionMap.1073742247.Common.Buffs[0].StartTime",
@@ -3372,7 +4062,7 @@
   {
     "path": "$.MinionMap.1073742247.Common.Buffs[0].EndTime",
     "type": "number",
-    "value": 420
+    "value": 25000
   },
   {
     "path": "$.MinionMap.1073742247.Common.Buffs[0].Count",
@@ -3382,7 +4072,7 @@
   {
     "path": "$.MinionMap.1073742247.Common.Buffs[0].Type",
     "type": "number",
-    "value": 1
+    "value": 0
   },
   {
     "path": "$.MinionMap.1073742247.Common.Animations",
@@ -3411,1902 +4101,6 @@
   },
   {
     "path": "$.MinionMap.1073742247.Bones",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742248",
-    "type": "object"
-  },
-  {
-    "path": "$.MinionMap.1073742248.IsClone",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742248.IsLaneMinion",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742248.IsEliteMinion",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742248.IsEpicMinion",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742248.IsJungleMinion",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742248.IsWardOrPlant",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742248.Info",
-    "type": "object"
-  },
-  {
-    "path": "$.MinionMap.1073742248.Info.IsNeutral",
-    "type": "boolean",
-    "value": true
-  },
-  {
-    "path": "$.MinionMap.1073742248.Info.Name",
-    "type": "string",
-    "value": "Minion_Chaos Blue"
-  },
-  {
-    "path": "$.MinionMap.1073742248.Info.NetworkId",
-    "type": "number",
-    "value": 1073742248
-  },
-  {
-    "path": "$.MinionMap.1073742248.Info.Index",
-    "type": "number",
-    "value": 66789
-  },
-  {
-    "path": "$.MinionMap.1073742248.Info.Position",
-    "type": "object"
-  },
-  {
-    "path": "$.MinionMap.1073742248.Info.Position.x",
-    "type": "number",
-    "value": 11051.729
-  },
-  {
-    "path": "$.MinionMap.1073742248.Info.Position.y",
-    "type": "number",
-    "value": 51.28
-  },
-  {
-    "path": "$.MinionMap.1073742248.Info.Position.z",
-    "type": "number",
-    "value": 6890.844
-  },
-  {
-    "path": "$.MinionMap.1073742248.Info.Rotation",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742248.Info.Team",
-    "type": "number",
-    "value": 3
-  },
-  {
-    "path": "$.MinionMap.1073742248.Common",
-    "type": "object"
-  },
-  {
-    "path": "$.MinionMap.1073742248.Common.IsAlive",
-    "type": "boolean",
-    "value": true
-  },
-  {
-    "path": "$.MinionMap.1073742248.Common.IsZombie",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742248.Common.IsRecalling",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742248.Common.IsTargetable",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742248.Common.Identifier",
-    "type": "string",
-    "value": "SRU_CampRespawnMarker"
-  },
-  {
-    "path": "$.MinionMap.1073742248.Common.CurrentAttack",
-    "type": "string",
-    "value": ""
-  },
-  {
-    "path": "$.MinionMap.1073742248.Common.Status",
-    "type": "number",
-    "value": 1
-  },
-  {
-    "path": "$.MinionMap.1073742248.Common.Health",
-    "type": "number",
-    "value": 1000
-  },
-  {
-    "path": "$.MinionMap.1073742248.Common.MaxHealth",
-    "type": "number",
-    "value": 1000
-  },
-  {
-    "path": "$.MinionMap.1073742248.Common.Armor",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742248.Common.MagicResist",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742248.Common.Level",
-    "type": "number",
-    "value": 1
-  },
-  {
-    "path": "$.MinionMap.1073742248.Common.AttackSpeedMultiplier",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742248.Common.MovementSpeed",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742248.Common.DataStack",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742248.Common.Buffs",
-    "type": "array",
-    "length": 1
-  },
-  {
-    "path": "$.MinionMap.1073742248.Common.Buffs[0]",
-    "type": "object"
-  },
-  {
-    "path": "$.MinionMap.1073742248.Common.Buffs[0].Name",
-    "type": "string",
-    "value": "camprespawncountdownvisible"
-  },
-  {
-    "path": "$.MinionMap.1073742248.Common.Buffs[0].StartTime",
-    "type": "number",
-    "value": 0.347407
-  },
-  {
-    "path": "$.MinionMap.1073742248.Common.Buffs[0].EndTime",
-    "type": "number",
-    "value": 60.34741
-  },
-  {
-    "path": "$.MinionMap.1073742248.Common.Buffs[0].Count",
-    "type": "number",
-    "value": 1
-  },
-  {
-    "path": "$.MinionMap.1073742248.Common.Buffs[0].Type",
-    "type": "number",
-    "value": 1
-  },
-  {
-    "path": "$.MinionMap.1073742248.Common.Animations",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742248.Common.SubmeshVisiblityMask",
-    "type": "number",
-    "value": 0
-  },
-  {
-    "path": "$.MinionMap.1073742248.Common.AttackSpeedBonus",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742248.Common.AnimationState",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742248.TypeInfo",
-    "type": "number",
-    "value": 0
-  },
-  {
-    "path": "$.MinionMap.1073742248.Bones",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742249",
-    "type": "object"
-  },
-  {
-    "path": "$.MinionMap.1073742249.IsClone",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742249.IsLaneMinion",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742249.IsEliteMinion",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742249.IsEpicMinion",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742249.IsJungleMinion",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742249.IsWardOrPlant",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742249.Info",
-    "type": "object"
-  },
-  {
-    "path": "$.MinionMap.1073742249.Info.IsNeutral",
-    "type": "boolean",
-    "value": true
-  },
-  {
-    "path": "$.MinionMap.1073742249.Info.Name",
-    "type": "string",
-    "value": "Minion_Chaos Red"
-  },
-  {
-    "path": "$.MinionMap.1073742249.Info.NetworkId",
-    "type": "number",
-    "value": 1073742249
-  },
-  {
-    "path": "$.MinionMap.1073742249.Info.Index",
-    "type": "number",
-    "value": 66790
-  },
-  {
-    "path": "$.MinionMap.1073742249.Info.Position",
-    "type": "object"
-  },
-  {
-    "path": "$.MinionMap.1073742249.Info.Position.x",
-    "type": "number",
-    "value": 7081.869
-  },
-  {
-    "path": "$.MinionMap.1073742249.Info.Position.y",
-    "type": "number",
-    "value": 56.21793
-  },
-  {
-    "path": "$.MinionMap.1073742249.Info.Position.z",
-    "type": "number",
-    "value": 10900.547
-  },
-  {
-    "path": "$.MinionMap.1073742249.Info.Rotation",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742249.Info.Team",
-    "type": "number",
-    "value": 3
-  },
-  {
-    "path": "$.MinionMap.1073742249.Common",
-    "type": "object"
-  },
-  {
-    "path": "$.MinionMap.1073742249.Common.IsAlive",
-    "type": "boolean",
-    "value": true
-  },
-  {
-    "path": "$.MinionMap.1073742249.Common.IsZombie",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742249.Common.IsRecalling",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742249.Common.IsTargetable",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742249.Common.Identifier",
-    "type": "string",
-    "value": "SRU_CampRespawnMarker"
-  },
-  {
-    "path": "$.MinionMap.1073742249.Common.CurrentAttack",
-    "type": "string",
-    "value": ""
-  },
-  {
-    "path": "$.MinionMap.1073742249.Common.Status",
-    "type": "number",
-    "value": 1
-  },
-  {
-    "path": "$.MinionMap.1073742249.Common.Health",
-    "type": "number",
-    "value": 1000
-  },
-  {
-    "path": "$.MinionMap.1073742249.Common.MaxHealth",
-    "type": "number",
-    "value": 1000
-  },
-  {
-    "path": "$.MinionMap.1073742249.Common.Armor",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742249.Common.MagicResist",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742249.Common.Level",
-    "type": "number",
-    "value": 1
-  },
-  {
-    "path": "$.MinionMap.1073742249.Common.AttackSpeedMultiplier",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742249.Common.MovementSpeed",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742249.Common.DataStack",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742249.Common.Buffs",
-    "type": "array",
-    "length": 1
-  },
-  {
-    "path": "$.MinionMap.1073742249.Common.Buffs[0]",
-    "type": "object"
-  },
-  {
-    "path": "$.MinionMap.1073742249.Common.Buffs[0].Name",
-    "type": "string",
-    "value": "camprespawncountdownvisible"
-  },
-  {
-    "path": "$.MinionMap.1073742249.Common.Buffs[0].StartTime",
-    "type": "number",
-    "value": 0.347407
-  },
-  {
-    "path": "$.MinionMap.1073742249.Common.Buffs[0].EndTime",
-    "type": "number",
-    "value": 60.34741
-  },
-  {
-    "path": "$.MinionMap.1073742249.Common.Buffs[0].Count",
-    "type": "number",
-    "value": 1
-  },
-  {
-    "path": "$.MinionMap.1073742249.Common.Buffs[0].Type",
-    "type": "number",
-    "value": 1
-  },
-  {
-    "path": "$.MinionMap.1073742249.Common.Animations",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742249.Common.SubmeshVisiblityMask",
-    "type": "number",
-    "value": 0
-  },
-  {
-    "path": "$.MinionMap.1073742249.Common.AttackSpeedBonus",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742249.Common.AnimationState",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742249.TypeInfo",
-    "type": "number",
-    "value": 0
-  },
-  {
-    "path": "$.MinionMap.1073742249.Bones",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742250",
-    "type": "object"
-  },
-  {
-    "path": "$.MinionMap.1073742250.IsClone",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742250.IsLaneMinion",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742250.IsEliteMinion",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742250.IsEpicMinion",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742250.IsJungleMinion",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742250.IsWardOrPlant",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742250.Info",
-    "type": "object"
-  },
-  {
-    "path": "$.MinionMap.1073742250.Info.IsNeutral",
-    "type": "boolean",
-    "value": true
-  },
-  {
-    "path": "$.MinionMap.1073742250.Info.Name",
-    "type": "string",
-    "value": "DragonSigil"
-  },
-  {
-    "path": "$.MinionMap.1073742250.Info.NetworkId",
-    "type": "number",
-    "value": 1073742250
-  },
-  {
-    "path": "$.MinionMap.1073742250.Info.Index",
-    "type": "number",
-    "value": 66791
-  },
-  {
-    "path": "$.MinionMap.1073742250.Info.Position",
-    "type": "object"
-  },
-  {
-    "path": "$.MinionMap.1073742250.Info.Position.x",
-    "type": "number",
-    "value": 9452
-  },
-  {
-    "path": "$.MinionMap.1073742250.Info.Position.y",
-    "type": "number",
-    "value": -71.2406
-  },
-  {
-    "path": "$.MinionMap.1073742250.Info.Position.z",
-    "type": "number",
-    "value": 4778
-  },
-  {
-    "path": "$.MinionMap.1073742250.Info.Rotation",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742250.Info.Team",
-    "type": "number",
-    "value": 3
-  },
-  {
-    "path": "$.MinionMap.1073742250.Common",
-    "type": "object"
-  },
-  {
-    "path": "$.MinionMap.1073742250.Common.IsAlive",
-    "type": "boolean",
-    "value": true
-  },
-  {
-    "path": "$.MinionMap.1073742250.Common.IsZombie",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742250.Common.IsRecalling",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742250.Common.IsTargetable",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742250.Common.Identifier",
-    "type": "string",
-    "value": "TestCube"
-  },
-  {
-    "path": "$.MinionMap.1073742250.Common.CurrentAttack",
-    "type": "string",
-    "value": ""
-  },
-  {
-    "path": "$.MinionMap.1073742250.Common.Status",
-    "type": "number",
-    "value": 1
-  },
-  {
-    "path": "$.MinionMap.1073742250.Common.Health",
-    "type": "number",
-    "value": 540
-  },
-  {
-    "path": "$.MinionMap.1073742250.Common.MaxHealth",
-    "type": "number",
-    "value": 540
-  },
-  {
-    "path": "$.MinionMap.1073742250.Common.Armor",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742250.Common.MagicResist",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742250.Common.Level",
-    "type": "number",
-    "value": 1
-  },
-  {
-    "path": "$.MinionMap.1073742250.Common.AttackSpeedMultiplier",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742250.Common.MovementSpeed",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742250.Common.DataStack",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742250.Common.Buffs",
-    "type": "array",
-    "length": 1
-  },
-  {
-    "path": "$.MinionMap.1073742250.Common.Buffs[0]",
-    "type": "object"
-  },
-  {
-    "path": "$.MinionMap.1073742250.Common.Buffs[0].Name",
-    "type": "string",
-    "value": "DragonBuffAir"
-  },
-  {
-    "path": "$.MinionMap.1073742250.Common.Buffs[0].StartTime",
-    "type": "number",
-    "value": 0
-  },
-  {
-    "path": "$.MinionMap.1073742250.Common.Buffs[0].EndTime",
-    "type": "number",
-    "value": 25000
-  },
-  {
-    "path": "$.MinionMap.1073742250.Common.Buffs[0].Count",
-    "type": "number",
-    "value": 1
-  },
-  {
-    "path": "$.MinionMap.1073742250.Common.Buffs[0].Type",
-    "type": "number",
-    "value": 0
-  },
-  {
-    "path": "$.MinionMap.1073742250.Common.Animations",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742250.Common.SubmeshVisiblityMask",
-    "type": "number",
-    "value": 0
-  },
-  {
-    "path": "$.MinionMap.1073742250.Common.AttackSpeedBonus",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742250.Common.AnimationState",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742250.TypeInfo",
-    "type": "number",
-    "value": 0
-  },
-  {
-    "path": "$.MinionMap.1073742250.Bones",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742339",
-    "type": "object"
-  },
-  {
-    "path": "$.MinionMap.1073742339.IsClone",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742339.IsLaneMinion",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742339.IsEliteMinion",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742339.IsEpicMinion",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742339.IsJungleMinion",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742339.IsWardOrPlant",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742339.Info",
-    "type": "object"
-  },
-  {
-    "path": "$.MinionMap.1073742339.Info.IsNeutral",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742339.Info.Name",
-    "type": "string",
-    "value": "PerksPerxie"
-  },
-  {
-    "path": "$.MinionMap.1073742339.Info.NetworkId",
-    "type": "number",
-    "value": 1073742339
-  },
-  {
-    "path": "$.MinionMap.1073742339.Info.Index",
-    "type": "number",
-    "value": 132527
-  },
-  {
-    "path": "$.MinionMap.1073742339.Info.Position",
-    "type": "object"
-  },
-  {
-    "path": "$.MinionMap.1073742339.Info.Position.x",
-    "type": "number",
-    "value": 424.2777
-  },
-  {
-    "path": "$.MinionMap.1073742339.Info.Position.y",
-    "type": "number",
-    "value": 183.5748
-  },
-  {
-    "path": "$.MinionMap.1073742339.Info.Position.z",
-    "type": "number",
-    "value": 574.5613
-  },
-  {
-    "path": "$.MinionMap.1073742339.Info.Rotation",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742339.Info.Team",
-    "type": "number",
-    "value": 1
-  },
-  {
-    "path": "$.MinionMap.1073742339.Common",
-    "type": "object"
-  },
-  {
-    "path": "$.MinionMap.1073742339.Common.IsAlive",
-    "type": "boolean",
-    "value": true
-  },
-  {
-    "path": "$.MinionMap.1073742339.Common.IsZombie",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742339.Common.IsRecalling",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742339.Common.IsTargetable",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742339.Common.Identifier",
-    "type": "string",
-    "value": "PerksPerxie"
-  },
-  {
-    "path": "$.MinionMap.1073742339.Common.CurrentAttack",
-    "type": "string",
-    "value": ""
-  },
-  {
-    "path": "$.MinionMap.1073742339.Common.Status",
-    "type": "number",
-    "value": 1
-  },
-  {
-    "path": "$.MinionMap.1073742339.Common.Health",
-    "type": "number",
-    "value": 360
-  },
-  {
-    "path": "$.MinionMap.1073742339.Common.MaxHealth",
-    "type": "number",
-    "value": 360
-  },
-  {
-    "path": "$.MinionMap.1073742339.Common.Armor",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742339.Common.MagicResist",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742339.Common.Level",
-    "type": "number",
-    "value": 1
-  },
-  {
-    "path": "$.MinionMap.1073742339.Common.AttackSpeedMultiplier",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742339.Common.MovementSpeed",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742339.Common.DataStack",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742339.Common.Buffs",
-    "type": "array",
-    "length": 0
-  },
-  {
-    "path": "$.MinionMap.1073742339.Common.Animations",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742339.Common.SubmeshVisiblityMask",
-    "type": "number",
-    "value": 0
-  },
-  {
-    "path": "$.MinionMap.1073742339.Common.AttackSpeedBonus",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742339.Common.AnimationState",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742339.TypeInfo",
-    "type": "number",
-    "value": 0
-  },
-  {
-    "path": "$.MinionMap.1073742339.Bones",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742342",
-    "type": "object"
-  },
-  {
-    "path": "$.MinionMap.1073742342.IsClone",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742342.IsLaneMinion",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742342.IsEliteMinion",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742342.IsEpicMinion",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742342.IsJungleMinion",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742342.IsWardOrPlant",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742342.Info",
-    "type": "object"
-  },
-  {
-    "path": "$.MinionMap.1073742342.Info.IsNeutral",
-    "type": "boolean",
-    "value": true
-  },
-  {
-    "path": "$.MinionMap.1073742342.Info.Name",
-    "type": "string",
-    "value": "PlantSatchel"
-  },
-  {
-    "path": "$.MinionMap.1073742342.Info.NetworkId",
-    "type": "number",
-    "value": 1073742342
-  },
-  {
-    "path": "$.MinionMap.1073742342.Info.Index",
-    "type": "number",
-    "value": 132531
-  },
-  {
-    "path": "$.MinionMap.1073742342.Info.Position",
-    "type": "object"
-  },
-  {
-    "path": "$.MinionMap.1073742342.Info.Position.x",
-    "type": "number",
-    "value": 6141
-  },
-  {
-    "path": "$.MinionMap.1073742342.Info.Position.y",
-    "type": "number",
-    "value": 50.523113
-  },
-  {
-    "path": "$.MinionMap.1073742342.Info.Position.z",
-    "type": "number",
-    "value": 3402
-  },
-  {
-    "path": "$.MinionMap.1073742342.Info.Rotation",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742342.Info.Team",
-    "type": "number",
-    "value": 3
-  },
-  {
-    "path": "$.MinionMap.1073742342.Common",
-    "type": "object"
-  },
-  {
-    "path": "$.MinionMap.1073742342.Common.IsAlive",
-    "type": "boolean",
-    "value": true
-  },
-  {
-    "path": "$.MinionMap.1073742342.Common.IsZombie",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742342.Common.IsRecalling",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742342.Common.IsTargetable",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742342.Common.Identifier",
-    "type": "string",
-    "value": "SRU_Plant_Satchel"
-  },
-  {
-    "path": "$.MinionMap.1073742342.Common.CurrentAttack",
-    "type": "string",
-    "value": ""
-  },
-  {
-    "path": "$.MinionMap.1073742342.Common.Status",
-    "type": "number",
-    "value": 1
-  },
-  {
-    "path": "$.MinionMap.1073742342.Common.Health",
-    "type": "number",
-    "value": 1
-  },
-  {
-    "path": "$.MinionMap.1073742342.Common.MaxHealth",
-    "type": "number",
-    "value": 1
-  },
-  {
-    "path": "$.MinionMap.1073742342.Common.Armor",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742342.Common.MagicResist",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742342.Common.Level",
-    "type": "number",
-    "value": 1
-  },
-  {
-    "path": "$.MinionMap.1073742342.Common.AttackSpeedMultiplier",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742342.Common.MovementSpeed",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742342.Common.DataStack",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742342.Common.Buffs",
-    "type": "array",
-    "length": 0
-  },
-  {
-    "path": "$.MinionMap.1073742342.Common.Animations",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742342.Common.SubmeshVisiblityMask",
-    "type": "number",
-    "value": 0
-  },
-  {
-    "path": "$.MinionMap.1073742342.Common.AttackSpeedBonus",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742342.Common.AnimationState",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742342.TypeInfo",
-    "type": "number",
-    "value": 0
-  },
-  {
-    "path": "$.MinionMap.1073742342.Bones",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742343",
-    "type": "object"
-  },
-  {
-    "path": "$.MinionMap.1073742343.IsClone",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742343.IsLaneMinion",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742343.IsEliteMinion",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742343.IsEpicMinion",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742343.IsJungleMinion",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742343.IsWardOrPlant",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742343.Info",
-    "type": "object"
-  },
-  {
-    "path": "$.MinionMap.1073742343.Info.IsNeutral",
-    "type": "boolean",
-    "value": true
-  },
-  {
-    "path": "$.MinionMap.1073742343.Info.Name",
-    "type": "string",
-    "value": "HiddenMinion"
-  },
-  {
-    "path": "$.MinionMap.1073742343.Info.NetworkId",
-    "type": "number",
-    "value": 1073742343
-  },
-  {
-    "path": "$.MinionMap.1073742343.Info.Index",
-    "type": "number",
-    "value": 197790
-  },
-  {
-    "path": "$.MinionMap.1073742343.Info.Position",
-    "type": "object"
-  },
-  {
-    "path": "$.MinionMap.1073742343.Info.Position.x",
-    "type": "number",
-    "value": 6141
-  },
-  {
-    "path": "$.MinionMap.1073742343.Info.Position.y",
-    "type": "number",
-    "value": 50.523113
-  },
-  {
-    "path": "$.MinionMap.1073742343.Info.Position.z",
-    "type": "number",
-    "value": 3402
-  },
-  {
-    "path": "$.MinionMap.1073742343.Info.Rotation",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742343.Info.Team",
-    "type": "number",
-    "value": 3
-  },
-  {
-    "path": "$.MinionMap.1073742343.Common",
-    "type": "object"
-  },
-  {
-    "path": "$.MinionMap.1073742343.Common.IsAlive",
-    "type": "boolean",
-    "value": true
-  },
-  {
-    "path": "$.MinionMap.1073742343.Common.IsZombie",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742343.Common.IsRecalling",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742343.Common.IsTargetable",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742343.Common.Identifier",
-    "type": "string",
-    "value": "TestCubeRenderNoFOW"
-  },
-  {
-    "path": "$.MinionMap.1073742343.Common.CurrentAttack",
-    "type": "string",
-    "value": ""
-  },
-  {
-    "path": "$.MinionMap.1073742343.Common.Status",
-    "type": "number",
-    "value": 1
-  },
-  {
-    "path": "$.MinionMap.1073742343.Common.Health",
-    "type": "number",
-    "value": 100
-  },
-  {
-    "path": "$.MinionMap.1073742343.Common.MaxHealth",
-    "type": "number",
-    "value": 100
-  },
-  {
-    "path": "$.MinionMap.1073742343.Common.Armor",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742343.Common.MagicResist",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742343.Common.Level",
-    "type": "number",
-    "value": 1
-  },
-  {
-    "path": "$.MinionMap.1073742343.Common.AttackSpeedMultiplier",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742343.Common.MovementSpeed",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742343.Common.DataStack",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742343.Common.Buffs",
-    "type": "array",
-    "length": 0
-  },
-  {
-    "path": "$.MinionMap.1073742343.Common.Animations",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742343.Common.SubmeshVisiblityMask",
-    "type": "number",
-    "value": 0
-  },
-  {
-    "path": "$.MinionMap.1073742343.Common.AttackSpeedBonus",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742343.Common.AnimationState",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742343.TypeInfo",
-    "type": "number",
-    "value": 0
-  },
-  {
-    "path": "$.MinionMap.1073742343.Bones",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742345",
-    "type": "object"
-  },
-  {
-    "path": "$.MinionMap.1073742345.IsClone",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742345.IsLaneMinion",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742345.IsEliteMinion",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742345.IsEpicMinion",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742345.IsJungleMinion",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742345.IsWardOrPlant",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742345.Info",
-    "type": "object"
-  },
-  {
-    "path": "$.MinionMap.1073742345.Info.IsNeutral",
-    "type": "boolean",
-    "value": true
-  },
-  {
-    "path": "$.MinionMap.1073742345.Info.Name",
-    "type": "string",
-    "value": "PlantSatchel"
-  },
-  {
-    "path": "$.MinionMap.1073742345.Info.NetworkId",
-    "type": "number",
-    "value": 1073742345
-  },
-  {
-    "path": "$.MinionMap.1073742345.Info.Index",
-    "type": "number",
-    "value": 132516
-  },
-  {
-    "path": "$.MinionMap.1073742345.Info.Position",
-    "type": "object"
-  },
-  {
-    "path": "$.MinionMap.1073742345.Info.Position.x",
-    "type": "number",
-    "value": 4385.8037
-  },
-  {
-    "path": "$.MinionMap.1073742345.Info.Position.y",
-    "type": "number",
-    "value": 50.715893
-  },
-  {
-    "path": "$.MinionMap.1073742345.Info.Position.z",
-    "type": "number",
-    "value": 7244.583
-  },
-  {
-    "path": "$.MinionMap.1073742345.Info.Rotation",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742345.Info.Team",
-    "type": "number",
-    "value": 3
-  },
-  {
-    "path": "$.MinionMap.1073742345.Common",
-    "type": "object"
-  },
-  {
-    "path": "$.MinionMap.1073742345.Common.IsAlive",
-    "type": "boolean",
-    "value": true
-  },
-  {
-    "path": "$.MinionMap.1073742345.Common.IsZombie",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742345.Common.IsRecalling",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742345.Common.IsTargetable",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742345.Common.Identifier",
-    "type": "string",
-    "value": "SRU_Plant_Satchel"
-  },
-  {
-    "path": "$.MinionMap.1073742345.Common.CurrentAttack",
-    "type": "string",
-    "value": ""
-  },
-  {
-    "path": "$.MinionMap.1073742345.Common.Status",
-    "type": "number",
-    "value": 1
-  },
-  {
-    "path": "$.MinionMap.1073742345.Common.Health",
-    "type": "number",
-    "value": 1
-  },
-  {
-    "path": "$.MinionMap.1073742345.Common.MaxHealth",
-    "type": "number",
-    "value": 1
-  },
-  {
-    "path": "$.MinionMap.1073742345.Common.Armor",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742345.Common.MagicResist",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742345.Common.Level",
-    "type": "number",
-    "value": 1
-  },
-  {
-    "path": "$.MinionMap.1073742345.Common.AttackSpeedMultiplier",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742345.Common.MovementSpeed",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742345.Common.DataStack",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742345.Common.Buffs",
-    "type": "array",
-    "length": 0
-  },
-  {
-    "path": "$.MinionMap.1073742345.Common.Animations",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742345.Common.SubmeshVisiblityMask",
-    "type": "number",
-    "value": 0
-  },
-  {
-    "path": "$.MinionMap.1073742345.Common.AttackSpeedBonus",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742345.Common.AnimationState",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742345.TypeInfo",
-    "type": "number",
-    "value": 0
-  },
-  {
-    "path": "$.MinionMap.1073742345.Bones",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742346",
-    "type": "object"
-  },
-  {
-    "path": "$.MinionMap.1073742346.IsClone",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742346.IsLaneMinion",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742346.IsEliteMinion",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742346.IsEpicMinion",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742346.IsJungleMinion",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742346.IsWardOrPlant",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742346.Info",
-    "type": "object"
-  },
-  {
-    "path": "$.MinionMap.1073742346.Info.IsNeutral",
-    "type": "boolean",
-    "value": true
-  },
-  {
-    "path": "$.MinionMap.1073742346.Info.Name",
-    "type": "string",
-    "value": "HiddenMinion"
-  },
-  {
-    "path": "$.MinionMap.1073742346.Info.NetworkId",
-    "type": "number",
-    "value": 1073742346
-  },
-  {
-    "path": "$.MinionMap.1073742346.Info.Index",
-    "type": "number",
-    "value": 132530
-  },
-  {
-    "path": "$.MinionMap.1073742346.Info.Position",
-    "type": "object"
-  },
-  {
-    "path": "$.MinionMap.1073742346.Info.Position.x",
-    "type": "number",
-    "value": 4385.8037
-  },
-  {
-    "path": "$.MinionMap.1073742346.Info.Position.y",
-    "type": "number",
-    "value": 50.715893
-  },
-  {
-    "path": "$.MinionMap.1073742346.Info.Position.z",
-    "type": "number",
-    "value": 7244.583
-  },
-  {
-    "path": "$.MinionMap.1073742346.Info.Rotation",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742346.Info.Team",
-    "type": "number",
-    "value": 3
-  },
-  {
-    "path": "$.MinionMap.1073742346.Common",
-    "type": "object"
-  },
-  {
-    "path": "$.MinionMap.1073742346.Common.IsAlive",
-    "type": "boolean",
-    "value": true
-  },
-  {
-    "path": "$.MinionMap.1073742346.Common.IsZombie",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742346.Common.IsRecalling",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742346.Common.IsTargetable",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742346.Common.Identifier",
-    "type": "string",
-    "value": "TestCubeRenderNoFOW"
-  },
-  {
-    "path": "$.MinionMap.1073742346.Common.CurrentAttack",
-    "type": "string",
-    "value": ""
-  },
-  {
-    "path": "$.MinionMap.1073742346.Common.Status",
-    "type": "number",
-    "value": 1
-  },
-  {
-    "path": "$.MinionMap.1073742346.Common.Health",
-    "type": "number",
-    "value": 100
-  },
-  {
-    "path": "$.MinionMap.1073742346.Common.MaxHealth",
-    "type": "number",
-    "value": 100
-  },
-  {
-    "path": "$.MinionMap.1073742346.Common.Armor",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742346.Common.MagicResist",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742346.Common.Level",
-    "type": "number",
-    "value": 1
-  },
-  {
-    "path": "$.MinionMap.1073742346.Common.AttackSpeedMultiplier",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742346.Common.MovementSpeed",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742346.Common.DataStack",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742346.Common.Buffs",
-    "type": "array",
-    "length": 0
-  },
-  {
-    "path": "$.MinionMap.1073742346.Common.Animations",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742346.Common.SubmeshVisiblityMask",
-    "type": "number",
-    "value": 0
-  },
-  {
-    "path": "$.MinionMap.1073742346.Common.AttackSpeedBonus",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742346.Common.AnimationState",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742346.TypeInfo",
-    "type": "number",
-    "value": 0
-  },
-  {
-    "path": "$.MinionMap.1073742346.Bones",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742347",
-    "type": "object"
-  },
-  {
-    "path": "$.MinionMap.1073742347.IsClone",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742347.IsLaneMinion",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742347.IsEliteMinion",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742347.IsEpicMinion",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742347.IsJungleMinion",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742347.IsWardOrPlant",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742347.Info",
-    "type": "object"
-  },
-  {
-    "path": "$.MinionMap.1073742347.Info.IsNeutral",
-    "type": "boolean",
-    "value": true
-  },
-  {
-    "path": "$.MinionMap.1073742347.Info.Name",
-    "type": "string",
-    "value": "PlantSatchel"
-  },
-  {
-    "path": "$.MinionMap.1073742347.Info.NetworkId",
-    "type": "number",
-    "value": 1073742347
-  },
-  {
-    "path": "$.MinionMap.1073742347.Info.Index",
-    "type": "number",
-    "value": 132486
-  },
-  {
-    "path": "$.MinionMap.1073742347.Info.Position",
-    "type": "object"
-  },
-  {
-    "path": "$.MinionMap.1073742347.Info.Position.x",
-    "type": "number",
-    "value": 8659
-  },
-  {
-    "path": "$.MinionMap.1073742347.Info.Position.y",
-    "type": "number",
-    "value": 53.657677
-  },
-  {
-    "path": "$.MinionMap.1073742347.Info.Position.z",
-    "type": "number",
-    "value": 11535
-  },
-  {
-    "path": "$.MinionMap.1073742347.Info.Rotation",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742347.Info.Team",
-    "type": "number",
-    "value": 3
-  },
-  {
-    "path": "$.MinionMap.1073742347.Common",
-    "type": "object"
-  },
-  {
-    "path": "$.MinionMap.1073742347.Common.IsAlive",
-    "type": "boolean",
-    "value": true
-  },
-  {
-    "path": "$.MinionMap.1073742347.Common.IsZombie",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742347.Common.IsRecalling",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742347.Common.IsTargetable",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "path": "$.MinionMap.1073742347.Common.Identifier",
-    "type": "string",
-    "value": "SRU_Plant_Satchel"
-  },
-  {
-    "path": "$.MinionMap.1073742347.Common.CurrentAttack",
-    "type": "string",
-    "value": ""
-  },
-  {
-    "path": "$.MinionMap.1073742347.Common.Status",
-    "type": "number",
-    "value": 1
-  },
-  {
-    "path": "$.MinionMap.1073742347.Common.Health",
-    "type": "number",
-    "value": 1
-  },
-  {
-    "path": "$.MinionMap.1073742347.Common.MaxHealth",
-    "type": "number",
-    "value": 1
-  },
-  {
-    "path": "$.MinionMap.1073742347.Common.Armor",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742347.Common.MagicResist",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742347.Common.Level",
-    "type": "number",
-    "value": 1
-  },
-  {
-    "path": "$.MinionMap.1073742347.Common.AttackSpeedMultiplier",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742347.Common.MovementSpeed",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742347.Common.DataStack",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742347.Common.Buffs",
-    "type": "array",
-    "length": 0
-  },
-  {
-    "path": "$.MinionMap.1073742347.Common.Animations",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742347.Common.SubmeshVisiblityMask",
-    "type": "number",
-    "value": 0
-  },
-  {
-    "path": "$.MinionMap.1073742347.Common.AttackSpeedBonus",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742347.Common.AnimationState",
-    "type": "null",
-    "value": null
-  },
-  {
-    "path": "$.MinionMap.1073742347.TypeInfo",
-    "type": "number",
-    "value": 0
-  },
-  {
-    "path": "$.MinionMap.1073742347.Bones",
     "type": "null",
     "value": null
   },
@@ -5351,12 +4145,12 @@
   {
     "path": "$.MinionMap.1073742348.Info.IsNeutral",
     "type": "boolean",
-    "value": true
+    "value": false
   },
   {
     "path": "$.MinionMap.1073742348.Info.Name",
     "type": "string",
-    "value": "HiddenMinion"
+    "value": "PerksPerxie"
   },
   {
     "path": "$.MinionMap.1073742348.Info.NetworkId",
@@ -5366,7 +4160,7 @@
   {
     "path": "$.MinionMap.1073742348.Info.Index",
     "type": "number",
-    "value": 132510
+    "value": 132537
   },
   {
     "path": "$.MinionMap.1073742348.Info.Position",
@@ -5375,17 +4169,17 @@
   {
     "path": "$.MinionMap.1073742348.Info.Position.x",
     "type": "number",
-    "value": 8659
+    "value": 137.19238
   },
   {
     "path": "$.MinionMap.1073742348.Info.Position.y",
     "type": "number",
-    "value": 53.657677
+    "value": 183.5748
   },
   {
     "path": "$.MinionMap.1073742348.Info.Position.z",
     "type": "number",
-    "value": 11535
+    "value": 669.78625
   },
   {
     "path": "$.MinionMap.1073742348.Info.Rotation",
@@ -5395,7 +4189,7 @@
   {
     "path": "$.MinionMap.1073742348.Info.Team",
     "type": "number",
-    "value": 3
+    "value": 1
   },
   {
     "path": "$.MinionMap.1073742348.Common",
@@ -5424,7 +4218,7 @@
   {
     "path": "$.MinionMap.1073742348.Common.Identifier",
     "type": "string",
-    "value": "TestCubeRenderNoFOW"
+    "value": "PerksPerxie"
   },
   {
     "path": "$.MinionMap.1073742348.Common.CurrentAttack",
@@ -5439,12 +4233,12 @@
   {
     "path": "$.MinionMap.1073742348.Common.Health",
     "type": "number",
-    "value": 100
+    "value": 360
   },
   {
     "path": "$.MinionMap.1073742348.Common.MaxHealth",
     "type": "number",
-    "value": 100
+    "value": 360
   },
   {
     "path": "$.MinionMap.1073742348.Common.Armor",
@@ -5512,404 +4306,2414 @@
     "value": null
   },
   {
-    "path": "$.MinionMap.1073742349",
+    "path": "$.MinionMap.1073742351",
     "type": "object"
   },
   {
-    "path": "$.MinionMap.1073742349.IsClone",
+    "path": "$.MinionMap.1073742351.IsClone",
     "type": "boolean",
     "value": false
   },
   {
-    "path": "$.MinionMap.1073742349.IsLaneMinion",
+    "path": "$.MinionMap.1073742351.IsLaneMinion",
     "type": "boolean",
     "value": false
   },
   {
-    "path": "$.MinionMap.1073742349.IsEliteMinion",
+    "path": "$.MinionMap.1073742351.IsEliteMinion",
     "type": "boolean",
     "value": false
   },
   {
-    "path": "$.MinionMap.1073742349.IsEpicMinion",
+    "path": "$.MinionMap.1073742351.IsEpicMinion",
     "type": "boolean",
     "value": false
   },
   {
-    "path": "$.MinionMap.1073742349.IsJungleMinion",
+    "path": "$.MinionMap.1073742351.IsJungleMinion",
     "type": "boolean",
     "value": false
   },
   {
-    "path": "$.MinionMap.1073742349.IsWardOrPlant",
+    "path": "$.MinionMap.1073742351.IsWardOrPlant",
     "type": "boolean",
     "value": false
   },
   {
-    "path": "$.MinionMap.1073742349.Info",
+    "path": "$.MinionMap.1073742351.Info",
     "type": "object"
   },
   {
-    "path": "$.MinionMap.1073742349.Info.IsNeutral",
+    "path": "$.MinionMap.1073742351.Info.IsNeutral",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742351.Info.Name",
+    "type": "string",
+    "value": "RobotBuddy"
+  },
+  {
+    "path": "$.MinionMap.1073742351.Info.NetworkId",
+    "type": "number",
+    "value": 1073742351
+  },
+  {
+    "path": "$.MinionMap.1073742351.Info.Index",
+    "type": "number",
+    "value": 132162
+  },
+  {
+    "path": "$.MinionMap.1073742351.Info.Position",
+    "type": "object"
+  },
+  {
+    "path": "$.MinionMap.1073742351.Info.Position.x",
+    "type": "number",
+    "value": 261.5647
+  },
+  {
+    "path": "$.MinionMap.1073742351.Info.Position.y",
+    "type": "number",
+    "value": 183.5748
+  },
+  {
+    "path": "$.MinionMap.1073742351.Info.Position.z",
+    "type": "number",
+    "value": 746.8803
+  },
+  {
+    "path": "$.MinionMap.1073742351.Info.Rotation",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742351.Info.Team",
+    "type": "number",
+    "value": 1
+  },
+  {
+    "path": "$.MinionMap.1073742351.Common",
+    "type": "object"
+  },
+  {
+    "path": "$.MinionMap.1073742351.Common.IsAlive",
     "type": "boolean",
     "value": true
   },
   {
-    "path": "$.MinionMap.1073742349.Info.Name",
+    "path": "$.MinionMap.1073742351.Common.IsZombie",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742351.Common.IsRecalling",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742351.Common.IsTargetable",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742351.Common.Identifier",
+    "type": "string",
+    "value": "LuluFaerie"
+  },
+  {
+    "path": "$.MinionMap.1073742351.Common.CurrentAttack",
+    "type": "string",
+    "value": ""
+  },
+  {
+    "path": "$.MinionMap.1073742351.Common.Status",
+    "type": "number",
+    "value": 1
+  },
+  {
+    "path": "$.MinionMap.1073742351.Common.Health",
+    "type": "number",
+    "value": 300
+  },
+  {
+    "path": "$.MinionMap.1073742351.Common.MaxHealth",
+    "type": "number",
+    "value": 300
+  },
+  {
+    "path": "$.MinionMap.1073742351.Common.Armor",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742351.Common.MagicResist",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742351.Common.Level",
+    "type": "number",
+    "value": 1
+  },
+  {
+    "path": "$.MinionMap.1073742351.Common.AttackSpeedMultiplier",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742351.Common.MovementSpeed",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742351.Common.DataStack",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742351.Common.Buffs",
+    "type": "array",
+    "length": 0
+  },
+  {
+    "path": "$.MinionMap.1073742351.Common.Animations",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742351.Common.SubmeshVisiblityMask",
+    "type": "number",
+    "value": 0
+  },
+  {
+    "path": "$.MinionMap.1073742351.Common.AttackSpeedBonus",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742351.Common.AnimationState",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742351.TypeInfo",
+    "type": "number",
+    "value": 0
+  },
+  {
+    "path": "$.MinionMap.1073742351.Bones",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742354",
+    "type": "object"
+  },
+  {
+    "path": "$.MinionMap.1073742354.IsClone",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742354.IsLaneMinion",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742354.IsEliteMinion",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742354.IsEpicMinion",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742354.IsJungleMinion",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742354.IsWardOrPlant",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742354.Info",
+    "type": "object"
+  },
+  {
+    "path": "$.MinionMap.1073742354.Info.IsNeutral",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742354.Info.Name",
+    "type": "string",
+    "value": "PerksPerxie"
+  },
+  {
+    "path": "$.MinionMap.1073742354.Info.NetworkId",
+    "type": "number",
+    "value": 1073742354
+  },
+  {
+    "path": "$.MinionMap.1073742354.Info.Index",
+    "type": "number",
+    "value": 132553
+  },
+  {
+    "path": "$.MinionMap.1073742354.Info.Position",
+    "type": "object"
+  },
+  {
+    "path": "$.MinionMap.1073742354.Info.Position.x",
+    "type": "number",
+    "value": 13905.62
+  },
+  {
+    "path": "$.MinionMap.1073742354.Info.Position.y",
+    "type": "number",
+    "value": 171.5695
+  },
+  {
+    "path": "$.MinionMap.1073742354.Info.Position.z",
+    "type": "number",
+    "value": 14553.54
+  },
+  {
+    "path": "$.MinionMap.1073742354.Info.Rotation",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742354.Info.Team",
+    "type": "number",
+    "value": 2
+  },
+  {
+    "path": "$.MinionMap.1073742354.Common",
+    "type": "object"
+  },
+  {
+    "path": "$.MinionMap.1073742354.Common.IsAlive",
+    "type": "boolean",
+    "value": true
+  },
+  {
+    "path": "$.MinionMap.1073742354.Common.IsZombie",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742354.Common.IsRecalling",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742354.Common.IsTargetable",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742354.Common.Identifier",
+    "type": "string",
+    "value": "PerksPerxie"
+  },
+  {
+    "path": "$.MinionMap.1073742354.Common.CurrentAttack",
+    "type": "string",
+    "value": ""
+  },
+  {
+    "path": "$.MinionMap.1073742354.Common.Status",
+    "type": "number",
+    "value": 1
+  },
+  {
+    "path": "$.MinionMap.1073742354.Common.Health",
+    "type": "number",
+    "value": 360
+  },
+  {
+    "path": "$.MinionMap.1073742354.Common.MaxHealth",
+    "type": "number",
+    "value": 360
+  },
+  {
+    "path": "$.MinionMap.1073742354.Common.Armor",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742354.Common.MagicResist",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742354.Common.Level",
+    "type": "number",
+    "value": 1
+  },
+  {
+    "path": "$.MinionMap.1073742354.Common.AttackSpeedMultiplier",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742354.Common.MovementSpeed",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742354.Common.DataStack",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742354.Common.Buffs",
+    "type": "array",
+    "length": 0
+  },
+  {
+    "path": "$.MinionMap.1073742354.Common.Animations",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742354.Common.SubmeshVisiblityMask",
+    "type": "number",
+    "value": 0
+  },
+  {
+    "path": "$.MinionMap.1073742354.Common.AttackSpeedBonus",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742354.Common.AnimationState",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742354.TypeInfo",
+    "type": "number",
+    "value": 0
+  },
+  {
+    "path": "$.MinionMap.1073742354.Bones",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742358",
+    "type": "object"
+  },
+  {
+    "path": "$.MinionMap.1073742358.IsClone",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742358.IsLaneMinion",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742358.IsEliteMinion",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742358.IsEpicMinion",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742358.IsJungleMinion",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742358.IsWardOrPlant",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742358.Info",
+    "type": "object"
+  },
+  {
+    "path": "$.MinionMap.1073742358.Info.IsNeutral",
+    "type": "boolean",
+    "value": true
+  },
+  {
+    "path": "$.MinionMap.1073742358.Info.Name",
     "type": "string",
     "value": "PlantSatchel"
   },
   {
-    "path": "$.MinionMap.1073742349.Info.NetworkId",
+    "path": "$.MinionMap.1073742358.Info.NetworkId",
     "type": "number",
-    "value": 1073742349
+    "value": 1073742358
   },
   {
-    "path": "$.MinionMap.1073742349.Info.Index",
+    "path": "$.MinionMap.1073742358.Info.Index",
     "type": "number",
-    "value": 132470
+    "value": 132276
   },
   {
-    "path": "$.MinionMap.1073742349.Info.Position",
+    "path": "$.MinionMap.1073742358.Info.Position",
     "type": "object"
   },
   {
-    "path": "$.MinionMap.1073742349.Info.Position.x",
+    "path": "$.MinionMap.1073742358.Info.Position.x",
     "type": "number",
-    "value": 10373
+    "value": 4385.8037
   },
   {
-    "path": "$.MinionMap.1073742349.Info.Position.y",
+    "path": "$.MinionMap.1073742358.Info.Position.y",
     "type": "number",
-    "value": 51.73402
+    "value": 50.715893
   },
   {
-    "path": "$.MinionMap.1073742349.Info.Position.z",
+    "path": "$.MinionMap.1073742358.Info.Position.z",
     "type": "number",
-    "value": 7628
+    "value": 7244.583
   },
   {
-    "path": "$.MinionMap.1073742349.Info.Rotation",
+    "path": "$.MinionMap.1073742358.Info.Rotation",
     "type": "null",
     "value": null
   },
   {
-    "path": "$.MinionMap.1073742349.Info.Team",
+    "path": "$.MinionMap.1073742358.Info.Team",
     "type": "number",
     "value": 3
   },
   {
-    "path": "$.MinionMap.1073742349.Common",
+    "path": "$.MinionMap.1073742358.Common",
     "type": "object"
   },
   {
-    "path": "$.MinionMap.1073742349.Common.IsAlive",
+    "path": "$.MinionMap.1073742358.Common.IsAlive",
     "type": "boolean",
     "value": true
   },
   {
-    "path": "$.MinionMap.1073742349.Common.IsZombie",
+    "path": "$.MinionMap.1073742358.Common.IsZombie",
     "type": "boolean",
     "value": false
   },
   {
-    "path": "$.MinionMap.1073742349.Common.IsRecalling",
+    "path": "$.MinionMap.1073742358.Common.IsRecalling",
     "type": "boolean",
     "value": false
   },
   {
-    "path": "$.MinionMap.1073742349.Common.IsTargetable",
+    "path": "$.MinionMap.1073742358.Common.IsTargetable",
     "type": "boolean",
     "value": false
   },
   {
-    "path": "$.MinionMap.1073742349.Common.Identifier",
+    "path": "$.MinionMap.1073742358.Common.Identifier",
     "type": "string",
     "value": "SRU_Plant_Satchel"
   },
   {
-    "path": "$.MinionMap.1073742349.Common.CurrentAttack",
+    "path": "$.MinionMap.1073742358.Common.CurrentAttack",
     "type": "string",
     "value": ""
   },
   {
-    "path": "$.MinionMap.1073742349.Common.Status",
+    "path": "$.MinionMap.1073742358.Common.Status",
     "type": "number",
     "value": 1
   },
   {
-    "path": "$.MinionMap.1073742349.Common.Health",
+    "path": "$.MinionMap.1073742358.Common.Health",
     "type": "number",
     "value": 1
   },
   {
-    "path": "$.MinionMap.1073742349.Common.MaxHealth",
+    "path": "$.MinionMap.1073742358.Common.MaxHealth",
     "type": "number",
     "value": 1
   },
   {
-    "path": "$.MinionMap.1073742349.Common.Armor",
+    "path": "$.MinionMap.1073742358.Common.Armor",
     "type": "null",
     "value": null
   },
   {
-    "path": "$.MinionMap.1073742349.Common.MagicResist",
+    "path": "$.MinionMap.1073742358.Common.MagicResist",
     "type": "null",
     "value": null
   },
   {
-    "path": "$.MinionMap.1073742349.Common.Level",
+    "path": "$.MinionMap.1073742358.Common.Level",
     "type": "number",
     "value": 1
   },
   {
-    "path": "$.MinionMap.1073742349.Common.AttackSpeedMultiplier",
+    "path": "$.MinionMap.1073742358.Common.AttackSpeedMultiplier",
     "type": "null",
     "value": null
   },
   {
-    "path": "$.MinionMap.1073742349.Common.MovementSpeed",
+    "path": "$.MinionMap.1073742358.Common.MovementSpeed",
     "type": "null",
     "value": null
   },
   {
-    "path": "$.MinionMap.1073742349.Common.DataStack",
+    "path": "$.MinionMap.1073742358.Common.DataStack",
     "type": "null",
     "value": null
   },
   {
-    "path": "$.MinionMap.1073742349.Common.Buffs",
+    "path": "$.MinionMap.1073742358.Common.Buffs",
     "type": "array",
     "length": 0
   },
   {
-    "path": "$.MinionMap.1073742349.Common.Animations",
+    "path": "$.MinionMap.1073742358.Common.Animations",
     "type": "null",
     "value": null
   },
   {
-    "path": "$.MinionMap.1073742349.Common.SubmeshVisiblityMask",
+    "path": "$.MinionMap.1073742358.Common.SubmeshVisiblityMask",
     "type": "number",
     "value": 0
   },
   {
-    "path": "$.MinionMap.1073742349.Common.AttackSpeedBonus",
+    "path": "$.MinionMap.1073742358.Common.AttackSpeedBonus",
     "type": "null",
     "value": null
   },
   {
-    "path": "$.MinionMap.1073742349.Common.AnimationState",
+    "path": "$.MinionMap.1073742358.Common.AnimationState",
     "type": "null",
     "value": null
   },
   {
-    "path": "$.MinionMap.1073742349.TypeInfo",
+    "path": "$.MinionMap.1073742358.TypeInfo",
     "type": "number",
     "value": 0
   },
   {
-    "path": "$.MinionMap.1073742349.Bones",
+    "path": "$.MinionMap.1073742358.Bones",
     "type": "null",
     "value": null
   },
   {
-    "path": "$.MinionMap.1073742350",
+    "path": "$.MinionMap.1073742359",
     "type": "object"
   },
   {
-    "path": "$.MinionMap.1073742350.IsClone",
+    "path": "$.MinionMap.1073742359.IsClone",
     "type": "boolean",
     "value": false
   },
   {
-    "path": "$.MinionMap.1073742350.IsLaneMinion",
+    "path": "$.MinionMap.1073742359.IsLaneMinion",
     "type": "boolean",
     "value": false
   },
   {
-    "path": "$.MinionMap.1073742350.IsEliteMinion",
+    "path": "$.MinionMap.1073742359.IsEliteMinion",
     "type": "boolean",
     "value": false
   },
   {
-    "path": "$.MinionMap.1073742350.IsEpicMinion",
+    "path": "$.MinionMap.1073742359.IsEpicMinion",
     "type": "boolean",
     "value": false
   },
   {
-    "path": "$.MinionMap.1073742350.IsJungleMinion",
+    "path": "$.MinionMap.1073742359.IsJungleMinion",
     "type": "boolean",
     "value": false
   },
   {
-    "path": "$.MinionMap.1073742350.IsWardOrPlant",
+    "path": "$.MinionMap.1073742359.IsWardOrPlant",
     "type": "boolean",
     "value": false
   },
   {
-    "path": "$.MinionMap.1073742350.Info",
+    "path": "$.MinionMap.1073742359.Info",
     "type": "object"
   },
   {
-    "path": "$.MinionMap.1073742350.Info.IsNeutral",
+    "path": "$.MinionMap.1073742359.Info.IsNeutral",
     "type": "boolean",
     "value": true
   },
   {
-    "path": "$.MinionMap.1073742350.Info.Name",
+    "path": "$.MinionMap.1073742359.Info.Name",
     "type": "string",
     "value": "HiddenMinion"
   },
   {
-    "path": "$.MinionMap.1073742350.Info.NetworkId",
+    "path": "$.MinionMap.1073742359.Info.NetworkId",
     "type": "number",
-    "value": 1073742350
+    "value": 1073742359
   },
   {
-    "path": "$.MinionMap.1073742350.Info.Index",
+    "path": "$.MinionMap.1073742359.Info.Index",
     "type": "number",
-    "value": 132476
+    "value": 132277
   },
   {
-    "path": "$.MinionMap.1073742350.Info.Position",
+    "path": "$.MinionMap.1073742359.Info.Position",
     "type": "object"
   },
   {
-    "path": "$.MinionMap.1073742350.Info.Position.x",
+    "path": "$.MinionMap.1073742359.Info.Position.x",
     "type": "number",
-    "value": 10373
+    "value": 4385.8037
   },
   {
-    "path": "$.MinionMap.1073742350.Info.Position.y",
+    "path": "$.MinionMap.1073742359.Info.Position.y",
     "type": "number",
-    "value": 51.73402
+    "value": 50.715893
   },
   {
-    "path": "$.MinionMap.1073742350.Info.Position.z",
+    "path": "$.MinionMap.1073742359.Info.Position.z",
     "type": "number",
-    "value": 7628
+    "value": 7244.583
   },
   {
-    "path": "$.MinionMap.1073742350.Info.Rotation",
+    "path": "$.MinionMap.1073742359.Info.Rotation",
     "type": "null",
     "value": null
   },
   {
-    "path": "$.MinionMap.1073742350.Info.Team",
+    "path": "$.MinionMap.1073742359.Info.Team",
     "type": "number",
     "value": 3
   },
   {
-    "path": "$.MinionMap.1073742350.Common",
+    "path": "$.MinionMap.1073742359.Common",
     "type": "object"
   },
   {
-    "path": "$.MinionMap.1073742350.Common.IsAlive",
+    "path": "$.MinionMap.1073742359.Common.IsAlive",
     "type": "boolean",
     "value": true
   },
   {
-    "path": "$.MinionMap.1073742350.Common.IsZombie",
+    "path": "$.MinionMap.1073742359.Common.IsZombie",
     "type": "boolean",
     "value": false
   },
   {
-    "path": "$.MinionMap.1073742350.Common.IsRecalling",
+    "path": "$.MinionMap.1073742359.Common.IsRecalling",
     "type": "boolean",
     "value": false
   },
   {
-    "path": "$.MinionMap.1073742350.Common.IsTargetable",
+    "path": "$.MinionMap.1073742359.Common.IsTargetable",
     "type": "boolean",
     "value": false
   },
   {
-    "path": "$.MinionMap.1073742350.Common.Identifier",
+    "path": "$.MinionMap.1073742359.Common.Identifier",
     "type": "string",
     "value": "TestCubeRenderNoFOW"
   },
   {
-    "path": "$.MinionMap.1073742350.Common.CurrentAttack",
+    "path": "$.MinionMap.1073742359.Common.CurrentAttack",
     "type": "string",
     "value": ""
   },
   {
-    "path": "$.MinionMap.1073742350.Common.Status",
+    "path": "$.MinionMap.1073742359.Common.Status",
     "type": "number",
     "value": 1
   },
   {
-    "path": "$.MinionMap.1073742350.Common.Health",
+    "path": "$.MinionMap.1073742359.Common.Health",
     "type": "number",
     "value": 100
   },
   {
-    "path": "$.MinionMap.1073742350.Common.MaxHealth",
+    "path": "$.MinionMap.1073742359.Common.MaxHealth",
     "type": "number",
     "value": 100
   },
   {
-    "path": "$.MinionMap.1073742350.Common.Armor",
+    "path": "$.MinionMap.1073742359.Common.Armor",
     "type": "null",
     "value": null
   },
   {
-    "path": "$.MinionMap.1073742350.Common.MagicResist",
+    "path": "$.MinionMap.1073742359.Common.MagicResist",
     "type": "null",
     "value": null
   },
   {
-    "path": "$.MinionMap.1073742350.Common.Level",
+    "path": "$.MinionMap.1073742359.Common.Level",
     "type": "number",
     "value": 1
   },
   {
-    "path": "$.MinionMap.1073742350.Common.AttackSpeedMultiplier",
+    "path": "$.MinionMap.1073742359.Common.AttackSpeedMultiplier",
     "type": "null",
     "value": null
   },
   {
-    "path": "$.MinionMap.1073742350.Common.MovementSpeed",
+    "path": "$.MinionMap.1073742359.Common.MovementSpeed",
     "type": "null",
     "value": null
   },
   {
-    "path": "$.MinionMap.1073742350.Common.DataStack",
+    "path": "$.MinionMap.1073742359.Common.DataStack",
     "type": "null",
     "value": null
   },
   {
-    "path": "$.MinionMap.1073742350.Common.Buffs",
+    "path": "$.MinionMap.1073742359.Common.Buffs",
     "type": "array",
     "length": 0
   },
   {
-    "path": "$.MinionMap.1073742350.Common.Animations",
+    "path": "$.MinionMap.1073742359.Common.Animations",
     "type": "null",
     "value": null
   },
   {
-    "path": "$.MinionMap.1073742350.Common.SubmeshVisiblityMask",
+    "path": "$.MinionMap.1073742359.Common.SubmeshVisiblityMask",
     "type": "number",
     "value": 0
   },
   {
-    "path": "$.MinionMap.1073742350.Common.AttackSpeedBonus",
+    "path": "$.MinionMap.1073742359.Common.AttackSpeedBonus",
     "type": "null",
     "value": null
   },
   {
-    "path": "$.MinionMap.1073742350.Common.AnimationState",
+    "path": "$.MinionMap.1073742359.Common.AnimationState",
     "type": "null",
     "value": null
   },
   {
-    "path": "$.MinionMap.1073742350.TypeInfo",
+    "path": "$.MinionMap.1073742359.TypeInfo",
     "type": "number",
     "value": 0
   },
   {
-    "path": "$.MinionMap.1073742350.Bones",
+    "path": "$.MinionMap.1073742359.Bones",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742361",
+    "type": "object"
+  },
+  {
+    "path": "$.MinionMap.1073742361.IsClone",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742361.IsLaneMinion",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742361.IsEliteMinion",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742361.IsEpicMinion",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742361.IsJungleMinion",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742361.IsWardOrPlant",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742361.Info",
+    "type": "object"
+  },
+  {
+    "path": "$.MinionMap.1073742361.Info.IsNeutral",
+    "type": "boolean",
+    "value": true
+  },
+  {
+    "path": "$.MinionMap.1073742361.Info.Name",
+    "type": "string",
+    "value": "PlantSatchel"
+  },
+  {
+    "path": "$.MinionMap.1073742361.Info.NetworkId",
+    "type": "number",
+    "value": 1073742361
+  },
+  {
+    "path": "$.MinionMap.1073742361.Info.Index",
+    "type": "number",
+    "value": 132262
+  },
+  {
+    "path": "$.MinionMap.1073742361.Info.Position",
+    "type": "object"
+  },
+  {
+    "path": "$.MinionMap.1073742361.Info.Position.x",
+    "type": "number",
+    "value": 6141
+  },
+  {
+    "path": "$.MinionMap.1073742361.Info.Position.y",
+    "type": "number",
+    "value": 50.523113
+  },
+  {
+    "path": "$.MinionMap.1073742361.Info.Position.z",
+    "type": "number",
+    "value": 3402
+  },
+  {
+    "path": "$.MinionMap.1073742361.Info.Rotation",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742361.Info.Team",
+    "type": "number",
+    "value": 3
+  },
+  {
+    "path": "$.MinionMap.1073742361.Common",
+    "type": "object"
+  },
+  {
+    "path": "$.MinionMap.1073742361.Common.IsAlive",
+    "type": "boolean",
+    "value": true
+  },
+  {
+    "path": "$.MinionMap.1073742361.Common.IsZombie",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742361.Common.IsRecalling",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742361.Common.IsTargetable",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742361.Common.Identifier",
+    "type": "string",
+    "value": "SRU_Plant_Satchel"
+  },
+  {
+    "path": "$.MinionMap.1073742361.Common.CurrentAttack",
+    "type": "string",
+    "value": ""
+  },
+  {
+    "path": "$.MinionMap.1073742361.Common.Status",
+    "type": "number",
+    "value": 1
+  },
+  {
+    "path": "$.MinionMap.1073742361.Common.Health",
+    "type": "number",
+    "value": 1
+  },
+  {
+    "path": "$.MinionMap.1073742361.Common.MaxHealth",
+    "type": "number",
+    "value": 1
+  },
+  {
+    "path": "$.MinionMap.1073742361.Common.Armor",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742361.Common.MagicResist",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742361.Common.Level",
+    "type": "number",
+    "value": 1
+  },
+  {
+    "path": "$.MinionMap.1073742361.Common.AttackSpeedMultiplier",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742361.Common.MovementSpeed",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742361.Common.DataStack",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742361.Common.Buffs",
+    "type": "array",
+    "length": 0
+  },
+  {
+    "path": "$.MinionMap.1073742361.Common.Animations",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742361.Common.SubmeshVisiblityMask",
+    "type": "number",
+    "value": 0
+  },
+  {
+    "path": "$.MinionMap.1073742361.Common.AttackSpeedBonus",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742361.Common.AnimationState",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742361.TypeInfo",
+    "type": "number",
+    "value": 0
+  },
+  {
+    "path": "$.MinionMap.1073742361.Bones",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742362",
+    "type": "object"
+  },
+  {
+    "path": "$.MinionMap.1073742362.IsClone",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742362.IsLaneMinion",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742362.IsEliteMinion",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742362.IsEpicMinion",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742362.IsJungleMinion",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742362.IsWardOrPlant",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742362.Info",
+    "type": "object"
+  },
+  {
+    "path": "$.MinionMap.1073742362.Info.IsNeutral",
+    "type": "boolean",
+    "value": true
+  },
+  {
+    "path": "$.MinionMap.1073742362.Info.Name",
+    "type": "string",
+    "value": "HiddenMinion"
+  },
+  {
+    "path": "$.MinionMap.1073742362.Info.NetworkId",
+    "type": "number",
+    "value": 1073742362
+  },
+  {
+    "path": "$.MinionMap.1073742362.Info.Index",
+    "type": "number",
+    "value": 132263
+  },
+  {
+    "path": "$.MinionMap.1073742362.Info.Position",
+    "type": "object"
+  },
+  {
+    "path": "$.MinionMap.1073742362.Info.Position.x",
+    "type": "number",
+    "value": 6141
+  },
+  {
+    "path": "$.MinionMap.1073742362.Info.Position.y",
+    "type": "number",
+    "value": 50.523113
+  },
+  {
+    "path": "$.MinionMap.1073742362.Info.Position.z",
+    "type": "number",
+    "value": 3402
+  },
+  {
+    "path": "$.MinionMap.1073742362.Info.Rotation",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742362.Info.Team",
+    "type": "number",
+    "value": 3
+  },
+  {
+    "path": "$.MinionMap.1073742362.Common",
+    "type": "object"
+  },
+  {
+    "path": "$.MinionMap.1073742362.Common.IsAlive",
+    "type": "boolean",
+    "value": true
+  },
+  {
+    "path": "$.MinionMap.1073742362.Common.IsZombie",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742362.Common.IsRecalling",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742362.Common.IsTargetable",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742362.Common.Identifier",
+    "type": "string",
+    "value": "TestCubeRenderNoFOW"
+  },
+  {
+    "path": "$.MinionMap.1073742362.Common.CurrentAttack",
+    "type": "string",
+    "value": ""
+  },
+  {
+    "path": "$.MinionMap.1073742362.Common.Status",
+    "type": "number",
+    "value": 1
+  },
+  {
+    "path": "$.MinionMap.1073742362.Common.Health",
+    "type": "number",
+    "value": 100
+  },
+  {
+    "path": "$.MinionMap.1073742362.Common.MaxHealth",
+    "type": "number",
+    "value": 100
+  },
+  {
+    "path": "$.MinionMap.1073742362.Common.Armor",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742362.Common.MagicResist",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742362.Common.Level",
+    "type": "number",
+    "value": 1
+  },
+  {
+    "path": "$.MinionMap.1073742362.Common.AttackSpeedMultiplier",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742362.Common.MovementSpeed",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742362.Common.DataStack",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742362.Common.Buffs",
+    "type": "array",
+    "length": 0
+  },
+  {
+    "path": "$.MinionMap.1073742362.Common.Animations",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742362.Common.SubmeshVisiblityMask",
+    "type": "number",
+    "value": 0
+  },
+  {
+    "path": "$.MinionMap.1073742362.Common.AttackSpeedBonus",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742362.Common.AnimationState",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742362.TypeInfo",
+    "type": "number",
+    "value": 0
+  },
+  {
+    "path": "$.MinionMap.1073742362.Bones",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742363",
+    "type": "object"
+  },
+  {
+    "path": "$.MinionMap.1073742363.IsClone",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742363.IsLaneMinion",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742363.IsEliteMinion",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742363.IsEpicMinion",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742363.IsJungleMinion",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742363.IsWardOrPlant",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742363.Info",
+    "type": "object"
+  },
+  {
+    "path": "$.MinionMap.1073742363.Info.IsNeutral",
+    "type": "boolean",
+    "value": true
+  },
+  {
+    "path": "$.MinionMap.1073742363.Info.Name",
+    "type": "string",
+    "value": "PlantSatchel"
+  },
+  {
+    "path": "$.MinionMap.1073742363.Info.NetworkId",
+    "type": "number",
+    "value": 1073742363
+  },
+  {
+    "path": "$.MinionMap.1073742363.Info.Index",
+    "type": "number",
+    "value": 132254
+  },
+  {
+    "path": "$.MinionMap.1073742363.Info.Position",
+    "type": "object"
+  },
+  {
+    "path": "$.MinionMap.1073742363.Info.Position.x",
+    "type": "number",
+    "value": 10373
+  },
+  {
+    "path": "$.MinionMap.1073742363.Info.Position.y",
+    "type": "number",
+    "value": 51.73402
+  },
+  {
+    "path": "$.MinionMap.1073742363.Info.Position.z",
+    "type": "number",
+    "value": 7628
+  },
+  {
+    "path": "$.MinionMap.1073742363.Info.Rotation",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742363.Info.Team",
+    "type": "number",
+    "value": 3
+  },
+  {
+    "path": "$.MinionMap.1073742363.Common",
+    "type": "object"
+  },
+  {
+    "path": "$.MinionMap.1073742363.Common.IsAlive",
+    "type": "boolean",
+    "value": true
+  },
+  {
+    "path": "$.MinionMap.1073742363.Common.IsZombie",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742363.Common.IsRecalling",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742363.Common.IsTargetable",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742363.Common.Identifier",
+    "type": "string",
+    "value": "SRU_Plant_Satchel"
+  },
+  {
+    "path": "$.MinionMap.1073742363.Common.CurrentAttack",
+    "type": "string",
+    "value": ""
+  },
+  {
+    "path": "$.MinionMap.1073742363.Common.Status",
+    "type": "number",
+    "value": 1
+  },
+  {
+    "path": "$.MinionMap.1073742363.Common.Health",
+    "type": "number",
+    "value": 1
+  },
+  {
+    "path": "$.MinionMap.1073742363.Common.MaxHealth",
+    "type": "number",
+    "value": 1
+  },
+  {
+    "path": "$.MinionMap.1073742363.Common.Armor",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742363.Common.MagicResist",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742363.Common.Level",
+    "type": "number",
+    "value": 1
+  },
+  {
+    "path": "$.MinionMap.1073742363.Common.AttackSpeedMultiplier",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742363.Common.MovementSpeed",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742363.Common.DataStack",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742363.Common.Buffs",
+    "type": "array",
+    "length": 0
+  },
+  {
+    "path": "$.MinionMap.1073742363.Common.Animations",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742363.Common.SubmeshVisiblityMask",
+    "type": "number",
+    "value": 0
+  },
+  {
+    "path": "$.MinionMap.1073742363.Common.AttackSpeedBonus",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742363.Common.AnimationState",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742363.TypeInfo",
+    "type": "number",
+    "value": 0
+  },
+  {
+    "path": "$.MinionMap.1073742363.Bones",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742364",
+    "type": "object"
+  },
+  {
+    "path": "$.MinionMap.1073742364.IsClone",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742364.IsLaneMinion",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742364.IsEliteMinion",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742364.IsEpicMinion",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742364.IsJungleMinion",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742364.IsWardOrPlant",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742364.Info",
+    "type": "object"
+  },
+  {
+    "path": "$.MinionMap.1073742364.Info.IsNeutral",
+    "type": "boolean",
+    "value": true
+  },
+  {
+    "path": "$.MinionMap.1073742364.Info.Name",
+    "type": "string",
+    "value": "HiddenMinion"
+  },
+  {
+    "path": "$.MinionMap.1073742364.Info.NetworkId",
+    "type": "number",
+    "value": 1073742364
+  },
+  {
+    "path": "$.MinionMap.1073742364.Info.Index",
+    "type": "number",
+    "value": 132259
+  },
+  {
+    "path": "$.MinionMap.1073742364.Info.Position",
+    "type": "object"
+  },
+  {
+    "path": "$.MinionMap.1073742364.Info.Position.x",
+    "type": "number",
+    "value": 10373
+  },
+  {
+    "path": "$.MinionMap.1073742364.Info.Position.y",
+    "type": "number",
+    "value": 51.73402
+  },
+  {
+    "path": "$.MinionMap.1073742364.Info.Position.z",
+    "type": "number",
+    "value": 7628
+  },
+  {
+    "path": "$.MinionMap.1073742364.Info.Rotation",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742364.Info.Team",
+    "type": "number",
+    "value": 3
+  },
+  {
+    "path": "$.MinionMap.1073742364.Common",
+    "type": "object"
+  },
+  {
+    "path": "$.MinionMap.1073742364.Common.IsAlive",
+    "type": "boolean",
+    "value": true
+  },
+  {
+    "path": "$.MinionMap.1073742364.Common.IsZombie",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742364.Common.IsRecalling",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742364.Common.IsTargetable",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742364.Common.Identifier",
+    "type": "string",
+    "value": "TestCubeRenderNoFOW"
+  },
+  {
+    "path": "$.MinionMap.1073742364.Common.CurrentAttack",
+    "type": "string",
+    "value": ""
+  },
+  {
+    "path": "$.MinionMap.1073742364.Common.Status",
+    "type": "number",
+    "value": 1
+  },
+  {
+    "path": "$.MinionMap.1073742364.Common.Health",
+    "type": "number",
+    "value": 100
+  },
+  {
+    "path": "$.MinionMap.1073742364.Common.MaxHealth",
+    "type": "number",
+    "value": 100
+  },
+  {
+    "path": "$.MinionMap.1073742364.Common.Armor",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742364.Common.MagicResist",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742364.Common.Level",
+    "type": "number",
+    "value": 1
+  },
+  {
+    "path": "$.MinionMap.1073742364.Common.AttackSpeedMultiplier",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742364.Common.MovementSpeed",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742364.Common.DataStack",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742364.Common.Buffs",
+    "type": "array",
+    "length": 0
+  },
+  {
+    "path": "$.MinionMap.1073742364.Common.Animations",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742364.Common.SubmeshVisiblityMask",
+    "type": "number",
+    "value": 0
+  },
+  {
+    "path": "$.MinionMap.1073742364.Common.AttackSpeedBonus",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742364.Common.AnimationState",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742364.TypeInfo",
+    "type": "number",
+    "value": 0
+  },
+  {
+    "path": "$.MinionMap.1073742364.Bones",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742365",
+    "type": "object"
+  },
+  {
+    "path": "$.MinionMap.1073742365.IsClone",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742365.IsLaneMinion",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742365.IsEliteMinion",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742365.IsEpicMinion",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742365.IsJungleMinion",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742365.IsWardOrPlant",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742365.Info",
+    "type": "object"
+  },
+  {
+    "path": "$.MinionMap.1073742365.Info.IsNeutral",
+    "type": "boolean",
+    "value": true
+  },
+  {
+    "path": "$.MinionMap.1073742365.Info.Name",
+    "type": "string",
+    "value": "PlantSatchel"
+  },
+  {
+    "path": "$.MinionMap.1073742365.Info.NetworkId",
+    "type": "number",
+    "value": 1073742365
+  },
+  {
+    "path": "$.MinionMap.1073742365.Info.Index",
+    "type": "number",
+    "value": 132249
+  },
+  {
+    "path": "$.MinionMap.1073742365.Info.Position",
+    "type": "object"
+  },
+  {
+    "path": "$.MinionMap.1073742365.Info.Position.x",
+    "type": "number",
+    "value": 8659
+  },
+  {
+    "path": "$.MinionMap.1073742365.Info.Position.y",
+    "type": "number",
+    "value": 53.657677
+  },
+  {
+    "path": "$.MinionMap.1073742365.Info.Position.z",
+    "type": "number",
+    "value": 11535
+  },
+  {
+    "path": "$.MinionMap.1073742365.Info.Rotation",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742365.Info.Team",
+    "type": "number",
+    "value": 3
+  },
+  {
+    "path": "$.MinionMap.1073742365.Common",
+    "type": "object"
+  },
+  {
+    "path": "$.MinionMap.1073742365.Common.IsAlive",
+    "type": "boolean",
+    "value": true
+  },
+  {
+    "path": "$.MinionMap.1073742365.Common.IsZombie",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742365.Common.IsRecalling",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742365.Common.IsTargetable",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742365.Common.Identifier",
+    "type": "string",
+    "value": "SRU_Plant_Satchel"
+  },
+  {
+    "path": "$.MinionMap.1073742365.Common.CurrentAttack",
+    "type": "string",
+    "value": ""
+  },
+  {
+    "path": "$.MinionMap.1073742365.Common.Status",
+    "type": "number",
+    "value": 1
+  },
+  {
+    "path": "$.MinionMap.1073742365.Common.Health",
+    "type": "number",
+    "value": 1
+  },
+  {
+    "path": "$.MinionMap.1073742365.Common.MaxHealth",
+    "type": "number",
+    "value": 1
+  },
+  {
+    "path": "$.MinionMap.1073742365.Common.Armor",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742365.Common.MagicResist",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742365.Common.Level",
+    "type": "number",
+    "value": 1
+  },
+  {
+    "path": "$.MinionMap.1073742365.Common.AttackSpeedMultiplier",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742365.Common.MovementSpeed",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742365.Common.DataStack",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742365.Common.Buffs",
+    "type": "array",
+    "length": 0
+  },
+  {
+    "path": "$.MinionMap.1073742365.Common.Animations",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742365.Common.SubmeshVisiblityMask",
+    "type": "number",
+    "value": 0
+  },
+  {
+    "path": "$.MinionMap.1073742365.Common.AttackSpeedBonus",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742365.Common.AnimationState",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742365.TypeInfo",
+    "type": "number",
+    "value": 0
+  },
+  {
+    "path": "$.MinionMap.1073742365.Bones",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742366",
+    "type": "object"
+  },
+  {
+    "path": "$.MinionMap.1073742366.IsClone",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742366.IsLaneMinion",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742366.IsEliteMinion",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742366.IsEpicMinion",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742366.IsJungleMinion",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742366.IsWardOrPlant",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742366.Info",
+    "type": "object"
+  },
+  {
+    "path": "$.MinionMap.1073742366.Info.IsNeutral",
+    "type": "boolean",
+    "value": true
+  },
+  {
+    "path": "$.MinionMap.1073742366.Info.Name",
+    "type": "string",
+    "value": "HiddenMinion"
+  },
+  {
+    "path": "$.MinionMap.1073742366.Info.NetworkId",
+    "type": "number",
+    "value": 1073742366
+  },
+  {
+    "path": "$.MinionMap.1073742366.Info.Index",
+    "type": "number",
+    "value": 132253
+  },
+  {
+    "path": "$.MinionMap.1073742366.Info.Position",
+    "type": "object"
+  },
+  {
+    "path": "$.MinionMap.1073742366.Info.Position.x",
+    "type": "number",
+    "value": 8659
+  },
+  {
+    "path": "$.MinionMap.1073742366.Info.Position.y",
+    "type": "number",
+    "value": 53.657677
+  },
+  {
+    "path": "$.MinionMap.1073742366.Info.Position.z",
+    "type": "number",
+    "value": 11535
+  },
+  {
+    "path": "$.MinionMap.1073742366.Info.Rotation",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742366.Info.Team",
+    "type": "number",
+    "value": 3
+  },
+  {
+    "path": "$.MinionMap.1073742366.Common",
+    "type": "object"
+  },
+  {
+    "path": "$.MinionMap.1073742366.Common.IsAlive",
+    "type": "boolean",
+    "value": true
+  },
+  {
+    "path": "$.MinionMap.1073742366.Common.IsZombie",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742366.Common.IsRecalling",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742366.Common.IsTargetable",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742366.Common.Identifier",
+    "type": "string",
+    "value": "TestCubeRenderNoFOW"
+  },
+  {
+    "path": "$.MinionMap.1073742366.Common.CurrentAttack",
+    "type": "string",
+    "value": ""
+  },
+  {
+    "path": "$.MinionMap.1073742366.Common.Status",
+    "type": "number",
+    "value": 1
+  },
+  {
+    "path": "$.MinionMap.1073742366.Common.Health",
+    "type": "number",
+    "value": 100
+  },
+  {
+    "path": "$.MinionMap.1073742366.Common.MaxHealth",
+    "type": "number",
+    "value": 100
+  },
+  {
+    "path": "$.MinionMap.1073742366.Common.Armor",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742366.Common.MagicResist",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742366.Common.Level",
+    "type": "number",
+    "value": 1
+  },
+  {
+    "path": "$.MinionMap.1073742366.Common.AttackSpeedMultiplier",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742366.Common.MovementSpeed",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742366.Common.DataStack",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742366.Common.Buffs",
+    "type": "array",
+    "length": 0
+  },
+  {
+    "path": "$.MinionMap.1073742366.Common.Animations",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742366.Common.SubmeshVisiblityMask",
+    "type": "number",
+    "value": 0
+  },
+  {
+    "path": "$.MinionMap.1073742366.Common.AttackSpeedBonus",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742366.Common.AnimationState",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742366.TypeInfo",
+    "type": "number",
+    "value": 0
+  },
+  {
+    "path": "$.MinionMap.1073742366.Bones",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742367",
+    "type": "object"
+  },
+  {
+    "path": "$.MinionMap.1073742367.IsClone",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742367.IsLaneMinion",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742367.IsEliteMinion",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742367.IsEpicMinion",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742367.IsJungleMinion",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742367.IsWardOrPlant",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742367.Info",
+    "type": "object"
+  },
+  {
+    "path": "$.MinionMap.1073742367.Info.IsNeutral",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742367.Info.Name",
+    "type": "string",
+    "value": "HiddenMinion"
+  },
+  {
+    "path": "$.MinionMap.1073742367.Info.NetworkId",
+    "type": "number",
+    "value": 1073742367
+  },
+  {
+    "path": "$.MinionMap.1073742367.Info.Index",
+    "type": "number",
+    "value": 197779
+  },
+  {
+    "path": "$.MinionMap.1073742367.Info.Position",
+    "type": "object"
+  },
+  {
+    "path": "$.MinionMap.1073742367.Info.Position.x",
+    "type": "number",
+    "value": 192.26012
+  },
+  {
+    "path": "$.MinionMap.1073742367.Info.Position.y",
+    "type": "number",
+    "value": 182.1325
+  },
+  {
+    "path": "$.MinionMap.1073742367.Info.Position.z",
+    "type": "number",
+    "value": 298.15048
+  },
+  {
+    "path": "$.MinionMap.1073742367.Info.Rotation",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742367.Info.Team",
+    "type": "number",
+    "value": 1
+  },
+  {
+    "path": "$.MinionMap.1073742367.Common",
+    "type": "object"
+  },
+  {
+    "path": "$.MinionMap.1073742367.Common.IsAlive",
+    "type": "boolean",
+    "value": true
+  },
+  {
+    "path": "$.MinionMap.1073742367.Common.IsZombie",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742367.Common.IsRecalling",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742367.Common.IsTargetable",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742367.Common.Identifier",
+    "type": "string",
+    "value": "SRU_Jungle_Companions"
+  },
+  {
+    "path": "$.MinionMap.1073742367.Common.CurrentAttack",
+    "type": "string",
+    "value": ""
+  },
+  {
+    "path": "$.MinionMap.1073742367.Common.Status",
+    "type": "number",
+    "value": 1
+  },
+  {
+    "path": "$.MinionMap.1073742367.Common.Health",
+    "type": "number",
+    "value": 1500
+  },
+  {
+    "path": "$.MinionMap.1073742367.Common.MaxHealth",
+    "type": "number",
+    "value": 1500
+  },
+  {
+    "path": "$.MinionMap.1073742367.Common.Armor",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742367.Common.MagicResist",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742367.Common.Level",
+    "type": "number",
+    "value": 1
+  },
+  {
+    "path": "$.MinionMap.1073742367.Common.AttackSpeedMultiplier",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742367.Common.MovementSpeed",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742367.Common.DataStack",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742367.Common.Buffs",
+    "type": "array",
+    "length": 0
+  },
+  {
+    "path": "$.MinionMap.1073742367.Common.Animations",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742367.Common.SubmeshVisiblityMask",
+    "type": "number",
+    "value": 0
+  },
+  {
+    "path": "$.MinionMap.1073742367.Common.AttackSpeedBonus",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742367.Common.AnimationState",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742367.TypeInfo",
+    "type": "number",
+    "value": 0
+  },
+  {
+    "path": "$.MinionMap.1073742367.Bones",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742368",
+    "type": "object"
+  },
+  {
+    "path": "$.MinionMap.1073742368.IsClone",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742368.IsLaneMinion",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742368.IsEliteMinion",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742368.IsEpicMinion",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742368.IsJungleMinion",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742368.IsWardOrPlant",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742368.Info",
+    "type": "object"
+  },
+  {
+    "path": "$.MinionMap.1073742368.Info.IsNeutral",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742368.Info.Name",
+    "type": "string",
+    "value": "HiddenMinion"
+  },
+  {
+    "path": "$.MinionMap.1073742368.Info.NetworkId",
+    "type": "number",
+    "value": 1073742368
+  },
+  {
+    "path": "$.MinionMap.1073742368.Info.Index",
+    "type": "number",
+    "value": 197780
+  },
+  {
+    "path": "$.MinionMap.1073742368.Info.Position",
+    "type": "object"
+  },
+  {
+    "path": "$.MinionMap.1073742368.Info.Position.x",
+    "type": "number",
+    "value": 3893.851
+  },
+  {
+    "path": "$.MinionMap.1073742368.Info.Position.y",
+    "type": "number",
+    "value": 51.899223
+  },
+  {
+    "path": "$.MinionMap.1073742368.Info.Position.z",
+    "type": "number",
+    "value": 7869.825
+  },
+  {
+    "path": "$.MinionMap.1073742368.Info.Rotation",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742368.Info.Team",
+    "type": "number",
+    "value": 1
+  },
+  {
+    "path": "$.MinionMap.1073742368.Common",
+    "type": "object"
+  },
+  {
+    "path": "$.MinionMap.1073742368.Common.IsAlive",
+    "type": "boolean",
+    "value": true
+  },
+  {
+    "path": "$.MinionMap.1073742368.Common.IsZombie",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742368.Common.IsRecalling",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742368.Common.IsTargetable",
+    "type": "boolean",
+    "value": false
+  },
+  {
+    "path": "$.MinionMap.1073742368.Common.Identifier",
+    "type": "string",
+    "value": "TestCubeRender"
+  },
+  {
+    "path": "$.MinionMap.1073742368.Common.CurrentAttack",
+    "type": "string",
+    "value": ""
+  },
+  {
+    "path": "$.MinionMap.1073742368.Common.Status",
+    "type": "number",
+    "value": 1
+  },
+  {
+    "path": "$.MinionMap.1073742368.Common.Health",
+    "type": "number",
+    "value": 100
+  },
+  {
+    "path": "$.MinionMap.1073742368.Common.MaxHealth",
+    "type": "number",
+    "value": 100
+  },
+  {
+    "path": "$.MinionMap.1073742368.Common.Armor",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742368.Common.MagicResist",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742368.Common.Level",
+    "type": "number",
+    "value": 1
+  },
+  {
+    "path": "$.MinionMap.1073742368.Common.AttackSpeedMultiplier",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742368.Common.MovementSpeed",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742368.Common.DataStack",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742368.Common.Buffs",
+    "type": "array",
+    "length": 0
+  },
+  {
+    "path": "$.MinionMap.1073742368.Common.Animations",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742368.Common.SubmeshVisiblityMask",
+    "type": "number",
+    "value": 0
+  },
+  {
+    "path": "$.MinionMap.1073742368.Common.AttackSpeedBonus",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742368.Common.AnimationState",
+    "type": "null",
+    "value": null
+  },
+  {
+    "path": "$.MinionMap.1073742368.TypeInfo",
+    "type": "number",
+    "value": 0
+  },
+  {
+    "path": "$.MinionMap.1073742368.Bones",
     "type": "null",
     "value": null
   },
@@ -5951,7 +6755,7 @@
   {
     "path": "$.UpcomingDragonType",
     "type": "string",
-    "value": "Earth"
+    "value": "Chemtech"
   },
   {
     "path": "$.HeroMap",
@@ -5983,12 +6787,12 @@
   {
     "path": "$.HeroMap.1073741998.Q.Name",
     "type": "string",
-    "value": "SettQ"
+    "value": "ZaahenQ"
   },
   {
     "path": "$.HeroMap.1073741998.Q.Icon",
     "type": "string",
-    "value": "ASSETS/Characters/Sett/HUD/Icons2D/Sett_Q.dds"
+    "value": "ASSETS/Characters/Zaahen/HUD/Icons2D/ZaahenQ.dds"
   },
   {
     "path": "$.HeroMap.1073741998.Q.ReadyAt",
@@ -6047,12 +6851,12 @@
   {
     "path": "$.HeroMap.1073741998.W.Name",
     "type": "string",
-    "value": "SettW"
+    "value": "ZaahenW"
   },
   {
     "path": "$.HeroMap.1073741998.W.Icon",
     "type": "string",
-    "value": "ASSETS/Characters/Sett/HUD/Icons2D/Sett_W.dds"
+    "value": "ASSETS/Characters/Zaahen/HUD/Icons2D/ZaahenW.dds"
   },
   {
     "path": "$.HeroMap.1073741998.W.ReadyAt",
@@ -6111,12 +6915,12 @@
   {
     "path": "$.HeroMap.1073741998.E.Name",
     "type": "string",
-    "value": "SettE"
+    "value": "ZaahenE"
   },
   {
     "path": "$.HeroMap.1073741998.E.Icon",
     "type": "string",
-    "value": "ASSETS/Characters/Sett/HUD/Icons2D/Sett_E.dds"
+    "value": "ASSETS/Characters/Zaahen/HUD/Icons2D/ZaahenE.dds"
   },
   {
     "path": "$.HeroMap.1073741998.E.ReadyAt",
@@ -6175,12 +6979,12 @@
   {
     "path": "$.HeroMap.1073741998.R.Name",
     "type": "string",
-    "value": "SettR"
+    "value": "ZaahenR"
   },
   {
     "path": "$.HeroMap.1073741998.R.Icon",
     "type": "string",
-    "value": "ASSETS/Characters/Sett/HUD/Icons2D/Sett_R.dds"
+    "value": "ASSETS/Characters/Zaahen/HUD/Icons2D/ZaahenR.dds"
   },
   {
     "path": "$.HeroMap.1073741998.R.ReadyAt",
@@ -6289,7 +7093,7 @@
   {
     "path": "$.HeroMap.1073741998.D.Cooldown",
     "type": "number",
-    "value": 13.611792
+    "value": 9.188691
   },
   {
     "path": "$.HeroMap.1073741998.D.IsToggled",
@@ -6353,7 +7157,7 @@
   {
     "path": "$.HeroMap.1073741998.F.Cooldown",
     "type": "number",
-    "value": 13.611792
+    "value": 9.188691
   },
   {
     "path": "$.HeroMap.1073741998.F.IsToggled",
@@ -6363,7 +7167,7 @@
   {
     "path": "$.HeroMap.1073741998.NameAndTagline",
     "type": "string",
-    "value": "Miticaldos#LAN"
+    "value": "Guerra2009#LAN"
   },
   {
     "path": "$.HeroMap.1073741998.NetworkIdHex",
@@ -6397,7 +7201,7 @@
   {
     "path": "$.HeroMap.1073741998.Info.Name",
     "type": "string",
-    "value": "Miticaldos#LAN"
+    "value": "Guerra2009#LAN"
   },
   {
     "path": "$.HeroMap.1073741998.Info.NetworkId",
@@ -6416,17 +7220,17 @@
   {
     "path": "$.HeroMap.1073741998.Info.Position.x",
     "type": "number",
-    "value": 603.6285
+    "value": 422
   },
   {
     "path": "$.HeroMap.1073741998.Info.Position.y",
     "type": "number",
-    "value": 183.5748
+    "value": 182.21703
   },
   {
     "path": "$.HeroMap.1073741998.Info.Position.z",
     "type": "number",
-    "value": 611.984
+    "value": 480
   },
   {
     "path": "$.HeroMap.1073741998.Info.Rotation",
@@ -6465,7 +7269,7 @@
   {
     "path": "$.HeroMap.1073741998.Common.Identifier",
     "type": "string",
-    "value": "Sett"
+    "value": "Zaahen"
   },
   {
     "path": "$.HeroMap.1073741998.Common.CurrentAttack",
@@ -6480,12 +7284,12 @@
   {
     "path": "$.HeroMap.1073741998.Common.Health",
     "type": "number",
-    "value": 680
+    "value": 650
   },
   {
     "path": "$.HeroMap.1073741998.Common.MaxHealth",
     "type": "number",
-    "value": 680
+    "value": 650
   },
   {
     "path": "$.HeroMap.1073741998.Common.Armor",
@@ -6604,17 +7408,17 @@
   {
     "path": "$.HeroMap.1073741998.Resource",
     "type": "number",
-    "value": 0
+    "value": 350
   },
   {
     "path": "$.HeroMap.1073741998.MaxResource",
     "type": "number",
-    "value": 335
+    "value": 350
   },
   {
     "path": "$.HeroMap.1073741998.ResourceType",
     "type": "number",
-    "value": 8
+    "value": 0
   },
   {
     "path": "$.HeroMap.1073741998.VisionScore",
@@ -6633,12 +7437,12 @@
   {
     "path": "$.HeroMap.1073741998.Spells[0].Name",
     "type": "string",
-    "value": "SettQ"
+    "value": "ZaahenQ"
   },
   {
     "path": "$.HeroMap.1073741998.Spells[0].Icon",
     "type": "string",
-    "value": "ASSETS/Characters/Sett/HUD/Icons2D/Sett_Q.dds"
+    "value": "ASSETS/Characters/Zaahen/HUD/Icons2D/ZaahenQ.dds"
   },
   {
     "path": "$.HeroMap.1073741998.Spells[0].ReadyAt",
@@ -6843,12 +7647,12 @@
   {
     "path": "$.HeroMap.1073741999.Q.Name",
     "type": "string",
-    "value": "DianaQ"
+    "value": "TaliyahQ"
   },
   {
     "path": "$.HeroMap.1073741999.Q.Icon",
     "type": "string",
-    "value": "ASSETS/Characters/Diana/HUD/Icons2D/Diana_Q_MoonsEdge.dds"
+    "value": "ASSETS/Characters/Taliyah/HUD/Icons2D/Taliyah_Q.dds"
   },
   {
     "path": "$.HeroMap.1073741999.Q.ReadyAt",
@@ -6907,12 +7711,12 @@
   {
     "path": "$.HeroMap.1073741999.W.Name",
     "type": "string",
-    "value": "DianaOrbs"
+    "value": "TaliyahWVC"
   },
   {
     "path": "$.HeroMap.1073741999.W.Icon",
     "type": "string",
-    "value": "ASSETS/Characters/Diana/HUD/Icons2D/Diana_W_LunarShower.dds"
+    "value": "ASSETS/Characters/Taliyah/HUD/Icons2D/Taliyah_W.dds"
   },
   {
     "path": "$.HeroMap.1073741999.W.ReadyAt",
@@ -6971,12 +7775,12 @@
   {
     "path": "$.HeroMap.1073741999.E.Name",
     "type": "string",
-    "value": "DianaTeleport"
+    "value": "TaliyahE"
   },
   {
     "path": "$.HeroMap.1073741999.E.Icon",
     "type": "string",
-    "value": "ASSETS/Characters/Diana/HUD/Icons2D/Diana_E_FasterThanLight.dds"
+    "value": "ASSETS/Characters/Taliyah/HUD/Icons2D/Taliyah_E.dds"
   },
   {
     "path": "$.HeroMap.1073741999.E.ReadyAt",
@@ -7035,12 +7839,12 @@
   {
     "path": "$.HeroMap.1073741999.R.Name",
     "type": "string",
-    "value": "DianaR"
+    "value": "TaliyahR"
   },
   {
     "path": "$.HeroMap.1073741999.R.Icon",
     "type": "string",
-    "value": "ASSETS/Characters/Diana/HUD/Icons2D/Diana_R_MoonFall.dds"
+    "value": "ASSETS/Characters/Taliyah/HUD/Icons2D/Taliyah_R.dds"
   },
   {
     "path": "$.HeroMap.1073741999.R.ReadyAt",
@@ -7119,7 +7923,7 @@
   {
     "path": "$.HeroMap.1073741999.D.AmmoReadyAt",
     "type": "number",
-    "value": 1.3381554
+    "value": 5.611109
   },
   {
     "path": "$.HeroMap.1073741999.D.AmmoCooldown",
@@ -7149,7 +7953,7 @@
   {
     "path": "$.HeroMap.1073741999.D.Cooldown",
     "type": "number",
-    "value": 13.611792
+    "value": 9.188691
   },
   {
     "path": "$.HeroMap.1073741999.D.IsToggled",
@@ -7213,7 +8017,7 @@
   {
     "path": "$.HeroMap.1073741999.F.Cooldown",
     "type": "number",
-    "value": 13.611792
+    "value": 9.188691
   },
   {
     "path": "$.HeroMap.1073741999.F.IsToggled",
@@ -7223,7 +8027,7 @@
   {
     "path": "$.HeroMap.1073741999.NameAndTagline",
     "type": "string",
-    "value": "iike#7411"
+    "value": "Banedeodo#0406"
   },
   {
     "path": "$.HeroMap.1073741999.NetworkIdHex",
@@ -7233,7 +8037,7 @@
   {
     "path": "$.HeroMap.1073741999.IndexHex",
     "type": "string",
-    "value": "10409"
+    "value": "10408"
   },
   {
     "path": "$.HeroMap.1073741999.TotalAttackDamage",
@@ -7257,7 +8061,7 @@
   {
     "path": "$.HeroMap.1073741999.Info.Name",
     "type": "string",
-    "value": "iike#7411"
+    "value": "Banedeodo#0406"
   },
   {
     "path": "$.HeroMap.1073741999.Info.NetworkId",
@@ -7267,7 +8071,7 @@
   {
     "path": "$.HeroMap.1073741999.Info.Index",
     "type": "number",
-    "value": 66569
+    "value": 66568
   },
   {
     "path": "$.HeroMap.1073741999.Info.Position",
@@ -7276,7 +8080,7 @@
   {
     "path": "$.HeroMap.1073741999.Info.Position.x",
     "type": "number",
-    "value": 662.6285
+    "value": 266.07794
   },
   {
     "path": "$.HeroMap.1073741999.Info.Position.y",
@@ -7286,7 +8090,7 @@
   {
     "path": "$.HeroMap.1073741999.Info.Position.z",
     "type": "number",
-    "value": 285.984
+    "value": 251.09436
   },
   {
     "path": "$.HeroMap.1073741999.Info.Rotation",
@@ -7325,7 +8129,7 @@
   {
     "path": "$.HeroMap.1073741999.Common.Identifier",
     "type": "string",
-    "value": "Diana"
+    "value": "Taliyah"
   },
   {
     "path": "$.HeroMap.1073741999.Common.CurrentAttack",
@@ -7340,12 +8144,12 @@
   {
     "path": "$.HeroMap.1073741999.Common.Health",
     "type": "number",
-    "value": 650
+    "value": 560
   },
   {
     "path": "$.HeroMap.1073741999.Common.MaxHealth",
     "type": "number",
-    "value": 650
+    "value": 560
   },
   {
     "path": "$.HeroMap.1073741999.Common.Armor",
@@ -7380,7 +8184,7 @@
   {
     "path": "$.HeroMap.1073741999.Common.Buffs",
     "type": "array",
-    "length": 18
+    "length": 21
   },
   {
     "path": "$.HeroMap.1073741999.Common.Buffs[0]",
@@ -7444,7 +8248,7 @@
   {
     "path": "$.HeroMap.1073741999.Gold",
     "type": "number",
-    "value": 500
+    "value": 0
   },
   {
     "path": "$.HeroMap.1073741999.TotalGold",
@@ -7464,12 +8268,12 @@
   {
     "path": "$.HeroMap.1073741999.Resource",
     "type": "number",
-    "value": 375
+    "value": 470
   },
   {
     "path": "$.HeroMap.1073741999.MaxResource",
     "type": "number",
-    "value": 375
+    "value": 470
   },
   {
     "path": "$.HeroMap.1073741999.ResourceType",
@@ -7493,12 +8297,12 @@
   {
     "path": "$.HeroMap.1073741999.Spells[0].Name",
     "type": "string",
-    "value": "DianaQ"
+    "value": "TaliyahQ"
   },
   {
     "path": "$.HeroMap.1073741999.Spells[0].Icon",
     "type": "string",
-    "value": "ASSETS/Characters/Diana/HUD/Icons2D/Diana_Q_MoonsEdge.dds"
+    "value": "ASSETS/Characters/Taliyah/HUD/Icons2D/Taliyah_Q.dds"
   },
   {
     "path": "$.HeroMap.1073741999.Spells[0].ReadyAt",
@@ -7553,7 +8357,7 @@
   {
     "path": "$.HeroMap.1073741999.Items",
     "type": "array",
-    "length": 2
+    "length": 4
   },
   {
     "path": "$.HeroMap.1073741999.Items[0]",
@@ -7581,12 +8385,12 @@
   {
     "path": "$.HeroMap.1073741999.Items[0].CombineCost",
     "type": "number",
-    "value": 60
+    "value": 450
   },
   {
     "path": "$.HeroMap.1073741999.Items[0].Id",
     "type": "number",
-    "value": 2001
+    "value": 1102
   },
   {
     "path": "$.HeroMap.1073741999.Items[0].Count",
@@ -7596,17 +8400,17 @@
   {
     "path": "$.HeroMap.1073741999.Items[0].Stacks",
     "type": "number",
-    "value": 0
+    "value": 1
   },
   {
     "path": "$.HeroMap.1073741999.Items[0].Charges",
     "type": "number",
-    "value": 0
+    "value": 35
   },
   {
     "path": "$.HeroMap.1073741999.Items[0].Slot",
     "type": "number",
-    "value": 7
+    "value": 0
   },
   {
     "path": "$.HeroMap.1073741999.Items[0].ItemAssetHashes",
@@ -7616,7 +8420,7 @@
   {
     "path": "$.HeroMap.1073741999.Items[0].ItemAssetHashes[0]",
     "type": "number",
-    "value": 553171444798246200
+    "value": 17629432669606332000
   },
   {
     "path": "$.HeroMap.1073741999.Perks",
@@ -7630,7 +8434,7 @@
   {
     "path": "$.HeroMap.1073741999.Perks[0].Id",
     "type": "number",
-    "value": 8010
+    "value": 8128
   },
   {
     "path": "$.HeroMap.1073741999.Perks[0].Value",
@@ -7703,12 +8507,12 @@
   {
     "path": "$.HeroMap.1073742000.Q.Name",
     "type": "string",
-    "value": "EkkoQ"
+    "value": "SmolderQ"
   },
   {
     "path": "$.HeroMap.1073742000.Q.Icon",
     "type": "string",
-    "value": "ASSETS/Characters/Ekko/HUD/Icons2D/Ekko_Q.dds"
+    "value": "ASSETS/Characters/Smolder/HUD/Icons2D/Icons_Smolder_Q1.dds"
   },
   {
     "path": "$.HeroMap.1073742000.Q.ReadyAt",
@@ -7767,12 +8571,12 @@
   {
     "path": "$.HeroMap.1073742000.W.Name",
     "type": "string",
-    "value": "EkkoW"
+    "value": "SmolderW"
   },
   {
     "path": "$.HeroMap.1073742000.W.Icon",
     "type": "string",
-    "value": "ASSETS/Characters/Ekko/HUD/Icons2D/Ekko_W.dds"
+    "value": "ASSETS/Characters/Smolder/HUD/Icons2D/Icons_Smolder_W.dds"
   },
   {
     "path": "$.HeroMap.1073742000.W.ReadyAt",
@@ -7831,12 +8635,12 @@
   {
     "path": "$.HeroMap.1073742000.E.Name",
     "type": "string",
-    "value": "EkkoE"
+    "value": "SmolderE"
   },
   {
     "path": "$.HeroMap.1073742000.E.Icon",
     "type": "string",
-    "value": "ASSETS/Characters/Ekko/HUD/Icons2D/Ekko_E.dds"
+    "value": "ASSETS/Characters/Smolder/HUD/Icons2D/Icons_Smolder_E.dds"
   },
   {
     "path": "$.HeroMap.1073742000.E.ReadyAt",
@@ -7895,12 +8699,12 @@
   {
     "path": "$.HeroMap.1073742000.R.Name",
     "type": "string",
-    "value": "EkkoR"
+    "value": "SmolderR"
   },
   {
     "path": "$.HeroMap.1073742000.R.Icon",
     "type": "string",
-    "value": "ASSETS/Characters/Ekko/HUD/Icons2D/Ekko_R.dds"
+    "value": "ASSETS/Characters/Smolder/HUD/Icons2D/Icons_Smolder_R.dds"
   },
   {
     "path": "$.HeroMap.1073742000.R.ReadyAt",
@@ -7959,12 +8763,12 @@
   {
     "path": "$.HeroMap.1073742000.D.Name",
     "type": "string",
-    "value": "SummonerFlash"
+    "value": "SummonerTeleport"
   },
   {
     "path": "$.HeroMap.1073742000.D.Icon",
     "type": "string",
-    "value": "Summoner_flash.dds"
+    "value": "Summoner_Teleport_New.dds"
   },
   {
     "path": "$.HeroMap.1073742000.D.ReadyAt",
@@ -8009,7 +8813,7 @@
   {
     "path": "$.HeroMap.1073742000.D.Cooldown",
     "type": "number",
-    "value": 13.611792
+    "value": 9.188691
   },
   {
     "path": "$.HeroMap.1073742000.D.IsToggled",
@@ -8023,12 +8827,12 @@
   {
     "path": "$.HeroMap.1073742000.F.Name",
     "type": "string",
-    "value": "SummonerDot"
+    "value": "SummonerFlash"
   },
   {
     "path": "$.HeroMap.1073742000.F.Icon",
     "type": "string",
-    "value": "SummonerIgnite.dds"
+    "value": "Summoner_flash.dds"
   },
   {
     "path": "$.HeroMap.1073742000.F.ReadyAt",
@@ -8073,7 +8877,7 @@
   {
     "path": "$.HeroMap.1073742000.F.Cooldown",
     "type": "number",
-    "value": 13.611792
+    "value": 9.188691
   },
   {
     "path": "$.HeroMap.1073742000.F.IsToggled",
@@ -8083,7 +8887,7 @@
   {
     "path": "$.HeroMap.1073742000.NameAndTagline",
     "type": "string",
-    "value": "KekePrime#keke7"
+    "value": "Arock#NEET"
   },
   {
     "path": "$.HeroMap.1073742000.NetworkIdHex",
@@ -8093,7 +8897,7 @@
   {
     "path": "$.HeroMap.1073742000.IndexHex",
     "type": "string",
-    "value": "10414"
+    "value": "10412"
   },
   {
     "path": "$.HeroMap.1073742000.TotalAttackDamage",
@@ -8117,7 +8921,7 @@
   {
     "path": "$.HeroMap.1073742000.Info.Name",
     "type": "string",
-    "value": "KekePrime#keke7"
+    "value": "Arock#NEET"
   },
   {
     "path": "$.HeroMap.1073742000.Info.NetworkId",
@@ -8127,7 +8931,7 @@
   {
     "path": "$.HeroMap.1073742000.Info.Index",
     "type": "number",
-    "value": 66580
+    "value": 66578
   },
   {
     "path": "$.HeroMap.1073742000.Info.Position",
@@ -8185,7 +8989,7 @@
   {
     "path": "$.HeroMap.1073742000.Common.Identifier",
     "type": "string",
-    "value": "Ekko"
+    "value": "Smolder"
   },
   {
     "path": "$.HeroMap.1073742000.Common.CurrentAttack",
@@ -8200,12 +9004,12 @@
   {
     "path": "$.HeroMap.1073742000.Common.Health",
     "type": "number",
-    "value": 665
+    "value": 585
   },
   {
     "path": "$.HeroMap.1073742000.Common.MaxHealth",
     "type": "number",
-    "value": 665
+    "value": 585
   },
   {
     "path": "$.HeroMap.1073742000.Common.Armor",
@@ -8240,7 +9044,7 @@
   {
     "path": "$.HeroMap.1073742000.Common.Buffs",
     "type": "array",
-    "length": 17
+    "length": 16
   },
   {
     "path": "$.HeroMap.1073742000.Common.Buffs[0]",
@@ -8324,12 +9128,12 @@
   {
     "path": "$.HeroMap.1073742000.Resource",
     "type": "number",
-    "value": 280
+    "value": 300
   },
   {
     "path": "$.HeroMap.1073742000.MaxResource",
     "type": "number",
-    "value": 280
+    "value": 300
   },
   {
     "path": "$.HeroMap.1073742000.ResourceType",
@@ -8353,12 +9157,12 @@
   {
     "path": "$.HeroMap.1073742000.Spells[0].Name",
     "type": "string",
-    "value": "EkkoQ"
+    "value": "SmolderQ"
   },
   {
     "path": "$.HeroMap.1073742000.Spells[0].Icon",
     "type": "string",
-    "value": "ASSETS/Characters/Ekko/HUD/Icons2D/Ekko_Q.dds"
+    "value": "ASSETS/Characters/Smolder/HUD/Icons2D/Icons_Smolder_Q1.dds"
   },
   {
     "path": "$.HeroMap.1073742000.Spells[0].ReadyAt",
@@ -8490,7 +9294,7 @@
   {
     "path": "$.HeroMap.1073742000.Perks[0].Id",
     "type": "number",
-    "value": 9923
+    "value": 8021
   },
   {
     "path": "$.HeroMap.1073742000.Perks[0].Value",
@@ -8563,12 +9367,12 @@
   {
     "path": "$.HeroMap.1073742001.Q.Name",
     "type": "string",
-    "value": "ZeriQ"
+    "value": "TahmKenchQ"
   },
   {
     "path": "$.HeroMap.1073742001.Q.Icon",
     "type": "string",
-    "value": "ASSETS/Characters/Zeri/HUD/Icons2D/ZeriQ.dds"
+    "value": "ASSETS/Characters/TahmKench/HUD/Icons2D/TahmKenchQ.dds"
   },
   {
     "path": "$.HeroMap.1073742001.Q.ReadyAt",
@@ -8603,7 +9407,7 @@
   {
     "path": "$.HeroMap.1073742001.Q.Level",
     "type": "number",
-    "value": 1
+    "value": 0
   },
   {
     "path": "$.HeroMap.1073742001.Q.AmmoCount",
@@ -8627,12 +9431,12 @@
   {
     "path": "$.HeroMap.1073742001.W.Name",
     "type": "string",
-    "value": "ZeriW"
+    "value": "TahmKenchW"
   },
   {
     "path": "$.HeroMap.1073742001.W.Icon",
     "type": "string",
-    "value": "ASSETS/Characters/Zeri/HUD/Icons2D/ZeriW.dds"
+    "value": "ASSETS/Characters/TahmKench/HUD/Icons2D/TahmKenchW.dds"
   },
   {
     "path": "$.HeroMap.1073742001.W.ReadyAt",
@@ -8691,12 +9495,12 @@
   {
     "path": "$.HeroMap.1073742001.E.Name",
     "type": "string",
-    "value": "ZeriE"
+    "value": "TahmKenchE"
   },
   {
     "path": "$.HeroMap.1073742001.E.Icon",
     "type": "string",
-    "value": "ASSETS/Characters/Zeri/HUD/Icons2D/ZeriE.dds"
+    "value": "ASSETS/Characters/TahmKench/HUD/Icons2D/TahmKenchE.dds"
   },
   {
     "path": "$.HeroMap.1073742001.E.ReadyAt",
@@ -8755,12 +9559,12 @@
   {
     "path": "$.HeroMap.1073742001.R.Name",
     "type": "string",
-    "value": "ZeriR"
+    "value": "TahmKenchRWrapper"
   },
   {
     "path": "$.HeroMap.1073742001.R.Icon",
     "type": "string",
-    "value": "ASSETS/Characters/Zeri/HUD/Icons2D/ZeriR.dds"
+    "value": "ASSETS/Characters/TahmKench/HUD/Icons2D/TahmKenchRWrapper.dds"
   },
   {
     "path": "$.HeroMap.1073742001.R.ReadyAt",
@@ -8869,7 +9673,7 @@
   {
     "path": "$.HeroMap.1073742001.D.Cooldown",
     "type": "number",
-    "value": 13.611792
+    "value": 9.188691
   },
   {
     "path": "$.HeroMap.1073742001.D.IsToggled",
@@ -8883,12 +9687,12 @@
   {
     "path": "$.HeroMap.1073742001.F.Name",
     "type": "string",
-    "value": "SummonerBarrier"
+    "value": "SummonerExhaust"
   },
   {
     "path": "$.HeroMap.1073742001.F.Icon",
     "type": "string",
-    "value": "SummonerBarrier.dds"
+    "value": "Summoner_exhaust.dds"
   },
   {
     "path": "$.HeroMap.1073742001.F.ReadyAt",
@@ -8933,7 +9737,7 @@
   {
     "path": "$.HeroMap.1073742001.F.Cooldown",
     "type": "number",
-    "value": 13.611792
+    "value": 9.188691
   },
   {
     "path": "$.HeroMap.1073742001.F.IsToggled",
@@ -8943,7 +9747,7 @@
   {
     "path": "$.HeroMap.1073742001.NameAndTagline",
     "type": "string",
-    "value": "Ayanneesan#アヤネ"
+    "value": "Manolo Melenas#CAST"
   },
   {
     "path": "$.HeroMap.1073742001.NetworkIdHex",
@@ -8953,7 +9757,7 @@
   {
     "path": "$.HeroMap.1073742001.IndexHex",
     "type": "string",
-    "value": "1041C"
+    "value": "1041A"
   },
   {
     "path": "$.HeroMap.1073742001.TotalAttackDamage",
@@ -8977,7 +9781,7 @@
   {
     "path": "$.HeroMap.1073742001.Info.Name",
     "type": "string",
-    "value": "Ayanneesan#アヤネ"
+    "value": "Manolo Melenas#CAST"
   },
   {
     "path": "$.HeroMap.1073742001.Info.NetworkId",
@@ -8987,7 +9791,7 @@
   {
     "path": "$.HeroMap.1073742001.Info.Index",
     "type": "number",
-    "value": 66588
+    "value": 66586
   },
   {
     "path": "$.HeroMap.1073742001.Info.Position",
@@ -9045,7 +9849,7 @@
   {
     "path": "$.HeroMap.1073742001.Common.Identifier",
     "type": "string",
-    "value": "Zeri"
+    "value": "TahmKench"
   },
   {
     "path": "$.HeroMap.1073742001.Common.CurrentAttack",
@@ -9060,12 +9864,12 @@
   {
     "path": "$.HeroMap.1073742001.Common.Health",
     "type": "number",
-    "value": 610
+    "value": 705
   },
   {
     "path": "$.HeroMap.1073742001.Common.MaxHealth",
     "type": "number",
-    "value": 610
+    "value": 705
   },
   {
     "path": "$.HeroMap.1073742001.Common.Armor",
@@ -9100,7 +9904,7 @@
   {
     "path": "$.HeroMap.1073742001.Common.Buffs",
     "type": "array",
-    "length": 16
+    "length": 13
   },
   {
     "path": "$.HeroMap.1073742001.Common.Buffs[0]",
@@ -9184,12 +9988,12 @@
   {
     "path": "$.HeroMap.1073742001.Resource",
     "type": "number",
-    "value": 250
+    "value": 325
   },
   {
     "path": "$.HeroMap.1073742001.MaxResource",
     "type": "number",
-    "value": 250
+    "value": 325
   },
   {
     "path": "$.HeroMap.1073742001.ResourceType",
@@ -9213,12 +10017,12 @@
   {
     "path": "$.HeroMap.1073742001.Spells[0].Name",
     "type": "string",
-    "value": "ZeriQ"
+    "value": "TahmKenchQ"
   },
   {
     "path": "$.HeroMap.1073742001.Spells[0].Icon",
     "type": "string",
-    "value": "ASSETS/Characters/Zeri/HUD/Icons2D/ZeriQ.dds"
+    "value": "ASSETS/Characters/TahmKench/HUD/Icons2D/TahmKenchQ.dds"
   },
   {
     "path": "$.HeroMap.1073742001.Spells[0].ReadyAt",
@@ -9253,7 +10057,7 @@
   {
     "path": "$.HeroMap.1073742001.Spells[0].Level",
     "type": "number",
-    "value": 1
+    "value": 0
   },
   {
     "path": "$.HeroMap.1073742001.Spells[0].AmmoCount",
@@ -9350,7 +10154,7 @@
   {
     "path": "$.HeroMap.1073742001.Perks[0].Id",
     "type": "number",
-    "value": 8008
+    "value": 8230
   },
   {
     "path": "$.HeroMap.1073742001.Perks[0].Value",
@@ -9423,12 +10227,12 @@
   {
     "path": "$.HeroMap.1073742002.Q.Name",
     "type": "string",
-    "value": "YuumiQ"
+    "value": "LuluQ"
   },
   {
     "path": "$.HeroMap.1073742002.Q.Icon",
     "type": "string",
-    "value": "ASSETS/Characters/Yuumi/HUD/Icons2D/YuumiQ.dds"
+    "value": "ASSETS/Characters/Lulu/HUD/Icons2D/Lulu_Glitterbolt.dds"
   },
   {
     "path": "$.HeroMap.1073742002.Q.ReadyAt",
@@ -9487,12 +10291,12 @@
   {
     "path": "$.HeroMap.1073742002.W.Name",
     "type": "string",
-    "value": "YuumiW"
+    "value": "LuluW"
   },
   {
     "path": "$.HeroMap.1073742002.W.Icon",
     "type": "string",
-    "value": "ASSETS/Characters/Yuumi/HUD/Icons2D/YuumiW.dds"
+    "value": "ASSETS/Characters/Lulu/HUD/Icons2D/Lulu_Whimsy.dds"
   },
   {
     "path": "$.HeroMap.1073742002.W.ReadyAt",
@@ -9527,7 +10331,7 @@
   {
     "path": "$.HeroMap.1073742002.W.Level",
     "type": "number",
-    "value": 1
+    "value": 0
   },
   {
     "path": "$.HeroMap.1073742002.W.AmmoCount",
@@ -9551,12 +10355,12 @@
   {
     "path": "$.HeroMap.1073742002.E.Name",
     "type": "string",
-    "value": "YuumiE"
+    "value": "LuluE"
   },
   {
     "path": "$.HeroMap.1073742002.E.Icon",
     "type": "string",
-    "value": "ASSETS/Characters/Yuumi/HUD/Icons2D/YuumiP.dds"
+    "value": "ASSETS/Characters/Lulu/HUD/Icons2D/Lulu_CommandPix.dds"
   },
   {
     "path": "$.HeroMap.1073742002.E.ReadyAt",
@@ -9591,7 +10395,7 @@
   {
     "path": "$.HeroMap.1073742002.E.Level",
     "type": "number",
-    "value": 0
+    "value": 1
   },
   {
     "path": "$.HeroMap.1073742002.E.AmmoCount",
@@ -9615,12 +10419,12 @@
   {
     "path": "$.HeroMap.1073742002.R.Name",
     "type": "string",
-    "value": "YuumiR"
+    "value": "LuluR"
   },
   {
     "path": "$.HeroMap.1073742002.R.Icon",
     "type": "string",
-    "value": "ASSETS/Characters/Yuumi/HUD/Icons2D/YuumiR.dds"
+    "value": "ASSETS/Characters/Lulu/HUD/Icons2D/Lulu_GiantGrowth.dds"
   },
   {
     "path": "$.HeroMap.1073742002.R.ReadyAt",
@@ -9679,12 +10483,12 @@
   {
     "path": "$.HeroMap.1073742002.D.Name",
     "type": "string",
-    "value": "SummonerExhaust"
+    "value": "SummonerDot"
   },
   {
     "path": "$.HeroMap.1073742002.D.Icon",
     "type": "string",
-    "value": "Summoner_exhaust.dds"
+    "value": "SummonerIgnite.dds"
   },
   {
     "path": "$.HeroMap.1073742002.D.ReadyAt",
@@ -9729,7 +10533,7 @@
   {
     "path": "$.HeroMap.1073742002.D.Cooldown",
     "type": "number",
-    "value": 13.611792
+    "value": 9.188691
   },
   {
     "path": "$.HeroMap.1073742002.D.IsToggled",
@@ -9743,12 +10547,12 @@
   {
     "path": "$.HeroMap.1073742002.F.Name",
     "type": "string",
-    "value": "SummonerHeal"
+    "value": "SummonerFlash"
   },
   {
     "path": "$.HeroMap.1073742002.F.Icon",
     "type": "string",
-    "value": "Summoner_heal.dds"
+    "value": "Summoner_flash.dds"
   },
   {
     "path": "$.HeroMap.1073742002.F.ReadyAt",
@@ -9793,7 +10597,7 @@
   {
     "path": "$.HeroMap.1073742002.F.Cooldown",
     "type": "number",
-    "value": 13.611792
+    "value": 9.188691
   },
   {
     "path": "$.HeroMap.1073742002.F.IsToggled",
@@ -9803,7 +10607,7 @@
   {
     "path": "$.HeroMap.1073742002.NameAndTagline",
     "type": "string",
-    "value": "Isaina#Hada"
+    "value": "SG Coso Amorta#Coso"
   },
   {
     "path": "$.HeroMap.1073742002.NetworkIdHex",
@@ -9813,7 +10617,7 @@
   {
     "path": "$.HeroMap.1073742002.IndexHex",
     "type": "string",
-    "value": "10425"
+    "value": "10423"
   },
   {
     "path": "$.HeroMap.1073742002.TotalAttackDamage",
@@ -9837,7 +10641,7 @@
   {
     "path": "$.HeroMap.1073742002.Info.Name",
     "type": "string",
-    "value": "Isaina#Hada"
+    "value": "SG Coso Amorta#Coso"
   },
   {
     "path": "$.HeroMap.1073742002.Info.NetworkId",
@@ -9847,7 +10651,7 @@
   {
     "path": "$.HeroMap.1073742002.Info.Index",
     "type": "number",
-    "value": 66597
+    "value": 66595
   },
   {
     "path": "$.HeroMap.1073742002.Info.Position",
@@ -9905,7 +10709,7 @@
   {
     "path": "$.HeroMap.1073742002.Common.Identifier",
     "type": "string",
-    "value": "Yuumi"
+    "value": "Lulu"
   },
   {
     "path": "$.HeroMap.1073742002.Common.CurrentAttack",
@@ -9920,12 +10724,12 @@
   {
     "path": "$.HeroMap.1073742002.Common.Health",
     "type": "number",
-    "value": 510
+    "value": 630
   },
   {
     "path": "$.HeroMap.1073742002.Common.MaxHealth",
     "type": "number",
-    "value": 510
+    "value": 630
   },
   {
     "path": "$.HeroMap.1073742002.Common.Armor",
@@ -10024,7 +10828,7 @@
   {
     "path": "$.HeroMap.1073742002.Gold",
     "type": "number",
-    "value": 100
+    "value": 0
   },
   {
     "path": "$.HeroMap.1073742002.TotalGold",
@@ -10044,12 +10848,12 @@
   {
     "path": "$.HeroMap.1073742002.Resource",
     "type": "number",
-    "value": 440
+    "value": 350
   },
   {
     "path": "$.HeroMap.1073742002.MaxResource",
     "type": "number",
-    "value": 440
+    "value": 350
   },
   {
     "path": "$.HeroMap.1073742002.ResourceType",
@@ -10073,12 +10877,12 @@
   {
     "path": "$.HeroMap.1073742002.Spells[0].Name",
     "type": "string",
-    "value": "YuumiQ"
+    "value": "LuluQ"
   },
   {
     "path": "$.HeroMap.1073742002.Spells[0].Icon",
     "type": "string",
-    "value": "ASSETS/Characters/Yuumi/HUD/Icons2D/YuumiQ.dds"
+    "value": "ASSETS/Characters/Lulu/HUD/Icons2D/Lulu_Glitterbolt.dds"
   },
   {
     "path": "$.HeroMap.1073742002.Spells[0].ReadyAt",
@@ -10133,7 +10937,7 @@
   {
     "path": "$.HeroMap.1073742002.Items",
     "type": "array",
-    "length": 3
+    "length": 5
   },
   {
     "path": "$.HeroMap.1073742002.Items[0]",
@@ -10283,12 +11087,12 @@
   {
     "path": "$.HeroMap.1073742003.Q.Name",
     "type": "string",
-    "value": "TahmKenchQ"
+    "value": "MordekaiserQ"
   },
   {
     "path": "$.HeroMap.1073742003.Q.Icon",
     "type": "string",
-    "value": "ASSETS/Characters/TahmKench/HUD/Icons2D/TahmKenchQ.dds"
+    "value": "ASSETS/Characters/Mordekaiser/HUD/Icons2D/MordekaiserQ.dds"
   },
   {
     "path": "$.HeroMap.1073742003.Q.ReadyAt",
@@ -10347,12 +11151,12 @@
   {
     "path": "$.HeroMap.1073742003.W.Name",
     "type": "string",
-    "value": "TahmKenchW"
+    "value": "MordekaiserW"
   },
   {
     "path": "$.HeroMap.1073742003.W.Icon",
     "type": "string",
-    "value": "ASSETS/Characters/TahmKench/HUD/Icons2D/TahmKenchW.dds"
+    "value": "ASSETS/Characters/Mordekaiser/HUD/Icons2D/MordekaiserW.dds"
   },
   {
     "path": "$.HeroMap.1073742003.W.ReadyAt",
@@ -10411,12 +11215,12 @@
   {
     "path": "$.HeroMap.1073742003.E.Name",
     "type": "string",
-    "value": "TahmKenchE"
+    "value": "MordekaiserE"
   },
   {
     "path": "$.HeroMap.1073742003.E.Icon",
     "type": "string",
-    "value": "ASSETS/Characters/TahmKench/HUD/Icons2D/TahmKenchE.dds"
+    "value": "ASSETS/Characters/Mordekaiser/HUD/Icons2D/MordekaiserE.dds"
   },
   {
     "path": "$.HeroMap.1073742003.E.ReadyAt",
@@ -10475,12 +11279,12 @@
   {
     "path": "$.HeroMap.1073742003.R.Name",
     "type": "string",
-    "value": "TahmKenchRWrapper"
+    "value": "MordekaiserR"
   },
   {
     "path": "$.HeroMap.1073742003.R.Icon",
     "type": "string",
-    "value": "ASSETS/Characters/TahmKench/HUD/Icons2D/TahmKenchRWrapper.dds"
+    "value": "ASSETS/Characters/Mordekaiser/HUD/Icons2D/MordekaiserR.dds"
   },
   {
     "path": "$.HeroMap.1073742003.R.ReadyAt",
@@ -10589,7 +11393,7 @@
   {
     "path": "$.HeroMap.1073742003.D.Cooldown",
     "type": "number",
-    "value": 13.611792
+    "value": 9.188691
   },
   {
     "path": "$.HeroMap.1073742003.D.IsToggled",
@@ -10653,7 +11457,7 @@
   {
     "path": "$.HeroMap.1073742003.F.Cooldown",
     "type": "number",
-    "value": 13.611792
+    "value": 9.188691
   },
   {
     "path": "$.HeroMap.1073742003.F.IsToggled",
@@ -10663,7 +11467,7 @@
   {
     "path": "$.HeroMap.1073742003.NameAndTagline",
     "type": "string",
-    "value": "Manolo Melenas#CAST"
+    "value": "MzerSetogaya#Koi"
   },
   {
     "path": "$.HeroMap.1073742003.NetworkIdHex",
@@ -10673,7 +11477,7 @@
   {
     "path": "$.HeroMap.1073742003.IndexHex",
     "type": "string",
-    "value": "1042B"
+    "value": "1042E"
   },
   {
     "path": "$.HeroMap.1073742003.TotalAttackDamage",
@@ -10697,7 +11501,7 @@
   {
     "path": "$.HeroMap.1073742003.Info.Name",
     "type": "string",
-    "value": "Manolo Melenas#CAST"
+    "value": "MzerSetogaya#Koi"
   },
   {
     "path": "$.HeroMap.1073742003.Info.NetworkId",
@@ -10707,7 +11511,7 @@
   {
     "path": "$.HeroMap.1073742003.Info.Index",
     "type": "number",
-    "value": 66603
+    "value": 66606
   },
   {
     "path": "$.HeroMap.1073742003.Info.Position",
@@ -10765,7 +11569,7 @@
   {
     "path": "$.HeroMap.1073742003.Common.Identifier",
     "type": "string",
-    "value": "TahmKench"
+    "value": "Mordekaiser"
   },
   {
     "path": "$.HeroMap.1073742003.Common.CurrentAttack",
@@ -10780,12 +11584,12 @@
   {
     "path": "$.HeroMap.1073742003.Common.Health",
     "type": "number",
-    "value": 705
+    "value": 655
   },
   {
     "path": "$.HeroMap.1073742003.Common.MaxHealth",
     "type": "number",
-    "value": 705
+    "value": 655
   },
   {
     "path": "$.HeroMap.1073742003.Common.Armor",
@@ -10884,7 +11688,7 @@
   {
     "path": "$.HeroMap.1073742003.Gold",
     "type": "number",
-    "value": 500
+    "value": 0
   },
   {
     "path": "$.HeroMap.1073742003.TotalGold",
@@ -10904,17 +11708,17 @@
   {
     "path": "$.HeroMap.1073742003.Resource",
     "type": "number",
-    "value": 325
+    "value": 0
   },
   {
     "path": "$.HeroMap.1073742003.MaxResource",
     "type": "number",
-    "value": 325
+    "value": 100
   },
   {
     "path": "$.HeroMap.1073742003.ResourceType",
     "type": "number",
-    "value": 0
+    "value": 3
   },
   {
     "path": "$.HeroMap.1073742003.VisionScore",
@@ -10933,12 +11737,12 @@
   {
     "path": "$.HeroMap.1073742003.Spells[0].Name",
     "type": "string",
-    "value": "TahmKenchQ"
+    "value": "MordekaiserQ"
   },
   {
     "path": "$.HeroMap.1073742003.Spells[0].Icon",
     "type": "string",
-    "value": "ASSETS/Characters/TahmKench/HUD/Icons2D/TahmKenchQ.dds"
+    "value": "ASSETS/Characters/Mordekaiser/HUD/Icons2D/MordekaiserQ.dds"
   },
   {
     "path": "$.HeroMap.1073742003.Spells[0].ReadyAt",
@@ -10993,7 +11797,7 @@
   {
     "path": "$.HeroMap.1073742003.Items",
     "type": "array",
-    "length": 2
+    "length": 4
   },
   {
     "path": "$.HeroMap.1073742003.Items[0]",
@@ -11021,12 +11825,12 @@
   {
     "path": "$.HeroMap.1073742003.Items[0].CombineCost",
     "type": "number",
-    "value": 60
+    "value": 400
   },
   {
     "path": "$.HeroMap.1073742003.Items[0].Id",
     "type": "number",
-    "value": 2001
+    "value": 1056
   },
   {
     "path": "$.HeroMap.1073742003.Items[0].Count",
@@ -11036,7 +11840,7 @@
   {
     "path": "$.HeroMap.1073742003.Items[0].Stacks",
     "type": "number",
-    "value": 0
+    "value": 1
   },
   {
     "path": "$.HeroMap.1073742003.Items[0].Charges",
@@ -11046,7 +11850,7 @@
   {
     "path": "$.HeroMap.1073742003.Items[0].Slot",
     "type": "number",
-    "value": 7
+    "value": 0
   },
   {
     "path": "$.HeroMap.1073742003.Items[0].ItemAssetHashes",
@@ -11056,7 +11860,7 @@
   {
     "path": "$.HeroMap.1073742003.Items[0].ItemAssetHashes[0]",
     "type": "number",
-    "value": 553171444798246200
+    "value": 5395878754205209000
   },
   {
     "path": "$.HeroMap.1073742003.Perks",
@@ -11070,7 +11874,7 @@
   {
     "path": "$.HeroMap.1073742003.Perks[0].Id",
     "type": "number",
-    "value": 8437
+    "value": 8010
   },
   {
     "path": "$.HeroMap.1073742003.Perks[0].Value",
@@ -11143,12 +11947,12 @@
   {
     "path": "$.HeroMap.1073742004.Q.Name",
     "type": "string",
-    "value": "PowerBall"
+    "value": "AatroxQ"
   },
   {
     "path": "$.HeroMap.1073742004.Q.Icon",
     "type": "string",
-    "value": "ASSETS/Characters/Rammus/HUD/Icons2D/Armordillo_Powerball.dds"
+    "value": "ASSETS/Characters/Aatrox/HUD/Icons2D/Aatrox_Q.dds"
   },
   {
     "path": "$.HeroMap.1073742004.Q.ReadyAt",
@@ -11207,12 +12011,12 @@
   {
     "path": "$.HeroMap.1073742004.W.Name",
     "type": "string",
-    "value": "DefensiveBallCurl"
+    "value": "AatroxW"
   },
   {
     "path": "$.HeroMap.1073742004.W.Icon",
     "type": "string",
-    "value": "ASSETS/Characters/Rammus/HUD/Icons2D/Armordillo_ShellBash.dds"
+    "value": "ASSETS/Characters/Aatrox/HUD/Icons2D/Aatrox_W.dds"
   },
   {
     "path": "$.HeroMap.1073742004.W.ReadyAt",
@@ -11271,12 +12075,12 @@
   {
     "path": "$.HeroMap.1073742004.E.Name",
     "type": "string",
-    "value": "PuncturingTaunt"
+    "value": "AatroxE"
   },
   {
     "path": "$.HeroMap.1073742004.E.Icon",
     "type": "string",
-    "value": "ASSETS/Characters/Rammus/HUD/Icons2D/Armordillo_ScaledPlating.dds"
+    "value": "ASSETS/Characters/Aatrox/HUD/Icons2D/Aatrox_E.dds"
   },
   {
     "path": "$.HeroMap.1073742004.E.ReadyAt",
@@ -11335,12 +12139,12 @@
   {
     "path": "$.HeroMap.1073742004.R.Name",
     "type": "string",
-    "value": "Tremors2"
+    "value": "AatroxR"
   },
   {
     "path": "$.HeroMap.1073742004.R.Icon",
     "type": "string",
-    "value": "ASSETS/Characters/Rammus/HUD/Icons2D/Armordillo_RecklessCharge.dds"
+    "value": "ASSETS/Characters/Aatrox/HUD/Icons2D/Aatrox_R.dds"
   },
   {
     "path": "$.HeroMap.1073742004.R.ReadyAt",
@@ -11449,7 +12253,7 @@
   {
     "path": "$.HeroMap.1073742004.D.Cooldown",
     "type": "number",
-    "value": 13.611792
+    "value": 9.188691
   },
   {
     "path": "$.HeroMap.1073742004.D.IsToggled",
@@ -11483,7 +12287,7 @@
   {
     "path": "$.HeroMap.1073742004.F.AmmoReadyAt",
     "type": "number",
-    "value": 1.3381554
+    "value": 5.611109
   },
   {
     "path": "$.HeroMap.1073742004.F.AmmoCooldown",
@@ -11513,7 +12317,7 @@
   {
     "path": "$.HeroMap.1073742004.F.Cooldown",
     "type": "number",
-    "value": 13.611792
+    "value": 9.188691
   },
   {
     "path": "$.HeroMap.1073742004.F.IsToggled",
@@ -11523,7 +12327,7 @@
   {
     "path": "$.HeroMap.1073742004.NameAndTagline",
     "type": "string",
-    "value": "Rammus"
+    "value": "Satono Diamond#Senk"
   },
   {
     "path": "$.HeroMap.1073742004.NetworkIdHex",
@@ -11533,7 +12337,7 @@
   {
     "path": "$.HeroMap.1073742004.IndexHex",
     "type": "string",
-    "value": "10434"
+    "value": "1043A"
   },
   {
     "path": "$.HeroMap.1073742004.TotalAttackDamage",
@@ -11557,7 +12361,7 @@
   {
     "path": "$.HeroMap.1073742004.Info.Name",
     "type": "string",
-    "value": "Rammus"
+    "value": "Satono Diamond#Senk"
   },
   {
     "path": "$.HeroMap.1073742004.Info.NetworkId",
@@ -11567,7 +12371,7 @@
   {
     "path": "$.HeroMap.1073742004.Info.Index",
     "type": "number",
-    "value": 66612
+    "value": 66618
   },
   {
     "path": "$.HeroMap.1073742004.Info.Position",
@@ -11625,7 +12429,7 @@
   {
     "path": "$.HeroMap.1073742004.Common.Identifier",
     "type": "string",
-    "value": "Rammus"
+    "value": "Aatrox"
   },
   {
     "path": "$.HeroMap.1073742004.Common.CurrentAttack",
@@ -11640,12 +12444,12 @@
   {
     "path": "$.HeroMap.1073742004.Common.Health",
     "type": "number",
-    "value": 665
+    "value": 660
   },
   {
     "path": "$.HeroMap.1073742004.Common.MaxHealth",
     "type": "number",
-    "value": 665
+    "value": 660
   },
   {
     "path": "$.HeroMap.1073742004.Common.Armor",
@@ -11680,7 +12484,7 @@
   {
     "path": "$.HeroMap.1073742004.Common.Buffs",
     "type": "array",
-    "length": 17
+    "length": 22
   },
   {
     "path": "$.HeroMap.1073742004.Common.Buffs[0]",
@@ -11764,17 +12568,17 @@
   {
     "path": "$.HeroMap.1073742004.Resource",
     "type": "number",
-    "value": 310
+    "value": 0
   },
   {
     "path": "$.HeroMap.1073742004.MaxResource",
     "type": "number",
-    "value": 310
+    "value": 0
   },
   {
     "path": "$.HeroMap.1073742004.ResourceType",
     "type": "number",
-    "value": 0
+    "value": 10
   },
   {
     "path": "$.HeroMap.1073742004.VisionScore",
@@ -11793,12 +12597,12 @@
   {
     "path": "$.HeroMap.1073742004.Spells[0].Name",
     "type": "string",
-    "value": "PowerBall"
+    "value": "AatroxQ"
   },
   {
     "path": "$.HeroMap.1073742004.Spells[0].Icon",
     "type": "string",
-    "value": "ASSETS/Characters/Rammus/HUD/Icons2D/Armordillo_Powerball.dds"
+    "value": "ASSETS/Characters/Aatrox/HUD/Icons2D/Aatrox_Q.dds"
   },
   {
     "path": "$.HeroMap.1073742004.Spells[0].ReadyAt",
@@ -11930,7 +12734,7 @@
   {
     "path": "$.HeroMap.1073742004.Perks[0].Id",
     "type": "number",
-    "value": 8439
+    "value": 8010
   },
   {
     "path": "$.HeroMap.1073742004.Perks[0].Value",
@@ -12003,12 +12807,12 @@
   {
     "path": "$.HeroMap.1073742005.Q.Name",
     "type": "string",
-    "value": "AkaliQ"
+    "value": "RyzeQWrapper"
   },
   {
     "path": "$.HeroMap.1073742005.Q.Icon",
     "type": "string",
-    "value": "ASSETS/Characters/Akali/HUD/Icons2D/Akali_Q.dds"
+    "value": "ASSETS/Characters/Ryze/HUD/Icons2D/Ryze_Q.dds"
   },
   {
     "path": "$.HeroMap.1073742005.Q.ReadyAt",
@@ -12067,12 +12871,12 @@
   {
     "path": "$.HeroMap.1073742005.W.Name",
     "type": "string",
-    "value": "AkaliW"
+    "value": "RyzeW"
   },
   {
     "path": "$.HeroMap.1073742005.W.Icon",
     "type": "string",
-    "value": "ASSETS/Characters/Akali/HUD/Icons2D/Akali_W.dds"
+    "value": "ASSETS/Characters/Ryze/HUD/Icons2D/Ryze_W.dds"
   },
   {
     "path": "$.HeroMap.1073742005.W.ReadyAt",
@@ -12131,12 +12935,12 @@
   {
     "path": "$.HeroMap.1073742005.E.Name",
     "type": "string",
-    "value": "AkaliE"
+    "value": "RyzeE"
   },
   {
     "path": "$.HeroMap.1073742005.E.Icon",
     "type": "string",
-    "value": "ASSETS/Characters/Akali/HUD/Icons2D/Akali_E.dds"
+    "value": "ASSETS/Characters/Ryze/HUD/Icons2D/Ryze_E.dds"
   },
   {
     "path": "$.HeroMap.1073742005.E.ReadyAt",
@@ -12195,12 +12999,12 @@
   {
     "path": "$.HeroMap.1073742005.R.Name",
     "type": "string",
-    "value": "AkaliR"
+    "value": "RyzeR"
   },
   {
     "path": "$.HeroMap.1073742005.R.Icon",
     "type": "string",
-    "value": "ASSETS/Characters/Akali/HUD/Icons2D/Akali_R.dds"
+    "value": "ASSETS/Characters/Ryze/HUD/Icons2D/Ryze_R.dds"
   },
   {
     "path": "$.HeroMap.1073742005.R.ReadyAt",
@@ -12309,7 +13113,7 @@
   {
     "path": "$.HeroMap.1073742005.D.Cooldown",
     "type": "number",
-    "value": 13.611792
+    "value": 9.188691
   },
   {
     "path": "$.HeroMap.1073742005.D.IsToggled",
@@ -12323,12 +13127,12 @@
   {
     "path": "$.HeroMap.1073742005.F.Name",
     "type": "string",
-    "value": "SummonerDot"
+    "value": "SummonerFlash"
   },
   {
     "path": "$.HeroMap.1073742005.F.Icon",
     "type": "string",
-    "value": "SummonerIgnite.dds"
+    "value": "Summoner_flash.dds"
   },
   {
     "path": "$.HeroMap.1073742005.F.ReadyAt",
@@ -12373,7 +13177,7 @@
   {
     "path": "$.HeroMap.1073742005.F.Cooldown",
     "type": "number",
-    "value": 13.611792
+    "value": 9.188691
   },
   {
     "path": "$.HeroMap.1073742005.F.IsToggled",
@@ -12383,7 +13187,7 @@
   {
     "path": "$.HeroMap.1073742005.NameAndTagline",
     "type": "string",
-    "value": "sheep king#izuku"
+    "value": "Mejiro McQueen#McQ"
   },
   {
     "path": "$.HeroMap.1073742005.NetworkIdHex",
@@ -12393,7 +13197,7 @@
   {
     "path": "$.HeroMap.1073742005.IndexHex",
     "type": "string",
-    "value": "1043C"
+    "value": "10441"
   },
   {
     "path": "$.HeroMap.1073742005.TotalAttackDamage",
@@ -12417,7 +13221,7 @@
   {
     "path": "$.HeroMap.1073742005.Info.Name",
     "type": "string",
-    "value": "sheep king#izuku"
+    "value": "Mejiro McQueen#McQ"
   },
   {
     "path": "$.HeroMap.1073742005.Info.NetworkId",
@@ -12427,7 +13231,7 @@
   {
     "path": "$.HeroMap.1073742005.Info.Index",
     "type": "number",
-    "value": 66620
+    "value": 66625
   },
   {
     "path": "$.HeroMap.1073742005.Info.Position",
@@ -12485,7 +13289,7 @@
   {
     "path": "$.HeroMap.1073742005.Common.Identifier",
     "type": "string",
-    "value": "Akali"
+    "value": "Ryze"
   },
   {
     "path": "$.HeroMap.1073742005.Common.CurrentAttack",
@@ -12500,12 +13304,12 @@
   {
     "path": "$.HeroMap.1073742005.Common.Health",
     "type": "number",
-    "value": 610
+    "value": 630
   },
   {
     "path": "$.HeroMap.1073742005.Common.MaxHealth",
     "type": "number",
-    "value": 610
+    "value": 630
   },
   {
     "path": "$.HeroMap.1073742005.Common.Armor",
@@ -12624,17 +13428,17 @@
   {
     "path": "$.HeroMap.1073742005.Resource",
     "type": "number",
-    "value": 200
+    "value": 302.69998
   },
   {
     "path": "$.HeroMap.1073742005.MaxResource",
     "type": "number",
-    "value": 200
+    "value": 302.69998
   },
   {
     "path": "$.HeroMap.1073742005.ResourceType",
     "type": "number",
-    "value": 1
+    "value": 0
   },
   {
     "path": "$.HeroMap.1073742005.VisionScore",
@@ -12653,12 +13457,12 @@
   {
     "path": "$.HeroMap.1073742005.Spells[0].Name",
     "type": "string",
-    "value": "AkaliQ"
+    "value": "RyzeQWrapper"
   },
   {
     "path": "$.HeroMap.1073742005.Spells[0].Icon",
     "type": "string",
-    "value": "ASSETS/Characters/Akali/HUD/Icons2D/Akali_Q.dds"
+    "value": "ASSETS/Characters/Ryze/HUD/Icons2D/Ryze_Q.dds"
   },
   {
     "path": "$.HeroMap.1073742005.Spells[0].ReadyAt",
@@ -12790,7 +13594,7 @@
   {
     "path": "$.HeroMap.1073742005.Perks[0].Id",
     "type": "number",
-    "value": 8112
+    "value": 8230
   },
   {
     "path": "$.HeroMap.1073742005.Perks[0].Value",
@@ -12863,12 +13667,12 @@
   {
     "path": "$.HeroMap.1073742006.Q.Name",
     "type": "string",
-    "value": "KalistaMysticShot"
+    "value": "VayneTumble"
   },
   {
     "path": "$.HeroMap.1073742006.Q.Icon",
     "type": "string",
-    "value": "ASSETS/Characters/Kalista/HUD/Icons2D/Kalista_Q.dds"
+    "value": "ASSETS/Characters/Vayne/HUD/Icons2D/Vayne_Q.dds"
   },
   {
     "path": "$.HeroMap.1073742006.Q.ReadyAt",
@@ -12927,12 +13731,12 @@
   {
     "path": "$.HeroMap.1073742006.W.Name",
     "type": "string",
-    "value": "KalistaW"
+    "value": "VayneSilveredBolts"
   },
   {
     "path": "$.HeroMap.1073742006.W.Icon",
     "type": "string",
-    "value": "ASSETS/Characters/Kalista/HUD/Icons2D/Kalista_W.dds"
+    "value": "ASSETS/Characters/Vayne/HUD/Icons2D/Vayne_W.dds"
   },
   {
     "path": "$.HeroMap.1073742006.W.ReadyAt",
@@ -12947,12 +13751,12 @@
   {
     "path": "$.HeroMap.1073742006.W.AmmoReadyAt",
     "type": "number",
-    "value": 100.215126
+    "value": 0
   },
   {
     "path": "$.HeroMap.1073742006.W.AmmoCooldown",
     "type": "number",
-    "value": 100
+    "value": 0
   },
   {
     "path": "$.HeroMap.1073742006.W.InitAtTime",
@@ -12972,7 +13776,7 @@
   {
     "path": "$.HeroMap.1073742006.W.AmmoCount",
     "type": "number",
-    "value": 1
+    "value": 0
   },
   {
     "path": "$.HeroMap.1073742006.W.Cooldown",
@@ -12991,12 +13795,12 @@
   {
     "path": "$.HeroMap.1073742006.E.Name",
     "type": "string",
-    "value": "KalistaExpungeWrapper"
+    "value": "VayneCondemn"
   },
   {
     "path": "$.HeroMap.1073742006.E.Icon",
     "type": "string",
-    "value": "ASSETS/Characters/Kalista/HUD/Icons2D/Kalista_E.dds"
+    "value": "ASSETS/Characters/Vayne/HUD/Icons2D/Vayne_E.dds"
   },
   {
     "path": "$.HeroMap.1073742006.E.ReadyAt",
@@ -13055,12 +13859,12 @@
   {
     "path": "$.HeroMap.1073742006.R.Name",
     "type": "string",
-    "value": "KalistaRx"
+    "value": "VayneInquisition"
   },
   {
     "path": "$.HeroMap.1073742006.R.Icon",
     "type": "string",
-    "value": "ASSETS/Characters/Kalista/HUD/Icons2D/Kalista_R.dds"
+    "value": "ASSETS/Characters/Vayne/HUD/Icons2D/Vayne_R.dds"
   },
   {
     "path": "$.HeroMap.1073742006.R.ReadyAt",
@@ -13169,7 +13973,7 @@
   {
     "path": "$.HeroMap.1073742006.D.Cooldown",
     "type": "number",
-    "value": 13.611792
+    "value": 9.188691
   },
   {
     "path": "$.HeroMap.1073742006.D.IsToggled",
@@ -13233,7 +14037,7 @@
   {
     "path": "$.HeroMap.1073742006.F.Cooldown",
     "type": "number",
-    "value": 13.611792
+    "value": 9.188691
   },
   {
     "path": "$.HeroMap.1073742006.F.IsToggled",
@@ -13243,7 +14047,7 @@
   {
     "path": "$.HeroMap.1073742006.NameAndTagline",
     "type": "string",
-    "value": "Banedeodo#0406"
+    "value": "Frisnacks#kev"
   },
   {
     "path": "$.HeroMap.1073742006.NetworkIdHex",
@@ -13253,7 +14057,7 @@
   {
     "path": "$.HeroMap.1073742006.IndexHex",
     "type": "string",
-    "value": "10442"
+    "value": "1044A"
   },
   {
     "path": "$.HeroMap.1073742006.TotalAttackDamage",
@@ -13277,7 +14081,7 @@
   {
     "path": "$.HeroMap.1073742006.Info.Name",
     "type": "string",
-    "value": "Banedeodo#0406"
+    "value": "Frisnacks#kev"
   },
   {
     "path": "$.HeroMap.1073742006.Info.NetworkId",
@@ -13287,7 +14091,7 @@
   {
     "path": "$.HeroMap.1073742006.Info.Index",
     "type": "number",
-    "value": 66626
+    "value": 66634
   },
   {
     "path": "$.HeroMap.1073742006.Info.Position",
@@ -13345,7 +14149,7 @@
   {
     "path": "$.HeroMap.1073742006.Common.Identifier",
     "type": "string",
-    "value": "Kalista"
+    "value": "Vayne"
   },
   {
     "path": "$.HeroMap.1073742006.Common.CurrentAttack",
@@ -13360,12 +14164,12 @@
   {
     "path": "$.HeroMap.1073742006.Common.Health",
     "type": "number",
-    "value": 625
+    "value": 590
   },
   {
     "path": "$.HeroMap.1073742006.Common.MaxHealth",
     "type": "number",
-    "value": 625
+    "value": 590
   },
   {
     "path": "$.HeroMap.1073742006.Common.Armor",
@@ -13400,7 +14204,7 @@
   {
     "path": "$.HeroMap.1073742006.Common.Buffs",
     "type": "array",
-    "length": 12
+    "length": 14
   },
   {
     "path": "$.HeroMap.1073742006.Common.Buffs[0]",
@@ -13484,12 +14288,12 @@
   {
     "path": "$.HeroMap.1073742006.Resource",
     "type": "number",
-    "value": 300
+    "value": 232
   },
   {
     "path": "$.HeroMap.1073742006.MaxResource",
     "type": "number",
-    "value": 300
+    "value": 232
   },
   {
     "path": "$.HeroMap.1073742006.ResourceType",
@@ -13513,12 +14317,12 @@
   {
     "path": "$.HeroMap.1073742006.Spells[0].Name",
     "type": "string",
-    "value": "KalistaMysticShot"
+    "value": "VayneTumble"
   },
   {
     "path": "$.HeroMap.1073742006.Spells[0].Icon",
     "type": "string",
-    "value": "ASSETS/Characters/Kalista/HUD/Icons2D/Kalista_Q.dds"
+    "value": "ASSETS/Characters/Vayne/HUD/Icons2D/Vayne_Q.dds"
   },
   {
     "path": "$.HeroMap.1073742006.Spells[0].ReadyAt",
@@ -13573,7 +14377,7 @@
   {
     "path": "$.HeroMap.1073742006.Items",
     "type": "array",
-    "length": 3
+    "length": 2
   },
   {
     "path": "$.HeroMap.1073742006.Items[0]",
@@ -13601,12 +14405,12 @@
   {
     "path": "$.HeroMap.1073742006.Items[0].CombineCost",
     "type": "number",
-    "value": 0
+    "value": 60
   },
   {
     "path": "$.HeroMap.1073742006.Items[0].Id",
     "type": "number",
-    "value": 3599
+    "value": 2001
   },
   {
     "path": "$.HeroMap.1073742006.Items[0].Count",
@@ -13616,7 +14420,7 @@
   {
     "path": "$.HeroMap.1073742006.Items[0].Stacks",
     "type": "number",
-    "value": 1
+    "value": 0
   },
   {
     "path": "$.HeroMap.1073742006.Items[0].Charges",
@@ -13626,7 +14430,7 @@
   {
     "path": "$.HeroMap.1073742006.Items[0].Slot",
     "type": "number",
-    "value": 5
+    "value": 7
   },
   {
     "path": "$.HeroMap.1073742006.Items[0].ItemAssetHashes",
@@ -13636,7 +14440,7 @@
   {
     "path": "$.HeroMap.1073742006.Items[0].ItemAssetHashes[0]",
     "type": "number",
-    "value": 3877333443036414500
+    "value": 553171444798246200
   },
   {
     "path": "$.HeroMap.1073742006.Perks",
@@ -13723,12 +14527,12 @@
   {
     "path": "$.HeroMap.1073742007.Q.Name",
     "type": "string",
-    "value": "ThreshQ"
+    "value": "SeraphineQ"
   },
   {
     "path": "$.HeroMap.1073742007.Q.Icon",
     "type": "string",
-    "value": "ASSETS/Characters/Thresh/HUD/Icons2D/Thresh_Q.dds"
+    "value": "ASSETS/Characters/Seraphine/HUD/Icons2D/Seraphine_Q1.dds"
   },
   {
     "path": "$.HeroMap.1073742007.Q.ReadyAt",
@@ -13787,12 +14591,12 @@
   {
     "path": "$.HeroMap.1073742007.W.Name",
     "type": "string",
-    "value": "ThreshW"
+    "value": "SeraphineW"
   },
   {
     "path": "$.HeroMap.1073742007.W.Icon",
     "type": "string",
-    "value": "ASSETS/Characters/Thresh/HUD/Icons2D/Thresh_W.dds"
+    "value": "ASSETS/Characters/Seraphine/HUD/Icons2D/Seraphine_W1.dds"
   },
   {
     "path": "$.HeroMap.1073742007.W.ReadyAt",
@@ -13851,12 +14655,12 @@
   {
     "path": "$.HeroMap.1073742007.E.Name",
     "type": "string",
-    "value": "ThreshE"
+    "value": "SeraphineE"
   },
   {
     "path": "$.HeroMap.1073742007.E.Icon",
     "type": "string",
-    "value": "ASSETS/Characters/Thresh/HUD/Icons2D/Thresh_E.dds"
+    "value": "ASSETS/Characters/Seraphine/HUD/Icons2D/Seraphine_E1.dds"
   },
   {
     "path": "$.HeroMap.1073742007.E.ReadyAt",
@@ -13915,12 +14719,12 @@
   {
     "path": "$.HeroMap.1073742007.R.Name",
     "type": "string",
-    "value": "ThreshRPenta"
+    "value": "SeraphineR"
   },
   {
     "path": "$.HeroMap.1073742007.R.Icon",
     "type": "string",
-    "value": "ASSETS/Characters/Thresh/HUD/Icons2D/Thresh_R.dds"
+    "value": "ASSETS/Characters/Seraphine/HUD/Icons2D/Seraphine_R.dds"
   },
   {
     "path": "$.HeroMap.1073742007.R.ReadyAt",
@@ -13979,12 +14783,12 @@
   {
     "path": "$.HeroMap.1073742007.D.Name",
     "type": "string",
-    "value": "SummonerDot"
+    "value": "SummonerHeal"
   },
   {
     "path": "$.HeroMap.1073742007.D.Icon",
     "type": "string",
-    "value": "SummonerIgnite.dds"
+    "value": "Summoner_heal.dds"
   },
   {
     "path": "$.HeroMap.1073742007.D.ReadyAt",
@@ -14029,7 +14833,7 @@
   {
     "path": "$.HeroMap.1073742007.D.Cooldown",
     "type": "number",
-    "value": 13.611792
+    "value": 9.188691
   },
   {
     "path": "$.HeroMap.1073742007.D.IsToggled",
@@ -14093,7 +14897,7 @@
   {
     "path": "$.HeroMap.1073742007.F.Cooldown",
     "type": "number",
-    "value": 13.611792
+    "value": 9.188691
   },
   {
     "path": "$.HeroMap.1073742007.F.IsToggled",
@@ -14103,7 +14907,7 @@
   {
     "path": "$.HeroMap.1073742007.NameAndTagline",
     "type": "string",
-    "value": "SG Coso Amorta#Coso"
+    "value": "Honeymoon#NYX"
   },
   {
     "path": "$.HeroMap.1073742007.NetworkIdHex",
@@ -14113,7 +14917,7 @@
   {
     "path": "$.HeroMap.1073742007.IndexHex",
     "type": "string",
-    "value": "1044A"
+    "value": "10452"
   },
   {
     "path": "$.HeroMap.1073742007.TotalAttackDamage",
@@ -14137,7 +14941,7 @@
   {
     "path": "$.HeroMap.1073742007.Info.Name",
     "type": "string",
-    "value": "SG Coso Amorta#Coso"
+    "value": "Honeymoon#NYX"
   },
   {
     "path": "$.HeroMap.1073742007.Info.NetworkId",
@@ -14147,7 +14951,7 @@
   {
     "path": "$.HeroMap.1073742007.Info.Index",
     "type": "number",
-    "value": 66634
+    "value": 66642
   },
   {
     "path": "$.HeroMap.1073742007.Info.Position",
@@ -14205,7 +15009,7 @@
   {
     "path": "$.HeroMap.1073742007.Common.Identifier",
     "type": "string",
-    "value": "Thresh"
+    "value": "Seraphine"
   },
   {
     "path": "$.HeroMap.1073742007.Common.CurrentAttack",
@@ -14220,12 +15024,12 @@
   {
     "path": "$.HeroMap.1073742007.Common.Health",
     "type": "number",
-    "value": 695
+    "value": 635
   },
   {
     "path": "$.HeroMap.1073742007.Common.MaxHealth",
     "type": "number",
-    "value": 695
+    "value": 635
   },
   {
     "path": "$.HeroMap.1073742007.Common.Armor",
@@ -14260,7 +15064,7 @@
   {
     "path": "$.HeroMap.1073742007.Common.Buffs",
     "type": "array",
-    "length": 21
+    "length": 23
   },
   {
     "path": "$.HeroMap.1073742007.Common.Buffs[0]",
@@ -14344,12 +15148,12 @@
   {
     "path": "$.HeroMap.1073742007.Resource",
     "type": "number",
-    "value": 274
+    "value": 360
   },
   {
     "path": "$.HeroMap.1073742007.MaxResource",
     "type": "number",
-    "value": 274
+    "value": 360
   },
   {
     "path": "$.HeroMap.1073742007.ResourceType",
@@ -14373,12 +15177,12 @@
   {
     "path": "$.HeroMap.1073742007.Spells[0].Name",
     "type": "string",
-    "value": "ThreshQ"
+    "value": "SeraphineQ"
   },
   {
     "path": "$.HeroMap.1073742007.Spells[0].Icon",
     "type": "string",
-    "value": "ASSETS/Characters/Thresh/HUD/Icons2D/Thresh_Q.dds"
+    "value": "ASSETS/Characters/Seraphine/HUD/Icons2D/Seraphine_Q1.dds"
   },
   {
     "path": "$.HeroMap.1073742007.Spells[0].ReadyAt",
@@ -14510,7 +15314,7 @@
   {
     "path": "$.HeroMap.1073742007.Perks[0].Id",
     "type": "number",
-    "value": 8351
+    "value": 8214
   },
   {
     "path": "$.HeroMap.1073742007.Perks[0].Value",
@@ -14560,7 +15364,7 @@
   {
     "path": "$.GameTime",
     "type": "number",
-    "value": 1.3882089
+    "value": 5.811309
   },
   {
     "path": "$.PlaybackSpeed",
@@ -14570,7 +15374,7 @@
   {
     "path": "$.UtcTime",
     "type": "number",
-    "value": 1794174264457
+    "value": 1794247636334
   },
   {
     "path": "$.Camera",
@@ -14681,12 +15485,12 @@
   {
     "path": "$.Heroes[0].Q.Name",
     "type": "string",
-    "value": "SettQ"
+    "value": "ZaahenQ"
   },
   {
     "path": "$.Heroes[0].Q.Icon",
     "type": "string",
-    "value": "ASSETS/Characters/Sett/HUD/Icons2D/Sett_Q.dds"
+    "value": "ASSETS/Characters/Zaahen/HUD/Icons2D/ZaahenQ.dds"
   },
   {
     "path": "$.Heroes[0].Q.ReadyAt",
@@ -14745,12 +15549,12 @@
   {
     "path": "$.Heroes[0].W.Name",
     "type": "string",
-    "value": "SettW"
+    "value": "ZaahenW"
   },
   {
     "path": "$.Heroes[0].W.Icon",
     "type": "string",
-    "value": "ASSETS/Characters/Sett/HUD/Icons2D/Sett_W.dds"
+    "value": "ASSETS/Characters/Zaahen/HUD/Icons2D/ZaahenW.dds"
   },
   {
     "path": "$.Heroes[0].W.ReadyAt",
@@ -14809,12 +15613,12 @@
   {
     "path": "$.Heroes[0].E.Name",
     "type": "string",
-    "value": "SettE"
+    "value": "ZaahenE"
   },
   {
     "path": "$.Heroes[0].E.Icon",
     "type": "string",
-    "value": "ASSETS/Characters/Sett/HUD/Icons2D/Sett_E.dds"
+    "value": "ASSETS/Characters/Zaahen/HUD/Icons2D/ZaahenE.dds"
   },
   {
     "path": "$.Heroes[0].E.ReadyAt",
@@ -14873,12 +15677,12 @@
   {
     "path": "$.Heroes[0].R.Name",
     "type": "string",
-    "value": "SettR"
+    "value": "ZaahenR"
   },
   {
     "path": "$.Heroes[0].R.Icon",
     "type": "string",
-    "value": "ASSETS/Characters/Sett/HUD/Icons2D/Sett_R.dds"
+    "value": "ASSETS/Characters/Zaahen/HUD/Icons2D/ZaahenR.dds"
   },
   {
     "path": "$.Heroes[0].R.ReadyAt",
@@ -14987,7 +15791,7 @@
   {
     "path": "$.Heroes[0].D.Cooldown",
     "type": "number",
-    "value": 13.611792
+    "value": 9.188691
   },
   {
     "path": "$.Heroes[0].D.IsToggled",
@@ -15051,7 +15855,7 @@
   {
     "path": "$.Heroes[0].F.Cooldown",
     "type": "number",
-    "value": 13.611792
+    "value": 9.188691
   },
   {
     "path": "$.Heroes[0].F.IsToggled",
@@ -15061,7 +15865,7 @@
   {
     "path": "$.Heroes[0].NameAndTagline",
     "type": "string",
-    "value": "Miticaldos#LAN"
+    "value": "Guerra2009#LAN"
   },
   {
     "path": "$.Heroes[0].NetworkIdHex",
@@ -15095,7 +15899,7 @@
   {
     "path": "$.Heroes[0].Info.Name",
     "type": "string",
-    "value": "Miticaldos#LAN"
+    "value": "Guerra2009#LAN"
   },
   {
     "path": "$.Heroes[0].Info.NetworkId",
@@ -15114,17 +15918,17 @@
   {
     "path": "$.Heroes[0].Info.Position.x",
     "type": "number",
-    "value": 603.6285
+    "value": 422
   },
   {
     "path": "$.Heroes[0].Info.Position.y",
     "type": "number",
-    "value": 183.5748
+    "value": 182.21703
   },
   {
     "path": "$.Heroes[0].Info.Position.z",
     "type": "number",
-    "value": 611.984
+    "value": 480
   },
   {
     "path": "$.Heroes[0].Info.Rotation",
@@ -15163,7 +15967,7 @@
   {
     "path": "$.Heroes[0].Common.Identifier",
     "type": "string",
-    "value": "Sett"
+    "value": "Zaahen"
   },
   {
     "path": "$.Heroes[0].Common.CurrentAttack",
@@ -15178,12 +15982,12 @@
   {
     "path": "$.Heroes[0].Common.Health",
     "type": "number",
-    "value": 680
+    "value": 650
   },
   {
     "path": "$.Heroes[0].Common.MaxHealth",
     "type": "number",
-    "value": 680
+    "value": 650
   },
   {
     "path": "$.Heroes[0].Common.Armor",
@@ -15302,17 +16106,17 @@
   {
     "path": "$.Heroes[0].Resource",
     "type": "number",
-    "value": 0
+    "value": 350
   },
   {
     "path": "$.Heroes[0].MaxResource",
     "type": "number",
-    "value": 335
+    "value": 350
   },
   {
     "path": "$.Heroes[0].ResourceType",
     "type": "number",
-    "value": 8
+    "value": 0
   },
   {
     "path": "$.Heroes[0].VisionScore",
@@ -15331,12 +16135,12 @@
   {
     "path": "$.Heroes[0].Spells[0].Name",
     "type": "string",
-    "value": "SettQ"
+    "value": "ZaahenQ"
   },
   {
     "path": "$.Heroes[0].Spells[0].Icon",
     "type": "string",
-    "value": "ASSETS/Characters/Sett/HUD/Icons2D/Sett_Q.dds"
+    "value": "ASSETS/Characters/Zaahen/HUD/Icons2D/ZaahenQ.dds"
   },
   {
     "path": "$.Heroes[0].Spells[0].ReadyAt",
@@ -15518,7 +16322,7 @@
   {
     "path": "$.Minions",
     "type": "array",
-    "length": 26
+    "length": 30
   },
   {
     "path": "$.Minions[0]",
@@ -15561,22 +16365,22 @@
   {
     "path": "$.Minions[0].Info.IsNeutral",
     "type": "boolean",
-    "value": true
+    "value": false
   },
   {
     "path": "$.Minions[0].Info.Name",
     "type": "string",
-    "value": "HiddenMinion"
+    "value": "RobotBuddy"
   },
   {
     "path": "$.Minions[0].Info.NetworkId",
     "type": "number",
-    "value": 1073742343
+    "value": 1073742351
   },
   {
     "path": "$.Minions[0].Info.Index",
     "type": "number",
-    "value": 197790
+    "value": 132162
   },
   {
     "path": "$.Minions[0].Info.Position",
@@ -15585,17 +16389,17 @@
   {
     "path": "$.Minions[0].Info.Position.x",
     "type": "number",
-    "value": 6141
+    "value": 261.5647
   },
   {
     "path": "$.Minions[0].Info.Position.y",
     "type": "number",
-    "value": 50.523113
+    "value": 183.5748
   },
   {
     "path": "$.Minions[0].Info.Position.z",
     "type": "number",
-    "value": 3402
+    "value": 746.8803
   },
   {
     "path": "$.Minions[0].Info.Rotation",
@@ -15605,7 +16409,7 @@
   {
     "path": "$.Minions[0].Info.Team",
     "type": "number",
-    "value": 3
+    "value": 1
   },
   {
     "path": "$.Minions[0].Common",
@@ -15634,7 +16438,7 @@
   {
     "path": "$.Minions[0].Common.Identifier",
     "type": "string",
-    "value": "TestCubeRenderNoFOW"
+    "value": "LuluFaerie"
   },
   {
     "path": "$.Minions[0].Common.CurrentAttack",
@@ -15649,12 +16453,12 @@
   {
     "path": "$.Minions[0].Common.Health",
     "type": "number",
-    "value": 100
+    "value": 300
   },
   {
     "path": "$.Minions[0].Common.MaxHealth",
     "type": "number",
-    "value": 100
+    "value": 300
   },
   {
     "path": "$.Minions[0].Common.Armor",
@@ -15752,7 +16556,7 @@
   {
     "path": "$.Turrets[0].Info.Index",
     "type": "number",
-    "value": 66659
+    "value": 66668
   },
   {
     "path": "$.Turrets[0].Info.Position",
@@ -15928,7 +16732,7 @@
   {
     "path": "$.BarracksDampeners[0].Info.Index",
     "type": "number",
-    "value": 66663
+    "value": 66672
   },
   {
     "path": "$.BarracksDampeners[0].Info.Position",
@@ -16005,7 +16809,7 @@
   {
     "path": "$.Hqs[0].Info.Index",
     "type": "number",
-    "value": 66764
+    "value": 66773
   },
   {
     "path": "$.Hqs[0].Info.Position",
@@ -16068,17 +16872,17 @@
   {
     "path": "$.ParticleEmitters[0].index",
     "type": "number",
-    "value": 132265
+    "value": 132248
   },
   {
     "path": "$.ParticleEmitters[0].networkId",
     "type": "number",
-    "value": 1073742344
+    "value": 1073742360
   },
   {
     "path": "$.ParticleEmitters[0].name",
     "type": "string",
-    "value": "DATA/Particles/Dragon_Indicator_Earth.troy"
+    "value": "Dragon_Indicator_Chemtech"
   },
   {
     "path": "$.ParticleEmitters[0].position",
@@ -16107,7 +16911,7 @@
   {
     "path": "$.ParticleEmitters[0].rotation[0]",
     "type": "number",
-    "value": -8.525661e-33
+    "value": -7.4180075e+31
   },
   {
     "path": "$.Misc",
@@ -16117,6 +16921,6 @@
   {
     "path": "$.GameId",
     "type": "string",
-    "value": "LA1-1760727003"
+    "value": "LA1-1761164762"
   }
 ]

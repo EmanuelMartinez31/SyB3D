@@ -1,11 +1,11 @@
 {
-  "actualizado": "2026-11-09T21:31:28.885Z",
+  "actualizado": "2026-11-09T22:01:02.746Z",
   "partida": "LA1-1761176969",
   "apiDelJuego": {
     "direccion": "https://127.0.0.1:2999/liveclientdata/playerlist",
-    "responde": true,
-    "error": null,
-    "ultimaLectura": "2026-11-09T21:31:25.895Z",
+    "responde": false,
+    "error": "ECONNREFUSED",
+    "ultimaLectura": "2026-11-09T22:01:01.287Z",
     "jugadoresRecibidos": 10,
     "muestraCruda": [
       {
@@ -31,7 +31,7 @@
         "championName": "Poppy",
         "isBot": false,
         "isDead": false,
-        "level": 2,
+        "level": 1,
         "position": "JUNGLE",
         "rawChampionName": "game_character_displayname_Poppy",
         "rawSkinName": "game_character_skin_displayname_Poppy_4",

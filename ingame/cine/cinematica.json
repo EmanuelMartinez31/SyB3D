@@ -1,0 +1,8 @@
+{
+  "activa": true,
+  "inicioSegundo": 3,
+  "ventanaSegundos": 20,
+  "ocultarBarras": true,
+  "volverDirigida": true,
+  "secuencia": "secuencia-inicio.json"
+}

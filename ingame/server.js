@@ -5,7 +5,12 @@ const fs = require('fs');
 const path = require('path');
 const { WebSocketServer } = require('ws');
 
+// Cinematica de inicio: se lanza sola al segundo configurado de la partida.
+const crearCinematica = require('./cinematica');
+
 module.exports = function setupIngame({ app, port, control }) {
+// Cinematica de inicio (una sola instancia por servidor).
+const cinematica = crearCinematica({ app, log: mensaje => console.log(mensaje) });
 const DRAFT_ORIGIN = process.env.SYB_DRAFT_URL || `http://127.0.0.1:${port}`;
 const DATA_DIR = path.join(__dirname, 'data');
 const LATEST_PATH = path.join(DATA_DIR, 'latest-gameinfo.json');
@@ -1686,6 +1691,7 @@ app.post('/sensor', (req, res) => {
   adapted.sideTeams = draftSync.sideTeams;
 
   latest = normalized;
+  cinematica.actualizar(normalized);
   latestState = adapted;
   sequence = nextSequence;
   lastReceivedAt = receivedAt;
@@ -1929,6 +1935,7 @@ app.use((error, req, res, next) => {
 return {
   wss,
   start() {
+    cinematica.iniciar();
     const draftTimer = setInterval(syncDraftState, 1000);
     draftTimer.unref();
     void syncDraftState();

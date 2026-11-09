@@ -9,168 +9,9 @@
       "IsWardOrPlant": false,
       "Info": {
         "IsNeutral": true,
-        "Name": "DragonSigil",
-        "NetworkId": 1073742247,
-        "Index": 132175,
-        "Position": {
-          "x": 9452,
-          "y": -71.2406,
-          "z": 4778
-        },
-        "Rotation": null,
-        "Team": 3
-      },
-      "Common": {
-        "IsAlive": true,
-        "IsZombie": false,
-        "IsRecalling": false,
-        "IsTargetable": false,
-        "Identifier": "TestCube",
-        "CurrentAttack": "",
-        "Status": 1,
-        "Health": 540,
-        "MaxHealth": 540,
-        "Armor": null,
-        "MagicResist": null,
-        "Level": 1,
-        "AttackSpeedMultiplier": null,
-        "MovementSpeed": null,
-        "DataStack": null,
-        "Buffs": [
-          {
-            "Name": "DragonBuffAir",
-            "StartTime": 0,
-            "EndTime": 25000,
-            "Count": 1,
-            "Type": 0
-          }
-        ],
-        "Animations": null,
-        "SubmeshVisiblityMask": 0,
-        "AttackSpeedBonus": null,
-        "AnimationState": null
-      },
-      "TypeInfo": 0,
-      "Bones": null
-    },
-    {
-      "IsClone": false,
-      "IsLaneMinion": false,
-      "IsEliteMinion": false,
-      "IsEpicMinion": false,
-      "IsJungleMinion": false,
-      "IsWardOrPlant": false,
-      "Info": {
-        "IsNeutral": true,
-        "Name": "Minion_Chaos Red",
-        "NetworkId": 1073742246,
-        "Index": 6292617,
-        "Position": {
-          "x": 7081.869,
-          "y": 56.21793,
-          "z": 10900.547
-        },
-        "Rotation": null,
-        "Team": 3
-      },
-      "Common": {
-        "IsAlive": true,
-        "IsZombie": false,
-        "IsRecalling": false,
-        "IsTargetable": false,
-        "Identifier": "SRU_CampRespawnMarker",
-        "CurrentAttack": "",
-        "Status": 1,
-        "Health": 1000,
-        "MaxHealth": 1000,
-        "Armor": null,
-        "MagicResist": null,
-        "Level": 1,
-        "AttackSpeedMultiplier": null,
-        "MovementSpeed": null,
-        "DataStack": null,
-        "Buffs": [
-          {
-            "Name": "camprespawncountdownvisible",
-            "StartTime": 0.5668405,
-            "EndTime": 60.56684,
-            "Count": 1,
-            "Type": 1
-          }
-        ],
-        "Animations": null,
-        "SubmeshVisiblityMask": 0,
-        "AttackSpeedBonus": null,
-        "AnimationState": null
-      },
-      "TypeInfo": 0,
-      "Bones": null
-    },
-    {
-      "IsClone": false,
-      "IsLaneMinion": false,
-      "IsEliteMinion": false,
-      "IsEpicMinion": false,
-      "IsJungleMinion": false,
-      "IsWardOrPlant": false,
-      "Info": {
-        "IsNeutral": true,
-        "Name": "Minion_Chaos Blue",
-        "NetworkId": 1073742245,
-        "Index": 3146898,
-        "Position": {
-          "x": 11051.729,
-          "y": 51.28,
-          "z": 6890.844
-        },
-        "Rotation": null,
-        "Team": 3
-      },
-      "Common": {
-        "IsAlive": true,
-        "IsZombie": false,
-        "IsRecalling": false,
-        "IsTargetable": false,
-        "Identifier": "SRU_CampRespawnMarker",
-        "CurrentAttack": "",
-        "Status": 1,
-        "Health": 1000,
-        "MaxHealth": 1000,
-        "Armor": null,
-        "MagicResist": null,
-        "Level": 1,
-        "AttackSpeedMultiplier": null,
-        "MovementSpeed": null,
-        "DataStack": null,
-        "Buffs": [
-          {
-            "Name": "camprespawncountdownvisible",
-            "StartTime": 0.5668405,
-            "EndTime": 60.56684,
-            "Count": 1,
-            "Type": 1
-          }
-        ],
-        "Animations": null,
-        "SubmeshVisiblityMask": 0,
-        "AttackSpeedBonus": null,
-        "AnimationState": null
-      },
-      "TypeInfo": 0,
-      "Bones": null
-    },
-    {
-      "IsClone": false,
-      "IsLaneMinion": false,
-      "IsEliteMinion": false,
-      "IsEpicMinion": false,
-      "IsJungleMinion": false,
-      "IsWardOrPlant": false,
-      "Info": {
-        "IsNeutral": true,
         "Name": "PlantSatchel",
         "NetworkId": 1073742339,
-        "Index": 12518547,
+        "Index": 132098,
         "Position": {
           "x": 10373,
           "y": 51.73402,
@@ -213,13 +54,13 @@
       "IsWardOrPlant": false,
       "Info": {
         "IsNeutral": true,
-        "Name": "Minion_Horde",
-        "NetworkId": 1073742244,
-        "Index": 197799,
+        "Name": "HiddenMinion",
+        "NetworkId": 1073742340,
+        "Index": 132158,
         "Position": {
-          "x": 4909.565,
-          "y": -56.251316,
-          "z": 10487.323
+          "x": 10373,
+          "y": 51.73402,
+          "z": 7628
         },
         "Rotation": null,
         "Team": 3
@@ -229,26 +70,18 @@
         "IsZombie": false,
         "IsRecalling": false,
         "IsTargetable": false,
-        "Identifier": "SRU_CampRespawnMarker",
+        "Identifier": "TestCubeRenderNoFOW",
         "CurrentAttack": "",
         "Status": 1,
-        "Health": 1000,
-        "MaxHealth": 1000,
+        "Health": 100,
+        "MaxHealth": 100,
         "Armor": null,
         "MagicResist": null,
         "Level": 1,
         "AttackSpeedMultiplier": null,
         "MovementSpeed": null,
         "DataStack": null,
-        "Buffs": [
-          {
-            "Name": "camprespawncountdownhidden",
-            "StartTime": 0,
-            "EndTime": 420,
-            "Count": 1,
-            "Type": 1
-          }
-        ],
+        "Buffs": [],
         "Animations": null,
         "SubmeshVisiblityMask": 0,
         "AttackSpeedBonus": null,
@@ -266,13 +99,13 @@
       "IsWardOrPlant": false,
       "Info": {
         "IsNeutral": true,
-        "Name": "Minion_Order Blue",
-        "NetworkId": 1073742243,
-        "Index": 7472297,
+        "Name": "PlantSatchel",
+        "NetworkId": 1073742337,
+        "Index": 132159,
         "Position": {
-          "x": 3813.851,
-          "y": 52.099476,
-          "z": 7909.825
+          "x": 8659,
+          "y": 53.657677,
+          "z": 11535
         },
         "Rotation": null,
         "Team": 3
@@ -282,26 +115,18 @@
         "IsZombie": false,
         "IsRecalling": false,
         "IsTargetable": false,
-        "Identifier": "SRU_CampRespawnMarker",
+        "Identifier": "SRU_Plant_Satchel",
         "CurrentAttack": "",
         "Status": 1,
-        "Health": 1000,
-        "MaxHealth": 1000,
+        "Health": 1,
+        "MaxHealth": 1,
         "Armor": null,
         "MagicResist": null,
         "Level": 1,
         "AttackSpeedMultiplier": null,
         "MovementSpeed": null,
         "DataStack": null,
-        "Buffs": [
-          {
-            "Name": "camprespawncountdownvisible",
-            "StartTime": 0.5668405,
-            "EndTime": 60.56684,
-            "Count": 1,
-            "Type": 1
-          }
-        ],
+        "Buffs": [],
         "Animations": null,
         "SubmeshVisiblityMask": 0,
         "AttackSpeedBonus": null,
@@ -319,13 +144,13 @@
       "IsWardOrPlant": false,
       "Info": {
         "IsNeutral": true,
-        "Name": "Minion_Baron Crab",
-        "NetworkId": 1073742242,
-        "Index": 5702841,
+        "Name": "PlantSatchel",
+        "NetworkId": 1073742343,
+        "Index": 132252,
         "Position": {
-          "x": 4400,
-          "y": -69.17303,
-          "z": 9600
+          "x": 6141,
+          "y": 50.523113,
+          "z": 3402
         },
         "Rotation": null,
         "Team": 3
@@ -335,26 +160,18 @@
         "IsZombie": false,
         "IsRecalling": false,
         "IsTargetable": false,
-        "Identifier": "SRU_CampRespawnMarker",
+        "Identifier": "SRU_Plant_Satchel",
         "CurrentAttack": "",
         "Status": 1,
-        "Health": 1000,
-        "MaxHealth": 1000,
+        "Health": 1,
+        "MaxHealth": 1,
         "Armor": null,
         "MagicResist": null,
         "Level": 1,
         "AttackSpeedMultiplier": null,
         "MovementSpeed": null,
         "DataStack": null,
-        "Buffs": [
-          {
-            "Name": "camprespawncountdownhidden",
-            "StartTime": 0,
-            "EndTime": 115,
-            "Count": 1,
-            "Type": 1
-          }
-        ],
+        "Buffs": [],
         "Animations": null,
         "SubmeshVisiblityMask": 0,
         "AttackSpeedBonus": null,
@@ -372,13 +189,13 @@
       "IsWardOrPlant": false,
       "Info": {
         "IsNeutral": true,
-        "Name": "Minion_Order Red",
-        "NetworkId": 1073742241,
-        "Index": 8389857,
+        "Name": "HiddenMinion",
+        "NetworkId": 1073742344,
+        "Index": 132265,
         "Position": {
-          "x": 7815.244,
-          "y": 53.865505,
-          "z": 3930.187
+          "x": 6141,
+          "y": 50.523113,
+          "z": 3402
         },
         "Rotation": null,
         "Team": 3
@@ -388,26 +205,18 @@
         "IsZombie": false,
         "IsRecalling": false,
         "IsTargetable": false,
-        "Identifier": "SRU_CampRespawnMarker",
+        "Identifier": "TestCubeRenderNoFOW",
         "CurrentAttack": "",
         "Status": 1,
-        "Health": 1000,
-        "MaxHealth": 1000,
+        "Health": 100,
+        "MaxHealth": 100,
         "Armor": null,
         "MagicResist": null,
         "Level": 1,
         "AttackSpeedMultiplier": null,
         "MovementSpeed": null,
         "DataStack": null,
-        "Buffs": [
-          {
-            "Name": "camprespawncountdownvisible",
-            "StartTime": 0.5668405,
-            "EndTime": 60.56684,
-            "Count": 1,
-            "Type": 1
-          }
-        ],
+        "Buffs": [],
         "Animations": null,
         "SubmeshVisiblityMask": 0,
         "AttackSpeedBonus": null,
@@ -425,13 +234,13 @@
       "IsWardOrPlant": false,
       "Info": {
         "IsNeutral": true,
-        "Name": "Minion_Dragon",
-        "NetworkId": 1073742240,
-        "Index": 132345,
+        "Name": "PlantSatchel",
+        "NetworkId": 1073742341,
+        "Index": 132266,
         "Position": {
-          "x": 9987.674,
-          "y": -71.2406,
-          "z": 4447.761
+          "x": 4385.8037,
+          "y": 50.715893,
+          "z": 7244.583
         },
         "Rotation": null,
         "Team": 3
@@ -441,26 +250,18 @@
         "IsZombie": false,
         "IsRecalling": false,
         "IsTargetable": false,
-        "Identifier": "SRU_CampRespawnMarker",
+        "Identifier": "SRU_Plant_Satchel",
         "CurrentAttack": "",
         "Status": 1,
-        "Health": 1000,
-        "MaxHealth": 1000,
+        "Health": 1,
+        "MaxHealth": 1,
         "Armor": null,
         "MagicResist": null,
         "Level": 1,
         "AttackSpeedMultiplier": null,
         "MovementSpeed": null,
         "DataStack": null,
-        "Buffs": [
-          {
-            "Name": "camprespawncountdownhidden",
-            "StartTime": 0,
-            "EndTime": 240,
-            "Count": 1,
-            "Type": 1
-          }
-        ],
+        "Buffs": [],
         "Animations": null,
         "SubmeshVisiblityMask": 0,
         "AttackSpeedBonus": null,
@@ -478,13 +279,13 @@
       "IsWardOrPlant": false,
       "Info": {
         "IsNeutral": true,
-        "Name": "Minion_Dragon Crab",
-        "NetworkId": 1073742239,
-        "Index": 132346,
+        "Name": "HiddenMinion",
+        "NetworkId": 1073742342,
+        "Index": 132270,
         "Position": {
-          "x": 10500,
-          "y": -71.24,
-          "z": 5170
+          "x": 4385.8037,
+          "y": 50.715893,
+          "z": 7244.583
         },
         "Rotation": null,
         "Team": 3
@@ -494,7 +295,52 @@
         "IsZombie": false,
         "IsRecalling": false,
         "IsTargetable": false,
-        "Identifier": "SRU_CampRespawnMarker",
+        "Identifier": "TestCubeRenderNoFOW",
+        "CurrentAttack": "",
+        "Status": 1,
+        "Health": 100,
+        "MaxHealth": 100,
+        "Armor": null,
+        "MagicResist": null,
+        "Level": 1,
+        "AttackSpeedMultiplier": null,
+        "MovementSpeed": null,
+        "DataStack": null,
+        "Buffs": [],
+        "Animations": null,
+        "SubmeshVisiblityMask": 0,
+        "AttackSpeedBonus": null,
+        "AnimationState": null
+      },
+      "TypeInfo": 0,
+      "Bones": null
+    },
+    {
+      "IsClone": false,
+      "IsLaneMinion": false,
+      "IsEliteMinion": false,
+      "IsEpicMinion": false,
+      "IsJungleMinion": false,
+      "IsWardOrPlant": false,
+      "Info": {
+        "IsNeutral": true,
+        "Name": "PlantMasterMinion",
+        "NetworkId": 1073742068,
+        "Index": 66779,
+        "Position": {
+          "x": 4899.67,
+          "y": 51.9,
+          "z": 7846.7427
+        },
+        "Rotation": null,
+        "Team": 3
+      },
+      "Common": {
+        "IsAlive": true,
+        "IsZombie": false,
+        "IsRecalling": false,
+        "IsTargetable": false,
+        "Identifier": "SRU_PlantRespawnMarker",
         "CurrentAttack": "",
         "Status": 1,
         "Health": 1000,
@@ -505,15 +351,7 @@
         "AttackSpeedMultiplier": null,
         "MovementSpeed": null,
         "DataStack": null,
-        "Buffs": [
-          {
-            "Name": "camprespawncountdownhidden",
-            "StartTime": 0,
-            "EndTime": 115,
-            "Count": 1,
-            "Type": 1
-          }
-        ],
+        "Buffs": [],
         "Animations": null,
         "SubmeshVisiblityMask": 0,
         "AttackSpeedBonus": null,
@@ -533,7 +371,7 @@
         "IsNeutral": true,
         "Name": "AatroxWCenterMinion",
         "NetworkId": 1073742238,
-        "Index": 132347,
+        "Index": 66780,
         "Position": {
           "x": 421.31067,
           "y": 183.47618,
@@ -584,13 +422,13 @@
       "IsWardOrPlant": false,
       "Info": {
         "IsNeutral": true,
-        "Name": "PlantMasterMinion",
-        "NetworkId": 1073742068,
-        "Index": 132348,
+        "Name": "Minion_Dragon Crab",
+        "NetworkId": 1073742239,
+        "Index": 66781,
         "Position": {
-          "x": 4899.67,
-          "y": 51.9,
-          "z": 7846.7427
+          "x": 10500,
+          "y": -71.24,
+          "z": 5170
         },
         "Rotation": null,
         "Team": 3
@@ -600,7 +438,7 @@
         "IsZombie": false,
         "IsRecalling": false,
         "IsTargetable": false,
-        "Identifier": "SRU_PlantRespawnMarker",
+        "Identifier": "SRU_CampRespawnMarker",
         "CurrentAttack": "",
         "Status": 1,
         "Health": 1000,
@@ -611,7 +449,15 @@
         "AttackSpeedMultiplier": null,
         "MovementSpeed": null,
         "DataStack": null,
-        "Buffs": [],
+        "Buffs": [
+          {
+            "Name": "camprespawncountdownhidden",
+            "StartTime": 0,
+            "EndTime": 115,
+            "Count": 1,
+            "Type": 1
+          }
+        ],
         "Animations": null,
         "SubmeshVisiblityMask": 0,
         "AttackSpeedBonus": null,
@@ -629,13 +475,13 @@
       "IsWardOrPlant": false,
       "Info": {
         "IsNeutral": true,
-        "Name": "HiddenMinion",
-        "NetworkId": 1073742342,
-        "Index": 2688339,
+        "Name": "Minion_Dragon",
+        "NetworkId": 1073742240,
+        "Index": 66782,
         "Position": {
-          "x": 4385.8037,
-          "y": 50.715893,
-          "z": 7244.583
+          "x": 9987.674,
+          "y": -71.2406,
+          "z": 4447.761
         },
         "Rotation": null,
         "Team": 3
@@ -645,18 +491,26 @@
         "IsZombie": false,
         "IsRecalling": false,
         "IsTargetable": false,
-        "Identifier": "TestCubeRenderNoFOW",
+        "Identifier": "SRU_CampRespawnMarker",
         "CurrentAttack": "",
         "Status": 1,
-        "Health": 100,
-        "MaxHealth": 100,
+        "Health": 1000,
+        "MaxHealth": 1000,
         "Armor": null,
         "MagicResist": null,
         "Level": 1,
         "AttackSpeedMultiplier": null,
         "MovementSpeed": null,
         "DataStack": null,
-        "Buffs": [],
+        "Buffs": [
+          {
+            "Name": "camprespawncountdownhidden",
+            "StartTime": 0,
+            "EndTime": 240,
+            "Count": 1,
+            "Type": 1
+          }
+        ],
         "Animations": null,
         "SubmeshVisiblityMask": 0,
         "AttackSpeedBonus": null,
@@ -674,13 +528,13 @@
       "IsWardOrPlant": false,
       "Info": {
         "IsNeutral": true,
-        "Name": "HiddenMinion",
-        "NetworkId": 1073742340,
-        "Index": 2033187,
+        "Name": "Minion_Order Red",
+        "NetworkId": 1073742241,
+        "Index": 66783,
         "Position": {
-          "x": 10373,
-          "y": 51.73402,
-          "z": 7628
+          "x": 7815.244,
+          "y": 53.865505,
+          "z": 3930.187
         },
         "Rotation": null,
         "Team": 3
@@ -690,18 +544,26 @@
         "IsZombie": false,
         "IsRecalling": false,
         "IsTargetable": false,
-        "Identifier": "TestCubeRenderNoFOW",
+        "Identifier": "SRU_CampRespawnMarker",
         "CurrentAttack": "",
         "Status": 1,
-        "Health": 100,
-        "MaxHealth": 100,
+        "Health": 1000,
+        "MaxHealth": 1000,
         "Armor": null,
         "MagicResist": null,
         "Level": 1,
         "AttackSpeedMultiplier": null,
         "MovementSpeed": null,
         "DataStack": null,
-        "Buffs": [],
+        "Buffs": [
+          {
+            "Name": "camprespawncountdownvisible",
+            "StartTime": 0.3976857,
+            "EndTime": 60.397686,
+            "Count": 1,
+            "Type": 1
+          }
+        ],
         "Animations": null,
         "SubmeshVisiblityMask": 0,
         "AttackSpeedBonus": null,
@@ -719,13 +581,13 @@
       "IsWardOrPlant": false,
       "Info": {
         "IsNeutral": true,
-        "Name": "PlantSatchel",
-        "NetworkId": 1073742341,
-        "Index": 5310005,
+        "Name": "Minion_Baron Crab",
+        "NetworkId": 1073742242,
+        "Index": 66784,
         "Position": {
-          "x": 4385.8037,
-          "y": 50.715893,
-          "z": 7244.583
+          "x": 4400,
+          "y": -69.17303,
+          "z": 9600
         },
         "Rotation": null,
         "Team": 3
@@ -735,18 +597,26 @@
         "IsZombie": false,
         "IsRecalling": false,
         "IsTargetable": false,
-        "Identifier": "SRU_Plant_Satchel",
+        "Identifier": "SRU_CampRespawnMarker",
         "CurrentAttack": "",
         "Status": 1,
-        "Health": 1,
-        "MaxHealth": 1,
+        "Health": 1000,
+        "MaxHealth": 1000,
         "Armor": null,
         "MagicResist": null,
         "Level": 1,
         "AttackSpeedMultiplier": null,
         "MovementSpeed": null,
         "DataStack": null,
-        "Buffs": [],
+        "Buffs": [
+          {
+            "Name": "camprespawncountdownhidden",
+            "StartTime": 0,
+            "EndTime": 115,
+            "Count": 1,
+            "Type": 1
+          }
+        ],
         "Animations": null,
         "SubmeshVisiblityMask": 0,
         "AttackSpeedBonus": null,
@@ -764,13 +634,13 @@
       "IsWardOrPlant": false,
       "Info": {
         "IsNeutral": true,
-        "Name": "PlantSatchel",
-        "NetworkId": 1073742337,
-        "Index": 7603767,
+        "Name": "Minion_Order Blue",
+        "NetworkId": 1073742243,
+        "Index": 66785,
         "Position": {
-          "x": 8659,
-          "y": 53.657677,
-          "z": 11535
+          "x": 3813.851,
+          "y": 52.099476,
+          "z": 7909.825
         },
         "Rotation": null,
         "Team": 3
@@ -780,18 +650,26 @@
         "IsZombie": false,
         "IsRecalling": false,
         "IsTargetable": false,
-        "Identifier": "SRU_Plant_Satchel",
+        "Identifier": "SRU_CampRespawnMarker",
         "CurrentAttack": "",
         "Status": 1,
-        "Health": 1,
-        "MaxHealth": 1,
+        "Health": 1000,
+        "MaxHealth": 1000,
         "Armor": null,
         "MagicResist": null,
         "Level": 1,
         "AttackSpeedMultiplier": null,
         "MovementSpeed": null,
         "DataStack": null,
-        "Buffs": [],
+        "Buffs": [
+          {
+            "Name": "camprespawncountdownvisible",
+            "StartTime": 0.3976857,
+            "EndTime": 60.397686,
+            "Count": 1,
+            "Type": 1
+          }
+        ],
         "Animations": null,
         "SubmeshVisiblityMask": 0,
         "AttackSpeedBonus": null,
@@ -809,13 +687,13 @@
       "IsWardOrPlant": false,
       "Info": {
         "IsNeutral": true,
-        "Name": "PlantSatchel",
-        "NetworkId": 1073742343,
-        "Index": 4785772,
+        "Name": "Minion_Horde",
+        "NetworkId": 1073742244,
+        "Index": 66786,
         "Position": {
-          "x": 6141,
-          "y": 50.523113,
-          "z": 3402
+          "x": 4909.565,
+          "y": -56.251316,
+          "z": 10487.323
         },
         "Rotation": null,
         "Team": 3
@@ -825,18 +703,185 @@
         "IsZombie": false,
         "IsRecalling": false,
         "IsTargetable": false,
-        "Identifier": "SRU_Plant_Satchel",
+        "Identifier": "SRU_CampRespawnMarker",
         "CurrentAttack": "",
         "Status": 1,
-        "Health": 1,
-        "MaxHealth": 1,
+        "Health": 1000,
+        "MaxHealth": 1000,
         "Armor": null,
         "MagicResist": null,
         "Level": 1,
         "AttackSpeedMultiplier": null,
         "MovementSpeed": null,
         "DataStack": null,
-        "Buffs": [],
+        "Buffs": [
+          {
+            "Name": "camprespawncountdownhidden",
+            "StartTime": 0,
+            "EndTime": 420,
+            "Count": 1,
+            "Type": 1
+          }
+        ],
+        "Animations": null,
+        "SubmeshVisiblityMask": 0,
+        "AttackSpeedBonus": null,
+        "AnimationState": null
+      },
+      "TypeInfo": 0,
+      "Bones": null
+    },
+    {
+      "IsClone": false,
+      "IsLaneMinion": false,
+      "IsEliteMinion": false,
+      "IsEpicMinion": false,
+      "IsJungleMinion": false,
+      "IsWardOrPlant": false,
+      "Info": {
+        "IsNeutral": true,
+        "Name": "Minion_Chaos Blue",
+        "NetworkId": 1073742245,
+        "Index": 66787,
+        "Position": {
+          "x": 11051.729,
+          "y": 51.28,
+          "z": 6890.844
+        },
+        "Rotation": null,
+        "Team": 3
+      },
+      "Common": {
+        "IsAlive": true,
+        "IsZombie": false,
+        "IsRecalling": false,
+        "IsTargetable": false,
+        "Identifier": "SRU_CampRespawnMarker",
+        "CurrentAttack": "",
+        "Status": 1,
+        "Health": 1000,
+        "MaxHealth": 1000,
+        "Armor": null,
+        "MagicResist": null,
+        "Level": 1,
+        "AttackSpeedMultiplier": null,
+        "MovementSpeed": null,
+        "DataStack": null,
+        "Buffs": [
+          {
+            "Name": "camprespawncountdownvisible",
+            "StartTime": 0.3976857,
+            "EndTime": 60.397686,
+            "Count": 1,
+            "Type": 1
+          }
+        ],
+        "Animations": null,
+        "SubmeshVisiblityMask": 0,
+        "AttackSpeedBonus": null,
+        "AnimationState": null
+      },
+      "TypeInfo": 0,
+      "Bones": null
+    },
+    {
+      "IsClone": false,
+      "IsLaneMinion": false,
+      "IsEliteMinion": false,
+      "IsEpicMinion": false,
+      "IsJungleMinion": false,
+      "IsWardOrPlant": false,
+      "Info": {
+        "IsNeutral": true,
+        "Name": "Minion_Chaos Red",
+        "NetworkId": 1073742246,
+        "Index": 66788,
+        "Position": {
+          "x": 7081.869,
+          "y": 56.21793,
+          "z": 10900.547
+        },
+        "Rotation": null,
+        "Team": 3
+      },
+      "Common": {
+        "IsAlive": true,
+        "IsZombie": false,
+        "IsRecalling": false,
+        "IsTargetable": false,
+        "Identifier": "SRU_CampRespawnMarker",
+        "CurrentAttack": "",
+        "Status": 1,
+        "Health": 1000,
+        "MaxHealth": 1000,
+        "Armor": null,
+        "MagicResist": null,
+        "Level": 1,
+        "AttackSpeedMultiplier": null,
+        "MovementSpeed": null,
+        "DataStack": null,
+        "Buffs": [
+          {
+            "Name": "camprespawncountdownvisible",
+            "StartTime": 0.3976857,
+            "EndTime": 60.397686,
+            "Count": 1,
+            "Type": 1
+          }
+        ],
+        "Animations": null,
+        "SubmeshVisiblityMask": 0,
+        "AttackSpeedBonus": null,
+        "AnimationState": null
+      },
+      "TypeInfo": 0,
+      "Bones": null
+    },
+    {
+      "IsClone": false,
+      "IsLaneMinion": false,
+      "IsEliteMinion": false,
+      "IsEpicMinion": false,
+      "IsJungleMinion": false,
+      "IsWardOrPlant": false,
+      "Info": {
+        "IsNeutral": true,
+        "Name": "DragonSigil",
+        "NetworkId": 1073742247,
+        "Index": 66789,
+        "Position": {
+          "x": 9452,
+          "y": -71.2406,
+          "z": 4778
+        },
+        "Rotation": null,
+        "Team": 3
+      },
+      "Common": {
+        "IsAlive": true,
+        "IsZombie": false,
+        "IsRecalling": false,
+        "IsTargetable": false,
+        "Identifier": "TestCube",
+        "CurrentAttack": "",
+        "Status": 1,
+        "Health": 540,
+        "MaxHealth": 540,
+        "Armor": null,
+        "MagicResist": null,
+        "Level": 1,
+        "AttackSpeedMultiplier": null,
+        "MovementSpeed": null,
+        "DataStack": null,
+        "Buffs": [
+          {
+            "Name": "DragonBuffAir",
+            "StartTime": 0,
+            "EndTime": 25000,
+            "Count": 1,
+            "Type": 0
+          }
+        ],
         "Animations": null,
         "SubmeshVisiblityMask": 0,
         "AttackSpeedBonus": null,
@@ -856,56 +901,11 @@
         "IsNeutral": true,
         "Name": "HiddenMinion",
         "NetworkId": 1073742338,
-        "Index": 722574,
+        "Index": 132518,
         "Position": {
           "x": 8659,
           "y": 53.657677,
           "z": 11535
-        },
-        "Rotation": null,
-        "Team": 3
-      },
-      "Common": {
-        "IsAlive": true,
-        "IsZombie": false,
-        "IsRecalling": false,
-        "IsTargetable": false,
-        "Identifier": "TestCubeRenderNoFOW",
-        "CurrentAttack": "",
-        "Status": 1,
-        "Health": 100,
-        "MaxHealth": 100,
-        "Armor": null,
-        "MagicResist": null,
-        "Level": 1,
-        "AttackSpeedMultiplier": null,
-        "MovementSpeed": null,
-        "DataStack": null,
-        "Buffs": [],
-        "Animations": null,
-        "SubmeshVisiblityMask": 0,
-        "AttackSpeedBonus": null,
-        "AnimationState": null
-      },
-      "TypeInfo": 0,
-      "Bones": null
-    },
-    {
-      "IsClone": false,
-      "IsLaneMinion": false,
-      "IsEliteMinion": false,
-      "IsEpicMinion": false,
-      "IsJungleMinion": false,
-      "IsWardOrPlant": false,
-      "Info": {
-        "IsNeutral": true,
-        "Name": "HiddenMinion",
-        "NetworkId": 1073742344,
-        "Index": 853651,
-        "Position": {
-          "x": 6141,
-          "y": 50.523113,
-          "z": 3402
         },
         "Rotation": null,
         "Team": 3
@@ -950,7 +950,7 @@
         "IsNeutral": false,
         "Name": "lane0_order_marker",
         "NetworkId": 1073742009,
-        "Index": 132354,
+        "Index": 66773,
         "Position": {
           "x": 9650.713,
           "y": 51.037254,
@@ -1003,7 +1003,7 @@
         "IsNeutral": false,
         "Name": "lane0_chaos_marker",
         "NetworkId": 1073742010,
-        "Index": 132353,
+        "Index": 66774,
         "Position": {
           "x": 13583.662,
           "y": 52.395893,
@@ -1056,7 +1056,7 @@
         "IsNeutral": false,
         "Name": "lane1_order_marker",
         "NetworkId": 1073742011,
-        "Index": 132352,
+        "Index": 66775,
         "Position": {
           "x": 5522.8276,
           "y": 51.0679,
@@ -1109,7 +1109,7 @@
         "IsNeutral": false,
         "Name": "lane1_chaos_marker",
         "NetworkId": 1073742012,
-        "Index": 132351,
+        "Index": 66776,
         "Position": {
           "x": 9249.0205,
           "y": 52.769356,
@@ -1162,7 +1162,7 @@
         "IsNeutral": false,
         "Name": "lane2_order_marker",
         "NetworkId": 1073742013,
-        "Index": 132350,
+        "Index": 66777,
         "Position": {
           "x": 1294.4136,
           "y": 52.8381,
@@ -1215,7 +1215,7 @@
         "IsNeutral": false,
         "Name": "lane2_chaos_marker",
         "NetworkId": 1073742014,
-        "Index": 132349,
+        "Index": 66778,
         "Position": {
           "x": 5198.112,
           "y": 52.8381,
@@ -1268,7 +1268,7 @@
         "IsNeutral": true,
         "Name": "PlantMasterMinion",
         "NetworkId": 1073742068,
-        "Index": 132348,
+        "Index": 66779,
         "Position": {
           "x": 4899.67,
           "y": 51.9,
@@ -1313,7 +1313,7 @@
         "IsNeutral": true,
         "Name": "AatroxWCenterMinion",
         "NetworkId": 1073742238,
-        "Index": 132347,
+        "Index": 66780,
         "Position": {
           "x": 421.31067,
           "y": 183.47618,
@@ -1366,7 +1366,7 @@
         "IsNeutral": true,
         "Name": "Minion_Dragon Crab",
         "NetworkId": 1073742239,
-        "Index": 132346,
+        "Index": 66781,
         "Position": {
           "x": 10500,
           "y": -71.24,
@@ -1419,7 +1419,7 @@
         "IsNeutral": true,
         "Name": "Minion_Dragon",
         "NetworkId": 1073742240,
-        "Index": 132345,
+        "Index": 66782,
         "Position": {
           "x": 9987.674,
           "y": -71.2406,
@@ -1472,7 +1472,7 @@
         "IsNeutral": true,
         "Name": "Minion_Order Red",
         "NetworkId": 1073742241,
-        "Index": 8389857,
+        "Index": 66783,
         "Position": {
           "x": 7815.244,
           "y": 53.865505,
@@ -1500,8 +1500,8 @@
         "Buffs": [
           {
             "Name": "camprespawncountdownvisible",
-            "StartTime": 0.5668405,
-            "EndTime": 60.56684,
+            "StartTime": 0.3976857,
+            "EndTime": 60.397686,
             "Count": 1,
             "Type": 1
           }
@@ -1525,7 +1525,7 @@
         "IsNeutral": true,
         "Name": "Minion_Baron Crab",
         "NetworkId": 1073742242,
-        "Index": 5702841,
+        "Index": 66784,
         "Position": {
           "x": 4400,
           "y": -69.17303,
@@ -1578,7 +1578,7 @@
         "IsNeutral": true,
         "Name": "Minion_Order Blue",
         "NetworkId": 1073742243,
-        "Index": 7472297,
+        "Index": 66785,
         "Position": {
           "x": 3813.851,
           "y": 52.099476,
@@ -1606,8 +1606,8 @@
         "Buffs": [
           {
             "Name": "camprespawncountdownvisible",
-            "StartTime": 0.5668405,
-            "EndTime": 60.56684,
+            "StartTime": 0.3976857,
+            "EndTime": 60.397686,
             "Count": 1,
             "Type": 1
           }
@@ -1631,7 +1631,7 @@
         "IsNeutral": true,
         "Name": "Minion_Horde",
         "NetworkId": 1073742244,
-        "Index": 197799,
+        "Index": 66786,
         "Position": {
           "x": 4909.565,
           "y": -56.251316,
@@ -1684,7 +1684,7 @@
         "IsNeutral": true,
         "Name": "Minion_Chaos Blue",
         "NetworkId": 1073742245,
-        "Index": 3146898,
+        "Index": 66787,
         "Position": {
           "x": 11051.729,
           "y": 51.28,
@@ -1712,8 +1712,8 @@
         "Buffs": [
           {
             "Name": "camprespawncountdownvisible",
-            "StartTime": 0.5668405,
-            "EndTime": 60.56684,
+            "StartTime": 0.3976857,
+            "EndTime": 60.397686,
             "Count": 1,
             "Type": 1
           }
@@ -1737,7 +1737,7 @@
         "IsNeutral": true,
         "Name": "Minion_Chaos Red",
         "NetworkId": 1073742246,
-        "Index": 6292617,
+        "Index": 66788,
         "Position": {
           "x": 7081.869,
           "y": 56.21793,
@@ -1765,8 +1765,8 @@
         "Buffs": [
           {
             "Name": "camprespawncountdownvisible",
-            "StartTime": 0.5668405,
-            "EndTime": 60.56684,
+            "StartTime": 0.3976857,
+            "EndTime": 60.397686,
             "Count": 1,
             "Type": 1
           }
@@ -1790,7 +1790,7 @@
         "IsNeutral": true,
         "Name": "DragonSigil",
         "NetworkId": 1073742247,
-        "Index": 132175,
+        "Index": 66789,
         "Position": {
           "x": 9452,
           "y": -71.2406,
@@ -1843,7 +1843,7 @@
         "IsNeutral": true,
         "Name": "PlantSatchel",
         "NetworkId": 1073742337,
-        "Index": 7603767,
+        "Index": 132159,
         "Position": {
           "x": 8659,
           "y": 53.657677,
@@ -1888,7 +1888,7 @@
         "IsNeutral": true,
         "Name": "HiddenMinion",
         "NetworkId": 1073742338,
-        "Index": 722574,
+        "Index": 132518,
         "Position": {
           "x": 8659,
           "y": 53.657677,
@@ -1933,7 +1933,7 @@
         "IsNeutral": true,
         "Name": "PlantSatchel",
         "NetworkId": 1073742339,
-        "Index": 12518547,
+        "Index": 132098,
         "Position": {
           "x": 10373,
           "y": 51.73402,
@@ -1978,7 +1978,7 @@
         "IsNeutral": true,
         "Name": "HiddenMinion",
         "NetworkId": 1073742340,
-        "Index": 2033187,
+        "Index": 132158,
         "Position": {
           "x": 10373,
           "y": 51.73402,
@@ -2023,7 +2023,7 @@
         "IsNeutral": true,
         "Name": "PlantSatchel",
         "NetworkId": 1073742341,
-        "Index": 5310005,
+        "Index": 132266,
         "Position": {
           "x": 4385.8037,
           "y": 50.715893,
@@ -2068,7 +2068,7 @@
         "IsNeutral": true,
         "Name": "HiddenMinion",
         "NetworkId": 1073742342,
-        "Index": 2688339,
+        "Index": 132270,
         "Position": {
           "x": 4385.8037,
           "y": 50.715893,
@@ -2113,7 +2113,7 @@
         "IsNeutral": true,
         "Name": "PlantSatchel",
         "NetworkId": 1073742343,
-        "Index": 4785772,
+        "Index": 132252,
         "Position": {
           "x": 6141,
           "y": 50.523113,
@@ -2158,7 +2158,7 @@
         "IsNeutral": true,
         "Name": "HiddenMinion",
         "NetworkId": 1073742344,
-        "Index": 853651,
+        "Index": 132265,
         "Position": {
           "x": 6141,
           "y": 50.523113,
@@ -2273,7 +2273,7 @@
         "Index": 4,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.84507,
+        "Cooldown": 13.363164,
         "IsToggled": false
       },
       "F": {
@@ -2287,19 +2287,19 @@
         "Index": 5,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.84507,
+        "Cooldown": 13.363164,
         "IsToggled": false
       },
       "NameAndTagline": "Lithios 전조#10305",
       "NetworkIdHex": "400000AE",
-      "IndexHex": "5A0488",
+      "IndexHex": "10401",
       "TotalAttackDamage": 0,
       "TotalAbilityPower": 0,
       "Info": {
         "IsNeutral": false,
         "Name": "Lithios 전조#10305",
         "NetworkId": 1073741998,
-        "Index": 5899400,
+        "Index": 66561,
         "Position": {
           "x": 603.6285,
           "y": 183.5748,
@@ -2446,15 +2446,15 @@
           },
           {
             "Name": "MalphiteObduracyEffect",
-            "StartTime": 0.5668405,
-            "EndTime": 25000.566,
+            "StartTime": 0.3976857,
+            "EndTime": 25000.398,
             "Count": 1,
             "Type": 1
           },
           {
             "Name": "srhomeguardspeed",
-            "StartTime": 0.5668405,
-            "EndTime": 25000.566,
+            "StartTime": 0.3976857,
+            "EndTime": 25000.398,
             "Count": 1,
             "Type": 15
           }
@@ -2542,7 +2542,7 @@
           "Index": 4,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.84507,
+          "Cooldown": 13.363164,
           "IsToggled": false
         },
         {
@@ -2556,7 +2556,7 @@
           "Index": 5,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.84507,
+          "Cooldown": 13.363164,
           "IsToggled": false
         },
         {
@@ -2890,7 +2890,7 @@
         "Index": 4,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.84507,
+        "Cooldown": 13.363164,
         "IsToggled": false
       },
       "F": {
@@ -2898,25 +2898,25 @@
         "Icon": "Summoner_smite.dds",
         "ReadyAt": 15,
         "MaxCooldown": 15,
-        "AmmoReadyAt": 1.0673414,
+        "AmmoReadyAt": 1.5993062,
         "AmmoCooldown": 0,
         "InitAtTime": null,
         "Index": 5,
         "Level": 1,
         "AmmoCount": 1,
-        "Cooldown": 13.84507,
+        "Cooldown": 13.363164,
         "IsToggled": false
       },
       "NameAndTagline": "RedYoshi02#LAN",
       "NetworkIdHex": "400000AF",
-      "IndexHex": "4E060B",
+      "IndexHex": "10409",
       "TotalAttackDamage": 0,
       "TotalAbilityPower": 0,
       "Info": {
         "IsNeutral": false,
         "Name": "RedYoshi02#LAN",
         "NetworkId": 1073741999,
-        "Index": 5113355,
+        "Index": 66569,
         "Position": {
           "x": 662.6285,
           "y": 182.13254,
@@ -3070,8 +3070,8 @@
           },
           {
             "Name": "srhomeguardspeed",
-            "StartTime": 0.5668405,
-            "EndTime": 25000.566,
+            "StartTime": 0.3976857,
+            "EndTime": 25000.398,
             "Count": 1,
             "Type": 15
           }
@@ -3159,7 +3159,7 @@
           "Index": 4,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.84507,
+          "Cooldown": 13.363164,
           "IsToggled": false
         },
         {
@@ -3167,13 +3167,13 @@
           "Icon": "Summoner_smite.dds",
           "ReadyAt": 15,
           "MaxCooldown": 15,
-          "AmmoReadyAt": 1.0673414,
+          "AmmoReadyAt": 1.5993062,
           "AmmoCooldown": 0,
           "InitAtTime": null,
           "Index": 5,
           "Level": 1,
           "AmmoCount": 1,
-          "Cooldown": 13.84507,
+          "Cooldown": 13.363164,
           "IsToggled": false
         },
         {
@@ -3507,7 +3507,7 @@
         "Index": 4,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.84507,
+        "Cooldown": 13.363164,
         "IsToggled": false
       },
       "F": {
@@ -3521,19 +3521,19 @@
         "Index": 5,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.84507,
+        "Cooldown": 13.363164,
         "IsToggled": false
       },
       "NameAndTagline": "Blandomincor#LAN",
       "NetworkIdHex": "400000B0",
-      "IndexHex": "5505CC",
+      "IndexHex": "10410",
       "TotalAttackDamage": 0,
       "TotalAbilityPower": 0,
       "Info": {
         "IsNeutral": false,
         "Name": "Blandomincor#LAN",
         "NetworkId": 1073742000,
-        "Index": 5572044,
+        "Index": 66576,
         "Position": {
           "x": 362.6284,
           "y": 182.13254,
@@ -3659,8 +3659,8 @@
           },
           {
             "Name": "srhomeguardspeed",
-            "StartTime": 0.5668405,
-            "EndTime": 25000.566,
+            "StartTime": 0.3976857,
+            "EndTime": 25000.398,
             "Count": 1,
             "Type": 15
           }
@@ -3748,7 +3748,7 @@
           "Index": 4,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.84507,
+          "Cooldown": 13.363164,
           "IsToggled": false
         },
         {
@@ -3762,7 +3762,7 @@
           "Index": 5,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.84507,
+          "Cooldown": 13.363164,
           "IsToggled": false
         },
         {
@@ -4096,7 +4096,7 @@
         "Index": 4,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.84507,
+        "Cooldown": 13.363164,
         "IsToggled": false
       },
       "F": {
@@ -4110,19 +4110,19 @@
         "Index": 5,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.84507,
+        "Cooldown": 13.363164,
         "IsToggled": false
       },
       "NameAndTagline": "Silver 전조#3676",
       "NetworkIdHex": "400000B1",
-      "IndexHex": "11067C",
+      "IndexHex": "10417",
       "TotalAttackDamage": 0,
       "TotalAbilityPower": 0,
       "Info": {
         "IsNeutral": false,
         "Name": "Silver 전조#3676",
         "NetworkId": 1073742001,
-        "Index": 1115772,
+        "Index": 66583,
         "Position": {
           "x": 130.6285,
           "y": 183.5748,
@@ -4255,8 +4255,8 @@
           },
           {
             "Name": "srhomeguardspeed",
-            "StartTime": 0.5668405,
-            "EndTime": 25000.566,
+            "StartTime": 0.3976857,
+            "EndTime": 25000.398,
             "Count": 1,
             "Type": 15
           }
@@ -4344,7 +4344,7 @@
           "Index": 4,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.84507,
+          "Cooldown": 13.363164,
           "IsToggled": false
         },
         {
@@ -4358,7 +4358,7 @@
           "Index": 5,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.84507,
+          "Cooldown": 13.363164,
           "IsToggled": false
         },
         {
@@ -4692,7 +4692,7 @@
         "Index": 4,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.84507,
+        "Cooldown": 13.363164,
         "IsToggled": false
       },
       "F": {
@@ -4706,19 +4706,19 @@
         "Index": 5,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.84507,
+        "Cooldown": 13.363164,
         "IsToggled": false
       },
       "NameAndTagline": "PrisDCoder#LAN",
       "NetworkIdHex": "400000B2",
-      "IndexHex": "300653",
+      "IndexHex": "1041E",
       "TotalAttackDamage": 0,
       "TotalAbilityPower": 0,
       "Info": {
         "IsNeutral": false,
         "Name": "PrisDCoder#LAN",
         "NetworkId": 1073742002,
-        "Index": 3147347,
+        "Index": 66590,
         "Position": {
           "x": 298.6284,
           "y": 183.5748,
@@ -4858,15 +4858,15 @@
           },
           {
             "Name": "srhomeguardspeed",
-            "StartTime": 0.5668405,
-            "EndTime": 25000.566,
+            "StartTime": 0.3976857,
+            "EndTime": 25000.398,
             "Count": 1,
             "Type": 15
           },
           {
             "Name": "S14_Support_Gold_Display",
-            "StartTime": 0.5668405,
-            "EndTime": 250000.56,
+            "StartTime": 1.1613783,
+            "EndTime": 250001.16,
             "Count": 0,
             "Type": 27
           }
@@ -4954,7 +4954,7 @@
           "Index": 4,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.84507,
+          "Cooldown": 13.363164,
           "IsToggled": false
         },
         {
@@ -4968,7 +4968,7 @@
           "Index": 5,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.84507,
+          "Cooldown": 13.363164,
           "IsToggled": false
         },
         {
@@ -5333,7 +5333,7 @@
         "Index": 4,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.84507,
+        "Cooldown": 13.363164,
         "IsToggled": false
       },
       "F": {
@@ -5347,19 +5347,19 @@
         "Index": 5,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.84507,
+        "Cooldown": 13.363164,
         "IsToggled": false
       },
       "NameAndTagline": "Guerra2009#LAN",
       "NetworkIdHex": "400000B3",
-      "IndexHex": "2A0621",
+      "IndexHex": "10427",
       "TotalAttackDamage": 0,
       "TotalAbilityPower": 0,
       "Info": {
         "IsNeutral": false,
         "Name": "Guerra2009#LAN",
         "NetworkId": 1073742003,
-        "Index": 2754081,
+        "Index": 66599,
         "Position": {
           "x": 14103.63,
           "y": 171.9777,
@@ -5478,15 +5478,15 @@
           },
           {
             "Name": "aatroxbannerwings",
-            "StartTime": 1.0673414,
-            "EndTime": 2.0673413,
+            "StartTime": 1.5993062,
+            "EndTime": 2.599306,
             "Count": 1,
             "Type": 1
           },
           {
             "Name": "srhomeguardspeed",
-            "StartTime": 0.5668405,
-            "EndTime": 25000.566,
+            "StartTime": 0.3976857,
+            "EndTime": 25000.398,
             "Count": 1,
             "Type": 15
           }
@@ -5574,7 +5574,7 @@
           "Index": 4,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.84507,
+          "Cooldown": 13.363164,
           "IsToggled": false
         },
         {
@@ -5588,7 +5588,7 @@
           "Index": 5,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.84507,
+          "Cooldown": 13.363164,
           "IsToggled": false
         },
         {
@@ -5916,13 +5916,13 @@
         "Icon": "Summoner_smite.dds",
         "ReadyAt": 15,
         "MaxCooldown": 15,
-        "AmmoReadyAt": 1.0673414,
+        "AmmoReadyAt": 1.5993062,
         "AmmoCooldown": 0,
         "InitAtTime": null,
         "Index": 4,
         "Level": 1,
         "AmmoCount": 1,
-        "Cooldown": 13.84507,
+        "Cooldown": 13.363164,
         "IsToggled": false
       },
       "F": {
@@ -5936,19 +5936,19 @@
         "Index": 5,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.84507,
+        "Cooldown": 13.363164,
         "IsToggled": false
       },
       "NameAndTagline": "Banedeodo#0406",
       "NetworkIdHex": "400000B4",
-      "IndexHex": "1505C3",
+      "IndexHex": "1042F",
       "TotalAttackDamage": 0,
       "TotalAbilityPower": 0,
       "Info": {
         "IsNeutral": false,
         "Name": "Banedeodo#0406",
         "NetworkId": 1073742004,
-        "Index": 1377731,
+        "Index": 66607,
         "Position": {
           "x": 14426.63,
           "y": 171.9777,
@@ -6081,8 +6081,8 @@
           },
           {
             "Name": "srhomeguardspeed",
-            "StartTime": 0.5668405,
-            "EndTime": 25000.566,
+            "StartTime": 0.3976857,
+            "EndTime": 25000.398,
             "Count": 1,
             "Type": 15
           }
@@ -6164,13 +6164,13 @@
           "Icon": "Summoner_smite.dds",
           "ReadyAt": 15,
           "MaxCooldown": 15,
-          "AmmoReadyAt": 1.0673414,
+          "AmmoReadyAt": 1.5993062,
           "AmmoCooldown": 0,
           "InitAtTime": null,
           "Index": 4,
           "Level": 1,
           "AmmoCount": 1,
-          "Cooldown": 13.84507,
+          "Cooldown": 13.363164,
           "IsToggled": false
         },
         {
@@ -6184,7 +6184,7 @@
           "Index": 5,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.84507,
+          "Cooldown": 13.363164,
           "IsToggled": false
         },
         {
@@ -6518,7 +6518,7 @@
         "Index": 4,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.84507,
+        "Cooldown": 13.363164,
         "IsToggled": false
       },
       "F": {
@@ -6532,19 +6532,19 @@
         "Index": 5,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.84507,
+        "Cooldown": 13.363164,
         "IsToggled": false
       },
       "NameAndTagline": "Manolo Melenas#CAST",
       "NetworkIdHex": "400000B5",
-      "IndexHex": "2059D",
+      "IndexHex": "10436",
       "TotalAttackDamage": 0,
       "TotalAbilityPower": 0,
       "Info": {
         "IsNeutral": false,
         "Name": "Manolo Melenas#CAST",
         "NetworkId": 1073742005,
-        "Index": 132509,
+        "Index": 66614,
         "Position": {
           "x": 14321.63,
           "y": 171.9777,
@@ -6656,8 +6656,8 @@
           },
           {
             "Name": "srhomeguardspeed",
-            "StartTime": 0.5668405,
-            "EndTime": 25000.566,
+            "StartTime": 0.3976857,
+            "EndTime": 25000.398,
             "Count": 1,
             "Type": 15
           }
@@ -6745,7 +6745,7 @@
           "Index": 4,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.84507,
+          "Cooldown": 13.363164,
           "IsToggled": false
         },
         {
@@ -6759,7 +6759,7 @@
           "Index": 5,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.84507,
+          "Cooldown": 13.363164,
           "IsToggled": false
         },
         {
@@ -7093,7 +7093,7 @@
         "Index": 4,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.84507,
+        "Cooldown": 13.363164,
         "IsToggled": false
       },
       "F": {
@@ -7107,19 +7107,19 @@
         "Index": 5,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.84507,
+        "Cooldown": 13.363164,
         "IsToggled": false
       },
       "NameAndTagline": "Arock#NEET",
       "NetworkIdHex": "400000B6",
-      "IndexHex": "20594",
+      "IndexHex": "1043D",
       "TotalAttackDamage": 0,
       "TotalAbilityPower": 0,
       "Info": {
         "IsNeutral": false,
         "Name": "Arock#NEET",
         "NetworkId": 1073742006,
-        "Index": 132500,
+        "Index": 66621,
         "Position": {
           "x": 14589.63,
           "y": 171.9777,
@@ -7245,8 +7245,8 @@
           },
           {
             "Name": "srhomeguardspeed",
-            "StartTime": 0.5668405,
-            "EndTime": 25000.566,
+            "StartTime": 0.3976857,
+            "EndTime": 25000.398,
             "Count": 1,
             "Type": 15
           }
@@ -7334,7 +7334,7 @@
           "Index": 4,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.84507,
+          "Cooldown": 13.363164,
           "IsToggled": false
         },
         {
@@ -7348,7 +7348,7 @@
           "Index": 5,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.84507,
+          "Cooldown": 13.363164,
           "IsToggled": false
         },
         {
@@ -7682,7 +7682,7 @@
         "Index": 4,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.84507,
+        "Cooldown": 13.363164,
         "IsToggled": false
       },
       "F": {
@@ -7696,19 +7696,19 @@
         "Index": 5,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.84507,
+        "Cooldown": 13.363164,
         "IsToggled": false
       },
       "NameAndTagline": "SG Coso Amorta#Coso",
       "NetworkIdHex": "400000B7",
-      "IndexHex": "20586",
+      "IndexHex": "10448",
       "TotalAttackDamage": 0,
       "TotalAbilityPower": 0,
       "Info": {
         "IsNeutral": false,
         "Name": "SG Coso Amorta#Coso",
         "NetworkId": 1073742007,
-        "Index": 132486,
+        "Index": 66632,
         "Position": {
           "x": 14055.62,
           "y": 171.9777,
@@ -7869,15 +7869,15 @@
           },
           {
             "Name": "srhomeguardspeed",
-            "StartTime": 0.5668405,
-            "EndTime": 25000.566,
+            "StartTime": 0.3976857,
+            "EndTime": 25000.398,
             "Count": 1,
             "Type": 15
           },
           {
             "Name": "S14_Support_Gold_Display",
-            "StartTime": 0.5668405,
-            "EndTime": 250000.56,
+            "StartTime": 1.1613783,
+            "EndTime": 250001.16,
             "Count": 0,
             "Type": 27
           }
@@ -7965,7 +7965,7 @@
           "Index": 4,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.84507,
+          "Cooldown": 13.363164,
           "IsToggled": false
         },
         {
@@ -7979,7 +7979,7 @@
           "Index": 5,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.84507,
+          "Cooldown": 13.363164,
           "IsToggled": false
         },
         {
@@ -8274,9 +8274,9 @@
       "Assists": 0
     }
   },
-  "GameTime": 1.1549304,
+  "GameTime": 1.6368362,
   "PlaybackSpeed": 1,
-  "UtcTime": 1794259798377,
+  "UtcTime": 1794261604200,
   "Camera": null,
   "TeamStats": [
     {
@@ -8371,7 +8371,7 @@
         "Index": 4,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.84507,
+        "Cooldown": 13.363164,
         "IsToggled": false
       },
       "F": {
@@ -8385,19 +8385,19 @@
         "Index": 5,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.84507,
+        "Cooldown": 13.363164,
         "IsToggled": false
       },
       "NameAndTagline": "Lithios 전조#10305",
       "NetworkIdHex": "400000AE",
-      "IndexHex": "5A0488",
+      "IndexHex": "10401",
       "TotalAttackDamage": 0,
       "TotalAbilityPower": 0,
       "Info": {
         "IsNeutral": false,
         "Name": "Lithios 전조#10305",
         "NetworkId": 1073741998,
-        "Index": 5899400,
+        "Index": 66561,
         "Position": {
           "x": 603.6285,
           "y": 183.5748,
@@ -8544,15 +8544,15 @@
           },
           {
             "Name": "MalphiteObduracyEffect",
-            "StartTime": 0.5668405,
-            "EndTime": 25000.566,
+            "StartTime": 0.3976857,
+            "EndTime": 25000.398,
             "Count": 1,
             "Type": 1
           },
           {
             "Name": "srhomeguardspeed",
-            "StartTime": 0.5668405,
-            "EndTime": 25000.566,
+            "StartTime": 0.3976857,
+            "EndTime": 25000.398,
             "Count": 1,
             "Type": 15
           }
@@ -8640,7 +8640,7 @@
           "Index": 4,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.84507,
+          "Cooldown": 13.363164,
           "IsToggled": false
         },
         {
@@ -8654,7 +8654,7 @@
           "Index": 5,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.84507,
+          "Cooldown": 13.363164,
           "IsToggled": false
         },
         {
@@ -8988,7 +8988,7 @@
         "Index": 4,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.84507,
+        "Cooldown": 13.363164,
         "IsToggled": false
       },
       "F": {
@@ -8996,25 +8996,25 @@
         "Icon": "Summoner_smite.dds",
         "ReadyAt": 15,
         "MaxCooldown": 15,
-        "AmmoReadyAt": 1.0673414,
+        "AmmoReadyAt": 1.5993062,
         "AmmoCooldown": 0,
         "InitAtTime": null,
         "Index": 5,
         "Level": 1,
         "AmmoCount": 1,
-        "Cooldown": 13.84507,
+        "Cooldown": 13.363164,
         "IsToggled": false
       },
       "NameAndTagline": "RedYoshi02#LAN",
       "NetworkIdHex": "400000AF",
-      "IndexHex": "4E060B",
+      "IndexHex": "10409",
       "TotalAttackDamage": 0,
       "TotalAbilityPower": 0,
       "Info": {
         "IsNeutral": false,
         "Name": "RedYoshi02#LAN",
         "NetworkId": 1073741999,
-        "Index": 5113355,
+        "Index": 66569,
         "Position": {
           "x": 662.6285,
           "y": 182.13254,
@@ -9168,8 +9168,8 @@
           },
           {
             "Name": "srhomeguardspeed",
-            "StartTime": 0.5668405,
-            "EndTime": 25000.566,
+            "StartTime": 0.3976857,
+            "EndTime": 25000.398,
             "Count": 1,
             "Type": 15
           }
@@ -9257,7 +9257,7 @@
           "Index": 4,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.84507,
+          "Cooldown": 13.363164,
           "IsToggled": false
         },
         {
@@ -9265,13 +9265,13 @@
           "Icon": "Summoner_smite.dds",
           "ReadyAt": 15,
           "MaxCooldown": 15,
-          "AmmoReadyAt": 1.0673414,
+          "AmmoReadyAt": 1.5993062,
           "AmmoCooldown": 0,
           "InitAtTime": null,
           "Index": 5,
           "Level": 1,
           "AmmoCount": 1,
-          "Cooldown": 13.84507,
+          "Cooldown": 13.363164,
           "IsToggled": false
         },
         {
@@ -9605,7 +9605,7 @@
         "Index": 4,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.84507,
+        "Cooldown": 13.363164,
         "IsToggled": false
       },
       "F": {
@@ -9619,19 +9619,19 @@
         "Index": 5,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.84507,
+        "Cooldown": 13.363164,
         "IsToggled": false
       },
       "NameAndTagline": "Blandomincor#LAN",
       "NetworkIdHex": "400000B0",
-      "IndexHex": "5505CC",
+      "IndexHex": "10410",
       "TotalAttackDamage": 0,
       "TotalAbilityPower": 0,
       "Info": {
         "IsNeutral": false,
         "Name": "Blandomincor#LAN",
         "NetworkId": 1073742000,
-        "Index": 5572044,
+        "Index": 66576,
         "Position": {
           "x": 362.6284,
           "y": 182.13254,
@@ -9757,8 +9757,8 @@
           },
           {
             "Name": "srhomeguardspeed",
-            "StartTime": 0.5668405,
-            "EndTime": 25000.566,
+            "StartTime": 0.3976857,
+            "EndTime": 25000.398,
             "Count": 1,
             "Type": 15
           }
@@ -9846,7 +9846,7 @@
           "Index": 4,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.84507,
+          "Cooldown": 13.363164,
           "IsToggled": false
         },
         {
@@ -9860,7 +9860,7 @@
           "Index": 5,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.84507,
+          "Cooldown": 13.363164,
           "IsToggled": false
         },
         {
@@ -10194,7 +10194,7 @@
         "Index": 4,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.84507,
+        "Cooldown": 13.363164,
         "IsToggled": false
       },
       "F": {
@@ -10208,19 +10208,19 @@
         "Index": 5,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.84507,
+        "Cooldown": 13.363164,
         "IsToggled": false
       },
       "NameAndTagline": "Silver 전조#3676",
       "NetworkIdHex": "400000B1",
-      "IndexHex": "11067C",
+      "IndexHex": "10417",
       "TotalAttackDamage": 0,
       "TotalAbilityPower": 0,
       "Info": {
         "IsNeutral": false,
         "Name": "Silver 전조#3676",
         "NetworkId": 1073742001,
-        "Index": 1115772,
+        "Index": 66583,
         "Position": {
           "x": 130.6285,
           "y": 183.5748,
@@ -10353,8 +10353,8 @@
           },
           {
             "Name": "srhomeguardspeed",
-            "StartTime": 0.5668405,
-            "EndTime": 25000.566,
+            "StartTime": 0.3976857,
+            "EndTime": 25000.398,
             "Count": 1,
             "Type": 15
           }
@@ -10442,7 +10442,7 @@
           "Index": 4,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.84507,
+          "Cooldown": 13.363164,
           "IsToggled": false
         },
         {
@@ -10456,7 +10456,7 @@
           "Index": 5,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.84507,
+          "Cooldown": 13.363164,
           "IsToggled": false
         },
         {
@@ -10790,7 +10790,7 @@
         "Index": 4,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.84507,
+        "Cooldown": 13.363164,
         "IsToggled": false
       },
       "F": {
@@ -10804,19 +10804,19 @@
         "Index": 5,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.84507,
+        "Cooldown": 13.363164,
         "IsToggled": false
       },
       "NameAndTagline": "PrisDCoder#LAN",
       "NetworkIdHex": "400000B2",
-      "IndexHex": "300653",
+      "IndexHex": "1041E",
       "TotalAttackDamage": 0,
       "TotalAbilityPower": 0,
       "Info": {
         "IsNeutral": false,
         "Name": "PrisDCoder#LAN",
         "NetworkId": 1073742002,
-        "Index": 3147347,
+        "Index": 66590,
         "Position": {
           "x": 298.6284,
           "y": 183.5748,
@@ -10956,15 +10956,15 @@
           },
           {
             "Name": "srhomeguardspeed",
-            "StartTime": 0.5668405,
-            "EndTime": 25000.566,
+            "StartTime": 0.3976857,
+            "EndTime": 25000.398,
             "Count": 1,
             "Type": 15
           },
           {
             "Name": "S14_Support_Gold_Display",
-            "StartTime": 0.5668405,
-            "EndTime": 250000.56,
+            "StartTime": 1.1613783,
+            "EndTime": 250001.16,
             "Count": 0,
             "Type": 27
           }
@@ -11052,7 +11052,7 @@
           "Index": 4,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.84507,
+          "Cooldown": 13.363164,
           "IsToggled": false
         },
         {
@@ -11066,7 +11066,7 @@
           "Index": 5,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.84507,
+          "Cooldown": 13.363164,
           "IsToggled": false
         },
         {
@@ -11431,7 +11431,7 @@
         "Index": 4,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.84507,
+        "Cooldown": 13.363164,
         "IsToggled": false
       },
       "F": {
@@ -11445,19 +11445,19 @@
         "Index": 5,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.84507,
+        "Cooldown": 13.363164,
         "IsToggled": false
       },
       "NameAndTagline": "Guerra2009#LAN",
       "NetworkIdHex": "400000B3",
-      "IndexHex": "2A0621",
+      "IndexHex": "10427",
       "TotalAttackDamage": 0,
       "TotalAbilityPower": 0,
       "Info": {
         "IsNeutral": false,
         "Name": "Guerra2009#LAN",
         "NetworkId": 1073742003,
-        "Index": 2754081,
+        "Index": 66599,
         "Position": {
           "x": 14103.63,
           "y": 171.9777,
@@ -11576,15 +11576,15 @@
           },
           {
             "Name": "aatroxbannerwings",
-            "StartTime": 1.0673414,
-            "EndTime": 2.0673413,
+            "StartTime": 1.5993062,
+            "EndTime": 2.599306,
             "Count": 1,
             "Type": 1
           },
           {
             "Name": "srhomeguardspeed",
-            "StartTime": 0.5668405,
-            "EndTime": 25000.566,
+            "StartTime": 0.3976857,
+            "EndTime": 25000.398,
             "Count": 1,
             "Type": 15
           }
@@ -11672,7 +11672,7 @@
           "Index": 4,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.84507,
+          "Cooldown": 13.363164,
           "IsToggled": false
         },
         {
@@ -11686,7 +11686,7 @@
           "Index": 5,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.84507,
+          "Cooldown": 13.363164,
           "IsToggled": false
         },
         {
@@ -12014,13 +12014,13 @@
         "Icon": "Summoner_smite.dds",
         "ReadyAt": 15,
         "MaxCooldown": 15,
-        "AmmoReadyAt": 1.0673414,
+        "AmmoReadyAt": 1.5993062,
         "AmmoCooldown": 0,
         "InitAtTime": null,
         "Index": 4,
         "Level": 1,
         "AmmoCount": 1,
-        "Cooldown": 13.84507,
+        "Cooldown": 13.363164,
         "IsToggled": false
       },
       "F": {
@@ -12034,19 +12034,19 @@
         "Index": 5,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.84507,
+        "Cooldown": 13.363164,
         "IsToggled": false
       },
       "NameAndTagline": "Banedeodo#0406",
       "NetworkIdHex": "400000B4",
-      "IndexHex": "1505C3",
+      "IndexHex": "1042F",
       "TotalAttackDamage": 0,
       "TotalAbilityPower": 0,
       "Info": {
         "IsNeutral": false,
         "Name": "Banedeodo#0406",
         "NetworkId": 1073742004,
-        "Index": 1377731,
+        "Index": 66607,
         "Position": {
           "x": 14426.63,
           "y": 171.9777,
@@ -12179,8 +12179,8 @@
           },
           {
             "Name": "srhomeguardspeed",
-            "StartTime": 0.5668405,
-            "EndTime": 25000.566,
+            "StartTime": 0.3976857,
+            "EndTime": 25000.398,
             "Count": 1,
             "Type": 15
           }
@@ -12262,13 +12262,13 @@
           "Icon": "Summoner_smite.dds",
           "ReadyAt": 15,
           "MaxCooldown": 15,
-          "AmmoReadyAt": 1.0673414,
+          "AmmoReadyAt": 1.5993062,
           "AmmoCooldown": 0,
           "InitAtTime": null,
           "Index": 4,
           "Level": 1,
           "AmmoCount": 1,
-          "Cooldown": 13.84507,
+          "Cooldown": 13.363164,
           "IsToggled": false
         },
         {
@@ -12282,7 +12282,7 @@
           "Index": 5,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.84507,
+          "Cooldown": 13.363164,
           "IsToggled": false
         },
         {
@@ -12616,7 +12616,7 @@
         "Index": 4,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.84507,
+        "Cooldown": 13.363164,
         "IsToggled": false
       },
       "F": {
@@ -12630,19 +12630,19 @@
         "Index": 5,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.84507,
+        "Cooldown": 13.363164,
         "IsToggled": false
       },
       "NameAndTagline": "Manolo Melenas#CAST",
       "NetworkIdHex": "400000B5",
-      "IndexHex": "2059D",
+      "IndexHex": "10436",
       "TotalAttackDamage": 0,
       "TotalAbilityPower": 0,
       "Info": {
         "IsNeutral": false,
         "Name": "Manolo Melenas#CAST",
         "NetworkId": 1073742005,
-        "Index": 132509,
+        "Index": 66614,
         "Position": {
           "x": 14321.63,
           "y": 171.9777,
@@ -12754,8 +12754,8 @@
           },
           {
             "Name": "srhomeguardspeed",
-            "StartTime": 0.5668405,
-            "EndTime": 25000.566,
+            "StartTime": 0.3976857,
+            "EndTime": 25000.398,
             "Count": 1,
             "Type": 15
           }
@@ -12843,7 +12843,7 @@
           "Index": 4,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.84507,
+          "Cooldown": 13.363164,
           "IsToggled": false
         },
         {
@@ -12857,7 +12857,7 @@
           "Index": 5,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.84507,
+          "Cooldown": 13.363164,
           "IsToggled": false
         },
         {
@@ -13191,7 +13191,7 @@
         "Index": 4,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.84507,
+        "Cooldown": 13.363164,
         "IsToggled": false
       },
       "F": {
@@ -13205,19 +13205,19 @@
         "Index": 5,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.84507,
+        "Cooldown": 13.363164,
         "IsToggled": false
       },
       "NameAndTagline": "Arock#NEET",
       "NetworkIdHex": "400000B6",
-      "IndexHex": "20594",
+      "IndexHex": "1043D",
       "TotalAttackDamage": 0,
       "TotalAbilityPower": 0,
       "Info": {
         "IsNeutral": false,
         "Name": "Arock#NEET",
         "NetworkId": 1073742006,
-        "Index": 132500,
+        "Index": 66621,
         "Position": {
           "x": 14589.63,
           "y": 171.9777,
@@ -13343,8 +13343,8 @@
           },
           {
             "Name": "srhomeguardspeed",
-            "StartTime": 0.5668405,
-            "EndTime": 25000.566,
+            "StartTime": 0.3976857,
+            "EndTime": 25000.398,
             "Count": 1,
             "Type": 15
           }
@@ -13432,7 +13432,7 @@
           "Index": 4,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.84507,
+          "Cooldown": 13.363164,
           "IsToggled": false
         },
         {
@@ -13446,7 +13446,7 @@
           "Index": 5,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.84507,
+          "Cooldown": 13.363164,
           "IsToggled": false
         },
         {
@@ -13780,7 +13780,7 @@
         "Index": 4,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.84507,
+        "Cooldown": 13.363164,
         "IsToggled": false
       },
       "F": {
@@ -13794,19 +13794,19 @@
         "Index": 5,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.84507,
+        "Cooldown": 13.363164,
         "IsToggled": false
       },
       "NameAndTagline": "SG Coso Amorta#Coso",
       "NetworkIdHex": "400000B7",
-      "IndexHex": "20586",
+      "IndexHex": "10448",
       "TotalAttackDamage": 0,
       "TotalAbilityPower": 0,
       "Info": {
         "IsNeutral": false,
         "Name": "SG Coso Amorta#Coso",
         "NetworkId": 1073742007,
-        "Index": 132486,
+        "Index": 66632,
         "Position": {
           "x": 14055.62,
           "y": 171.9777,
@@ -13967,15 +13967,15 @@
           },
           {
             "Name": "srhomeguardspeed",
-            "StartTime": 0.5668405,
-            "EndTime": 25000.566,
+            "StartTime": 0.3976857,
+            "EndTime": 25000.398,
             "Count": 1,
             "Type": 15
           },
           {
             "Name": "S14_Support_Gold_Display",
-            "StartTime": 0.5668405,
-            "EndTime": 250000.56,
+            "StartTime": 1.1613783,
+            "EndTime": 250001.16,
             "Count": 0,
             "Type": 27
           }
@@ -14063,7 +14063,7 @@
           "Index": 4,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.84507,
+          "Cooldown": 13.363164,
           "IsToggled": false
         },
         {
@@ -14077,7 +14077,7 @@
           "Index": 5,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.84507,
+          "Cooldown": 13.363164,
           "IsToggled": false
         },
         {
@@ -14382,168 +14382,9 @@
       "IsWardOrPlant": false,
       "Info": {
         "IsNeutral": true,
-        "Name": "DragonSigil",
-        "NetworkId": 1073742247,
-        "Index": 132175,
-        "Position": {
-          "x": 9452,
-          "y": -71.2406,
-          "z": 4778
-        },
-        "Rotation": null,
-        "Team": 3
-      },
-      "Common": {
-        "IsAlive": true,
-        "IsZombie": false,
-        "IsRecalling": false,
-        "IsTargetable": false,
-        "Identifier": "TestCube",
-        "CurrentAttack": "",
-        "Status": 1,
-        "Health": 540,
-        "MaxHealth": 540,
-        "Armor": null,
-        "MagicResist": null,
-        "Level": 1,
-        "AttackSpeedMultiplier": null,
-        "MovementSpeed": null,
-        "DataStack": null,
-        "Buffs": [
-          {
-            "Name": "DragonBuffAir",
-            "StartTime": 0,
-            "EndTime": 25000,
-            "Count": 1,
-            "Type": 0
-          }
-        ],
-        "Animations": null,
-        "SubmeshVisiblityMask": 0,
-        "AttackSpeedBonus": null,
-        "AnimationState": null
-      },
-      "TypeInfo": 0,
-      "Bones": null
-    },
-    {
-      "IsClone": false,
-      "IsLaneMinion": false,
-      "IsEliteMinion": false,
-      "IsEpicMinion": false,
-      "IsJungleMinion": false,
-      "IsWardOrPlant": false,
-      "Info": {
-        "IsNeutral": true,
-        "Name": "Minion_Chaos Red",
-        "NetworkId": 1073742246,
-        "Index": 6292617,
-        "Position": {
-          "x": 7081.869,
-          "y": 56.21793,
-          "z": 10900.547
-        },
-        "Rotation": null,
-        "Team": 3
-      },
-      "Common": {
-        "IsAlive": true,
-        "IsZombie": false,
-        "IsRecalling": false,
-        "IsTargetable": false,
-        "Identifier": "SRU_CampRespawnMarker",
-        "CurrentAttack": "",
-        "Status": 1,
-        "Health": 1000,
-        "MaxHealth": 1000,
-        "Armor": null,
-        "MagicResist": null,
-        "Level": 1,
-        "AttackSpeedMultiplier": null,
-        "MovementSpeed": null,
-        "DataStack": null,
-        "Buffs": [
-          {
-            "Name": "camprespawncountdownvisible",
-            "StartTime": 0.5668405,
-            "EndTime": 60.56684,
-            "Count": 1,
-            "Type": 1
-          }
-        ],
-        "Animations": null,
-        "SubmeshVisiblityMask": 0,
-        "AttackSpeedBonus": null,
-        "AnimationState": null
-      },
-      "TypeInfo": 0,
-      "Bones": null
-    },
-    {
-      "IsClone": false,
-      "IsLaneMinion": false,
-      "IsEliteMinion": false,
-      "IsEpicMinion": false,
-      "IsJungleMinion": false,
-      "IsWardOrPlant": false,
-      "Info": {
-        "IsNeutral": true,
-        "Name": "Minion_Chaos Blue",
-        "NetworkId": 1073742245,
-        "Index": 3146898,
-        "Position": {
-          "x": 11051.729,
-          "y": 51.28,
-          "z": 6890.844
-        },
-        "Rotation": null,
-        "Team": 3
-      },
-      "Common": {
-        "IsAlive": true,
-        "IsZombie": false,
-        "IsRecalling": false,
-        "IsTargetable": false,
-        "Identifier": "SRU_CampRespawnMarker",
-        "CurrentAttack": "",
-        "Status": 1,
-        "Health": 1000,
-        "MaxHealth": 1000,
-        "Armor": null,
-        "MagicResist": null,
-        "Level": 1,
-        "AttackSpeedMultiplier": null,
-        "MovementSpeed": null,
-        "DataStack": null,
-        "Buffs": [
-          {
-            "Name": "camprespawncountdownvisible",
-            "StartTime": 0.5668405,
-            "EndTime": 60.56684,
-            "Count": 1,
-            "Type": 1
-          }
-        ],
-        "Animations": null,
-        "SubmeshVisiblityMask": 0,
-        "AttackSpeedBonus": null,
-        "AnimationState": null
-      },
-      "TypeInfo": 0,
-      "Bones": null
-    },
-    {
-      "IsClone": false,
-      "IsLaneMinion": false,
-      "IsEliteMinion": false,
-      "IsEpicMinion": false,
-      "IsJungleMinion": false,
-      "IsWardOrPlant": false,
-      "Info": {
-        "IsNeutral": true,
         "Name": "PlantSatchel",
         "NetworkId": 1073742339,
-        "Index": 12518547,
+        "Index": 132098,
         "Position": {
           "x": 10373,
           "y": 51.73402,
@@ -14586,13 +14427,13 @@
       "IsWardOrPlant": false,
       "Info": {
         "IsNeutral": true,
-        "Name": "Minion_Horde",
-        "NetworkId": 1073742244,
-        "Index": 197799,
+        "Name": "HiddenMinion",
+        "NetworkId": 1073742340,
+        "Index": 132158,
         "Position": {
-          "x": 4909.565,
-          "y": -56.251316,
-          "z": 10487.323
+          "x": 10373,
+          "y": 51.73402,
+          "z": 7628
         },
         "Rotation": null,
         "Team": 3
@@ -14602,325 +14443,7 @@
         "IsZombie": false,
         "IsRecalling": false,
         "IsTargetable": false,
-        "Identifier": "SRU_CampRespawnMarker",
-        "CurrentAttack": "",
-        "Status": 1,
-        "Health": 1000,
-        "MaxHealth": 1000,
-        "Armor": null,
-        "MagicResist": null,
-        "Level": 1,
-        "AttackSpeedMultiplier": null,
-        "MovementSpeed": null,
-        "DataStack": null,
-        "Buffs": [
-          {
-            "Name": "camprespawncountdownhidden",
-            "StartTime": 0,
-            "EndTime": 420,
-            "Count": 1,
-            "Type": 1
-          }
-        ],
-        "Animations": null,
-        "SubmeshVisiblityMask": 0,
-        "AttackSpeedBonus": null,
-        "AnimationState": null
-      },
-      "TypeInfo": 0,
-      "Bones": null
-    },
-    {
-      "IsClone": false,
-      "IsLaneMinion": false,
-      "IsEliteMinion": false,
-      "IsEpicMinion": false,
-      "IsJungleMinion": false,
-      "IsWardOrPlant": false,
-      "Info": {
-        "IsNeutral": true,
-        "Name": "Minion_Order Blue",
-        "NetworkId": 1073742243,
-        "Index": 7472297,
-        "Position": {
-          "x": 3813.851,
-          "y": 52.099476,
-          "z": 7909.825
-        },
-        "Rotation": null,
-        "Team": 3
-      },
-      "Common": {
-        "IsAlive": true,
-        "IsZombie": false,
-        "IsRecalling": false,
-        "IsTargetable": false,
-        "Identifier": "SRU_CampRespawnMarker",
-        "CurrentAttack": "",
-        "Status": 1,
-        "Health": 1000,
-        "MaxHealth": 1000,
-        "Armor": null,
-        "MagicResist": null,
-        "Level": 1,
-        "AttackSpeedMultiplier": null,
-        "MovementSpeed": null,
-        "DataStack": null,
-        "Buffs": [
-          {
-            "Name": "camprespawncountdownvisible",
-            "StartTime": 0.5668405,
-            "EndTime": 60.56684,
-            "Count": 1,
-            "Type": 1
-          }
-        ],
-        "Animations": null,
-        "SubmeshVisiblityMask": 0,
-        "AttackSpeedBonus": null,
-        "AnimationState": null
-      },
-      "TypeInfo": 0,
-      "Bones": null
-    },
-    {
-      "IsClone": false,
-      "IsLaneMinion": false,
-      "IsEliteMinion": false,
-      "IsEpicMinion": false,
-      "IsJungleMinion": false,
-      "IsWardOrPlant": false,
-      "Info": {
-        "IsNeutral": true,
-        "Name": "Minion_Baron Crab",
-        "NetworkId": 1073742242,
-        "Index": 5702841,
-        "Position": {
-          "x": 4400,
-          "y": -69.17303,
-          "z": 9600
-        },
-        "Rotation": null,
-        "Team": 3
-      },
-      "Common": {
-        "IsAlive": true,
-        "IsZombie": false,
-        "IsRecalling": false,
-        "IsTargetable": false,
-        "Identifier": "SRU_CampRespawnMarker",
-        "CurrentAttack": "",
-        "Status": 1,
-        "Health": 1000,
-        "MaxHealth": 1000,
-        "Armor": null,
-        "MagicResist": null,
-        "Level": 1,
-        "AttackSpeedMultiplier": null,
-        "MovementSpeed": null,
-        "DataStack": null,
-        "Buffs": [
-          {
-            "Name": "camprespawncountdownhidden",
-            "StartTime": 0,
-            "EndTime": 115,
-            "Count": 1,
-            "Type": 1
-          }
-        ],
-        "Animations": null,
-        "SubmeshVisiblityMask": 0,
-        "AttackSpeedBonus": null,
-        "AnimationState": null
-      },
-      "TypeInfo": 0,
-      "Bones": null
-    },
-    {
-      "IsClone": false,
-      "IsLaneMinion": false,
-      "IsEliteMinion": false,
-      "IsEpicMinion": false,
-      "IsJungleMinion": false,
-      "IsWardOrPlant": false,
-      "Info": {
-        "IsNeutral": true,
-        "Name": "Minion_Order Red",
-        "NetworkId": 1073742241,
-        "Index": 8389857,
-        "Position": {
-          "x": 7815.244,
-          "y": 53.865505,
-          "z": 3930.187
-        },
-        "Rotation": null,
-        "Team": 3
-      },
-      "Common": {
-        "IsAlive": true,
-        "IsZombie": false,
-        "IsRecalling": false,
-        "IsTargetable": false,
-        "Identifier": "SRU_CampRespawnMarker",
-        "CurrentAttack": "",
-        "Status": 1,
-        "Health": 1000,
-        "MaxHealth": 1000,
-        "Armor": null,
-        "MagicResist": null,
-        "Level": 1,
-        "AttackSpeedMultiplier": null,
-        "MovementSpeed": null,
-        "DataStack": null,
-        "Buffs": [
-          {
-            "Name": "camprespawncountdownvisible",
-            "StartTime": 0.5668405,
-            "EndTime": 60.56684,
-            "Count": 1,
-            "Type": 1
-          }
-        ],
-        "Animations": null,
-        "SubmeshVisiblityMask": 0,
-        "AttackSpeedBonus": null,
-        "AnimationState": null
-      },
-      "TypeInfo": 0,
-      "Bones": null
-    },
-    {
-      "IsClone": false,
-      "IsLaneMinion": false,
-      "IsEliteMinion": false,
-      "IsEpicMinion": false,
-      "IsJungleMinion": false,
-      "IsWardOrPlant": false,
-      "Info": {
-        "IsNeutral": true,
-        "Name": "Minion_Dragon",
-        "NetworkId": 1073742240,
-        "Index": 132345,
-        "Position": {
-          "x": 9987.674,
-          "y": -71.2406,
-          "z": 4447.761
-        },
-        "Rotation": null,
-        "Team": 3
-      },
-      "Common": {
-        "IsAlive": true,
-        "IsZombie": false,
-        "IsRecalling": false,
-        "IsTargetable": false,
-        "Identifier": "SRU_CampRespawnMarker",
-        "CurrentAttack": "",
-        "Status": 1,
-        "Health": 1000,
-        "MaxHealth": 1000,
-        "Armor": null,
-        "MagicResist": null,
-        "Level": 1,
-        "AttackSpeedMultiplier": null,
-        "MovementSpeed": null,
-        "DataStack": null,
-        "Buffs": [
-          {
-            "Name": "camprespawncountdownhidden",
-            "StartTime": 0,
-            "EndTime": 240,
-            "Count": 1,
-            "Type": 1
-          }
-        ],
-        "Animations": null,
-        "SubmeshVisiblityMask": 0,
-        "AttackSpeedBonus": null,
-        "AnimationState": null
-      },
-      "TypeInfo": 0,
-      "Bones": null
-    },
-    {
-      "IsClone": false,
-      "IsLaneMinion": false,
-      "IsEliteMinion": false,
-      "IsEpicMinion": false,
-      "IsJungleMinion": false,
-      "IsWardOrPlant": false,
-      "Info": {
-        "IsNeutral": true,
-        "Name": "Minion_Dragon Crab",
-        "NetworkId": 1073742239,
-        "Index": 132346,
-        "Position": {
-          "x": 10500,
-          "y": -71.24,
-          "z": 5170
-        },
-        "Rotation": null,
-        "Team": 3
-      },
-      "Common": {
-        "IsAlive": true,
-        "IsZombie": false,
-        "IsRecalling": false,
-        "IsTargetable": false,
-        "Identifier": "SRU_CampRespawnMarker",
-        "CurrentAttack": "",
-        "Status": 1,
-        "Health": 1000,
-        "MaxHealth": 1000,
-        "Armor": null,
-        "MagicResist": null,
-        "Level": 1,
-        "AttackSpeedMultiplier": null,
-        "MovementSpeed": null,
-        "DataStack": null,
-        "Buffs": [
-          {
-            "Name": "camprespawncountdownhidden",
-            "StartTime": 0,
-            "EndTime": 115,
-            "Count": 1,
-            "Type": 1
-          }
-        ],
-        "Animations": null,
-        "SubmeshVisiblityMask": 0,
-        "AttackSpeedBonus": null,
-        "AnimationState": null
-      },
-      "TypeInfo": 0,
-      "Bones": null
-    },
-    {
-      "IsClone": false,
-      "IsLaneMinion": false,
-      "IsEliteMinion": false,
-      "IsEpicMinion": false,
-      "IsJungleMinion": false,
-      "IsWardOrPlant": false,
-      "Info": {
-        "IsNeutral": true,
-        "Name": "AatroxWCenterMinion",
-        "NetworkId": 1073742238,
-        "Index": 132347,
-        "Position": {
-          "x": 421.31067,
-          "y": 183.47618,
-          "z": 432.4967
-        },
-        "Rotation": null,
-        "Team": 3
-      },
-      "Common": {
-        "IsAlive": true,
-        "IsZombie": false,
-        "IsRecalling": false,
-        "IsTargetable": false,
-        "Identifier": "TestCubeRender",
+        "Identifier": "TestCubeRenderNoFOW",
         "CurrentAttack": "",
         "Status": 1,
         "Health": 100,
@@ -14931,15 +14454,7 @@
         "AttackSpeedMultiplier": null,
         "MovementSpeed": null,
         "DataStack": null,
-        "Buffs": [
-          {
-            "Name": "CampCleanupManager",
-            "StartTime": 0,
-            "EndTime": 25000,
-            "Count": 1,
-            "Type": 0
-          }
-        ],
+        "Buffs": [],
         "Animations": null,
         "SubmeshVisiblityMask": 0,
         "AttackSpeedBonus": null,
@@ -14957,13 +14472,13 @@
       "IsWardOrPlant": false,
       "Info": {
         "IsNeutral": true,
-        "Name": "PlantMasterMinion",
-        "NetworkId": 1073742068,
-        "Index": 132348,
+        "Name": "PlantSatchel",
+        "NetworkId": 1073742337,
+        "Index": 132159,
         "Position": {
-          "x": 4899.67,
-          "y": 51.9,
-          "z": 7846.7427
+          "x": 8659,
+          "y": 53.657677,
+          "z": 11535
         },
         "Rotation": null,
         "Team": 3
@@ -14973,11 +14488,191 @@
         "IsZombie": false,
         "IsRecalling": false,
         "IsTargetable": false,
-        "Identifier": "SRU_PlantRespawnMarker",
+        "Identifier": "SRU_Plant_Satchel",
         "CurrentAttack": "",
         "Status": 1,
-        "Health": 1000,
-        "MaxHealth": 1000,
+        "Health": 1,
+        "MaxHealth": 1,
+        "Armor": null,
+        "MagicResist": null,
+        "Level": 1,
+        "AttackSpeedMultiplier": null,
+        "MovementSpeed": null,
+        "DataStack": null,
+        "Buffs": [],
+        "Animations": null,
+        "SubmeshVisiblityMask": 0,
+        "AttackSpeedBonus": null,
+        "AnimationState": null
+      },
+      "TypeInfo": 0,
+      "Bones": null
+    },
+    {
+      "IsClone": false,
+      "IsLaneMinion": false,
+      "IsEliteMinion": false,
+      "IsEpicMinion": false,
+      "IsJungleMinion": false,
+      "IsWardOrPlant": false,
+      "Info": {
+        "IsNeutral": true,
+        "Name": "PlantSatchel",
+        "NetworkId": 1073742343,
+        "Index": 132252,
+        "Position": {
+          "x": 6141,
+          "y": 50.523113,
+          "z": 3402
+        },
+        "Rotation": null,
+        "Team": 3
+      },
+      "Common": {
+        "IsAlive": true,
+        "IsZombie": false,
+        "IsRecalling": false,
+        "IsTargetable": false,
+        "Identifier": "SRU_Plant_Satchel",
+        "CurrentAttack": "",
+        "Status": 1,
+        "Health": 1,
+        "MaxHealth": 1,
+        "Armor": null,
+        "MagicResist": null,
+        "Level": 1,
+        "AttackSpeedMultiplier": null,
+        "MovementSpeed": null,
+        "DataStack": null,
+        "Buffs": [],
+        "Animations": null,
+        "SubmeshVisiblityMask": 0,
+        "AttackSpeedBonus": null,
+        "AnimationState": null
+      },
+      "TypeInfo": 0,
+      "Bones": null
+    },
+    {
+      "IsClone": false,
+      "IsLaneMinion": false,
+      "IsEliteMinion": false,
+      "IsEpicMinion": false,
+      "IsJungleMinion": false,
+      "IsWardOrPlant": false,
+      "Info": {
+        "IsNeutral": true,
+        "Name": "HiddenMinion",
+        "NetworkId": 1073742344,
+        "Index": 132265,
+        "Position": {
+          "x": 6141,
+          "y": 50.523113,
+          "z": 3402
+        },
+        "Rotation": null,
+        "Team": 3
+      },
+      "Common": {
+        "IsAlive": true,
+        "IsZombie": false,
+        "IsRecalling": false,
+        "IsTargetable": false,
+        "Identifier": "TestCubeRenderNoFOW",
+        "CurrentAttack": "",
+        "Status": 1,
+        "Health": 100,
+        "MaxHealth": 100,
+        "Armor": null,
+        "MagicResist": null,
+        "Level": 1,
+        "AttackSpeedMultiplier": null,
+        "MovementSpeed": null,
+        "DataStack": null,
+        "Buffs": [],
+        "Animations": null,
+        "SubmeshVisiblityMask": 0,
+        "AttackSpeedBonus": null,
+        "AnimationState": null
+      },
+      "TypeInfo": 0,
+      "Bones": null
+    },
+    {
+      "IsClone": false,
+      "IsLaneMinion": false,
+      "IsEliteMinion": false,
+      "IsEpicMinion": false,
+      "IsJungleMinion": false,
+      "IsWardOrPlant": false,
+      "Info": {
+        "IsNeutral": true,
+        "Name": "PlantSatchel",
+        "NetworkId": 1073742341,
+        "Index": 132266,
+        "Position": {
+          "x": 4385.8037,
+          "y": 50.715893,
+          "z": 7244.583
+        },
+        "Rotation": null,
+        "Team": 3
+      },
+      "Common": {
+        "IsAlive": true,
+        "IsZombie": false,
+        "IsRecalling": false,
+        "IsTargetable": false,
+        "Identifier": "SRU_Plant_Satchel",
+        "CurrentAttack": "",
+        "Status": 1,
+        "Health": 1,
+        "MaxHealth": 1,
+        "Armor": null,
+        "MagicResist": null,
+        "Level": 1,
+        "AttackSpeedMultiplier": null,
+        "MovementSpeed": null,
+        "DataStack": null,
+        "Buffs": [],
+        "Animations": null,
+        "SubmeshVisiblityMask": 0,
+        "AttackSpeedBonus": null,
+        "AnimationState": null
+      },
+      "TypeInfo": 0,
+      "Bones": null
+    },
+    {
+      "IsClone": false,
+      "IsLaneMinion": false,
+      "IsEliteMinion": false,
+      "IsEpicMinion": false,
+      "IsJungleMinion": false,
+      "IsWardOrPlant": false,
+      "Info": {
+        "IsNeutral": true,
+        "Name": "HiddenMinion",
+        "NetworkId": 1073742342,
+        "Index": 132270,
+        "Position": {
+          "x": 4385.8037,
+          "y": 50.715893,
+          "z": 7244.583
+        },
+        "Rotation": null,
+        "Team": 3
+      },
+      "Common": {
+        "IsAlive": true,
+        "IsZombie": false,
+        "IsRecalling": false,
+        "IsTargetable": false,
+        "Identifier": "TestCubeRenderNoFOW",
+        "CurrentAttack": "",
+        "Status": 1,
+        "Health": 100,
+        "MaxHealth": 100,
         "Armor": null,
         "MagicResist": null,
         "Level": 1,
@@ -15002,172 +14697,13 @@
       "IsWardOrPlant": false,
       "Info": {
         "IsNeutral": false,
-        "Name": "lane2_chaos_marker",
-        "NetworkId": 1073742014,
-        "Index": 132349,
+        "Name": "lane0_order_marker",
+        "NetworkId": 1073742009,
+        "Index": 66773,
         "Position": {
-          "x": 5198.112,
-          "y": 52.8381,
-          "z": 13630.852
-        },
-        "Rotation": null,
-        "Team": 2
-      },
-      "Common": {
-        "IsAlive": true,
-        "IsZombie": false,
-        "IsRecalling": false,
-        "IsTargetable": false,
-        "Identifier": "TestCubeRender",
-        "CurrentAttack": "",
-        "Status": 1,
-        "Health": 100,
-        "MaxHealth": 100,
-        "Armor": null,
-        "MagicResist": null,
-        "Level": 1,
-        "AttackSpeedMultiplier": null,
-        "MovementSpeed": null,
-        "DataStack": null,
-        "Buffs": [
-          {
-            "Name": "Homeguards2026_LaneVFXBuff",
-            "StartTime": 0,
-            "EndTime": 25000,
-            "Count": 1,
-            "Type": 1
-          }
-        ],
-        "Animations": null,
-        "SubmeshVisiblityMask": 0,
-        "AttackSpeedBonus": null,
-        "AnimationState": null
-      },
-      "TypeInfo": 0,
-      "Bones": null
-    },
-    {
-      "IsClone": false,
-      "IsLaneMinion": false,
-      "IsEliteMinion": false,
-      "IsEpicMinion": false,
-      "IsJungleMinion": false,
-      "IsWardOrPlant": false,
-      "Info": {
-        "IsNeutral": false,
-        "Name": "lane2_order_marker",
-        "NetworkId": 1073742013,
-        "Index": 132350,
-        "Position": {
-          "x": 1294.4136,
-          "y": 52.8381,
-          "z": 9587.777
-        },
-        "Rotation": null,
-        "Team": 1
-      },
-      "Common": {
-        "IsAlive": true,
-        "IsZombie": false,
-        "IsRecalling": false,
-        "IsTargetable": false,
-        "Identifier": "TestCubeRender",
-        "CurrentAttack": "",
-        "Status": 1,
-        "Health": 100,
-        "MaxHealth": 100,
-        "Armor": null,
-        "MagicResist": null,
-        "Level": 1,
-        "AttackSpeedMultiplier": null,
-        "MovementSpeed": null,
-        "DataStack": null,
-        "Buffs": [
-          {
-            "Name": "Homeguards2026_LaneVFXBuff",
-            "StartTime": 0,
-            "EndTime": 25000,
-            "Count": 1,
-            "Type": 1
-          }
-        ],
-        "Animations": null,
-        "SubmeshVisiblityMask": 0,
-        "AttackSpeedBonus": null,
-        "AnimationState": null
-      },
-      "TypeInfo": 0,
-      "Bones": null
-    },
-    {
-      "IsClone": false,
-      "IsLaneMinion": false,
-      "IsEliteMinion": false,
-      "IsEpicMinion": false,
-      "IsJungleMinion": false,
-      "IsWardOrPlant": false,
-      "Info": {
-        "IsNeutral": false,
-        "Name": "lane1_chaos_marker",
-        "NetworkId": 1073742012,
-        "Index": 132351,
-        "Position": {
-          "x": 9249.0205,
-          "y": 52.769356,
-          "z": 9290.786
-        },
-        "Rotation": null,
-        "Team": 2
-      },
-      "Common": {
-        "IsAlive": true,
-        "IsZombie": false,
-        "IsRecalling": false,
-        "IsTargetable": false,
-        "Identifier": "TestCubeRender",
-        "CurrentAttack": "",
-        "Status": 1,
-        "Health": 100,
-        "MaxHealth": 100,
-        "Armor": null,
-        "MagicResist": null,
-        "Level": 1,
-        "AttackSpeedMultiplier": null,
-        "MovementSpeed": null,
-        "DataStack": null,
-        "Buffs": [
-          {
-            "Name": "Homeguards2026_LaneVFXBuff",
-            "StartTime": 0,
-            "EndTime": 25000,
-            "Count": 1,
-            "Type": 1
-          }
-        ],
-        "Animations": null,
-        "SubmeshVisiblityMask": 0,
-        "AttackSpeedBonus": null,
-        "AnimationState": null
-      },
-      "TypeInfo": 0,
-      "Bones": null
-    },
-    {
-      "IsClone": false,
-      "IsLaneMinion": false,
-      "IsEliteMinion": false,
-      "IsEpicMinion": false,
-      "IsJungleMinion": false,
-      "IsWardOrPlant": false,
-      "Info": {
-        "IsNeutral": false,
-        "Name": "lane1_order_marker",
-        "NetworkId": 1073742011,
-        "Index": 132352,
-        "Position": {
-          "x": 5522.8276,
-          "y": 51.0679,
-          "z": 5582.507
+          "x": 9650.713,
+          "y": 51.037254,
+          "z": 1251.2656
         },
         "Rotation": null,
         "Team": 1
@@ -15216,7 +14752,7 @@
         "IsNeutral": false,
         "Name": "lane0_chaos_marker",
         "NetworkId": 1073742010,
-        "Index": 132353,
+        "Index": 66774,
         "Position": {
           "x": 13583.662,
           "y": 52.395893,
@@ -15267,13 +14803,13 @@
       "IsWardOrPlant": false,
       "Info": {
         "IsNeutral": false,
-        "Name": "lane0_order_marker",
-        "NetworkId": 1073742009,
-        "Index": 132354,
+        "Name": "lane1_order_marker",
+        "NetworkId": 1073742011,
+        "Index": 66775,
         "Position": {
-          "x": 9650.713,
-          "y": 51.037254,
-          "z": 1251.2656
+          "x": 5522.8276,
+          "y": 51.0679,
+          "z": 5582.507
         },
         "Rotation": null,
         "Team": 1
@@ -15319,24 +14855,24 @@
       "IsJungleMinion": false,
       "IsWardOrPlant": false,
       "Info": {
-        "IsNeutral": true,
-        "Name": "HiddenMinion",
-        "NetworkId": 1073742342,
-        "Index": 2688339,
+        "IsNeutral": false,
+        "Name": "lane1_chaos_marker",
+        "NetworkId": 1073742012,
+        "Index": 66776,
         "Position": {
-          "x": 4385.8037,
-          "y": 50.715893,
-          "z": 7244.583
+          "x": 9249.0205,
+          "y": 52.769356,
+          "z": 9290.786
         },
         "Rotation": null,
-        "Team": 3
+        "Team": 2
       },
       "Common": {
         "IsAlive": true,
         "IsZombie": false,
         "IsRecalling": false,
         "IsTargetable": false,
-        "Identifier": "TestCubeRenderNoFOW",
+        "Identifier": "TestCubeRender",
         "CurrentAttack": "",
         "Status": 1,
         "Health": 100,
@@ -15347,7 +14883,15 @@
         "AttackSpeedMultiplier": null,
         "MovementSpeed": null,
         "DataStack": null,
-        "Buffs": [],
+        "Buffs": [
+          {
+            "Name": "Homeguards2026_LaneVFXBuff",
+            "StartTime": 0,
+            "EndTime": 25000,
+            "Count": 1,
+            "Type": 1
+          }
+        ],
         "Animations": null,
         "SubmeshVisiblityMask": 0,
         "AttackSpeedBonus": null,
@@ -15364,24 +14908,24 @@
       "IsJungleMinion": false,
       "IsWardOrPlant": false,
       "Info": {
-        "IsNeutral": true,
-        "Name": "HiddenMinion",
-        "NetworkId": 1073742340,
-        "Index": 2033187,
+        "IsNeutral": false,
+        "Name": "lane2_order_marker",
+        "NetworkId": 1073742013,
+        "Index": 66777,
         "Position": {
-          "x": 10373,
-          "y": 51.73402,
-          "z": 7628
+          "x": 1294.4136,
+          "y": 52.8381,
+          "z": 9587.777
         },
         "Rotation": null,
-        "Team": 3
+        "Team": 1
       },
       "Common": {
         "IsAlive": true,
         "IsZombie": false,
         "IsRecalling": false,
         "IsTargetable": false,
-        "Identifier": "TestCubeRenderNoFOW",
+        "Identifier": "TestCubeRender",
         "CurrentAttack": "",
         "Status": 1,
         "Health": 100,
@@ -15392,7 +14936,68 @@
         "AttackSpeedMultiplier": null,
         "MovementSpeed": null,
         "DataStack": null,
-        "Buffs": [],
+        "Buffs": [
+          {
+            "Name": "Homeguards2026_LaneVFXBuff",
+            "StartTime": 0,
+            "EndTime": 25000,
+            "Count": 1,
+            "Type": 1
+          }
+        ],
+        "Animations": null,
+        "SubmeshVisiblityMask": 0,
+        "AttackSpeedBonus": null,
+        "AnimationState": null
+      },
+      "TypeInfo": 0,
+      "Bones": null
+    },
+    {
+      "IsClone": false,
+      "IsLaneMinion": false,
+      "IsEliteMinion": false,
+      "IsEpicMinion": false,
+      "IsJungleMinion": false,
+      "IsWardOrPlant": false,
+      "Info": {
+        "IsNeutral": false,
+        "Name": "lane2_chaos_marker",
+        "NetworkId": 1073742014,
+        "Index": 66778,
+        "Position": {
+          "x": 5198.112,
+          "y": 52.8381,
+          "z": 13630.852
+        },
+        "Rotation": null,
+        "Team": 2
+      },
+      "Common": {
+        "IsAlive": true,
+        "IsZombie": false,
+        "IsRecalling": false,
+        "IsTargetable": false,
+        "Identifier": "TestCubeRender",
+        "CurrentAttack": "",
+        "Status": 1,
+        "Health": 100,
+        "MaxHealth": 100,
+        "Armor": null,
+        "MagicResist": null,
+        "Level": 1,
+        "AttackSpeedMultiplier": null,
+        "MovementSpeed": null,
+        "DataStack": null,
+        "Buffs": [
+          {
+            "Name": "Homeguards2026_LaneVFXBuff",
+            "StartTime": 0,
+            "EndTime": 25000,
+            "Count": 1,
+            "Type": 1
+          }
+        ],
         "Animations": null,
         "SubmeshVisiblityMask": 0,
         "AttackSpeedBonus": null,
@@ -15410,13 +15015,13 @@
       "IsWardOrPlant": false,
       "Info": {
         "IsNeutral": true,
-        "Name": "PlantSatchel",
-        "NetworkId": 1073742341,
-        "Index": 5310005,
+        "Name": "PlantMasterMinion",
+        "NetworkId": 1073742068,
+        "Index": 66779,
         "Position": {
-          "x": 4385.8037,
-          "y": 50.715893,
-          "z": 7244.583
+          "x": 4899.67,
+          "y": 51.9,
+          "z": 7846.7427
         },
         "Rotation": null,
         "Team": 3
@@ -15426,11 +15031,11 @@
         "IsZombie": false,
         "IsRecalling": false,
         "IsTargetable": false,
-        "Identifier": "SRU_Plant_Satchel",
+        "Identifier": "SRU_PlantRespawnMarker",
         "CurrentAttack": "",
         "Status": 1,
-        "Health": 1,
-        "MaxHealth": 1,
+        "Health": 1000,
+        "MaxHealth": 1000,
         "Armor": null,
         "MagicResist": null,
         "Level": 1,
@@ -15455,13 +15060,13 @@
       "IsWardOrPlant": false,
       "Info": {
         "IsNeutral": true,
-        "Name": "PlantSatchel",
-        "NetworkId": 1073742337,
-        "Index": 7603767,
+        "Name": "AatroxWCenterMinion",
+        "NetworkId": 1073742238,
+        "Index": 66780,
         "Position": {
-          "x": 8659,
-          "y": 53.657677,
-          "z": 11535
+          "x": 421.31067,
+          "y": 183.47618,
+          "z": 432.4967
         },
         "Rotation": null,
         "Team": 3
@@ -15471,18 +15076,26 @@
         "IsZombie": false,
         "IsRecalling": false,
         "IsTargetable": false,
-        "Identifier": "SRU_Plant_Satchel",
+        "Identifier": "TestCubeRender",
         "CurrentAttack": "",
         "Status": 1,
-        "Health": 1,
-        "MaxHealth": 1,
+        "Health": 100,
+        "MaxHealth": 100,
         "Armor": null,
         "MagicResist": null,
         "Level": 1,
         "AttackSpeedMultiplier": null,
         "MovementSpeed": null,
         "DataStack": null,
-        "Buffs": [],
+        "Buffs": [
+          {
+            "Name": "CampCleanupManager",
+            "StartTime": 0,
+            "EndTime": 25000,
+            "Count": 1,
+            "Type": 0
+          }
+        ],
         "Animations": null,
         "SubmeshVisiblityMask": 0,
         "AttackSpeedBonus": null,
@@ -15500,13 +15113,13 @@
       "IsWardOrPlant": false,
       "Info": {
         "IsNeutral": true,
-        "Name": "PlantSatchel",
-        "NetworkId": 1073742343,
-        "Index": 4785772,
+        "Name": "Minion_Dragon Crab",
+        "NetworkId": 1073742239,
+        "Index": 66781,
         "Position": {
-          "x": 6141,
-          "y": 50.523113,
-          "z": 3402
+          "x": 10500,
+          "y": -71.24,
+          "z": 5170
         },
         "Rotation": null,
         "Team": 3
@@ -15516,18 +15129,450 @@
         "IsZombie": false,
         "IsRecalling": false,
         "IsTargetable": false,
-        "Identifier": "SRU_Plant_Satchel",
+        "Identifier": "SRU_CampRespawnMarker",
         "CurrentAttack": "",
         "Status": 1,
-        "Health": 1,
-        "MaxHealth": 1,
+        "Health": 1000,
+        "MaxHealth": 1000,
         "Armor": null,
         "MagicResist": null,
         "Level": 1,
         "AttackSpeedMultiplier": null,
         "MovementSpeed": null,
         "DataStack": null,
-        "Buffs": [],
+        "Buffs": [
+          {
+            "Name": "camprespawncountdownhidden",
+            "StartTime": 0,
+            "EndTime": 115,
+            "Count": 1,
+            "Type": 1
+          }
+        ],
+        "Animations": null,
+        "SubmeshVisiblityMask": 0,
+        "AttackSpeedBonus": null,
+        "AnimationState": null
+      },
+      "TypeInfo": 0,
+      "Bones": null
+    },
+    {
+      "IsClone": false,
+      "IsLaneMinion": false,
+      "IsEliteMinion": false,
+      "IsEpicMinion": false,
+      "IsJungleMinion": false,
+      "IsWardOrPlant": false,
+      "Info": {
+        "IsNeutral": true,
+        "Name": "Minion_Dragon",
+        "NetworkId": 1073742240,
+        "Index": 66782,
+        "Position": {
+          "x": 9987.674,
+          "y": -71.2406,
+          "z": 4447.761
+        },
+        "Rotation": null,
+        "Team": 3
+      },
+      "Common": {
+        "IsAlive": true,
+        "IsZombie": false,
+        "IsRecalling": false,
+        "IsTargetable": false,
+        "Identifier": "SRU_CampRespawnMarker",
+        "CurrentAttack": "",
+        "Status": 1,
+        "Health": 1000,
+        "MaxHealth": 1000,
+        "Armor": null,
+        "MagicResist": null,
+        "Level": 1,
+        "AttackSpeedMultiplier": null,
+        "MovementSpeed": null,
+        "DataStack": null,
+        "Buffs": [
+          {
+            "Name": "camprespawncountdownhidden",
+            "StartTime": 0,
+            "EndTime": 240,
+            "Count": 1,
+            "Type": 1
+          }
+        ],
+        "Animations": null,
+        "SubmeshVisiblityMask": 0,
+        "AttackSpeedBonus": null,
+        "AnimationState": null
+      },
+      "TypeInfo": 0,
+      "Bones": null
+    },
+    {
+      "IsClone": false,
+      "IsLaneMinion": false,
+      "IsEliteMinion": false,
+      "IsEpicMinion": false,
+      "IsJungleMinion": false,
+      "IsWardOrPlant": false,
+      "Info": {
+        "IsNeutral": true,
+        "Name": "Minion_Order Red",
+        "NetworkId": 1073742241,
+        "Index": 66783,
+        "Position": {
+          "x": 7815.244,
+          "y": 53.865505,
+          "z": 3930.187
+        },
+        "Rotation": null,
+        "Team": 3
+      },
+      "Common": {
+        "IsAlive": true,
+        "IsZombie": false,
+        "IsRecalling": false,
+        "IsTargetable": false,
+        "Identifier": "SRU_CampRespawnMarker",
+        "CurrentAttack": "",
+        "Status": 1,
+        "Health": 1000,
+        "MaxHealth": 1000,
+        "Armor": null,
+        "MagicResist": null,
+        "Level": 1,
+        "AttackSpeedMultiplier": null,
+        "MovementSpeed": null,
+        "DataStack": null,
+        "Buffs": [
+          {
+            "Name": "camprespawncountdownvisible",
+            "StartTime": 0.3976857,
+            "EndTime": 60.397686,
+            "Count": 1,
+            "Type": 1
+          }
+        ],
+        "Animations": null,
+        "SubmeshVisiblityMask": 0,
+        "AttackSpeedBonus": null,
+        "AnimationState": null
+      },
+      "TypeInfo": 0,
+      "Bones": null
+    },
+    {
+      "IsClone": false,
+      "IsLaneMinion": false,
+      "IsEliteMinion": false,
+      "IsEpicMinion": false,
+      "IsJungleMinion": false,
+      "IsWardOrPlant": false,
+      "Info": {
+        "IsNeutral": true,
+        "Name": "Minion_Baron Crab",
+        "NetworkId": 1073742242,
+        "Index": 66784,
+        "Position": {
+          "x": 4400,
+          "y": -69.17303,
+          "z": 9600
+        },
+        "Rotation": null,
+        "Team": 3
+      },
+      "Common": {
+        "IsAlive": true,
+        "IsZombie": false,
+        "IsRecalling": false,
+        "IsTargetable": false,
+        "Identifier": "SRU_CampRespawnMarker",
+        "CurrentAttack": "",
+        "Status": 1,
+        "Health": 1000,
+        "MaxHealth": 1000,
+        "Armor": null,
+        "MagicResist": null,
+        "Level": 1,
+        "AttackSpeedMultiplier": null,
+        "MovementSpeed": null,
+        "DataStack": null,
+        "Buffs": [
+          {
+            "Name": "camprespawncountdownhidden",
+            "StartTime": 0,
+            "EndTime": 115,
+            "Count": 1,
+            "Type": 1
+          }
+        ],
+        "Animations": null,
+        "SubmeshVisiblityMask": 0,
+        "AttackSpeedBonus": null,
+        "AnimationState": null
+      },
+      "TypeInfo": 0,
+      "Bones": null
+    },
+    {
+      "IsClone": false,
+      "IsLaneMinion": false,
+      "IsEliteMinion": false,
+      "IsEpicMinion": false,
+      "IsJungleMinion": false,
+      "IsWardOrPlant": false,
+      "Info": {
+        "IsNeutral": true,
+        "Name": "Minion_Order Blue",
+        "NetworkId": 1073742243,
+        "Index": 66785,
+        "Position": {
+          "x": 3813.851,
+          "y": 52.099476,
+          "z": 7909.825
+        },
+        "Rotation": null,
+        "Team": 3
+      },
+      "Common": {
+        "IsAlive": true,
+        "IsZombie": false,
+        "IsRecalling": false,
+        "IsTargetable": false,
+        "Identifier": "SRU_CampRespawnMarker",
+        "CurrentAttack": "",
+        "Status": 1,
+        "Health": 1000,
+        "MaxHealth": 1000,
+        "Armor": null,
+        "MagicResist": null,
+        "Level": 1,
+        "AttackSpeedMultiplier": null,
+        "MovementSpeed": null,
+        "DataStack": null,
+        "Buffs": [
+          {
+            "Name": "camprespawncountdownvisible",
+            "StartTime": 0.3976857,
+            "EndTime": 60.397686,
+            "Count": 1,
+            "Type": 1
+          }
+        ],
+        "Animations": null,
+        "SubmeshVisiblityMask": 0,
+        "AttackSpeedBonus": null,
+        "AnimationState": null
+      },
+      "TypeInfo": 0,
+      "Bones": null
+    },
+    {
+      "IsClone": false,
+      "IsLaneMinion": false,
+      "IsEliteMinion": false,
+      "IsEpicMinion": false,
+      "IsJungleMinion": false,
+      "IsWardOrPlant": false,
+      "Info": {
+        "IsNeutral": true,
+        "Name": "Minion_Horde",
+        "NetworkId": 1073742244,
+        "Index": 66786,
+        "Position": {
+          "x": 4909.565,
+          "y": -56.251316,
+          "z": 10487.323
+        },
+        "Rotation": null,
+        "Team": 3
+      },
+      "Common": {
+        "IsAlive": true,
+        "IsZombie": false,
+        "IsRecalling": false,
+        "IsTargetable": false,
+        "Identifier": "SRU_CampRespawnMarker",
+        "CurrentAttack": "",
+        "Status": 1,
+        "Health": 1000,
+        "MaxHealth": 1000,
+        "Armor": null,
+        "MagicResist": null,
+        "Level": 1,
+        "AttackSpeedMultiplier": null,
+        "MovementSpeed": null,
+        "DataStack": null,
+        "Buffs": [
+          {
+            "Name": "camprespawncountdownhidden",
+            "StartTime": 0,
+            "EndTime": 420,
+            "Count": 1,
+            "Type": 1
+          }
+        ],
+        "Animations": null,
+        "SubmeshVisiblityMask": 0,
+        "AttackSpeedBonus": null,
+        "AnimationState": null
+      },
+      "TypeInfo": 0,
+      "Bones": null
+    },
+    {
+      "IsClone": false,
+      "IsLaneMinion": false,
+      "IsEliteMinion": false,
+      "IsEpicMinion": false,
+      "IsJungleMinion": false,
+      "IsWardOrPlant": false,
+      "Info": {
+        "IsNeutral": true,
+        "Name": "Minion_Chaos Blue",
+        "NetworkId": 1073742245,
+        "Index": 66787,
+        "Position": {
+          "x": 11051.729,
+          "y": 51.28,
+          "z": 6890.844
+        },
+        "Rotation": null,
+        "Team": 3
+      },
+      "Common": {
+        "IsAlive": true,
+        "IsZombie": false,
+        "IsRecalling": false,
+        "IsTargetable": false,
+        "Identifier": "SRU_CampRespawnMarker",
+        "CurrentAttack": "",
+        "Status": 1,
+        "Health": 1000,
+        "MaxHealth": 1000,
+        "Armor": null,
+        "MagicResist": null,
+        "Level": 1,
+        "AttackSpeedMultiplier": null,
+        "MovementSpeed": null,
+        "DataStack": null,
+        "Buffs": [
+          {
+            "Name": "camprespawncountdownvisible",
+            "StartTime": 0.3976857,
+            "EndTime": 60.397686,
+            "Count": 1,
+            "Type": 1
+          }
+        ],
+        "Animations": null,
+        "SubmeshVisiblityMask": 0,
+        "AttackSpeedBonus": null,
+        "AnimationState": null
+      },
+      "TypeInfo": 0,
+      "Bones": null
+    },
+    {
+      "IsClone": false,
+      "IsLaneMinion": false,
+      "IsEliteMinion": false,
+      "IsEpicMinion": false,
+      "IsJungleMinion": false,
+      "IsWardOrPlant": false,
+      "Info": {
+        "IsNeutral": true,
+        "Name": "Minion_Chaos Red",
+        "NetworkId": 1073742246,
+        "Index": 66788,
+        "Position": {
+          "x": 7081.869,
+          "y": 56.21793,
+          "z": 10900.547
+        },
+        "Rotation": null,
+        "Team": 3
+      },
+      "Common": {
+        "IsAlive": true,
+        "IsZombie": false,
+        "IsRecalling": false,
+        "IsTargetable": false,
+        "Identifier": "SRU_CampRespawnMarker",
+        "CurrentAttack": "",
+        "Status": 1,
+        "Health": 1000,
+        "MaxHealth": 1000,
+        "Armor": null,
+        "MagicResist": null,
+        "Level": 1,
+        "AttackSpeedMultiplier": null,
+        "MovementSpeed": null,
+        "DataStack": null,
+        "Buffs": [
+          {
+            "Name": "camprespawncountdownvisible",
+            "StartTime": 0.3976857,
+            "EndTime": 60.397686,
+            "Count": 1,
+            "Type": 1
+          }
+        ],
+        "Animations": null,
+        "SubmeshVisiblityMask": 0,
+        "AttackSpeedBonus": null,
+        "AnimationState": null
+      },
+      "TypeInfo": 0,
+      "Bones": null
+    },
+    {
+      "IsClone": false,
+      "IsLaneMinion": false,
+      "IsEliteMinion": false,
+      "IsEpicMinion": false,
+      "IsJungleMinion": false,
+      "IsWardOrPlant": false,
+      "Info": {
+        "IsNeutral": true,
+        "Name": "DragonSigil",
+        "NetworkId": 1073742247,
+        "Index": 66789,
+        "Position": {
+          "x": 9452,
+          "y": -71.2406,
+          "z": 4778
+        },
+        "Rotation": null,
+        "Team": 3
+      },
+      "Common": {
+        "IsAlive": true,
+        "IsZombie": false,
+        "IsRecalling": false,
+        "IsTargetable": false,
+        "Identifier": "TestCube",
+        "CurrentAttack": "",
+        "Status": 1,
+        "Health": 540,
+        "MaxHealth": 540,
+        "Armor": null,
+        "MagicResist": null,
+        "Level": 1,
+        "AttackSpeedMultiplier": null,
+        "MovementSpeed": null,
+        "DataStack": null,
+        "Buffs": [
+          {
+            "Name": "DragonBuffAir",
+            "StartTime": 0,
+            "EndTime": 25000,
+            "Count": 1,
+            "Type": 0
+          }
+        ],
         "Animations": null,
         "SubmeshVisiblityMask": 0,
         "AttackSpeedBonus": null,
@@ -15547,56 +15592,11 @@
         "IsNeutral": true,
         "Name": "HiddenMinion",
         "NetworkId": 1073742338,
-        "Index": 722574,
+        "Index": 132518,
         "Position": {
           "x": 8659,
           "y": 53.657677,
           "z": 11535
-        },
-        "Rotation": null,
-        "Team": 3
-      },
-      "Common": {
-        "IsAlive": true,
-        "IsZombie": false,
-        "IsRecalling": false,
-        "IsTargetable": false,
-        "Identifier": "TestCubeRenderNoFOW",
-        "CurrentAttack": "",
-        "Status": 1,
-        "Health": 100,
-        "MaxHealth": 100,
-        "Armor": null,
-        "MagicResist": null,
-        "Level": 1,
-        "AttackSpeedMultiplier": null,
-        "MovementSpeed": null,
-        "DataStack": null,
-        "Buffs": [],
-        "Animations": null,
-        "SubmeshVisiblityMask": 0,
-        "AttackSpeedBonus": null,
-        "AnimationState": null
-      },
-      "TypeInfo": 0,
-      "Bones": null
-    },
-    {
-      "IsClone": false,
-      "IsLaneMinion": false,
-      "IsEliteMinion": false,
-      "IsEpicMinion": false,
-      "IsJungleMinion": false,
-      "IsWardOrPlant": false,
-      "Info": {
-        "IsNeutral": true,
-        "Name": "HiddenMinion",
-        "NetworkId": 1073742344,
-        "Index": 853651,
-        "Position": {
-          "x": 6141,
-          "y": 50.523113,
-          "z": 3402
         },
         "Rotation": null,
         "Team": 3
@@ -15631,793 +15631,13 @@
     {
       "Info": {
         "IsNeutral": false,
-        "Name": "Turret_TOrder_L2_P2_1526764315_0",
-        "NetworkId": 1073741995,
-        "Index": 132358,
+        "Name": "Turret_TOrder_L0_P2_3812066093_0",
+        "NetworkId": 1073741960,
+        "Index": 66657,
         "Position": {
-          "x": 1512,
-          "y": 42,
-          "z": 6699
-        },
-        "Rotation": null,
-        "Team": 1
-      },
-      "Common": {
-        "IsAlive": true,
-        "IsZombie": false,
-        "IsRecalling": false,
-        "IsTargetable": false,
-        "Identifier": "",
-        "CurrentAttack": "",
-        "Status": 1,
-        "Health": 5000,
-        "MaxHealth": 5000,
-        "Armor": null,
-        "MagicResist": null,
-        "Level": 1,
-        "AttackSpeedMultiplier": null,
-        "MovementSpeed": null,
-        "DataStack": null,
-        "Buffs": [],
-        "Animations": null,
-        "SubmeshVisiblityMask": 0,
-        "AttackSpeedBonus": null,
-        "AnimationState": null
-      },
-      "PlateCount": 5,
-      "MaxPlateCount": 5
-    },
-    {
-      "Info": {
-        "IsNeutral": false,
-        "Name": "Turret_TChaos_L1_P0_1017949901_0",
-        "NetworkId": 1073741993,
-        "Index": 132359,
-        "Position": {
-          "x": 14576,
-          "y": 466,
-          "z": 14693
-        },
-        "Rotation": null,
-        "Team": 2
-      },
-      "Common": {
-        "IsAlive": true,
-        "IsZombie": false,
-        "IsRecalling": false,
-        "IsTargetable": false,
-        "Identifier": "",
-        "CurrentAttack": "",
-        "Status": 1,
-        "Health": 9999,
-        "MaxHealth": 9999,
-        "Armor": null,
-        "MagicResist": null,
-        "Level": 1,
-        "AttackSpeedMultiplier": null,
-        "MovementSpeed": null,
-        "DataStack": null,
-        "Buffs": [],
-        "Animations": null,
-        "SubmeshVisiblityMask": 0,
-        "AttackSpeedBonus": null,
-        "AnimationState": null
-      },
-      "PlateCount": 0,
-      "MaxPlateCount": 0
-    },
-    {
-      "Info": {
-        "IsNeutral": false,
-        "Name": "Turret_TChaos_L1_P4_392430785_0",
-        "NetworkId": 1073741991,
-        "Index": 132364,
-        "Position": {
-          "x": 12611,
-          "y": 88,
-          "z": 13084
-        },
-        "Rotation": null,
-        "Team": 2
-      },
-      "Common": {
-        "IsAlive": true,
-        "IsZombie": false,
-        "IsRecalling": false,
-        "IsTargetable": false,
-        "Identifier": "",
-        "CurrentAttack": "",
-        "Status": 1,
-        "Health": 3500,
-        "MaxHealth": 3500,
-        "Armor": null,
-        "MagicResist": null,
-        "Level": 1,
-        "AttackSpeedMultiplier": null,
-        "MovementSpeed": null,
-        "DataStack": null,
-        "Buffs": [],
-        "Animations": null,
-        "SubmeshVisiblityMask": 0,
-        "AttackSpeedBonus": null,
-        "AnimationState": null
-      },
-      "PlateCount": 0,
-      "MaxPlateCount": 0
-    },
-    {
-      "Info": {
-        "IsNeutral": false,
-        "Name": "Turret_TOrder_L0_P3_3795288474_0",
-        "NetworkId": 1073741990,
-        "Index": 132367,
-        "Position": {
-          "x": 10504,
-          "y": 41,
-          "z": 1029
-        },
-        "Rotation": null,
-        "Team": 1
-      },
-      "Common": {
-        "IsAlive": true,
-        "IsZombie": false,
-        "IsRecalling": false,
-        "IsTargetable": true,
-        "Identifier": "",
-        "CurrentAttack": "",
-        "Status": 9,
-        "Health": 9000,
-        "MaxHealth": 9000,
-        "Armor": null,
-        "MagicResist": null,
-        "Level": 1,
-        "AttackSpeedMultiplier": null,
-        "MovementSpeed": null,
-        "DataStack": null,
-        "Buffs": [],
-        "Animations": null,
-        "SubmeshVisiblityMask": 0,
-        "AttackSpeedBonus": null,
-        "AnimationState": null
-      },
-      "PlateCount": 5,
-      "MaxPlateCount": 5
-    },
-    {
-      "Info": {
-        "IsNeutral": false,
-        "Name": "Turret_TChaos_L1_P1_2220646803_0",
-        "NetworkId": 1073741989,
-        "Index": 132372,
-        "Position": {
-          "x": 11134,
-          "y": 88,
-          "z": 11207
-        },
-        "Rotation": null,
-        "Team": 2
-      },
-      "Common": {
-        "IsAlive": true,
-        "IsZombie": false,
-        "IsRecalling": false,
-        "IsTargetable": false,
-        "Identifier": "",
-        "CurrentAttack": "",
-        "Status": 1,
-        "Health": 4750,
-        "MaxHealth": 4750,
-        "Armor": null,
-        "MagicResist": null,
-        "Level": 1,
-        "AttackSpeedMultiplier": null,
-        "MovementSpeed": null,
-        "DataStack": null,
-        "Buffs": [],
-        "Animations": null,
-        "SubmeshVisiblityMask": 0,
-        "AttackSpeedBonus": null,
-        "AnimationState": null
-      },
-      "PlateCount": 5,
-      "MaxPlateCount": 5
-    },
-    {
-      "Info": {
-        "IsNeutral": false,
-        "Name": "Turret_TChaos_L0_P3_511845594_0",
-        "NetworkId": 1073741988,
-        "Index": 132377,
-        "Position": {
-          "x": 13866,
-          "y": 38,
-          "z": 4505
-        },
-        "Rotation": null,
-        "Team": 2
-      },
-      "Common": {
-        "IsAlive": true,
-        "IsZombie": false,
-        "IsRecalling": false,
-        "IsTargetable": true,
-        "Identifier": "",
-        "CurrentAttack": "",
-        "Status": 9,
-        "Health": 9000,
-        "MaxHealth": 9000,
-        "Armor": null,
-        "MagicResist": null,
-        "Level": 1,
-        "AttackSpeedMultiplier": null,
-        "MovementSpeed": null,
-        "DataStack": null,
-        "Buffs": [],
-        "Animations": null,
-        "SubmeshVisiblityMask": 0,
-        "AttackSpeedBonus": null,
-        "AnimationState": null
-      },
-      "PlateCount": 5,
-      "MaxPlateCount": 5
-    },
-    {
-      "Info": {
-        "IsNeutral": false,
-        "Name": "Turret_TOrder_L1_P3_1242677625_0",
-        "NetworkId": 1073741987,
-        "Index": 132380,
-        "Position": {
-          "x": 5846,
-          "y": 44,
-          "z": 6396
-        },
-        "Rotation": null,
-        "Team": 1
-      },
-      "Common": {
-        "IsAlive": true,
-        "IsZombie": false,
-        "IsRecalling": false,
-        "IsTargetable": true,
-        "Identifier": "",
-        "CurrentAttack": "",
-        "Status": 9,
-        "Health": 9000,
-        "MaxHealth": 9000,
-        "Armor": null,
-        "MagicResist": null,
-        "Level": 1,
-        "AttackSpeedMultiplier": null,
-        "MovementSpeed": null,
-        "DataStack": null,
-        "Buffs": [],
-        "Animations": null,
-        "SubmeshVisiblityMask": 0,
-        "AttackSpeedBonus": null,
-        "AnimationState": null
-      },
-      "PlateCount": 5,
-      "MaxPlateCount": 5
-    },
-    {
-      "Info": {
-        "IsNeutral": false,
-        "Name": "Turret_TOrder_L2_P1_1543541934_0",
-        "NetworkId": 1073741986,
-        "Index": 132383,
-        "Position": {
-          "x": 1169,
-          "y": 90.734985,
-          "z": 4287
-        },
-        "Rotation": null,
-        "Team": 1
-      },
-      "Common": {
-        "IsAlive": true,
-        "IsZombie": false,
-        "IsRecalling": false,
-        "IsTargetable": false,
-        "Identifier": "",
-        "CurrentAttack": "",
-        "Status": 1,
-        "Health": 4750,
-        "MaxHealth": 4750,
-        "Armor": null,
-        "MagicResist": null,
-        "Level": 1,
-        "AttackSpeedMultiplier": null,
-        "MovementSpeed": null,
-        "DataStack": null,
-        "Buffs": [],
-        "Animations": null,
-        "SubmeshVisiblityMask": 0,
-        "AttackSpeedBonus": null,
-        "AnimationState": null
-      },
-      "PlateCount": 5,
-      "MaxPlateCount": 5
-    },
-    {
-      "Info": {
-        "IsNeutral": false,
-        "Name": "Turret_TChaos_L2_P3_2521511112_0",
-        "NetworkId": 1073741985,
-        "Index": 132388,
-        "Position": {
-          "x": 4318,
-          "y": 38,
-          "z": 13875
-        },
-        "Rotation": null,
-        "Team": 2
-      },
-      "Common": {
-        "IsAlive": true,
-        "IsZombie": false,
-        "IsRecalling": false,
-        "IsTargetable": true,
-        "Identifier": "",
-        "CurrentAttack": "",
-        "Status": 9,
-        "Health": 9000,
-        "MaxHealth": 9000,
-        "Armor": null,
-        "MagicResist": null,
-        "Level": 1,
-        "AttackSpeedMultiplier": null,
-        "MovementSpeed": null,
-        "DataStack": null,
-        "Buffs": [],
-        "Animations": null,
-        "SubmeshVisiblityMask": 0,
-        "AttackSpeedBonus": null,
-        "AnimationState": null
-      },
-      "PlateCount": 5,
-      "MaxPlateCount": 5
-    },
-    {
-      "Info": {
-        "IsNeutral": false,
-        "Name": "Turret_TChaos_L1_P3_2254202041_0",
-        "NetworkId": 1073741984,
-        "Index": 132393,
-        "Position": {
-          "x": 8955,
-          "y": 38,
-          "z": 8510
-        },
-        "Rotation": null,
-        "Team": 2
-      },
-      "Common": {
-        "IsAlive": true,
-        "IsZombie": false,
-        "IsRecalling": false,
-        "IsTargetable": true,
-        "Identifier": "",
-        "CurrentAttack": "",
-        "Status": 9,
-        "Health": 9000,
-        "MaxHealth": 9000,
-        "Armor": null,
-        "MagicResist": null,
-        "Level": 1,
-        "AttackSpeedMultiplier": null,
-        "MovementSpeed": null,
-        "DataStack": null,
-        "Buffs": [],
-        "Animations": null,
-        "SubmeshVisiblityMask": 0,
-        "AttackSpeedBonus": null,
-        "AnimationState": null
-      },
-      "PlateCount": 5,
-      "MaxPlateCount": 5
-    },
-    {
-      "Info": {
-        "IsNeutral": false,
-        "Name": "Turret_TOrder_L1_P0_3208613133_0",
-        "NetworkId": 1073741980,
-        "Index": 132394,
-        "Position": {
-          "x": 105,
-          "y": 36,
-          "z": 134
-        },
-        "Rotation": null,
-        "Team": 1
-      },
-      "Common": {
-        "IsAlive": true,
-        "IsZombie": false,
-        "IsRecalling": false,
-        "IsTargetable": false,
-        "Identifier": "",
-        "CurrentAttack": "",
-        "Status": 1,
-        "Health": 9999,
-        "MaxHealth": 9999,
-        "Armor": null,
-        "MagicResist": null,
-        "Level": 1,
-        "AttackSpeedMultiplier": null,
-        "MovementSpeed": null,
-        "DataStack": null,
-        "Buffs": [],
-        "Animations": null,
-        "SubmeshVisiblityMask": 0,
-        "AttackSpeedBonus": null,
-        "AnimationState": null
-      },
-      "PlateCount": 0,
-      "MaxPlateCount": 0
-    },
-    {
-      "Info": {
-        "IsNeutral": false,
-        "Name": "Turret_TChaos_L0_P2_528623213_0",
-        "NetworkId": 1073741979,
-        "Index": 132399,
-        "Position": {
-          "x": 13327,
-          "y": 38,
-          "z": 8226
-        },
-        "Rotation": null,
-        "Team": 2
-      },
-      "Common": {
-        "IsAlive": true,
-        "IsZombie": false,
-        "IsRecalling": false,
-        "IsTargetable": false,
-        "Identifier": "",
-        "CurrentAttack": "",
-        "Status": 1,
-        "Health": 5000,
-        "MaxHealth": 5000,
-        "Armor": null,
-        "MagicResist": null,
-        "Level": 1,
-        "AttackSpeedMultiplier": null,
-        "MovementSpeed": null,
-        "DataStack": null,
-        "Buffs": [],
-        "Animations": null,
-        "SubmeshVisiblityMask": 0,
-        "AttackSpeedBonus": null,
-        "AnimationState": null
-      },
-      "PlateCount": 5,
-      "MaxPlateCount": 5
-    },
-    {
-      "Info": {
-        "IsNeutral": false,
-        "Name": "Turret_TOrder_L1_P5_3625540808_0",
-        "NetworkId": 1073741978,
-        "Index": 132402,
-        "Position": {
-          "x": 1748,
-          "y": 88,
-          "z": 2270
-        },
-        "Rotation": null,
-        "Team": 1
-      },
-      "Common": {
-        "IsAlive": true,
-        "IsZombie": false,
-        "IsRecalling": false,
-        "IsTargetable": false,
-        "Identifier": "",
-        "CurrentAttack": "",
-        "Status": 1,
-        "Health": 3500,
-        "MaxHealth": 3500,
-        "Armor": null,
-        "MagicResist": null,
-        "Level": 1,
-        "AttackSpeedMultiplier": null,
-        "MovementSpeed": null,
-        "DataStack": null,
-        "Buffs": [],
-        "Animations": null,
-        "SubmeshVisiblityMask": 0,
-        "AttackSpeedBonus": null,
-        "AnimationState": null
-      },
-      "PlateCount": 0,
-      "MaxPlateCount": 0
-    },
-    {
-      "Info": {
-        "IsNeutral": false,
-        "Name": "Turret_TChaos_L0_P1_478290356_0",
-        "NetworkId": 1073741976,
-        "Index": 132407,
-        "Position": {
-          "x": 13624,
-          "y": 88,
-          "z": 10572
-        },
-        "Rotation": null,
-        "Team": 2
-      },
-      "Common": {
-        "IsAlive": true,
-        "IsZombie": false,
-        "IsRecalling": false,
-        "IsTargetable": false,
-        "Identifier": "",
-        "CurrentAttack": "",
-        "Status": 1,
-        "Health": 4750,
-        "MaxHealth": 4750,
-        "Armor": null,
-        "MagicResist": null,
-        "Level": 1,
-        "AttackSpeedMultiplier": null,
-        "MovementSpeed": null,
-        "DataStack": null,
-        "Buffs": [],
-        "Animations": null,
-        "SubmeshVisiblityMask": 0,
-        "AttackSpeedBonus": null,
-        "AnimationState": null
-      },
-      "PlateCount": 5,
-      "MaxPlateCount": 5
-    },
-    {
-      "Info": {
-        "IsNeutral": false,
-        "Name": "Turret_TChaos_L2_P2_2538288731_0",
-        "NetworkId": 1073741975,
-        "Index": 132412,
-        "Position": {
-          "x": 7943,
-          "y": 38,
-          "z": 13411
-        },
-        "Rotation": null,
-        "Team": 2
-      },
-      "Common": {
-        "IsAlive": true,
-        "IsZombie": false,
-        "IsRecalling": false,
-        "IsTargetable": false,
-        "Identifier": "",
-        "CurrentAttack": "",
-        "Status": 1,
-        "Health": 5000,
-        "MaxHealth": 5000,
-        "Armor": null,
-        "MagicResist": null,
-        "Level": 1,
-        "AttackSpeedMultiplier": null,
-        "MovementSpeed": null,
-        "DataStack": null,
-        "Buffs": [],
-        "Animations": null,
-        "SubmeshVisiblityMask": 0,
-        "AttackSpeedBonus": null,
-        "AnimationState": null
-      },
-      "PlateCount": 5,
-      "MaxPlateCount": 5
-    },
-    {
-      "Info": {
-        "IsNeutral": false,
-        "Name": "Turret_TChaos_L2_P1_2555066350_0",
-        "NetworkId": 1073741974,
-        "Index": 132417,
-        "Position": {
-          "x": 10481,
-          "y": 88,
-          "z": 13650
-        },
-        "Rotation": null,
-        "Team": 2
-      },
-      "Common": {
-        "IsAlive": true,
-        "IsZombie": false,
-        "IsRecalling": false,
-        "IsTargetable": false,
-        "Identifier": "",
-        "CurrentAttack": "",
-        "Status": 1,
-        "Health": 4750,
-        "MaxHealth": 4750,
-        "Armor": null,
-        "MagicResist": null,
-        "Level": 1,
-        "AttackSpeedMultiplier": null,
-        "MovementSpeed": null,
-        "DataStack": null,
-        "Buffs": [],
-        "Animations": null,
-        "SubmeshVisiblityMask": 0,
-        "AttackSpeedBonus": null,
-        "AnimationState": null
-      },
-      "PlateCount": 5,
-      "MaxPlateCount": 5
-    },
-    {
-      "Info": {
-        "IsNeutral": false,
-        "Name": "Turret_TOrder_L1_P4_3675873665_0",
-        "NetworkId": 1073741972,
-        "Index": 132420,
-        "Position": {
-          "x": 2177,
-          "y": 89,
-          "z": 1807
-        },
-        "Rotation": null,
-        "Team": 1
-      },
-      "Common": {
-        "IsAlive": true,
-        "IsZombie": false,
-        "IsRecalling": false,
-        "IsTargetable": false,
-        "Identifier": "",
-        "CurrentAttack": "",
-        "Status": 1,
-        "Health": 3500,
-        "MaxHealth": 3500,
-        "Armor": null,
-        "MagicResist": null,
-        "Level": 1,
-        "AttackSpeedMultiplier": null,
-        "MovementSpeed": null,
-        "DataStack": null,
-        "Buffs": [],
-        "Animations": null,
-        "SubmeshVisiblityMask": 0,
-        "AttackSpeedBonus": null,
-        "AnimationState": null
-      },
-      "PlateCount": 0,
-      "MaxPlateCount": 0
-    },
-    {
-      "Info": {
-        "IsNeutral": false,
-        "Name": "Turret_TChaos_L1_P2_2237424422_0",
-        "NetworkId": 1073741971,
-        "Index": 132425,
-        "Position": {
-          "x": 9767,
-          "y": 38,
-          "z": 10113
-        },
-        "Rotation": null,
-        "Team": 2
-      },
-      "Common": {
-        "IsAlive": true,
-        "IsZombie": false,
-        "IsRecalling": false,
-        "IsTargetable": false,
-        "Identifier": "",
-        "CurrentAttack": "",
-        "Status": 1,
-        "Health": 5000,
-        "MaxHealth": 5000,
-        "Armor": null,
-        "MagicResist": null,
-        "Level": 1,
-        "AttackSpeedMultiplier": null,
-        "MovementSpeed": null,
-        "DataStack": null,
-        "Buffs": [],
-        "Animations": null,
-        "SubmeshVisiblityMask": 0,
-        "AttackSpeedBonus": null,
-        "AnimationState": null
-      },
-      "PlateCount": 5,
-      "MaxPlateCount": 5
-    },
-    {
-      "Info": {
-        "IsNeutral": false,
-        "Name": "Turret_TChaos_L1_P5_342097928_0",
-        "NetworkId": 1073741970,
-        "Index": 132430,
-        "Position": {
-          "x": 13052,
-          "y": 88,
-          "z": 12612
-        },
-        "Rotation": null,
-        "Team": 2
-      },
-      "Common": {
-        "IsAlive": true,
-        "IsZombie": false,
-        "IsRecalling": false,
-        "IsTargetable": false,
-        "Identifier": "",
-        "CurrentAttack": "",
-        "Status": 1,
-        "Health": 3500,
-        "MaxHealth": 3500,
-        "Armor": null,
-        "MagicResist": null,
-        "Level": 1,
-        "AttackSpeedMultiplier": null,
-        "MovementSpeed": null,
-        "DataStack": null,
-        "Buffs": [],
-        "Animations": null,
-        "SubmeshVisiblityMask": 0,
-        "AttackSpeedBonus": null,
-        "AnimationState": null
-      },
-      "PlateCount": 0,
-      "MaxPlateCount": 0
-    },
-    {
-      "Info": {
-        "IsNeutral": false,
-        "Name": "Turret_TOrder_L1_P1_1209122387_0",
-        "NetworkId": 1073741966,
-        "Index": 132434,
-        "Position": {
-          "x": 3651,
-          "y": 91,
-          "z": 3696
-        },
-        "Rotation": null,
-        "Team": 1
-      },
-      "Common": {
-        "IsAlive": true,
-        "IsZombie": false,
-        "IsRecalling": false,
-        "IsTargetable": false,
-        "Identifier": "",
-        "CurrentAttack": "",
-        "Status": 1,
-        "Health": 4750,
-        "MaxHealth": 4750,
-        "Armor": null,
-        "MagicResist": null,
-        "Level": 1,
-        "AttackSpeedMultiplier": null,
-        "MovementSpeed": null,
-        "DataStack": null,
-        "Buffs": [],
-        "Animations": null,
-        "SubmeshVisiblityMask": 0,
-        "AttackSpeedBonus": null,
-        "AnimationState": null
-      },
-      "PlateCount": 5,
-      "MaxPlateCount": 5
-    },
-    {
-      "Info": {
-        "IsNeutral": false,
-        "Name": "Turret_TOrder_L1_P2_1225900006_0",
-        "NetworkId": 1073741965,
-        "Index": 132438,
-        "Position": {
-          "x": 5048,
+          "x": 6919,
           "y": 43,
-          "z": 4812
+          "z": 1483
         },
         "Rotation": null,
         "Team": 1
@@ -16432,45 +15652,6 @@
         "Status": 1,
         "Health": 5000,
         "MaxHealth": 5000,
-        "Armor": null,
-        "MagicResist": null,
-        "Level": 1,
-        "AttackSpeedMultiplier": null,
-        "MovementSpeed": null,
-        "DataStack": null,
-        "Buffs": [],
-        "Animations": null,
-        "SubmeshVisiblityMask": 0,
-        "AttackSpeedBonus": null,
-        "AnimationState": null
-      },
-      "PlateCount": 5,
-      "MaxPlateCount": 5
-    },
-    {
-      "Info": {
-        "IsNeutral": false,
-        "Name": "Turret_TOrder_L2_P3_1509986696_0",
-        "NetworkId": 1073741964,
-        "Index": 132441,
-        "Position": {
-          "x": 981,
-          "y": 37,
-          "z": 10441
-        },
-        "Rotation": null,
-        "Team": 1
-      },
-      "Common": {
-        "IsAlive": true,
-        "IsZombie": false,
-        "IsRecalling": false,
-        "IsTargetable": true,
-        "Identifier": "",
-        "CurrentAttack": "",
-        "Status": 9,
-        "Health": 9000,
-        "MaxHealth": 9000,
         "Armor": null,
         "MagicResist": null,
         "Level": 1,
@@ -16491,7 +15672,7 @@
         "IsNeutral": false,
         "Name": "Turret_TOrder_L0_P1_3761733236_0",
         "NetworkId": 1073741963,
-        "Index": 132444,
+        "Index": 66663,
         "Position": {
           "x": 4281,
           "y": 86,
@@ -16528,13 +15709,832 @@
     {
       "Info": {
         "IsNeutral": false,
-        "Name": "Turret_TOrder_L0_P2_3812066093_0",
-        "NetworkId": 1073741960,
-        "Index": 132450,
+        "Name": "Turret_TOrder_L2_P3_1509986696_0",
+        "NetworkId": 1073741964,
+        "Index": 66666,
         "Position": {
-          "x": 6919,
+          "x": 981,
+          "y": 37,
+          "z": 10441
+        },
+        "Rotation": null,
+        "Team": 1
+      },
+      "Common": {
+        "IsAlive": true,
+        "IsZombie": false,
+        "IsRecalling": false,
+        "IsTargetable": true,
+        "Identifier": "",
+        "CurrentAttack": "",
+        "Status": 9,
+        "Health": 9000,
+        "MaxHealth": 9000,
+        "Armor": null,
+        "MagicResist": null,
+        "Level": 1,
+        "AttackSpeedMultiplier": null,
+        "MovementSpeed": null,
+        "DataStack": null,
+        "Buffs": [],
+        "Animations": null,
+        "SubmeshVisiblityMask": 0,
+        "AttackSpeedBonus": null,
+        "AnimationState": null
+      },
+      "PlateCount": 5,
+      "MaxPlateCount": 5
+    },
+    {
+      "Info": {
+        "IsNeutral": false,
+        "Name": "Turret_TOrder_L1_P2_1225900006_0",
+        "NetworkId": 1073741965,
+        "Index": 66669,
+        "Position": {
+          "x": 5048,
           "y": 43,
-          "z": 1483
+          "z": 4812
+        },
+        "Rotation": null,
+        "Team": 1
+      },
+      "Common": {
+        "IsAlive": true,
+        "IsZombie": false,
+        "IsRecalling": false,
+        "IsTargetable": false,
+        "Identifier": "",
+        "CurrentAttack": "",
+        "Status": 1,
+        "Health": 5000,
+        "MaxHealth": 5000,
+        "Armor": null,
+        "MagicResist": null,
+        "Level": 1,
+        "AttackSpeedMultiplier": null,
+        "MovementSpeed": null,
+        "DataStack": null,
+        "Buffs": [],
+        "Animations": null,
+        "SubmeshVisiblityMask": 0,
+        "AttackSpeedBonus": null,
+        "AnimationState": null
+      },
+      "PlateCount": 5,
+      "MaxPlateCount": 5
+    },
+    {
+      "Info": {
+        "IsNeutral": false,
+        "Name": "Turret_TOrder_L1_P1_1209122387_0",
+        "NetworkId": 1073741966,
+        "Index": 66672,
+        "Position": {
+          "x": 3651,
+          "y": 91,
+          "z": 3696
+        },
+        "Rotation": null,
+        "Team": 1
+      },
+      "Common": {
+        "IsAlive": true,
+        "IsZombie": false,
+        "IsRecalling": false,
+        "IsTargetable": false,
+        "Identifier": "",
+        "CurrentAttack": "",
+        "Status": 1,
+        "Health": 4750,
+        "MaxHealth": 4750,
+        "Armor": null,
+        "MagicResist": null,
+        "Level": 1,
+        "AttackSpeedMultiplier": null,
+        "MovementSpeed": null,
+        "DataStack": null,
+        "Buffs": [],
+        "Animations": null,
+        "SubmeshVisiblityMask": 0,
+        "AttackSpeedBonus": null,
+        "AnimationState": null
+      },
+      "PlateCount": 5,
+      "MaxPlateCount": 5
+    },
+    {
+      "Info": {
+        "IsNeutral": false,
+        "Name": "Turret_TChaos_L1_P5_342097928_0",
+        "NetworkId": 1073741970,
+        "Index": 66681,
+        "Position": {
+          "x": 13052,
+          "y": 88,
+          "z": 12612
+        },
+        "Rotation": null,
+        "Team": 2
+      },
+      "Common": {
+        "IsAlive": true,
+        "IsZombie": false,
+        "IsRecalling": false,
+        "IsTargetable": false,
+        "Identifier": "",
+        "CurrentAttack": "",
+        "Status": 1,
+        "Health": 3500,
+        "MaxHealth": 3500,
+        "Armor": null,
+        "MagicResist": null,
+        "Level": 1,
+        "AttackSpeedMultiplier": null,
+        "MovementSpeed": null,
+        "DataStack": null,
+        "Buffs": [],
+        "Animations": null,
+        "SubmeshVisiblityMask": 0,
+        "AttackSpeedBonus": null,
+        "AnimationState": null
+      },
+      "PlateCount": 0,
+      "MaxPlateCount": 0
+    },
+    {
+      "Info": {
+        "IsNeutral": false,
+        "Name": "Turret_TChaos_L1_P2_2237424422_0",
+        "NetworkId": 1073741971,
+        "Index": 66686,
+        "Position": {
+          "x": 9767,
+          "y": 38,
+          "z": 10113
+        },
+        "Rotation": null,
+        "Team": 2
+      },
+      "Common": {
+        "IsAlive": true,
+        "IsZombie": false,
+        "IsRecalling": false,
+        "IsTargetable": false,
+        "Identifier": "",
+        "CurrentAttack": "",
+        "Status": 1,
+        "Health": 5000,
+        "MaxHealth": 5000,
+        "Armor": null,
+        "MagicResist": null,
+        "Level": 1,
+        "AttackSpeedMultiplier": null,
+        "MovementSpeed": null,
+        "DataStack": null,
+        "Buffs": [],
+        "Animations": null,
+        "SubmeshVisiblityMask": 0,
+        "AttackSpeedBonus": null,
+        "AnimationState": null
+      },
+      "PlateCount": 5,
+      "MaxPlateCount": 5
+    },
+    {
+      "Info": {
+        "IsNeutral": false,
+        "Name": "Turret_TOrder_L1_P4_3675873665_0",
+        "NetworkId": 1073741972,
+        "Index": 66691,
+        "Position": {
+          "x": 2177,
+          "y": 89,
+          "z": 1807
+        },
+        "Rotation": null,
+        "Team": 1
+      },
+      "Common": {
+        "IsAlive": true,
+        "IsZombie": false,
+        "IsRecalling": false,
+        "IsTargetable": false,
+        "Identifier": "",
+        "CurrentAttack": "",
+        "Status": 1,
+        "Health": 3500,
+        "MaxHealth": 3500,
+        "Armor": null,
+        "MagicResist": null,
+        "Level": 1,
+        "AttackSpeedMultiplier": null,
+        "MovementSpeed": null,
+        "DataStack": null,
+        "Buffs": [],
+        "Animations": null,
+        "SubmeshVisiblityMask": 0,
+        "AttackSpeedBonus": null,
+        "AnimationState": null
+      },
+      "PlateCount": 0,
+      "MaxPlateCount": 0
+    },
+    {
+      "Info": {
+        "IsNeutral": false,
+        "Name": "Turret_TChaos_L2_P1_2555066350_0",
+        "NetworkId": 1073741974,
+        "Index": 66695,
+        "Position": {
+          "x": 10481,
+          "y": 88,
+          "z": 13650
+        },
+        "Rotation": null,
+        "Team": 2
+      },
+      "Common": {
+        "IsAlive": true,
+        "IsZombie": false,
+        "IsRecalling": false,
+        "IsTargetable": false,
+        "Identifier": "",
+        "CurrentAttack": "",
+        "Status": 1,
+        "Health": 4750,
+        "MaxHealth": 4750,
+        "Armor": null,
+        "MagicResist": null,
+        "Level": 1,
+        "AttackSpeedMultiplier": null,
+        "MovementSpeed": null,
+        "DataStack": null,
+        "Buffs": [],
+        "Animations": null,
+        "SubmeshVisiblityMask": 0,
+        "AttackSpeedBonus": null,
+        "AnimationState": null
+      },
+      "PlateCount": 5,
+      "MaxPlateCount": 5
+    },
+    {
+      "Info": {
+        "IsNeutral": false,
+        "Name": "Turret_TChaos_L2_P2_2538288731_0",
+        "NetworkId": 1073741975,
+        "Index": 66700,
+        "Position": {
+          "x": 7943,
+          "y": 38,
+          "z": 13411
+        },
+        "Rotation": null,
+        "Team": 2
+      },
+      "Common": {
+        "IsAlive": true,
+        "IsZombie": false,
+        "IsRecalling": false,
+        "IsTargetable": false,
+        "Identifier": "",
+        "CurrentAttack": "",
+        "Status": 1,
+        "Health": 5000,
+        "MaxHealth": 5000,
+        "Armor": null,
+        "MagicResist": null,
+        "Level": 1,
+        "AttackSpeedMultiplier": null,
+        "MovementSpeed": null,
+        "DataStack": null,
+        "Buffs": [],
+        "Animations": null,
+        "SubmeshVisiblityMask": 0,
+        "AttackSpeedBonus": null,
+        "AnimationState": null
+      },
+      "PlateCount": 5,
+      "MaxPlateCount": 5
+    },
+    {
+      "Info": {
+        "IsNeutral": false,
+        "Name": "Turret_TChaos_L0_P1_478290356_0",
+        "NetworkId": 1073741976,
+        "Index": 66705,
+        "Position": {
+          "x": 13624,
+          "y": 88,
+          "z": 10572
+        },
+        "Rotation": null,
+        "Team": 2
+      },
+      "Common": {
+        "IsAlive": true,
+        "IsZombie": false,
+        "IsRecalling": false,
+        "IsTargetable": false,
+        "Identifier": "",
+        "CurrentAttack": "",
+        "Status": 1,
+        "Health": 4750,
+        "MaxHealth": 4750,
+        "Armor": null,
+        "MagicResist": null,
+        "Level": 1,
+        "AttackSpeedMultiplier": null,
+        "MovementSpeed": null,
+        "DataStack": null,
+        "Buffs": [],
+        "Animations": null,
+        "SubmeshVisiblityMask": 0,
+        "AttackSpeedBonus": null,
+        "AnimationState": null
+      },
+      "PlateCount": 5,
+      "MaxPlateCount": 5
+    },
+    {
+      "Info": {
+        "IsNeutral": false,
+        "Name": "Turret_TOrder_L1_P5_3625540808_0",
+        "NetworkId": 1073741978,
+        "Index": 66711,
+        "Position": {
+          "x": 1748,
+          "y": 88,
+          "z": 2270
+        },
+        "Rotation": null,
+        "Team": 1
+      },
+      "Common": {
+        "IsAlive": true,
+        "IsZombie": false,
+        "IsRecalling": false,
+        "IsTargetable": false,
+        "Identifier": "",
+        "CurrentAttack": "",
+        "Status": 1,
+        "Health": 3500,
+        "MaxHealth": 3500,
+        "Armor": null,
+        "MagicResist": null,
+        "Level": 1,
+        "AttackSpeedMultiplier": null,
+        "MovementSpeed": null,
+        "DataStack": null,
+        "Buffs": [],
+        "Animations": null,
+        "SubmeshVisiblityMask": 0,
+        "AttackSpeedBonus": null,
+        "AnimationState": null
+      },
+      "PlateCount": 0,
+      "MaxPlateCount": 0
+    },
+    {
+      "Info": {
+        "IsNeutral": false,
+        "Name": "Turret_TChaos_L0_P2_528623213_0",
+        "NetworkId": 1073741979,
+        "Index": 66714,
+        "Position": {
+          "x": 13327,
+          "y": 38,
+          "z": 8226
+        },
+        "Rotation": null,
+        "Team": 2
+      },
+      "Common": {
+        "IsAlive": true,
+        "IsZombie": false,
+        "IsRecalling": false,
+        "IsTargetable": false,
+        "Identifier": "",
+        "CurrentAttack": "",
+        "Status": 1,
+        "Health": 5000,
+        "MaxHealth": 5000,
+        "Armor": null,
+        "MagicResist": null,
+        "Level": 1,
+        "AttackSpeedMultiplier": null,
+        "MovementSpeed": null,
+        "DataStack": null,
+        "Buffs": [],
+        "Animations": null,
+        "SubmeshVisiblityMask": 0,
+        "AttackSpeedBonus": null,
+        "AnimationState": null
+      },
+      "PlateCount": 5,
+      "MaxPlateCount": 5
+    },
+    {
+      "Info": {
+        "IsNeutral": false,
+        "Name": "Turret_TOrder_L1_P0_3208613133_0",
+        "NetworkId": 1073741980,
+        "Index": 66719,
+        "Position": {
+          "x": 105,
+          "y": 36,
+          "z": 134
+        },
+        "Rotation": null,
+        "Team": 1
+      },
+      "Common": {
+        "IsAlive": true,
+        "IsZombie": false,
+        "IsRecalling": false,
+        "IsTargetable": false,
+        "Identifier": "",
+        "CurrentAttack": "",
+        "Status": 1,
+        "Health": 9999,
+        "MaxHealth": 9999,
+        "Armor": null,
+        "MagicResist": null,
+        "Level": 1,
+        "AttackSpeedMultiplier": null,
+        "MovementSpeed": null,
+        "DataStack": null,
+        "Buffs": [],
+        "Animations": null,
+        "SubmeshVisiblityMask": 0,
+        "AttackSpeedBonus": null,
+        "AnimationState": null
+      },
+      "PlateCount": 0,
+      "MaxPlateCount": 0
+    },
+    {
+      "Info": {
+        "IsNeutral": false,
+        "Name": "Turret_TChaos_L1_P3_2254202041_0",
+        "NetworkId": 1073741984,
+        "Index": 66728,
+        "Position": {
+          "x": 8955,
+          "y": 38,
+          "z": 8510
+        },
+        "Rotation": null,
+        "Team": 2
+      },
+      "Common": {
+        "IsAlive": true,
+        "IsZombie": false,
+        "IsRecalling": false,
+        "IsTargetable": true,
+        "Identifier": "",
+        "CurrentAttack": "",
+        "Status": 9,
+        "Health": 9000,
+        "MaxHealth": 9000,
+        "Armor": null,
+        "MagicResist": null,
+        "Level": 1,
+        "AttackSpeedMultiplier": null,
+        "MovementSpeed": null,
+        "DataStack": null,
+        "Buffs": [],
+        "Animations": null,
+        "SubmeshVisiblityMask": 0,
+        "AttackSpeedBonus": null,
+        "AnimationState": null
+      },
+      "PlateCount": 5,
+      "MaxPlateCount": 5
+    },
+    {
+      "Info": {
+        "IsNeutral": false,
+        "Name": "Turret_TChaos_L2_P3_2521511112_0",
+        "NetworkId": 1073741985,
+        "Index": 66733,
+        "Position": {
+          "x": 4318,
+          "y": 38,
+          "z": 13875
+        },
+        "Rotation": null,
+        "Team": 2
+      },
+      "Common": {
+        "IsAlive": true,
+        "IsZombie": false,
+        "IsRecalling": false,
+        "IsTargetable": true,
+        "Identifier": "",
+        "CurrentAttack": "",
+        "Status": 9,
+        "Health": 9000,
+        "MaxHealth": 9000,
+        "Armor": null,
+        "MagicResist": null,
+        "Level": 1,
+        "AttackSpeedMultiplier": null,
+        "MovementSpeed": null,
+        "DataStack": null,
+        "Buffs": [],
+        "Animations": null,
+        "SubmeshVisiblityMask": 0,
+        "AttackSpeedBonus": null,
+        "AnimationState": null
+      },
+      "PlateCount": 5,
+      "MaxPlateCount": 5
+    },
+    {
+      "Info": {
+        "IsNeutral": false,
+        "Name": "Turret_TOrder_L2_P1_1543541934_0",
+        "NetworkId": 1073741986,
+        "Index": 66738,
+        "Position": {
+          "x": 1169,
+          "y": 90.734985,
+          "z": 4287
+        },
+        "Rotation": null,
+        "Team": 1
+      },
+      "Common": {
+        "IsAlive": true,
+        "IsZombie": false,
+        "IsRecalling": false,
+        "IsTargetable": false,
+        "Identifier": "",
+        "CurrentAttack": "",
+        "Status": 1,
+        "Health": 4750,
+        "MaxHealth": 4750,
+        "Armor": null,
+        "MagicResist": null,
+        "Level": 1,
+        "AttackSpeedMultiplier": null,
+        "MovementSpeed": null,
+        "DataStack": null,
+        "Buffs": [],
+        "Animations": null,
+        "SubmeshVisiblityMask": 0,
+        "AttackSpeedBonus": null,
+        "AnimationState": null
+      },
+      "PlateCount": 5,
+      "MaxPlateCount": 5
+    },
+    {
+      "Info": {
+        "IsNeutral": false,
+        "Name": "Turret_TOrder_L1_P3_1242677625_0",
+        "NetworkId": 1073741987,
+        "Index": 66741,
+        "Position": {
+          "x": 5846,
+          "y": 44,
+          "z": 6396
+        },
+        "Rotation": null,
+        "Team": 1
+      },
+      "Common": {
+        "IsAlive": true,
+        "IsZombie": false,
+        "IsRecalling": false,
+        "IsTargetable": true,
+        "Identifier": "",
+        "CurrentAttack": "",
+        "Status": 9,
+        "Health": 9000,
+        "MaxHealth": 9000,
+        "Armor": null,
+        "MagicResist": null,
+        "Level": 1,
+        "AttackSpeedMultiplier": null,
+        "MovementSpeed": null,
+        "DataStack": null,
+        "Buffs": [],
+        "Animations": null,
+        "SubmeshVisiblityMask": 0,
+        "AttackSpeedBonus": null,
+        "AnimationState": null
+      },
+      "PlateCount": 5,
+      "MaxPlateCount": 5
+    },
+    {
+      "Info": {
+        "IsNeutral": false,
+        "Name": "Turret_TChaos_L0_P3_511845594_0",
+        "NetworkId": 1073741988,
+        "Index": 66744,
+        "Position": {
+          "x": 13866,
+          "y": 38,
+          "z": 4505
+        },
+        "Rotation": null,
+        "Team": 2
+      },
+      "Common": {
+        "IsAlive": true,
+        "IsZombie": false,
+        "IsRecalling": false,
+        "IsTargetable": true,
+        "Identifier": "",
+        "CurrentAttack": "",
+        "Status": 9,
+        "Health": 9000,
+        "MaxHealth": 9000,
+        "Armor": null,
+        "MagicResist": null,
+        "Level": 1,
+        "AttackSpeedMultiplier": null,
+        "MovementSpeed": null,
+        "DataStack": null,
+        "Buffs": [],
+        "Animations": null,
+        "SubmeshVisiblityMask": 0,
+        "AttackSpeedBonus": null,
+        "AnimationState": null
+      },
+      "PlateCount": 5,
+      "MaxPlateCount": 5
+    },
+    {
+      "Info": {
+        "IsNeutral": false,
+        "Name": "Turret_TChaos_L1_P1_2220646803_0",
+        "NetworkId": 1073741989,
+        "Index": 66749,
+        "Position": {
+          "x": 11134,
+          "y": 88,
+          "z": 11207
+        },
+        "Rotation": null,
+        "Team": 2
+      },
+      "Common": {
+        "IsAlive": true,
+        "IsZombie": false,
+        "IsRecalling": false,
+        "IsTargetable": false,
+        "Identifier": "",
+        "CurrentAttack": "",
+        "Status": 1,
+        "Health": 4750,
+        "MaxHealth": 4750,
+        "Armor": null,
+        "MagicResist": null,
+        "Level": 1,
+        "AttackSpeedMultiplier": null,
+        "MovementSpeed": null,
+        "DataStack": null,
+        "Buffs": [],
+        "Animations": null,
+        "SubmeshVisiblityMask": 0,
+        "AttackSpeedBonus": null,
+        "AnimationState": null
+      },
+      "PlateCount": 5,
+      "MaxPlateCount": 5
+    },
+    {
+      "Info": {
+        "IsNeutral": false,
+        "Name": "Turret_TOrder_L0_P3_3795288474_0",
+        "NetworkId": 1073741990,
+        "Index": 66754,
+        "Position": {
+          "x": 10504,
+          "y": 41,
+          "z": 1029
+        },
+        "Rotation": null,
+        "Team": 1
+      },
+      "Common": {
+        "IsAlive": true,
+        "IsZombie": false,
+        "IsRecalling": false,
+        "IsTargetable": true,
+        "Identifier": "",
+        "CurrentAttack": "",
+        "Status": 9,
+        "Health": 9000,
+        "MaxHealth": 9000,
+        "Armor": null,
+        "MagicResist": null,
+        "Level": 1,
+        "AttackSpeedMultiplier": null,
+        "MovementSpeed": null,
+        "DataStack": null,
+        "Buffs": [],
+        "Animations": null,
+        "SubmeshVisiblityMask": 0,
+        "AttackSpeedBonus": null,
+        "AnimationState": null
+      },
+      "PlateCount": 5,
+      "MaxPlateCount": 5
+    },
+    {
+      "Info": {
+        "IsNeutral": false,
+        "Name": "Turret_TChaos_L1_P4_392430785_0",
+        "NetworkId": 1073741991,
+        "Index": 66757,
+        "Position": {
+          "x": 12611,
+          "y": 88,
+          "z": 13084
+        },
+        "Rotation": null,
+        "Team": 2
+      },
+      "Common": {
+        "IsAlive": true,
+        "IsZombie": false,
+        "IsRecalling": false,
+        "IsTargetable": false,
+        "Identifier": "",
+        "CurrentAttack": "",
+        "Status": 1,
+        "Health": 3500,
+        "MaxHealth": 3500,
+        "Armor": null,
+        "MagicResist": null,
+        "Level": 1,
+        "AttackSpeedMultiplier": null,
+        "MovementSpeed": null,
+        "DataStack": null,
+        "Buffs": [],
+        "Animations": null,
+        "SubmeshVisiblityMask": 0,
+        "AttackSpeedBonus": null,
+        "AnimationState": null
+      },
+      "PlateCount": 0,
+      "MaxPlateCount": 0
+    },
+    {
+      "Info": {
+        "IsNeutral": false,
+        "Name": "Turret_TChaos_L1_P0_1017949901_0",
+        "NetworkId": 1073741993,
+        "Index": 66763,
+        "Position": {
+          "x": 14576,
+          "y": 466,
+          "z": 14693
+        },
+        "Rotation": null,
+        "Team": 2
+      },
+      "Common": {
+        "IsAlive": true,
+        "IsZombie": false,
+        "IsRecalling": false,
+        "IsTargetable": false,
+        "Identifier": "",
+        "CurrentAttack": "",
+        "Status": 1,
+        "Health": 9999,
+        "MaxHealth": 9999,
+        "Armor": null,
+        "MagicResist": null,
+        "Level": 1,
+        "AttackSpeedMultiplier": null,
+        "MovementSpeed": null,
+        "DataStack": null,
+        "Buffs": [],
+        "Animations": null,
+        "SubmeshVisiblityMask": 0,
+        "AttackSpeedBonus": null,
+        "AnimationState": null
+      },
+      "PlateCount": 0,
+      "MaxPlateCount": 0
+    },
+    {
+      "Info": {
+        "IsNeutral": false,
+        "Name": "Turret_TOrder_L2_P2_1526764315_0",
+        "NetworkId": 1073741995,
+        "Index": 66765,
+        "Position": {
+          "x": 1512,
+          "y": 42,
+          "z": 6699
         },
         "Rotation": null,
         "Team": 1
@@ -16716,7 +16716,7 @@
   "Missiles": [],
   "ParticleEmitters": [
     {
-      "index": 3016263,
+      "index": 132251,
       "networkId": 1073742336,
       "name": "DATA/Particles/Dragon_Indicator_Water.troy",
       "position": {

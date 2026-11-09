@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SyBSensor")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1873cc506789dd6d8cd74d1592849197fd615129")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+583ec5fcfccf0ea8b1bc050e794ab17aadba68e9")]
 [assembly: System.Reflection.AssemblyProductAttribute("SyBSensor")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SyBSensor")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

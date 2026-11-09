@@ -120,6 +120,8 @@ export function createDemoState(format = 'BO3') {
     objectives: {
       upcomingDragonType: 'Hextech',
       active: { dragon: false, baron: false, atakhan: false, riftHerald: false, grubs: false },
+      // Tiempo restante del buff de objetivo en la vista previa.
+      buffs: { 1: null, 2: null },
       camps: [
         { kind: 'dragon', remaining: 96, spawnAt: 1360, timerVisible: true },
         { kind: 'grubs', remaining: 242, spawnAt: 1506, timerVisible: true }
@@ -131,11 +133,37 @@ export function createDemoState(format = 'BO3') {
   };
 }
 
+// Buff de objetivo simulado: sirve para ver los marcos y la barra sin una
+// partida en vivo. El HUD lo pinta igual que el que llega del servidor.
+export function aplicarBuffDemo(state, kind, team, restante) {
+  const duration = kind === 'elder' ? 150 : 180;
+  const seconds = Number.isFinite(restante) ? Math.max(1, restante) : duration;
+  state.objectives = state.objectives || {};
+  state.objectives.buffs = state.objectives.buffs || { 1: null, 2: null };
+  state.objectives.buffs[team] = { kind, remaining: seconds, duration, endsAt: null, carriers: 5 };
+  // Solo se marca al equipo del buff: el rival conserva el suyo si ya tenía.
+  for (const player of state.players) {
+    if (player.team === team) player.objectiveBuff = kind;
+  }
+  return state;
+}
+
 export function advanceDemoState(state, elapsedSeconds) {
   state.meta.gameTime += elapsedSeconds;
   state.meta.sequence += 1;
   for (const camp of state.objectives.camps) {
     if (typeof camp.remaining === 'number') camp.remaining = Math.max(0, camp.remaining - elapsedSeconds);
+  }
+  // El buff de objetivo del demo también corre y desaparece al agotarse.
+  for (const team of [1, 2]) {
+    const buff = state.objectives?.buffs?.[team];
+    if (!buff) continue;
+    buff.remaining = Math.max(0, buff.remaining - elapsedSeconds);
+    if (buff.remaining > 0.05) continue;
+    state.objectives.buffs[team] = null;
+    for (const player of state.players) {
+      if (player.team === team) player.objectiveBuff = null;
+    }
   }
   for (const player of state.players) {
     // El muerto del demo reaparece: la cuenta atrás baja y vuelve a empezar.

@@ -1,11 +1,11 @@
 {
-  "actualizado": "2026-11-08T22:36:00.029Z",
+  "actualizado": "2026-11-08T22:39:48.584Z",
   "partida": "LA1-1760727003",
   "apiDelJuego": {
     "direccion": "https://127.0.0.1:2999/liveclientdata/playerlist",
-    "responde": false,
-    "error": "ECONNREFUSED",
-    "ultimaLectura": "2026-11-08T22:35:52.101Z",
+    "responde": true,
+    "error": null,
+    "ultimaLectura": "2026-11-08T22:39:45.880Z",
     "jugadoresRecibidos": 10,
     "muestraCruda": [
       {
@@ -48,8 +48,30 @@
       }
     ]
   },
-  "skins": {},
-  "nombres": {},
+  "skins": {
+    "1-sett": 38,
+    "1-diana": 47,
+    "1-ekko": 27,
+    "1-zeri": 46,
+    "1-yuumi": 0,
+    "2-tahmkench": 37,
+    "2-rammus": 17,
+    "2-akali": 0,
+    "2-kalista": 2,
+    "2-thresh": 17
+  },
+  "nombres": {
+    "1-sett": "Miticaldos#LAN",
+    "1-diana": "iike#7411",
+    "1-ekko": "KekePrime#keke7",
+    "1-zeri": "Ayanneesan#アヤネ",
+    "1-yuumi": "Isaina#Hada",
+    "2-tahmkench": "Manolo Melenas#CAST",
+    "2-rammus": "Kalozzinho#HXA",
+    "2-akali": "sheep king#izuku",
+    "2-kalista": "Banedeodo#0406",
+    "2-thresh": "SG Coso Amorta#Coso"
+  },
   "jugadores": [
     {
       "team": 1,

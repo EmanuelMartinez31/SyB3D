@@ -9,12 +9,6 @@ const SECONDARY_OBJECTIVE_ICONS = {
 };
 const rowsByTeam = new Map([[1, new Map()], [2, new Map()]]);
 let activeCatalog = null;
-// Panel de diagnóstico de las fichas. Solo se enciende con ?debug=1 en la
-// dirección del overlay: no cambia nada del HUD normal.
-let cardDebug = false;
-export function setCardDebug(on) {
-  cardDebug = on ? true : false;
-}
 
 const byId = id => document.getElementById(id);
 const finite = value => typeof value === 'number' && Number.isFinite(value);
@@ -43,12 +37,8 @@ function percent(current, max) {
   return Math.max(0, Math.min(1, current / max));
 }
 
-// Nombre del jugador tal cual lo manda el cliente (sin el #TAG). Si el
-// cliente todavía no lo publicó, se usa el campeón: nunca una raya suelta.
 function displayName(player) {
-  const nombre = String(player?.player || '').split('#')[0].trim();
-  if (nombre) return nombre;
-  return String(player?.champion || '').trim() || '—';
+  return String(player?.player || '—').split('#')[0].trim() || '—';
 }
 
 function fitPlayerName(element, text) {
@@ -165,13 +155,11 @@ function renderPatch(catalog) {
 
 /* ------------------------------------------------------------------
    Runas del inicio de partida
-   Se muestran del segundo 5 al 30 del reloj de la barra superior (lo que dura
-   la presentación de los jugadores): las runas del equipo azul a la izquierda
-   y las del rojo a la derecha.
+   Se muestran del segundo 5 al 20 del reloj de la barra superior: las
+   runas del equipo azul a la izquierda y las del rojo a la derecha.
    ------------------------------------------------------------------ */
 const RUNE_INTRO_FROM = 5;
-// Duran lo mismo que la presentación de los jugadores: del segundo 5 al 30.
-const RUNE_INTRO_UNTIL = 30;
+const RUNE_INTRO_UNTIL = 20;
 // Mismos tiempos que los avisos de objetivos: entra deslizándose desde la
 // orilla y sale por la misma orilla, además de desvanecerse.
 const RUNE_ENTER_MS = 560;
@@ -517,7 +505,7 @@ function buildFightCard(player, team, catalog) {
     spells.append(slot.wrap);
   }
 
-  const referencias = { hpFill, hp, mpFill, mp, refs, level };
+  const referencias = { hpFill, hp, mpFill, mp, refs, level, portrait: portrait.wrap };
   updateFightCard(referencias, player);
 
   card.append(portrait.wrap, bars, spells);
@@ -534,6 +522,13 @@ function updateFightCard(refs, player) {
   refs.mpFill.style.width = `${fightPercent(player.resource?.current, player.resource?.max)}%`;
   refs.mp.title = `Maná ${Math.round(player.resource?.current ?? 0)} / ${Math.round(player.resource?.max ?? 0)}`;
   setText(refs.level, finite(player.level) ? player.level : '—');
+  // Mismo marco que la tabla, aplicado al retrato de la ficha.
+  const buff = player.alive === false ? null : player.objectiveBuff || null;
+  refs.portrait.classList.toggle('buff-baron', buff === 'baron');
+  refs.portrait.classList.toggle('buff-elder', buff === 'elder');
+  refs.portrait.title = buff === 'baron'
+    ? 'Bendición del Barón'
+    : buff === 'elder' ? 'Aspecto del Dragón' : '';
   for (const ref of refs.refs) {
     const spell = player.spells?.[ref.key] || null;
     const enfriando = finite(spell?.remaining) && spell.remaining > 0.05;
@@ -613,7 +608,7 @@ function hideFightStrip() {
   fightVisible = false;
   strip.classList.remove('is-in');
   strip.classList.add('is-out');
-  syncTableVisibility();
+  if (table) table.classList.remove('is-out');
   // Al salir se quita la marca de tarjeta nueva para que el hundimiento
   // general de la tira mande sobre cualquier animación pendiente.
   strip.querySelectorAll('.fight-card').forEach(el => el.classList.remove('is-entering'));
@@ -686,7 +681,7 @@ function renderFight(state, catalog) {
     strip.classList.remove('is-out', 'is-settled', 'is-in');
     void strip.offsetWidth;
     strip.classList.add('is-in');
-    syncTableVisibility();
+    if (table) table.classList.add('is-out');
     // Cuando la última tarjeta termina de subir, la tira queda asentada y las
     // animaciones de entrada dejan de aplicarse a todas.
     const escalera = 70 * Math.max(blue.length, red.length) + 460;
@@ -695,259 +690,6 @@ function renderFight(state, catalog) {
       if (fightVisible) strip.classList.add('is-settled');
     }, escalera);
   }
-}
-
-/* ------------------------------------------------------------------
-   Fichas de presentación del inicio
-   Del segundo 5 al 30 se presenta a los diez jugadores de dos en dos: la
-   ficha del azul y la del rojo del MISMO rol, cinco segundos cada pareja,
-   en orden TOP → JUNGLA → MID → ADC → SOPORTE.
-
-   Mientras duran, la tabla de abajo no se ve: su sitio lo ocupan las fichas.
-   Los paneles de runas de los laterales siguen funcionando igual.
-
-   La ficha es el arte 2D del campeón (el de carga, con su skin si el
-   cliente la publica) y el nombre del jugador. Nada de modelos 3D.
-   ------------------------------------------------------------------ */
-const DECK_FROM = 5;
-const DECK_STEP = 5;
-const DECK_UNTIL = DECK_FROM + DECK_STEP * ROLE_ORDER.length; // 30 s
-const DECK_LEAVE_MS = 420;
-// La primera vez que aparecen, las fichas suben desde abajo con el mismo
-// tiempo que usan las runas al entrar (560 ms). Se deja un poco más para
-// quitar la clase cuando la animación ya ha terminado del todo.
-const DECK_RISE_MS = 620;
-const DECK_ROLE_LABEL = {
-  top: 'TOP', jungle: 'JUNGLA', mid: 'MID', bot: 'ADC', support: 'SOPORTE'
-};
-
-let deckActive = false;
-// Mientras dura la presentación (del segundo 0 al 30) la tabla no se muestra:
-// primero porque la partida acaba de empezar y todavía no hay nada que contar,
-// y después porque su sitio lo ocupan las fichas.
-let deckHoldsTable = false;
-let deckRoleKey = '';
-let deckSignature = '';
-let deckHideTimer = 0;
-let deckRiseTimer = 0;
-let deckShown = false;
-let deckPlayers = [];
-let deckArtReady = false;
-let deckArtRequest = null;
-
-// Antes de mostrar las fichas se resuelve el arte de cada skin: se pregunta a
-// Community Dragon, que sabe el número exacto de cada skin. Se hace en cuanto
-// empieza la partida, así a los 5 segundos ya está todo (y las imágenes
-// descargadas). Si no hay red, se sigue igual con lo que se tenga.
-function prepararArteDeck(catalog, players) {
-  if (deckArtReady || deckArtRequest) return;
-  const champions = players.map(player => player.champion).filter(Boolean);
-  if (typeof catalog?.prepareSkins !== 'function') {
-    deckArtReady = true;
-    return;
-  }
-  deckArtRequest = catalog.prepareSkins(champions)
-    .catch(() => {})
-    .then(() => {
-      deckArtReady = true;
-      deckArtRequest = null;
-      // Todavía no se ha mostrado nada: se puede reconstruir sin parpadeo.
-      if (!deckShown) deckSignature = '';
-      else refreshDeckArt();
-    });
-}
-
-// La tabla de abajo se oculta cuando dura la presentación o hay una teamfight.
-// Todo pasa por aquí para que los dos motivos no se pisen entre ellos.
-function syncTableVisibility() {
-  const table = document.querySelector('.scoreboard');
-  if (!table) return;
-  table.classList.toggle('is-out', fightVisible || deckHoldsTable);
-}
-
-// Si el catálogo de skins llegó cuando las fichas ya estaban en pantalla, se
-// vuelve a pedir el arte de cada una: la skin sustituye al arte base sin
-// rehacer las fichas (no hay parpadeo, la imagen anterior se queda hasta que
-// carga la nueva).
-function refreshDeckArt() {
-  const catalog = activeCatalog;
-  if (!catalog) return;
-  const players = deckPlayers;
-  for (const card of document.querySelectorAll('.deck-card')) {
-    const role = card.dataset.role;
-    const side = card.classList.contains('deck-card-blue') ? 1 : 2;
-    const player = players.find(item => item.team === side && item.role === role);
-    const img = card.querySelector('.deck-art img');
-    if (!player || !img || !player.champion) continue;
-    setImage(
-      img,
-      catalog.splashUrls(player.champion, player.skin),
-      player.champion,
-      card.querySelector('.deck-art .asset-fallback'),
-      String(player.champion)
-    );
-  }
-}
-
-function buildDeckCard(player, catalog, team) {
-  const card = document.createElement('article');
-  card.className = `deck-card deck-card-${team}`;
-  card.title = [displayName(player), player.champion].filter(Boolean).join(' · ');
-
-  // Arte 2D del campeón, con su skin si el cliente la publicó. El respaldo del
-  // catálogo es el arte base, así nunca queda un hueco vacío.
-  const art = assetWithFallback('deck-art', '');
-  setImage(
-    art.img,
-    player.champion && catalog ? catalog.splashUrls(player.champion, player.skin) : [],
-    player.champion || 'Campeón',
-    art.fallback,
-    String(player.champion || '')
-  );
-  // La imagen solo se dibuja cuando ya está cargada (o si venía de la caché).
-  const lista = () => art.wrap.classList.add('is-ready');
-  const caida = () => art.wrap.classList.remove('is-ready');
-  if (art.img.complete && art.img.naturalWidth > 0) lista();
-  art.img.addEventListener('load', lista);
-  art.img.addEventListener('error', caida);
-
-  const foot = document.createElement('div');
-  foot.className = 'deck-foot';
-  const name = document.createElement('strong');
-  name.className = 'deck-name';
-  setText(name, displayName(player));
-  const champion = document.createElement('span');
-  champion.className = 'deck-champ';
-  setText(
-    champion,
-    player.champion && catalog ? catalog.championName(player.champion) : (player.champion || '')
-  );
-  // Si el nombre coincide con el campeón, no se repite debajo.
-  if (champion.textContent.trim().toLowerCase() === name.textContent.trim().toLowerCase()) {
-    champion.hidden = true;
-  }
-  foot.append(name, champion);
-
-  card.append(art.wrap, foot);
-  return card;
-}
-
-// Se construyen las cinco fichas de cada lado una sola vez (no en cada
-// estado) y luego solo se marca cuál está activa.
-function buildDeck(players, catalog) {
-  const signature = JSON.stringify(
-    players.map(player => [player.team, player.role, player.champion, player.player, player.skin])
-  );
-  if (signature === deckSignature) return;
-  deckSignature = signature;
-  deckPlayers = players;
-  deckRoleKey = '';
-  const sides = [[1, byId('deck-blue'), 'blue'], [2, byId('deck-red'), 'red']];
-  for (const [team, container, side] of sides) {
-    if (!container) continue;
-    container.replaceChildren();
-    for (const role of ROLE_ORDER) {
-      const player = players.find(candidate => candidate.team === team && candidate.role === role);
-      if (!player) continue;
-      const card = buildDeckCard(player, catalog, side);
-      card.dataset.role = role;
-      container.append(card);
-    }
-  }
-}
-
-function setDeckActive(active) {
-  const container = byId('deck-intro');
-  if (!container) return;
-  if (active) {
-    window.clearTimeout(deckHideTimer);
-    container.hidden = false;
-    // La primera vez que se muestran, las fichas suben desde abajo: se le pone
-    // la clase que lanza la animación y se le quita en cuanto termina, para que
-    // a partir de ahí manden los cambios de rol de siempre. Del resto se encarga
-    // el CSS, igual que en las runas.
-    const primeraVez = !deckShown;
-    if (primeraVez) {
-      deckShown = true;
-      container.classList.add('is-instant');
-      container.classList.add('is-rising');
-      window.clearTimeout(deckRiseTimer);
-      deckRiseTimer = window.setTimeout(() => {
-        container.classList.remove('is-rising');
-      }, DECK_RISE_MS);
-    }
-    void container.offsetWidth;
-    container.classList.remove('is-out');
-    container.classList.add('is-in');
-    if (primeraVez) {
-      void container.offsetWidth;
-      container.classList.remove('is-instant');
-    }
-    if (!deckActive) {
-      deckActive = true;
-      syncTableVisibility();
-    }
-    return;
-  }
-  if (!deckActive) return;
-  deckActive = false;
-  syncTableVisibility();
-  // Sale hacia abajo antes de ocultarse, como el resto de cartas del HUD.
-  container.classList.remove('is-in');
-  container.classList.add('is-out');
-  deckHideTimer = window.setTimeout(() => {
-    if (deckActive) return;
-    container.hidden = true;
-    container.classList.remove('is-out');
-    deckRoleKey = '';
-    deckSignature = '';
-  }, DECK_LEAVE_MS);
-}
-
-function renderDeck(state, catalog) {
-  const container = byId('deck-intro');
-  if (!container) return;
-  const gameTime = state?.meta?.gameTime;
-  const players = Array.isArray(state?.players) ? state.players : [];
-  // Con menos de diez jugadores no hay presentación que valga.
-  const hayEquipos = finite(gameTime) && players.length >= 10;
-  // La tabla se retira desde el primer segundo y vuelve a los 30.
-  const retiene = hayEquipos && gameTime >= 0 && gameTime < DECK_UNTIL;
-  if (retiene !== deckHoldsTable) {
-    deckHoldsTable = retiene;
-    if (!deckHoldsTable) deckSignature = '';
-    syncTableVisibility();
-  }
-  // La baraja se construye desde el primer segundo, aunque no se vea: las
-  // imágenes se descargan durante los primeros 5 s y, cuando toca mostrarlas,
-  // ya están listas (antes una ficha del TOP daba un salto al cargar). El arte
-  // de cada skin se resuelve en paralelo desde ese mismo momento.
-  if (hayEquipos) {
-    prepararArteDeck(catalog, players);
-    buildDeck(players, catalog);
-  }
-
-  // Las fichas, del segundo 5 al 30.
-  const visible = hayEquipos && gameTime >= DECK_FROM && gameTime < DECK_UNTIL;
-
-  if (!visible) {
-    setDeckActive(false);
-    return;
-  }
-
-  const index = Math.min(
-    ROLE_ORDER.length - 1,
-    Math.max(0, Math.floor((gameTime - DECK_FROM) / DECK_STEP))
-  );
-  const role = ROLE_ORDER[index];
-  if (role !== deckRoleKey) {
-    deckRoleKey = role;
-    setText(byId('deck-role-label'), DECK_ROLE_LABEL[role] || role.toUpperCase());
-    for (const card of container.querySelectorAll('.deck-card')) {
-      card.classList.toggle('is-active', card.dataset.role === role);
-    }
-  }
-  setDeckActive(true);
 }
 
 function renderTeamIdentities(info) {
@@ -1149,7 +891,7 @@ function createPlayerRow(player) {
 
   row.append(spells, runes, championWrap, info, quest, stats, items);
   return {
-    row, spellD, spellF, cooldownD, cooldownF, primaryRune, secondaryRune,
+    row, championWrap, spellD, spellF, cooldownD, cooldownF, primaryRune, secondaryRune,
     champion, championFallback, level, respawn, name, championName, healthFill,
     resourceBar, resourceFill, xpBar, xpFill, kda, cs, itemSlots,
     quest, questIcon, questLetter, questCount, questFill, questCheck
@@ -1282,6 +1024,13 @@ function updateRespawnTimer(element, player) {
 
 function updatePlayerRow(refs, player) {
   refs.row.classList.toggle('dead', player.alive === false);
+  // Marco del buff de objetivo: solo se pinta en jugadores vivos que lo lleven.
+  const buff = player.alive === false ? null : player.objectiveBuff || null;
+  refs.championWrap.classList.toggle('buff-baron', buff === 'baron');
+  refs.championWrap.classList.toggle('buff-elder', buff === 'elder');
+  refs.championWrap.title = buff === 'baron'
+    ? 'Bendición del Barón'
+    : buff === 'elder' ? 'Aspecto del Dragón' : '';
   updateRespawnTimer(refs.respawn, player);
   refs.row.setAttribute('aria-label', `${displayName(player)}, ${player.champion || 'campeón'}`);
   const playerName = displayName(player);
@@ -1563,6 +1312,50 @@ function renderSeries(score) {
   );
 }
 
+// ============================================================================
+// BUFFS DE OBJETIVO
+// El servidor entrega en objectives.buffs el tiempo restante del barón o del
+// dragón ancestral por equipo. La barra se pinta en el hueco central de la
+// banda, del lado del equipo que consiguió el objetivo.
+// ============================================================================
+const OBJECTIVE_BUFF_META = {
+  baron: { icon: './assets/objectives/baron.png', label: 'Barón', title: 'Bendición del Barón' },
+  elder: { icon: './assets/objectives/dragon_elder.png', label: 'Dragón ancestral', title: 'Aspecto del Dragón' }
+};
+
+function objectiveBuffBar(side, team, buff, teamName) {
+  const bar = byId(`buff-bar-${side}`);
+  if (!bar) return;
+  const meta = buff ? OBJECTIVE_BUFF_META[buff.kind] : null;
+  const remaining = finite(buff?.remaining) ? buff.remaining : null;
+  if (!meta || remaining === null || remaining <= 0.05) {
+    bar.hidden = true;
+    delete bar.dataset.kind;
+    bar.removeAttribute('title');
+    return;
+  }
+  // El ancho se calcula sobre la duración real del buff: si el juego cambia
+  // los 180 s del barón o los 150 s del ancestral, la barra sigue cuadrando.
+  const duration = finite(buff.duration) && buff.duration > 0 ? buff.duration : remaining;
+  bar.hidden = false;
+  bar.dataset.kind = buff.kind;
+  const icon = byId(`buff-icon-${side}`);
+  if (icon && icon.getAttribute('src') !== meta.icon) icon.src = meta.icon;
+  const fill = byId(`buff-fill-${side}`);
+  if (fill) fill.style.transform = `scaleX(${percent(remaining, duration).toFixed(4)})`;
+  const texto = formatTime(remaining);
+  setText(byId(`buff-time-${side}`), texto);
+  bar.title = `${meta.title} · ${texto} restantes · ${teamName}`;
+  bar.setAttribute('aria-label', `${meta.title} de ${teamName}: ${texto} restantes`);
+}
+
+function renderObjectiveBuffs(state) {
+  const buffs = state?.objectives?.buffs || {};
+  const info = state?.info || {};
+  objectiveBuffBar('blue', 1, buffs[1] || buffs['1'] || null, teamShortName('blue', info).shortName);
+  objectiveBuffBar('red', 2, buffs[2] || buffs['2'] || null, teamShortName('red', info).shortName);
+}
+
 function renderTeams(teams) {
   const blue = teams.find(team => team.team === 1) || {};
   const red = teams.find(team => team.team === 2) || {};
@@ -1603,54 +1396,8 @@ function renderTeams(teams) {
   }
 }
 
-/* ------------------------------------------------------------------
-   Panel de diagnóstico de las fichas  (?debug=1)
-   Enseña lo que llegó de verdad, sin adornos:
-     equipo · rol · campeón (tal cual lo manda el juego) · skin (tal cual)
-     · nombre (y de dónde salió) · archivo de arte que cargó
-   Sirve para ver en una sola captura por qué una ficha no trae su skin o su
-   nombre. No aparece si la dirección no lleva ?debug=1.
-   ------------------------------------------------------------------ */
-function renderCardDebug(state) {
-  let panel = byId('card-debug');
-  if (!panel) {
-    panel = document.createElement('div');
-    panel.id = 'card-debug';
-    panel.className = 'card-debug';
-    document.getElementById('stage')?.append(panel);
-  }
-  const players = Array.isArray(state?.players) ? state.players : [];
-  const limpiar = texto => String(texto || '').replace(/[^a-z0-9]/gi, '').toLowerCase();
-  const filas = players.map(player => {
-    // Se busca la ficha por equipo Y rol, y se comprueba que el campeón sea el
-    // mismo: si dos jugadores comparten rol (jungla repetida en la muestra de
-    // prueba) no se enseña el archivo de la ficha equivocada.
-    const card = [...document.querySelectorAll('.deck-card')]
-      .find(item => item.dataset.role === player.role
-        && item.classList.contains(player.team === 1 ? 'deck-card-blue' : 'deck-card-red')
-        && limpiar(item.title.split('·').pop()) === limpiar(player.champion));
-    const img = card?.querySelector('.deck-art img');
-    const cargado = img?.currentSrc ? img.currentSrc.split('/').pop() : (img ? '—' : 'sin ficha');
-    return [
-      `${player.team === 1 ? 'AZUL' : 'ROJO'} ${String(player.role || '').toUpperCase().padEnd(7)}`,
-      String(player.champion || '—').padEnd(12),
-      `skin ${String(player.skin ?? 'null').padStart(7)}`,
-      `${String(player.player || '—')} [${player.nameFrom || '?'}]`,
-      cargado
-    ].join(' · ');
-  });
-  const skins = [...document.querySelectorAll('.deck-card .deck-art img')]
-    .filter(img => img.currentSrc).length;
-  panel.textContent = [
-    'DIAGNÓSTICO DE FICHAS (?debug=1)',
-    `fichas con imagen cargada: ${skins}`,
-    ...filas
-  ].join('\n');
-}
-
 export function renderIngameState(state, catalog) {
   if (!state || typeof state !== 'object') return;
-  if (cardDebug) renderCardDebug(state);
   activeCatalog = catalog;
   const teams = Array.isArray(state.teams) ? state.teams : [];
   const players = Array.isArray(state.players) ? state.players : [];
@@ -1659,12 +1406,12 @@ export function renderIngameState(state, catalog) {
   renderPatch(catalog);
   renderSeries(state.score);
   renderRuneIntro(state, catalog);
-  renderDeck(state, catalog);
   renderFight(state, catalog);
   setText(byId('game-time'), formatTime(state.meta?.gameTime));
 
   renderDragonObjective(state);
   renderSecondaryObjective(state);
+  renderObjectiveBuffs(state);
 
   const blueContainer = byId('blue-players');
   const redContainer = byId('red-players');

@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { clone as cloneSkinned } from 'three/addons/utils/SkeletonUtils.js';
+import { crearEscenario, PALETAS } from './objective-stage.js';
 
 const MODEL_URL = './assets/models/voidgrub.glb';
 const VISIBLE_MS = 10000;
@@ -51,13 +52,14 @@ export function createVoidGrubAlert(element) {
     renderer.outputColorSpace = THREE.SRGBColorSpace;
 
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(32, 1, 0.1, 40);
+    const camera = new THREE.PerspectiveCamera(32, 163 / 135, 0.1, 40);
     camera.position.set(0, 1.75, 4.05);
     camera.lookAt(0, 0.73, 0);
     scene.add(new THREE.HemisphereLight(0xe7e2ff, 0x271c38, 2.2));
     const key = new THREE.DirectionalLight(0xffffff, 2.4);
     key.position.set(-3, 5, 4);
     scene.add(key);
+    const escenario = crearEscenario(scene, { camara: camera, nivel: -0.1, paleta: PALETAS.comun, ancho: 5.5, pilares: 6, aspecto: 163 / 135 });
 
     const source = gltf.scene;
     source.updateMatrixWorld(true);
@@ -159,6 +161,7 @@ export function createVoidGrubAlert(element) {
         renderer.setAnimationLoop(null);
       },
       dispose() {
+        escenario?.dispose();
         resizeObserver.disconnect();
         renderer.dispose();
         shadowTexture.dispose();

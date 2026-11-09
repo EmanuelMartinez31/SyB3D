@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { clone as cloneSkinned } from 'three/addons/utils/SkeletonUtils.js';
+import { crearEscenario, PALETAS } from './objective-stage.js';
 
 const MODEL_URL = './assets/models/rift-herald.glb';
 const VISIBLE_MS = 10000;
@@ -44,13 +45,14 @@ export function createHeraldAlert(element) {
     renderer.outputColorSpace = THREE.SRGBColorSpace;
 
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(32, 1, 0.1, 40);
+    const camera = new THREE.PerspectiveCamera(32, 200 / 135, 0.1, 40);
     camera.position.set(0, 1.9, 5.0);
     camera.lookAt(0, 1.15, 0);
     scene.add(new THREE.HemisphereLight(0xe9f3ff, 0x211b32, 2.2));
     const key = new THREE.DirectionalLight(0xffffff, 2.4);
     key.position.set(-3, 5, 4);
     scene.add(key);
+    const escenario = crearEscenario(scene, { camara: camera, nivel: -0.12, paleta: PALETAS.comun, ancho: 6.5, pilares: 7 });
 
     const source = gltf.scene;
     const spawnSource = gltf.animations.find(animation => animation.name === SPAWN_CLIP) || null;
@@ -187,6 +189,7 @@ export function createHeraldAlert(element) {
         renderer.setAnimationLoop(null);
       },
       dispose() {
+        escenario?.dispose();
         resizeObserver.disconnect();
         renderer.dispose();
         shadowTexture.dispose();

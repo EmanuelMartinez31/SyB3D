@@ -425,6 +425,23 @@
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
   }
+  /* --- Cámaras de los jugadores ------------------------------------ */
+  .cam-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin-top: 12px; }
+  .cam-equipo { border: 1px solid var(--line); border-radius: 12px; background: var(--input); padding: 12px; display: flex; flex-direction: column; gap: 10px; }
+  .cam-equipo-azul { border-left: 3px solid var(--blue); }
+  .cam-equipo-rojo { border-left: 3px solid var(--red); }
+  .cam-equipo-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+  .cam-equipo-head h3 { margin: 0; font-size: 14px; letter-spacing: .01em; }
+  .cam-equipo-head span { font-size: 10px; letter-spacing: .16em; color: var(--muted); }
+  .cam-lista { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+  .cam-lista li { display: grid; grid-template-columns: 54px minmax(0, 1fr); grid-template-areas: "rol nombre" "link link"; gap: 3px 8px; padding: 7px 9px; border-radius: 8px; background: var(--raised); border: 1px solid var(--line); }
+  .cam-lista li:empty { display: none; }
+  .cam-rol { grid-area: rol; font-size: 10px; font-weight: 800; letter-spacing: .1em; color: var(--cyan); align-self: center; }
+  .cam-lista li strong { grid-area: nombre; font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .cam-lista li code { grid-area: link; font-size: 11px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .cam-acciones { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 12px; }
+  .cam-aviso { font-size: 12px; color: var(--mint); }
+  .cam-aviso.is-error { color: var(--critical); }
 </style>
 </head>
 <body>
@@ -566,6 +583,29 @@
           </div>
           <p class="info-note">Incluye torneo, equipos, siglas y logos. Al cargarlo no se modifican picks, baneos, marcador ni fearless.</p>
         </section>
+        <section class="panel" id="panel-camaras">
+          <header class="panel-header">
+            <div><span class="section-kicker">Cámaras de los jugadores</span><h2>Enlaces de VDO.Ninja</h2></div>
+            <button class="danger" onclick="regenerarCamaras()">Regenerar</button>
+          </header>
+          <p class="info-note">Cada jugador abre su enlace y emite; no escribe su nombre, el enlace ya está atado a su equipo y a su línea. En el HUD se ven dos a la vez, una por lado, y cambian de línea cada 20 s desde el segundo 30. Si el jugador muere, su cámara se queda.</p>
+          <div class="cam-grid">
+            <div class="cam-equipo cam-equipo-azul">
+              <div class="cam-equipo-head"><h3 id="camTituloAzul">Equipo azul</h3><span>LADO AZUL</span></div>
+              <ol class="cam-lista" id="camListaAzul"></ol>
+              <button class="primary" onclick="copiarCamaras('azul')">Copiar los 5 del azul</button>
+            </div>
+            <div class="cam-equipo cam-equipo-rojo">
+              <div class="cam-equipo-head"><h3 id="camTituloRojo">Equipo rojo</h3><span>LADO ROJO</span></div>
+              <ol class="cam-lista" id="camListaRojo"></ol>
+              <button class="primary" onclick="copiarCamaras('rojo')">Copiar los 5 del rojo</button>
+            </div>
+          </div>
+          <div class="cam-acciones">
+            <button onclick="copiarCamaras('ambos')">Copiar los 10</button>
+            <span class="cam-aviso" id="camAviso"></span>
+          </div>
+        </section>
       </div>
     </section>
 
@@ -651,6 +691,7 @@ function switchView(view) {
     else tab.removeAttribute('aria-current');
   });
   if (view === 'postgame') { refreshPostgameStatus(); cargarAjustadorModelos(); }
+  if (view === 'production') sincronizarCamaras();
   window.scrollTo(0, 0);
 }
 function setHeaderConnection(level, text) {
@@ -675,8 +716,10 @@ function handlePanelMessage(e) {
   try { msg = JSON.parse(e.data); } catch { return; }
   if (msg.type === 'pick') lastPick = { team: msg.team, champion: msg.champion };
   if (msg.type === 'history') return markUsed(msg.data);
+  // El roster llega por lado y en orden de rol: los nombres de las cámaras.
+  if (msg.type === 'roster') { camRoster = msg.data || camRoster; pintarCamaras(); return; }
   if (msg.type === 'score') { applyScore(msg.data); return; }
-  if (msg.type === 'info') applyInfoToPanel(msg.data);
+  if (msg.type === 'info') { applyInfoToPanel(msg.data); sincronizarCamaras(); }
   if (msg.type === 'lcu-state') {
     lcuOn = Boolean(msg.data);
     syncToggleButtons();
@@ -685,6 +728,8 @@ function handlePanelMessage(e) {
   if (msg.type === 'init') {
     if (msg.state?.history) markUsed(msg.state.history);
     if (msg.state?.info) applyInfoToPanel(msg.state.info);
+    if (msg.state?.roster) camRoster = msg.state.roster;
+    sincronizarCamaras();
     if (msg.state?.score) applyScore(msg.state.score); else sendScore();
     fearlessOn = msg.state?.fearless !== false;
     syncToggleButtons();
@@ -1247,6 +1292,153 @@ function loadIcons() {
     tiles[c] = d;
   });
   document.getElementById('champCount').textContent = `${CHAMPS.length} campeones disponibles`;
+}
+// ------------------------------- Cámaras de los jugadores -------------
+// Los 10 enlaces (5 por equipo, uno por línea) los genera el servidor y son
+// fijos: el jugador abre el suyo y emite, sin escribir su nombre. Aquí solo se
+// muestran, se copian por equipo y se pueden regenerar.
+const CAM_LINEAS = ['top', 'jungle', 'mid', 'bot', 'support'];
+const CAM_ABREVIA = { top: 'top', jungle: 'jg', mid: 'mid', bot: 'adc', support: 'sup' };
+const CAM_ROL = { top: 'TOP', jungle: 'JUNGLA', mid: 'MID', bot: 'ADC', support: 'SOPORTE' };
+let camDatos = null;
+let camRoster = { blue: [], red: [] };
+let camEquiposPedidos = '';
+
+// Nombre del jugador tal como lo da el draft, sin el #TAG.
+function camNombre(lado, indice) {
+  const bruto = String((camRoster[lado] || [])[indice] || '');
+  const limpio = bruto.split('#')[0].trim();
+  return limpio || 'Sin nombre';
+}
+function camEquipos() {
+  return {
+    azul: (document.getElementById('blueName')?.value || '').trim(),
+    rojo: (document.getElementById('redName')?.value || '').trim()
+  };
+}
+function camAvisar(texto, esError) {
+  const aviso = document.getElementById('camAviso');
+  if (!aviso) return;
+  aviso.textContent = texto || '';
+  aviso.classList.toggle('is-error', Boolean(esError));
+}
+function camEquipoDe(ladoPalabra) {
+  const lados = camDatos?.lados || {};
+  const { azul, rojo } = camEquipos();
+  return (ladoPalabra === 'azul' ? lados.blue : lados.red) || (ladoPalabra === 'azul' ? azul : rojo);
+}
+function camFilas(ladoPalabra) {
+  const equipo = camEquipoDe(ladoPalabra);
+  return equipo ? (camDatos?.equipos?.[equipo] || null) : null;
+}
+function pintarCamaras() {
+  [['azul', 'Azul'], ['rojo', 'Rojo']].forEach(([lado, sufijo]) => {
+    const lista = document.getElementById(`camLista${sufijo}`);
+    const titulo = document.getElementById(`camTitulo${sufijo}`);
+    if (!lista || !titulo) return;
+    const equipo = camEquipoDe(lado);
+    titulo.textContent = equipo || `Equipo ${lado}`;
+    const filas = camFilas(lado);
+    const claveLado = lado === 'azul' ? 'blue' : 'red';
+    const items = CAM_LINEAS.map((linea, indice) => {
+      const li = document.createElement('li');
+      const rol = document.createElement('span');
+      rol.className = 'cam-rol';
+      rol.textContent = CAM_ROL[linea];
+      const nombre = document.createElement('strong');
+      nombre.textContent = camNombre(claveLado, indice);
+      const enlace = document.createElement('code');
+      enlace.textContent = filas?.[linea]?.id ? `vdo.ninja/?push=${filas[linea].id}` : 'Sin enlace todavía';
+      li.append(rol, nombre, enlace);
+      return li;
+    });
+    lista.replaceChildren(...items);
+  });
+}
+async function cargarCamaras(silencioso) {
+  const { azul, rojo } = camEquipos();
+  if (!azul || !rojo) {
+    camDatos = null;
+    pintarCamaras();
+    if (!silencioso) camAvisar('Pon primero el nombre de los dos equipos.', true);
+    return;
+  }
+  try {
+    const respuesta = await fetch(`/camaras/enlaces?azul=${encodeURIComponent(azul)}&rojo=${encodeURIComponent(rojo)}`);
+    if (!respuesta.ok) throw new Error(`HTTP ${respuesta.status}`);
+    camDatos = await respuesta.json();
+    camAvisar('');
+    pintarCamaras();
+  } catch (error) {
+    camAvisar(`No se pudieron leer los enlaces: ${error.message}`, true);
+  }
+}
+// Solo vuelve a pedir si cambiaron los equipos (por ejemplo, al cambiar de lado).
+function sincronizarCamaras() {
+  const { azul, rojo } = camEquipos();
+  const firma = `${azul}|${rojo}`;
+  if (!azul || !rojo) { pintarCamaras(); return; }
+  if (firma === camEquiposPedidos && camDatos) { pintarCamaras(); return; }
+  camEquiposPedidos = firma;
+  cargarCamaras(true);
+}
+function camTextoDe(ladoPalabra) {
+  const filas = camFilas(ladoPalabra);
+  if (!filas) return '';
+  return CAM_LINEAS
+    .filter(linea => filas[linea]?.id)
+    .map(linea => `${CAM_ABREVIA[linea]}- https://vdo.ninja/?push=${filas[linea].id}`)
+    .join('\n');
+}
+async function copiarTexto(texto) {
+  try {
+    await navigator.clipboard.writeText(texto);
+    return true;
+  } catch {
+    const area = document.createElement('textarea');
+    area.value = texto;
+    area.style.position = 'fixed';
+    area.style.opacity = '0';
+    document.body.appendChild(area);
+    area.select();
+    let copiado = false;
+    try { copiado = document.execCommand('copy'); } catch { copiado = false; }
+    area.remove();
+    return copiado;
+  }
+}
+async function copiarCamaras(cual) {
+  if (!camDatos) { await cargarCamaras(); }
+  const partes = [];
+  if (cual === 'azul' || cual === 'ambos') partes.push(camTextoDe('azul'));
+  if (cual === 'rojo' || cual === 'ambos') partes.push(camTextoDe('rojo'));
+  const texto = partes.filter(Boolean).join('\n');
+  if (!texto) { camAvisar('Todavía no hay enlaces para copiar.', true); return; }
+  const copiado = await copiarTexto(texto);
+  camAvisar(copiado
+    ? (cual === 'ambos' ? 'Copiados los 10 enlaces.' : `Copiados los 5 enlaces del ${cual}.`)
+    : 'No se pudo copiar. Revisa el permiso del portapapeles.', !copiado);
+}
+async function regenerarCamaras() {
+  const { azul, rojo } = camEquipos();
+  if (!azul || !rojo) { camAvisar('Pon primero el nombre de los dos equipos.', true); return; }
+  const seguir = confirm('Se crean 10 enlaces nuevos y los anteriores dejan de funcionar. ¿Seguir?');
+  if (!seguir) return;
+  try {
+    const respuesta = await fetch('/camaras/regenerar', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ azul, rojo })
+    });
+    if (!respuesta.ok) throw new Error(`HTTP ${respuesta.status}`);
+    camDatos = await respuesta.json();
+    camEquiposPedidos = `${azul}|${rojo}`;
+    pintarCamaras();
+    camAvisar('Enlaces nuevos listos: vuelve a repartirlos.');
+    log('🎥 Cámaras: 10 enlaces regenerados');
+  } catch (error) {
+    camAvisar(`No se pudieron regenerar: ${error.message}`, true);
+  }
 }
 </script>
 </body>

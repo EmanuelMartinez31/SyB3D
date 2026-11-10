@@ -176,6 +176,35 @@
         <div class="fight-side fight-side-red" id="fight-red"></div>
       </section>
 
+      <!-- Cámaras de los jugadores: una pegada a cada lado de la tabla.
+           Aparecen con la tabla (segundo 30) y van cambiando de línea cada
+           20 s. El equipo que ocupa cada lado lo manda el draft, así que si
+           cambian de lado entre partidas, las cámaras cambian con ellos. -->
+      <section id="camaras" class="camaras" aria-label="Cámaras de los jugadores" hidden>
+        <div class="camara camara-izq" data-lado="izq">
+          <div class="camara-video">
+            <iframe class="camara-a" title="" allow="autoplay; fullscreen" loading="lazy"></iframe>
+            <iframe class="camara-b" title="" allow="autoplay; fullscreen" loading="lazy"></iframe>
+          </div>
+          <div class="camara-pie">
+            <span class="camara-rol">TOP</span>
+            <strong class="camara-nombre">—</strong>
+            <span class="camara-estado">EN ESPERA</span>
+          </div>
+        </div>
+        <div class="camara camara-der" data-lado="der">
+          <div class="camara-video">
+            <iframe class="camara-a" title="" allow="autoplay; fullscreen" loading="lazy"></iframe>
+            <iframe class="camara-b" title="" allow="autoplay; fullscreen" loading="lazy"></iframe>
+          </div>
+          <div class="camara-pie">
+            <span class="camara-rol">TOP</span>
+            <strong class="camara-nombre">—</strong>
+            <span class="camara-estado">EN ESPERA</span>
+          </div>
+        </div>
+      </section>
+
       <div class="minimap-frame" aria-hidden="true"></div>
 
       <aside class="sponsor" aria-label="Espacio para patrocinadores"></aside>

@@ -1,4 +1,5 @@
 const express = require('express');
+const crearCamaras = require('./camaras');
 const http = require('http');
 const https = require('https');
 const fs = require('fs');
@@ -1657,6 +1658,12 @@ diskTimer.unref();
 
 app.use(express.json({ limit: '8mb' }));
 app.use('/overlay', express.static(OVERLAY_DIR));
+
+// Cámaras de los jugadores: los 10 enlaces de VDO.Ninja (5 por equipo), uno por
+// línea. Van después de express.json() para que /camaras/regenerar pueda leer
+// el cuerpo, y no dependen del sensor: funcionan desde que abre el servidor.
+const camaras = crearCamaras({ app, log: (...args) => console.log(...args) });
+camaras.registrarRutas();
 
 app.post('/sensor', (req, res) => {
   if (!req.body || typeof req.body !== 'object' || Array.isArray(req.body)) {

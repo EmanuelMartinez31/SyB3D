@@ -1820,6 +1820,237 @@ function renderIntroBanner(state) {
   if (!introShown) showIntroBanner(container);
 }
 
+/* ------------------------------------------------------------------
+   Cámaras de los jugadores
+   Dos cámaras a la vez: la del equipo que ocupa el lado izquierdo y la del que
+   ocupa el derecho, siempre del MISMO rol. Del segundo 30 en adelante cambian
+   de rol cada 20 s: TOP -> JUNGLA -> MID -> ADC -> SOPORTE y vuelta a empezar.
+
+   Los enlaces son fijos (uno por equipo y rol): el jugador abre el suyo una vez
+   y ya no tiene que hacer nada más, ni escribir su nombre. El equipo de cada
+   lado lo manda el draft, así que si cambian de lado entre partidas, las
+   cámaras se cambian de lado con ellos.
+
+   La pareja siguiente se deja cargada en el segundo reproductor de cada caja:
+   al cambiar de rol solo se destapa la que ya estaba lista, sin esperar.
+   ------------------------------------------------------------------ */
+const CAM_ROLES = ['top', 'jungle', 'mid', 'bot', 'support'];
+// Cada cuánto se le pregunta a cada cámara si su jugador está emitiendo.
+// VDO.Ninja contesta con la lista de conexiones que tiene abiertas.
+const CAM_SONDEO_MS = 1000;
+// Si VDO.Ninja no contesta nada en este tiempo, se deja de ocultar cajas y se
+// vuelve al comportamiento de antes (mejor una caja vacía que ninguna cámara).
+const CAM_ESPERA_MS = 12000;
+const CAM_ETIQUETA = { top: 'TOP', jungle: 'JUNGLA', mid: 'MID', bot: 'ADC', support: 'SOPORTE' };
+let camDatos = null;          // lo que devuelve /camaras/enlaces
+let camPeticion = null;       // petición en curso
+let camFirma = '';            // equipos para los que ya se pidieron enlaces
+let camPareja = -1;           // índice de la pareja que se está mostrando
+const camSlots = new Map();   // `${lado}` -> { iframes, cargado: Map }
+const camVivos = new Map();   // id del enlace -> true si ese jugador está emitiendo
+let camSondeo = 0;            // momento del último sondeo
+let camRespuestas = 0;        // cuántas veces ha contestado VDO.Ninja
+let camVisitando = null;      // desde cuándo se ven las cajas
+let camSondeoCaido = false;   // VDO.Ninja no contesta: no se oculta nada
+let camUltimoEstado = null;   // último estado pintado, para repintar al llegar respuesta
+
+function camLineaDeJuego(juego) {
+  return CAM_ROLES.includes(juego) ? juego : null;
+}
+
+// Nombre visible del jugador: el del juego, sin el #TAG ni el tag (displayName).
+function camNombre(state, team, linea) {
+  const jugador = (Array.isArray(state?.players) ? state.players : [])
+    .find(player => player.team === team && camLineaDeJuego(player.role) === linea);
+  return jugador ? displayName(jugador) : '—';
+}
+
+function camPedirEnlaces(azul, rojo) {
+  const firma = `${azul}|${rojo}`;
+  if (firma === camFirma || camPeticion) return;
+  camPeticion = fetch(`/camaras/enlaces?azul=${encodeURIComponent(azul)}&rojo=${encodeURIComponent(rojo)}`)
+    .then(respuesta => (respuesta.ok ? respuesta.json() : null))
+    .then(datos => {
+      if (!datos || !datos.equipos) return null;
+      camDatos = datos;
+      // Solo se da por buena cuando la respuesta llegó: si falló (el servidor
+      // aún no estaba listo), se vuelve a intentar en el siguiente fotograma.
+      camFirma = firma;
+      return datos;
+    })
+    .catch(() => null)
+    .finally(() => { camPeticion = null; });
+}
+
+function camSlot(caja, lado) {
+  if (!camSlots.has(lado)) {
+    camSlots.set(lado, {
+      iframes: [...caja.querySelectorAll('.camara-video iframe')],
+      cargado: new Map()   // `${equipo}|${linea}|${bucle}` -> iframe
+    });
+  }
+  return camSlots.get(lado);
+}
+
+// Deja cargada la cámara de un equipo y línea en uno de los dos reproductores
+// de la caja. Si ya estaba puesta, no se recarga (no hay parpadeo).
+function camCargar(estado, equipo, linea, indice) {
+  const iframe = estado.iframes[indice];
+  if (!iframe || !equipo || !linea) return null;
+  const datos = camDatos?.equipos?.[equipo]?.[linea];
+  const url = datos?.ver || '';
+  if (!url) return null;
+  if (iframe.dataset.url !== url) {
+    iframe.dataset.url = url;
+    iframe.dataset.stream = datos.id || '';
+    iframe.src = url;
+    iframe.title = `Cámara de ${equipo} · ${CAM_ETIQUETA[linea]}`;
+  }
+  return iframe;
+}
+
+// ------------------------------------------------------------------
+// ¿Está emitiendo el jugador?
+// A cada cámara se le pregunta {getStreamIDs:true} y VDO.Ninja responde con las
+// conexiones que tiene abiertas en ese momento. Si la lista viene vacía, ese
+// jugador no está emitiendo y su caja no se muestra: así no queda un hueco
+// negro cuando alguien no pone cámara.
+// El reloj de la rotación no cambia: cada lado sigue su turno de 20 s, aunque
+// una de las dos cajas esté oculta, para que el equipo que sí tiene cámaras no
+// se desfase.
+// ------------------------------------------------------------------
+function camIframeDe(origen) {
+  for (const iframe of document.querySelectorAll('.camara-video iframe')) {
+    try { if (iframe.contentWindow === origen) return iframe; } catch { /* nada */ }
+  }
+  return null;
+}
+
+function camEscucharRespuestas() {
+  window.addEventListener('message', (evento) => {
+    const datos = evento.data;
+    if (!datos || typeof datos !== 'object' || !datos.streamIDs || typeof datos.streamIDs !== 'object') return;
+    const iframe = camIframeDe(evento.source);
+    if (!iframe) return;
+    const id = iframe.dataset.stream;
+    if (!id) return;
+    camRespuestas += 1;
+    // La respuesta es de esta cámara en concreto: si no ve ninguna conexión
+    // abierta, ese jugador no está emitiendo.
+    const vivo = Object.keys(datos.streamIDs).length > 0;
+    if (camVivos.get(id) !== vivo) {
+      camVivos.set(id, vivo);
+      if (camUltimoEstado) renderCamaras(camUltimoEstado);
+    }
+  }, false);
+}
+
+function camSondear() {
+  const ahora = performance.now();
+  if (ahora - camSondeo < CAM_SONDEO_MS) return;
+  camSondeo = ahora;
+  const aprendiendo = camVisitando !== null && !camSondeoCaido && camRespuestas === 0;
+  if (aprendiendo && ahora - camVisitando > CAM_ESPERA_MS) {
+    camSondeoCaido = true;
+    if (camUltimoEstado) renderCamaras(camUltimoEstado);
+  }
+  for (const iframe of document.querySelectorAll('.camara-video iframe')) {
+    const id = iframe.dataset.stream;
+    if (!id) continue;
+    try { iframe.contentWindow?.postMessage({ getStreamIDs: true, cib: id }, '*'); } catch { /* nada */ }
+  }
+}
+
+function camPintarCaja(caja, lado, equipo, linea, state, indiceVisible) {
+  const estado = camSlot(caja, lado);
+  const elegida = camCargar(estado, equipo, linea, indiceVisible);
+  const id = elegida?.dataset.stream || '';
+  // La caja solo se muestra cuando ese jugador está emitiendo. Si VDO.Ninja
+  // nunca contesta se cae al comportamiento de antes y se muestra igual.
+  const emitiendo = Boolean(id) && (camSondeoCaido || camVivos.get(id) === true);
+  estado.iframes.forEach(iframe => iframe.classList.toggle('is-on', iframe === elegida && emitiendo));
+  caja.classList.toggle('is-viva', emitiendo);
+  const rol = caja.querySelector('.camara-rol');
+  const nombre = caja.querySelector('.camara-nombre');
+  const chip = caja.querySelector('.camara-estado');
+  if (rol) setText(rol, CAM_ETIQUETA[linea] || '');
+  if (nombre) setText(nombre, camNombre(state, lado === 'izq' ? 1 : 2, linea));
+  // El chip solo dice qué está mirando. VDO.Ninja no avisa al HUD si el jugador
+  // ya entró (se comprobó: no manda ningún mensaje al conectar), así que poner
+  // "EN VIVO" seria mentir: mientras no llegue imagen, la caja se ve oscura.
+  if (chip) setText(chip, 'CÁMARA');
+}
+
+let camRelojListo = false;
+function camArrancarReloj() {
+  if (camRelojListo) return;
+  camRelojListo = true;
+  camEscucharRespuestas();
+  setInterval(camSondear, CAM_SONDEO_MS);
+}
+
+function renderCamaras(state) {
+  camArrancarReloj();
+  camUltimoEstado = state;
+  const contenedor = byId('camaras');
+  if (!contenedor) return;
+  const cajas = {
+    izq: contenedor.querySelector('.camara-izq'),
+    der: contenedor.querySelector('.camara-der')
+  };
+  if (!cajas.izq || !cajas.der) return;
+
+  const azul = String(state?.info?.blue || '').trim();
+  const rojo = String(state?.info?.red || '').trim();
+  const ladosActuales = camDatos?.lados || {};
+  if (azul && rojo && (ladosActuales.blue !== azul || ladosActuales.red !== rojo)) {
+    camPedirEnlaces(azul, rojo);
+  }
+
+  const gameTime = state?.meta?.gameTime;
+  const desde = finite(camDatos?.desdeSegundo) ? camDatos.desdeSegundo : 30;
+  const cada = finite(camDatos?.cadaSegundos) && camDatos.cadaSegundos > 0 ? camDatos.cadaSegundos : 20;
+  const orden = Array.isArray(camDatos?.orden) && camDatos.orden.length ? camDatos.orden : CAM_ROLES;
+  const listo = camDatos?.activo !== false && azul && rojo
+    && camDatos?.equipos?.[azul] && camDatos?.equipos?.[rojo];
+  const visible = listo && finite(gameTime) && gameTime >= desde;
+
+  if (!visible) {
+    contenedor.hidden = true;
+    contenedor.classList.remove('is-on');
+    camPareja = -1;
+    return;
+  }
+
+  if (contenedor.hidden) contenedor.hidden = false;
+  if (camVisitando === null) camVisitando = performance.now();
+  // Se pinta un fotograma con el contenedor aún sin la clase: así la entrada
+  // se ve (sube y aparece) en vez de saltar.
+  void contenedor.offsetWidth;
+  contenedor.classList.add('is-on');
+
+  const indice = Math.max(0, Math.floor((gameTime - desde) / cada)) % orden.length;
+  const linea = orden[indice];
+  const siguiente = orden[(indice + 1) % orden.length];
+  const pareja = indice % 2;
+  // El lado lo manda el HUD (info.blue / info.red), no la última respuesta del
+  // servidor: si todavía no llegaron los enlaces del equipo que acaba de cambiar
+  // de lado, se ve SIN SEÑAL un instante, nunca la cámara del equipo anterior.
+  const equipoIzq = azul;
+  const equipoDer = rojo;
+
+  camPintarCaja(cajas.izq, 'izq', equipoIzq, linea, state, pareja);
+  camPintarCaja(cajas.der, 'der', equipoDer, linea, state, pareja);
+
+  // La siguiente pareja se va cargando en el otro reproductor: al cambiar de
+  // rol solo se destapa, sin pantalla negra ni espera.
+  if (camPareja !== indice) {
+    camCargar(camSlot(cajas.izq, 'izq'), equipoIzq, siguiente, (pareja + 1) % 2);
+    camCargar(camSlot(cajas.der, 'der'), equipoDer, siguiente, (pareja + 1) % 2);
+  }
+  camPareja = indice;
+}
+
 export function renderIngameState(state, catalog) {
   if (!state || typeof state !== 'object') return;
   if (cardDebug) renderCardDebug(state);
@@ -1833,6 +2064,7 @@ export function renderIngameState(state, catalog) {
   renderRuneIntro(state, catalog);
   renderDeck(state, catalog);
   renderIntroBanner(state);
+  renderCamaras(state);
   renderFight(state, catalog);
   setText(byId('game-time'), formatTime(state.meta?.gameTime));
 

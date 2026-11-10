@@ -1,0 +1,30 @@
+{
+  "activo": true,
+  "desdeSegundo": 30,
+  "cadaSegundos": 20,
+  "orden": [
+    "top",
+    "jungle",
+    "mid",
+    "bot",
+    "support"
+  ],
+  "ver": "solo&cleanoutput&noaudio&codec=h264&quality=2&fps=30",
+  "emitir": "quality=1&maxframerate=30&noaudio",
+  "equipos": {
+    "UPA ESPORTS": {
+      "top": "upaesptop96f90c",
+      "jungle": "upaespjgba60ee",
+      "mid": "upaespmid2bcae8",
+      "bot": "upaespadcb0b945",
+      "support": "upaespsupd80f25"
+    },
+    "ANAHUAC MAYAB": {
+      "top": "anahuatop7b186f",
+      "jungle": "anahuajg5cb1cf",
+      "mid": "anahuamid869439",
+      "bot": "anahuaadc65d42b",
+      "support": "anahuasup47de88"
+    }
+  }
+}

@@ -819,3 +819,41 @@ img{display:block;max-width:100%}
   font:800 38px/1 var(--font-ui);letter-spacing:.10em;color:var(--text-muted);
   transform:skewX(-8deg);text-shadow:0 2px 8px oklch(0.08 0.02 285 / 0.55);
 }
+
+/* ------------------------------------------------------------------
+   Cámaras de los jugadores
+   La tabla ocupa de x=507 a x=1413 y arranca en y=818. A su izquierda queda
+   libre de 300 (donde acaba el patrocinador) a 507, y a su derecha de 1413 a
+   1661 (donde empieza el minimapa). Las dos cajas miden lo mismo que la tabla
+   de alto (262 px) y van pegadas a su borde, sin tapar ni al patrocinador ni
+   al minimapa.
+   ------------------------------------------------------------------ */
+.camaras{position:absolute;z-index:17;inset:0;pointer-events:none}
+.camaras[hidden]{display:none}
+.camara{
+  position:absolute;bottom:0;width:200px;height:262px;
+  display:flex;flex-direction:column;overflow:hidden;
+  background:linear-gradient(180deg,oklch(0.21 0.022 285 / .97),oklch(0.13 0.018 285 / .98));
+  border:1px solid var(--line);border-bottom:0;
+  filter:drop-shadow(0 4px 10px oklch(0.10 0.02 285 / .45));
+  opacity:0;transform:translateY(16px);
+  transition:opacity 300ms ease,transform 380ms cubic-bezier(.18,.82,.24,1);
+}
+.camaras.is-on .camara.is-viva{opacity:1;transform:none}
+.camara-izq{left:307px;border-left:3px solid var(--team-blue)}
+.camara-der{left:1413px;border-right:3px solid var(--team-red)}
+.camara-video{position:relative;width:198px;height:196px;background:#0a0e15;overflow:hidden}
+.camara-video iframe{
+  position:absolute;inset:0;width:100%;height:100%;border:0;background:transparent;
+  opacity:0;transition:opacity 220ms ease;
+}
+.camara-video iframe.is-on{opacity:1}
+.camara-pie{display:flex;flex-direction:column;justify-content:center;gap:3px;height:64px;padding:6px 9px;border-top:1px solid var(--line)}
+.camara-der .camara-pie{align-items:flex-end;text-align:right}
+.camara-rol{font:800 11px/1 var(--font-ui);letter-spacing:.16em;color:var(--accent)}
+.camara-nombre{width:100%;font:700 18px/1 var(--font-ui);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.camara-estado{
+  align-self:flex-start;font:700 8px/1 var(--font-number);letter-spacing:.08em;padding:2px 5px;
+  color:var(--text-muted);border:1px solid oklch(0.45 0.02 285 / .8);
+}
+.camara-der .camara-estado{align-self:flex-end}

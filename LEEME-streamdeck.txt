@@ -1,0 +1,107 @@
+BOTONES DEL STREAM DECK SIN ABRIR PESTAÑAS  ·  r50
+==================================================
+
+POR QUÉ SE ABRE UNA PESTAÑA
+---------------------------
+Si en el Stream Deck pusiste la acción **Sistema → Sitio web** (System →
+Website) y le diste una dirección http://localhost:3000/..., lo que hace el
+Stream Deck es exactamente eso: pedirle al navegador que abra esa dirección.
+Y el navegador, cada vez, abre una pestaña nueva. Si el navegador estaba
+cerrado, lo abre entero. No hay ninguna opción en esa acción para evitarlo:
+esa acción es "abrir en el navegador", no "pedir esto al servidor".
+
+Lo que tú quieres es mandar la orden sin navegador de por medio. Para eso
+están los seis archivos que vienen en este zip.
+
+
+QUÉ HACE CADA ARCHIVO
+---------------------
+   replay-10.vbs           pide http://localhost:3000/replay/10
+   replay-30.vbs           pide http://localhost:3000/replay/30
+   replay-60.vbs           pide http://localhost:3000/replay/60
+   replay-90.vbs           pide http://localhost:3000/replay/90
+   replay-parar.vbs        pide http://localhost:3000/replay/parar
+   replay-highlights.vbs   pide http://localhost:3000/replay/highlights
+
+Cada uno es una sola línea. Lo que hace: lanza curl.exe (el programa que ya
+trae Windows para pedir direcciones) **con la ventana oculta** (el 0) y **sin
+quedarse esperando** (el False). curl pide la dirección, el servidor hace lo
+suyo (guardar el búfer, preparar la repetición) y curl se cierra solo.
+
+   · No abre ninguna ventana.
+   · No abre ninguna pestaña.
+   · No se queda nada corriendo: el proceso dura lo que tarde el servidor en
+     contestar (con un botón de 30 s son unos 0,4 s, lo que se ve en la
+     ventana negra como "Repeticion de 30 s preparada (357 ms)". En los de
+     60 y 90 s tarda algo más porque guarda un archivo más grande).
+   · Se puede pulsar mil veces: cada pulsación es un proceso corto que nace y
+     muere. Nada se acumula.
+
+Es el mismo camino que ya usan los .bat: el servidor recibe la orden igual
+que si la escribieras en la barra del navegador. La ventana negra del servidor
+sigue diciendo todo lo que pasa, línea por línea.
+
+
+DÓNDE VAN LOS ARCHIVOS
+----------------------
+Cópialos a la carpeta del proyecto, junto a los .bat:
+
+   F:\Streams\OBS\Broadcast\SyB3D+HUD
+
+No hay que tocar el replay.js ni reiniciar el servidor: son archivos aparte.
+
+
+PONER LOS BOTONES (clic por clic)
+---------------------------------
+1. Abre la aplicación **Stream Deck** (la del ordenador).
+2. En el panel de la derecha pulsa **Sistema** y arrastra **Abrir**
+   (en inglés: System → Open) a una tecla.
+3. En el campo de abajo, elige el archivo:
+      F:\Streams\OBS\Broadcast\SyB3D+HUD\replay-30.vbs
+4. En **Título** (Title) escribe: REPLAY 30
+5. Repite en las otras teclas con replay-10.vbs, replay-60.vbs y replay-90.vbs.
+   Las de parar y highlights son opcionales: mismo procedimiento.
+
+Y **borra o cambia las teclas viejas** que tenían "Sitio web": si dejas una,
+al pulsarla se seguirá abriendo la pestaña. Que no queden dos botones para lo
+mismo.
+
+
+COMPROBAR QUE VA
+----------------
+1. Con el servidor (la ventana negra) y OBS encendidos, pulsa REPLAY 30 en el
+   Stream Deck.
+2. No debe abrirse nada. En la ventana negra tiene que aparecer:
+      [replay] Piden /replay/30
+      [replay] Guardando el bufer de OBS...
+3. La repetición queda **preparada y esperando el ojito**, como siempre. No
+   se muestra sola: cuando le des al ojito de la fuente REPLAY en OBS, arranca
+   desde el recorte que toque.
+
+Si en la ventana negra sale "Piden /replay/30" y luego la repetición va bien,
+ya está: esos botones no gastan ni una pestaña.
+
+
+SI AL PULSAR NO PASA NADA
+-------------------------
+Se comprueba en este orden, sin adivinar:
+
+1. Si en la ventana negra **no aparece nada**, la orden no llegó al servidor.
+   Abre una consola y pega esto a mano:
+      C:\Windows\System32\curl.exe -s http://localhost:3000/replay/estado
+   · Si contesta algo, curl existe y el servidor está bien: el problema está
+     en la tecla del Stream Deck (el archivo elegido, o que ese botón sigue
+     siendo "Sitio web").
+   · Si dice "no se reconoce como un comando", tu Windows es más viejo que la
+     versión 1803 y no trae curl. Dímelo y te cambio los seis archivos por la
+     versión con PowerShell.
+2. Si el Stream Deck dice que no puede abrir el archivo, mira que la ruta sea
+   exactamente la de tu carpeta (si moviste el proyecto, hay que volver a
+   elegir el archivo en la tecla).
+3. Si Windows o el antivirus bloquean los .vbs (algunos lo hacen), no se puede
+   usar este método: ahí el sustituto sin pestañas es un .bat de una línea con
+   **Sistema → Abrir**, pero abre una ventanita negra un instante. Dímelo y te
+   lo preparo.
+
+Nada de esto toca el programa: la repetición y el HUD funcionan igual que con
+la pestaña. Lo único que cambia es por dónde entra la orden.

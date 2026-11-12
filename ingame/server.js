@@ -1,5 +1,6 @@
 const express = require('express');
 const crearCamaras = require('./camaras');
+const crearReplay = require('./replay');
 const http = require('http');
 const https = require('https');
 const fs = require('fs');
@@ -1664,6 +1665,12 @@ app.use('/overlay', express.static(OVERLAY_DIR));
 // el cuerpo, y no dependen del sensor: funcionan desde que abre el servidor.
 const camaras = crearCamaras({ app, log: (...args) => console.log(...args) });
 camaras.registrarRutas();
+
+// Repeticiones en el directo: un boton por duracion (10, 30, 60, 90 s) que
+// guarda el bufer de OBS, recorta con el cursor y monta la escena. Tambien
+// despues de express.json(): /replay/config recibe un cuerpo.
+const replay = crearReplay({ app, log: (...args) => console.log(...args) });
+replay.registrarRutas();
 
 app.post('/sensor', (req, res) => {
   if (!req.body || typeof req.body !== 'object' || Array.isArray(req.body)) {

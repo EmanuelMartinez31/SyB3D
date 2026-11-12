@@ -2,10 +2,10 @@
   "schemaVersion": 1,
   "gameId": "LA1-1760727003",
   "source": "lcu-match-history",
-  "capturedAt": "2026-11-06T23:16:43.083Z",
+  "capturedAt": "2026-11-10T06:05:27.981Z",
   "gameCreation": 1793940851711,
   "gameDuration": 1757,
-  "gameNumber": 3,
+  "gameNumber": 2,
   "format": "BO5",
   "info": {
     "tournament": "GAMEGROUNDS",
@@ -244,7 +244,7 @@
         },
         {
           "participantId": 4,
-          "player": "Ayanneesan#アヤネ",
+          "player": "Ayane#ñañe",
           "championId": 221,
           "champion": "Zeri",
           "championAlias": "Zeri",

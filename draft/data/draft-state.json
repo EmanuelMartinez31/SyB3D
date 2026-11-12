@@ -5,104 +5,104 @@
       {
         "type": "pick",
         "team": "blue",
-        "champion": "Nocturne"
+        "champion": "Illaoi"
       },
       {
         "type": "pick",
         "team": "red",
-        "champion": "Rammus"
+        "champion": "Katarina"
       },
       {
         "type": "pick",
         "team": "red",
-        "champion": "Ryze"
+        "champion": "Miss Fortune"
       },
       {
         "type": "pick",
         "team": "blue",
-        "champion": "Shyvana"
+        "champion": "Mordekaiser"
       },
       {
         "type": "pick",
         "team": "blue",
+        "champion": "Senna"
+      },
+      {
+        "type": "pick",
+        "team": "red",
+        "champion": "Swain"
+      },
+      {
+        "type": "pick",
+        "team": "red",
         "champion": "Yasuo"
       },
       {
         "type": "pick",
-        "team": "red",
-        "champion": "Ziggs"
-      },
-      {
-        "type": "pick",
-        "team": "red",
-        "champion": "Yasuo"
+        "team": "blue",
+        "champion": "Yuumi"
       },
       {
         "type": "pick",
         "team": "blue",
-        "champion": "Vladimir"
-      },
-      {
-        "type": "pick",
-        "team": "blue",
-        "champion": "Urgot"
+        "champion": "Taric"
       },
       {
         "type": "pick",
         "team": "red",
-        "champion": "Volibear"
+        "champion": "Sett"
       }
     ],
     "bans": [
       {
         "type": "ban",
         "team": "blue",
-        "champion": "Gnar"
+        "champion": "Aatrox"
       },
       {
         "type": "ban",
         "team": "red",
-        "champion": "Janna"
+        "champion": "Anivia"
       },
       {
         "type": "ban",
         "team": "blue",
-        "champion": "Karthus"
+        "champion": "Aurelion Sol"
       },
       {
         "type": "ban",
         "team": "red",
-        "champion": "Kled"
+        "champion": "Corki"
       },
       {
         "type": "ban",
         "team": "blue",
-        "champion": "Lucian"
+        "champion": "Ekko"
       },
       {
         "type": "ban",
         "team": "red",
-        "champion": "Morgana"
+        "champion": "Gwen"
       },
       {
         "type": "ban",
         "team": "red",
-        "champion": "Urgot"
+        "champion": "Twitch"
       },
       {
         "type": "ban",
         "team": "blue",
-        "champion": "Tristana"
+        "champion": "Vel'Koz"
       },
       {
         "type": "ban",
         "team": "red",
-        "champion": "Veigar"
+        "champion": "Taric"
       },
       {
         "type": "ban",
         "team": "blue",
-        "champion": "Viego"
+        "champion": "Xin Zhao"
       }
     ],
     "info": {
@@ -118,80 +118,40 @@
     },
     "score": {
       "format": "BO5",
-      "blue": 2,
-      "red": 2
+      "blue": 1,
+      "red": 0
     },
     "roster": null,
     "history": {
       "blue": [
-        "Amumu",
-        "Aphelios",
-        "Ashe",
-        "Brand",
-        "Braum",
-        "Jax",
-        "Jinx",
-        "K'Sante",
-        "Kayle",
-        "Lillia",
-        "Sion",
-        "Smolder",
-        "Sona",
-        "Talon",
-        "Taric"
+        "Karthus",
+        "Mel",
+        "Morgana",
+        "Sylas",
+        "Tahm Kench"
       ],
       "red": [
-        "Anivia",
-        "Annie",
-        "Aurelion Sol",
-        "Blitzcrank",
-        "Briar",
-        "Jayce",
-        "Jhin",
-        "Kai'Sa",
-        "Katarina",
+        "Lucian",
         "Lissandra",
-        "Sivir",
-        "Skarner",
-        "Soraka",
-        "Taliyah",
-        "Teemo"
+        "Orianna",
+        "Shen",
+        "Talon"
       ]
     },
     "histTeams": {
       "UPA ESPORTS": [
-        "Amumu",
-        "Aphelios",
-        "Ashe",
-        "Brand",
-        "Braum",
-        "Jax",
-        "Jinx",
-        "K'Sante",
-        "Kayle",
-        "Lillia",
-        "Sion",
-        "Smolder",
-        "Sona",
-        "Talon",
-        "Taric"
+        "Karthus",
+        "Mel",
+        "Morgana",
+        "Sylas",
+        "Tahm Kench"
       ],
       "ANAHUAC MAYAB": [
-        "Anivia",
-        "Annie",
-        "Aurelion Sol",
-        "Blitzcrank",
-        "Briar",
-        "Jayce",
-        "Jhin",
-        "Kai'Sa",
-        "Katarina",
+        "Lucian",
         "Lissandra",
-        "Sivir",
-        "Skarner",
-        "Soraka",
-        "Taliyah",
-        "Teemo"
+        "Orianna",
+        "Shen",
+        "Talon"
       ]
     },
     "teamBind": {},
@@ -199,16 +159,12 @@
     "fearless": true,
     "lcuEnabled": false
   },
-  "seriesRevision": 45,
-  "countedGames": [
-    "LA1-1760404331",
-    "LA1-1760441918",
-    "LA1-1760727003"
-  ],
+  "seriesRevision": 47,
+  "countedGames": [],
   "pendingWinners": [
     [
-      "LA1-1761176969",
-      "blue"
+      "LA1-1760727003",
+      "red"
     ]
   ]
 }

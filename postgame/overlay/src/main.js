@@ -4,6 +4,7 @@
 import { loadCatalog } from './catalog.js';
 import { renderPostgame } from './render.js';
 import { createPostgameModels, cargarAjustesDeEscala } from './models.js';
+import { goldSeries } from './goldseries.js';
 
 // ============================================================================
 // 1. ESTADO DE LA PANTALLA
@@ -41,6 +42,7 @@ async function applyState(data) {
   if (!data?.visible || !data.summary) {
     renderedKey = '';
     stage.hidden = true;
+    goldSeries.parar();
     await models.sync(null, []);
     return;
   }
@@ -56,6 +58,9 @@ async function applyState(data) {
   if (key === renderedKey && !stage.hidden) return;
   renderedKey = key;
   const views = renderPostgame(summary, catalog);
+  // Oro: las franjas de cada tarjeta a los 15 s y el panel central a los 35 s.
+  goldSeries.montar(summary, views);
+  goldSeries.iniciar();
   await models.sync(summary, views);
 }
 

@@ -69,6 +69,27 @@
       <!-- Equipo rojo: misma estructura y estilos, con sus colores. -->
       <div class="cards redcards" id="red-cards"></div>
 
+      <!-- Panel central de la ventaja de oro entre los dos equipos. Aparece a los
+           35 s de mostrarse el resumen y se retira a los 55 s (src/goldseries.js). -->
+      <section class="goldpanel" id="gold-panel" hidden aria-label="Ventaja de oro entre los dos equipos">
+        <div class="gp-head">
+          <div class="gp-title">
+            <h2>VENTAJA DE ORO</h2>
+            <small>QUIÉN IBA POR DELANTE, MINUTO A MINUTO</small>
+          </div>
+          <div class="gp-totals">
+            <div><span class="gp-tag">AZUL</span><b class="gp-total b">—</b></div>
+            <div><span class="gp-tag">ROJO</span><b class="gp-total r">—</b></div>
+          </div>
+        </div>
+        <div class="gp-body">
+          <svg class="gp-chart" viewBox="0 0 1232 378" preserveAspectRatio="none" aria-hidden="true"></svg>
+        </div>
+        <div class="gp-foot">
+          <span class="gp-final"></span><span class="gp-scale"></span><span class="gp-worst"></span>
+        </div>
+      </section>
+
       <!-- Un solo canvas WebGL dibuja los diez campeones sobre sus respectivas tarjetas. -->
       <canvas id="webgl" aria-hidden="true"></canvas>
       <div id="demo-badge" hidden>DEMO · DATOS FICTICIOS</div>

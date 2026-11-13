@@ -92,10 +92,53 @@ function makePlayer(side, index) {
   };
 }
 
+// Serie de oro de la demostración: misma forma que la que graba el ingame
+// (muestras cada 15 s y una serie por jugador, en el orden de las tarjetas).
+// No proviene de ninguna partida; sirve para revisar las gráficas sin jugar.
+function serieOroDemo(duracion, jugadores) {
+  const paso = 15;
+  const times = [];
+  for (let t = 0; t <= duracion; t += paso) times.push(t);
+  const n = times.length - 1;
+  const azar = (indice, semilla) => {
+    const x = Math.sin((indice + 1) * (12.9898 + semilla * 3.17)) * 43758.5453;
+    return x - Math.floor(x);
+  };
+  const curva = (final, semilla) => {
+    const pesos = [];
+    for (let i = 0; i < n; i += 1) {
+      const t = i / Math.max(1, n - 1);
+      pesos.push(Math.max(0.05, (1.22 - 0.34 * t) * (0.82 + azar(i, semilla) * 0.36)));
+    }
+    const suma = pesos.reduce((total, peso) => total + peso, 0);
+    const salida = [0];
+    let acumulado = 0;
+    for (let i = 0; i < n; i += 1) {
+      acumulado += (pesos[i] / suma) * final;
+      salida.push(Math.round(acumulado));
+    }
+    salida[salida.length - 1] = final;
+    return salida;
+  };
+  const serie = { step: paso, times, duration: duracion, blue: [], red: [] };
+  for (const side of ['blue', 'red']) {
+    jugadores[side].forEach((jugador, indice) => {
+      serie[side].push({
+        champion: jugador.champion,
+        championAlias: jugador.championAlias,
+        role: jugador.role,
+        total: curva(typeof jugador.gold === 'number' ? jugador.gold : 0, indice + (side === 'red' ? 6 : 1))
+      });
+    });
+  }
+  return serie;
+}
+
 // La demo tiene gameId propio y demo:true; el servidor nunca la guarda como real.
 function createDemoSummary() {
   const blue = Array.from({ length: 5 }, (_, index) => makePlayer('blue', index));
   const red = Array.from({ length: 5 }, (_, index) => makePlayer('red', index));
+  const gameDuration = 1968;
   return {
     schemaVersion: 1,
     gameId: 'demo-postgame',
@@ -103,7 +146,8 @@ function createDemoSummary() {
     demo: true,
     capturedAt: new Date().toISOString(),
     gameCreation: Date.now(),
-    gameDuration: 1968,
+    gameDuration,
+    goldSeries: serieOroDemo(gameDuration, { blue, red }),
     gameNumber: 2,
     format: 'BO3',
     info: {

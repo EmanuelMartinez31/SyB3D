@@ -791,10 +791,205 @@ body {
   font: 800 10px Plex;
   letter-spacing: 0.08em;
 }
+/* 11b. VENTAJA DE ORO
+   La franja va ENCIMA del modelo, sin moverlo: capa 12 y la tarjeta ya recorta
+   (overflow: hidden). Cuando se retira, la tarjeta queda como estaba. */
+.goldband {
+  position: absolute;
+  z-index: 12;
+  left: 8px;
+  right: 8px;
+  /* Empieza justo debajo del K/D/A (que acaba hacia 58 px) y termina donde
+     acaba el modelo (256). No mueve ni tapa nada más. */
+  top: 60px;
+  height: 198px;
+  padding: 9px 10px 8px;
+  background: linear-gradient(165deg, rgba(9, 13, 21, 0.965), rgba(6, 9, 15, 0.955));
+  border: 1px solid rgba(70, 96, 128, 0.5);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transform: translateY(5px);
+  transition: opacity 300ms ease, transform 300ms ease;
+  pointer-events: none;
+}
+.goldband.on {
+  opacity: 1;
+  transform: none;
+}
+.gb-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+.gb-head b {
+  font: 600 8.5px Plex;
+  letter-spacing: 0.15em;
+  color: #8fa0b8;
+}
+.gb-value {
+  font: 800 15px Plex;
+  font-variant-numeric: tabular-nums;
+  color: var(--team-light);
+}
+.gb-chart {
+  display: block;
+  width: 100%;
+  height: 118px;
+  overflow: visible;
+}
+.gb-axis {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2px;
+  font: 600 7px Plex;
+  letter-spacing: 0.08em;
+  color: rgba(160, 172, 192, 0.8);
+}
+.gb-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 6px;
+  padding-top: 5px;
+  border-top: 1px solid rgba(70, 96, 128, 0.28);
+  font: 600 8px Plex;
+  color: #93a4bb;
+}
+.gb-rival {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
+}
+.gb-rival b {
+  font-weight: 800;
+  color: #cfdaea;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.gb-rival i {
+  width: 6px;
+  height: 6px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--team);
+}
+.gb-max {
+  color: #c9d6e6;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+/* Panel central: la ventaja entre los dos equipos. */
+.goldpanel {
+  position: absolute;
+  z-index: 40;
+  left: 50%;
+  top: 50%;
+  width: 1300px;
+  height: 520px;
+  transform: translate(-50%, -46%) scale(0.985);
+  opacity: 0;
+  pointer-events: none;
+  background: linear-gradient(150deg, #0c111a, #06090f);
+  border: 1px solid #26313f;
+  box-shadow: 0 34px 90px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  transition: opacity 460ms ease, transform 460ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.goldpanel.on {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+.gp-head {
+  position: absolute;
+  left: 34px;
+  right: 34px;
+  top: 18px;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #22303f;
+}
+.gp-title h2 {
+  margin: 0;
+  font: 800 18px Barlow;
+  letter-spacing: 0.18em;
+  color: #f0e2bd;
+}
+.gp-title small {
+  display: block;
+  margin-top: 3px;
+  font: 600 9px Plex;
+  letter-spacing: 0.2em;
+  color: #8c9cb2;
+}
+.gp-totals {
+  display: flex;
+  align-items: center;
+  gap: 38px;
+  font-variant-numeric: tabular-nums;
+}
+.gp-totals div {
+  text-align: right;
+}
+.gp-tag {
+  display: block;
+  font: 600 9px Plex;
+  letter-spacing: 0.18em;
+  color: var(--muted);
+  max-width: 190px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.gp-total {
+  font: 800 25px Plex;
+}
+.gp-total.b {
+  color: var(--blue-light);
+}
+.gp-total.r {
+  color: var(--red-light);
+}
+.gp-body {
+  position: absolute;
+  left: 34px;
+  right: 34px;
+  top: 94px;
+  bottom: 48px;
+}
+.gp-chart {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.gp-foot {
+  position: absolute;
+  left: 34px;
+  right: 34px;
+  bottom: 14px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font: 600 9px Plex;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+}
+.gp-final b {
+  font-weight: 800;
+}
 /* 12. ACCESIBILIDAD
    Respeta la preferencia del sistema de reducir movimiento. */
 @media (prefers-reduced-motion: reduce) {
   .card {
     animation: none;
+  }
+  .goldband,
+  .goldpanel {
+    transition: none;
   }
 }

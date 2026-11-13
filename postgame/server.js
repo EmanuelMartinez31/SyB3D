@@ -10,6 +10,7 @@ const path = require('path');
 const { WebSocketServer } = require('ws');
 const { normalizeEog, normalizeHistory, repairSummaryRoles } = require('./lib/normalize');
 const { createDemoSummary } = require('./demo-summary');
+const { readGoldSeries, goldSeriesForCards } = require('./lib/gold-series');
 
 // ============================================================================
 // 1. CONFIGURACIÓN Y ESTADO EN MEMORIA
@@ -416,6 +417,19 @@ module.exports = function setupPostgame({ app, control, port }) {
 
   // Un resumen válido se guarda, se muestra y completa la captura pendiente.
   async function acceptSummary(summary) {
+    if (summary && !summary.demo && !summary.goldSeries) {
+      // La serie la graba el ingame (lib/gold-series.js la coloca en el orden
+      // de las tarjetas). Sin serie, el resumen se guarda igual y no se dibuja.
+      summary.goldSeries = goldSeriesForCards(
+        readGoldSeries(summary.gameId, summary.gameDuration),
+        summary
+      );
+      console.log(
+        summary.goldSeries
+          ? `Serie de oro añadida | juego=${summary.gameId} | muestras=${summary.goldSeries.times.length}`
+          : `Serie de oro no disponible en esta partida | juego=${summary.gameId}`
+      );
+    }
     await persistSummary(summary);
     latestSummary = summary;
     viewSummary = summary;

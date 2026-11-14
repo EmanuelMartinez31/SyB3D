@@ -1,8 +1,9 @@
 // POSTPARTIDA · VENTAJA DE ORO
 // Dos cosas, con los tiempos acordados:
-//   1. A los 15 s, en cada tarjeta aparece una franja ENCIMA del modelo (no lo
-//      mueve) con el oro del jugador contra el rival de su misma línea.
-//   2. A los 35 s las franjas se retiran y entra un panel central con la
+//   1. A los 15 s aparece UNA banda por línea (cinco, no diez) en el hueco entre
+//      la tarjeta azul y la roja de esa misma línea. La serie va azul − rojo:
+//      por encima del cero manda el azul, por debajo manda el rojo.
+//   2. A los 35 s las bandas se retiran y entra un panel central con la
 //      ventaja entre los dos equipos; a los 55 s el panel se va.
 // El eje se ajusta a la diferencia máxima de la gráfica, partida en tres tramos
 // por lado (máximo 2500 → 3000: 1000 / 2000 / 3000).
@@ -228,54 +229,66 @@ function datosDeOro(summary) {
   return { times, duracion, lados };
 }
 
-function construirFranja(entrada) {
-  const { card, propio, rival, jugador } = entrada;
-  const franja = document.createElement('div');
-  franja.className = 'goldband';
-  franja.innerHTML = `
-    <div class="gb-head">
-      <b>ORO VS SU RIVAL</b>
-      <span class="gb-value">0</span>
+function construirBanda(entrada) {
+  const contenedor = document.getElementById('lane-bands');
+  if (!contenedor) return;
+  const hueco = document.createElement('div');
+  hueco.className = 'laneband';
+  hueco.innerHTML = `
+    <div class="lb-head">
+      <b class="lb-role"></b>
+      <span class="lb-verso">
+        <i class="lb-b"></i><b class="lb-blue"></b><em>vs</em><b class="lb-red"></b><i class="lb-r"></i>
+      </span>
+      <span class="lb-value">0</span>
     </div>
-    <svg class="gb-chart" viewBox="0 0 335 118" preserveAspectRatio="none" aria-hidden="true"></svg>
-    <div class="gb-axis"><span>0:00</span><span class="gb-ceil"></span><span class="gb-end"></span></div>
-    <div class="gb-foot">
-      <span class="gb-rival"><i></i>vs <b></b></span>
-      <span class="gb-max">máx. <b>—</b></span>
-    </div>`;
-  const svg = franja.querySelector('.gb-chart');
-  const lado = propio === 'blue' ? { pos: '#35a7ff', neg: '#f05262', luz: '#a9dcff' }
-    : { pos: '#f05262', neg: '#35a7ff', luz: '#ffc3c6' };
+    <svg class="lb-chart" viewBox="0 0 355 44" preserveAspectRatio="none" aria-hidden="true"></svg>
+    <div class="lb-foot"><span class="lb-max"></span><span class="lb-end"></span></div>`;
+  contenedor.appendChild(hueco);
+
+  const svg = hueco.querySelector('.lb-chart');
   const escala = techoDe(Math.max(...entrada.diff.map((punto) => Math.abs(punto.v))));
   const dibujo = dibujarDiferencia(svg, {
     serie: entrada.diff, techo: escala.techo, duracion: entrada.duracion,
-    ancho: 335, alto: 118, izq: 22, der: 6, arr: 4, aba: 10,
-    colorPos: lado.pos, colorNeg: lado.neg, colorLinea: lado.luz,
-    ejeY: 1, ejeXtics: 0, puntosCada: 120, idBase: `tarjeta-${entrada.indice}-${propio}`,
-    tamEje: 7, radio: 1.9
+    ancho: 355, alto: 44, izq: 24, der: 8, arr: 3, aba: 3,
+    colorPos: '#35a7ff', colorNeg: '#f05262', colorLinea: '#dbe8f6',
+    ejeY: 1, ejeXtics: 0, puntosCada: 120, idBase: `linea-${entrada.linea}`,
+    tamEje: 7, radio: 1.7
   });
+
+  hueco.querySelector('.lb-role').textContent =
+    ROLE_LABELS[entrada.azul?.role] || `L${entrada.linea + 1}`;
+  const nombreAzul = hueco.querySelector('.lb-blue');
+  nombreAzul.textContent = entrada.azul?.champion || 'azul';
+  nombreAzul.title = nombreAzul.textContent;
+  const nombreRojo = hueco.querySelector('.lb-red');
+  nombreRojo.textContent = entrada.rojo?.champion || 'rojo';
+  nombreRojo.title = nombreRojo.textContent;
+
   const pico = entrada.diff.reduce(
     (mejor, punto) => (Math.abs(punto.v) > Math.abs(mejor.v) ? punto : mejor),
     entrada.diff[0]
   );
-  franja.querySelector('.gb-ceil').textContent = `±${compacto(escala.techo)}`;
-  franja.querySelector('.gb-end').textContent = reloj(entrada.duracion);
-  const rivalNombre = franja.querySelector('.gb-rival b');
-  rivalNombre.textContent = rival?.champion || ROLE_LABELS[jugador?.role] || 'rival';
-  rivalNombre.title = rivalNombre.textContent;
-  franja.querySelector('.gb-max b').textContent = `${conSigno(pico.v)} · ${reloj(pico.t)}`;
-  card.appendChild(franja);
-  entrada.franja = franja;
+  hueco.querySelector('.lb-max').textContent = `máx. ${conSigno(pico.v)} · ${reloj(pico.t)}`;
+  hueco.querySelector('.lb-end').textContent = `±${compacto(escala.techo)} · ${reloj(entrada.duracion)}`;
+
+  entrada.hueco = hueco;
   entrada.dibujo = dibujo;
   entrada.escala = escala;
-  entrada.valor = franja.querySelector('.gb-value');
+  entrada.valor = hueco.querySelector('.lb-value');
   entrada.valorFinal = entrada.diff[entrada.diff.length - 1].v;
-  entrada.colorValor = lado.luz;
 }
 
-function animarFranja(entrada) {
-  const { franja, dibujo, diff, valor, duracion } = entrada;
-  franja.classList.add('on');
+// El color de la cifra sigue al signo: azul si va por delante el azul, rojo si
+// va por delante el rojo. Es la misma convención que la gráfica.
+function colorDeValor(valor) {
+  return valor >= 0 ? '#87d4ff' : '#ff9b9e';
+}
+
+function animarBanda(entrada) {
+  const { hueco, dibujo, diff, valor, duracion } = entrada;
+  if (!hueco) return;
+  hueco.classList.add('on');
   const trazo = dibujo.trazo;
   let largo = 0;
   try {
@@ -291,7 +304,7 @@ function animarFranja(entrada) {
     const fraccion = Math.min(1, (ahora - inicio) / TRAZO_FRANJA);
     const suave = 1 - (1 - fraccion) ** 3;
     trazo.style.strokeDashoffset = String(largo * (1 - suave));
-    // El número sube con la línea, hasta el valor final de la partida.
+    // La cifra sube con la línea, hasta el valor final de la partida.
     const t = suave * duracion;
     let indice = diff.findIndex((punto) => punto.t >= t);
     if (indice <= 0) indice = 1;
@@ -301,31 +314,42 @@ function animarFranja(entrada) {
     const porcion = (t - anterior.t) / Math.max(1, siguiente.t - anterior.t);
     const actual = anterior.v + (siguiente.v - anterior.v) * porcion;
     valor.textContent = conSigno(actual);
-    valor.style.color = actual >= 0 ? entrada.colorValor : (entrada.propio === 'blue' ? '#ff9b9e' : '#87d4ff');
+    valor.style.color = colorDeValor(actual);
     if (fraccion < 1) requestAnimationFrame(paso);
     else {
       valor.textContent = conSigno(entrada.valorFinal);
-      valor.style.color = entrada.valorFinal >= 0
-        ? entrada.colorValor
-        : entrada.propio === 'blue' ? '#ff9b9e' : '#87d4ff';
+      valor.style.color = colorDeValor(entrada.valorFinal);
     }
   };
   requestAnimationFrame(paso);
 }
 
-function mostrarFranjas() {
+function mostrarBandas() {
+  const contenedor = document.getElementById('lane-bands');
+  if (contenedor) {
+    contenedor.hidden = false;
+    void contenedor.offsetWidth;
+    contenedor.classList.add('on');
+  }
   if (!estado) return;
-  estado.franjas.forEach((entrada, indice) =>
-    programar(() => animarFranja(entrada), indice * ESCALON_TARJETA)
+  estado.bandas.forEach((entrada, indice) =>
+    programar(() => animarBanda(entrada), 140 + indice * ESCALON_TARJETA)
   );
-  estado.hecho = 'franjas';
+  estado.hecho = 'bandas';
 }
 
-function esconderFranjas() {
+function esconderBandas() {
+  const contenedor = document.getElementById('lane-bands');
+  if (contenedor) {
+    contenedor.classList.remove('on');
+    programar(() => {
+      contenedor.hidden = true;
+    }, 340);
+  }
   if (!estado) return;
-  for (const entrada of estado.franjas) {
-    if (!entrada.franja) continue;
-    entrada.franja.classList.remove('on');
+  for (const entrada of estado.bandas) {
+    if (!entrada.hueco) continue;
+    entrada.hueco.classList.remove('on');
     entrada.valor.textContent = '0';
   }
 }
@@ -401,7 +425,7 @@ function construirPanel() {
 
 function mostrarPanel() {
   if (!estado?.equipos) return;
-  esconderFranjas();
+  esconderBandas();
   construirPanel();
   if (!estado.panel) return;
   const { panel, dibujo } = estado.panel;
@@ -444,7 +468,7 @@ function retirarPanel() {
 
 // ============================================================================
 // 5. INTERFAZ PARA main.js
-// montar() prepara las diez franjas; iniciar() arranca los tres tiempos;
+// montar() prepara las cinco bandas; iniciar() arranca los tres tiempos;
 // parar() lo deja todo como estaba para que la próxima vez vuelva a empezar.
 // ============================================================================
 export const goldSeries = {
@@ -491,29 +515,25 @@ export const goldSeries = {
         side: vista.side
       });
     }
-    const franjas = [];
-    for (const side of ['blue', 'red']) {
-      const contrario = side === 'blue' ? 'red' : 'blue';
-      porLado[side].forEach((slot, indice) => {
-        const propio = slot.jugador;
-        if (!slot.card || !propio?.total) return;
-        const cual = indiceRival(propio, datos.lados[contrario] || [], indice);
-        const rival = cual >= 0 ? datos.lados[contrario][cual] : null;
-        if (!rival?.total) return;
-        const entrada = {
-          card: slot.card,
-          side,
-          propio: side,
-          indice,
-          duracion: datos.duracion,
-          jugador: propio,
-          rival,
-          diff: diferencia(propio, rival)
-        };
-        construirFranja(entrada);
-        franjas.push(entrada);
-      });
-    }
+    // Cinco bandas, una por línea: el azul de esa línea menos el rojo de esa
+    // línea. Por encima del cero, ventaja azul; por debajo, ventaja roja.
+    const bandas = [];
+    porLado.blue.forEach((slotAzul, indice) => {
+      const azul = slotAzul.jugador;
+      if (!azul?.total) return;
+      const cual = indiceRival(azul, datos.lados.red || [], indice);
+      const rojo = cual >= 0 ? datos.lados.red[cual] : null;
+      if (!rojo?.total) return;
+      const entrada = {
+        linea: indice,
+        duracion: datos.duracion,
+        azul,
+        rojo,
+        diff: diferencia(azul, rojo)
+      };
+      construirBanda(entrada);
+      bandas.push(entrada);
+    });
     // Serie de los dos equipos: suma de las cinco curvas de cada lado.
     const equipos = datos.lados.blue.length && datos.lados.red.length
       ? {
@@ -535,15 +555,15 @@ export const goldSeries = {
       if (etiquetas[0]) etiquetas[0].textContent = String(nombres.blue || 'AZUL').toUpperCase();
       if (etiquetas[1]) etiquetas[1].textContent = String(nombres.red || 'ROJO').toUpperCase();
     }
-    estado = { franjas, equipos, hecho: '' };
-    return franjas.length > 0 || Boolean(equipos);
+    estado = { bandas, equipos, hecho: '' };
+    return bandas.length > 0 || Boolean(equipos);
   },
 
   iniciar() {
     limpiarTemporizadores();
     if (!estado) return;
     estado.hecho = '';
-    programar(mostrarFranjas, T_FRANJAS);
+    programar(mostrarBandas, T_FRANJAS);
     programar(mostrarPanel, T_PANEL);
     programar(retirarPanel, T_FUERA);
   },
@@ -551,12 +571,18 @@ export const goldSeries = {
   parar() {
     limpiarTemporizadores();
     if (estado) {
-      for (const entrada of estado.franjas) {
-        if (!entrada.franja) continue;
-        entrada.franja.classList.remove('on');
+      for (const entrada of estado.bandas) {
+        if (!entrada.hueco) continue;
+        entrada.hueco.classList.remove('on');
         entrada.valor.textContent = '0';
         const trazo = entrada.dibujo?.trazo;
         if (trazo) trazo.style.strokeDashoffset = '0';
+      }
+      const contenedor = document.getElementById('lane-bands');
+      if (contenedor) {
+        contenedor.classList.remove('on');
+        contenedor.replaceChildren();
+        contenedor.hidden = true;
       }
       if (estado.panel) {
         estado.panel.panel.classList.remove('on');

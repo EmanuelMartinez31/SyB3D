@@ -4,13 +4,14 @@
     "xerath": 0.85,
     "syndra": 0.85,
     "viego": 1.25,
-    "akali": 1.15,
+    "akali": 0.95,
     "thresh": 1.6,
     "yuumi": 1.4,
     "tahmkench": 0.85,
     "rammus": 0.85,
     "skarner": 0.8,
-    "kled": 1.2
+    "kled": 1.2,
+    "smolder": 0.8
   },
-  "updatedAt": "2026-11-13T00:50:57.397Z"
+  "updatedAt": "2026-11-14T01:04:32.557Z"
 }

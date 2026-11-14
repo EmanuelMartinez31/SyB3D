@@ -791,93 +791,109 @@ body {
   font: 800 10px Plex;
   letter-spacing: 0.08em;
 }
-/* 11b. VENTAJA DE ORO
-   La franja va ENCIMA del modelo, sin moverlo: capa 12 y la tarjeta ya recorta
-   (overflow: hidden). Cuando se retira, la tarjeta queda como estaba. */
-.goldband {
+/* Bandas de línea: una por línea, en el hueco entre la tarjeta azul y la roja
+   de esa misma línea (103 + 430 = 533 arriba, 611 abajo). Mientras se ven, tapan
+   la barra del marcador, que está justo detrás; al retirarse vuelve a verse
+   igual que antes, porque no se toca. */
+.lanebands {
   position: absolute;
-  z-index: 12;
-  left: 8px;
-  right: 8px;
-  /* Empieza justo debajo del K/D/A (que acaba hacia 58 px) y termina donde
-     acaba el modelo (256). No mueve ni tapa nada más. */
-  top: 60px;
-  height: 198px;
-  padding: 9px 10px 8px;
-  background: linear-gradient(165deg, rgba(9, 13, 21, 0.965), rgba(6, 9, 15, 0.955));
-  border: 1px solid rgba(70, 96, 128, 0.5);
-  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.5);
+  z-index: 30;
+  left: 34px;
+  top: 534px;
+  width: 1852px;
+  height: 74px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 14px;
   opacity: 0;
   transform: translateY(5px);
   transition: opacity 300ms ease, transform 300ms ease;
   pointer-events: none;
 }
-.goldband.on {
+.lanebands.on {
   opacity: 1;
   transform: none;
 }
-.gb-head {
+.laneband {
+  position: relative;
   display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  margin-bottom: 4px;
+  flex-direction: column;
+  gap: 1px;
+  padding: 4px 8px 3px;
+  background: linear-gradient(165deg, rgba(9, 13, 21, 0.975), rgba(6, 9, 15, 0.965));
+  border: 1px solid rgba(70, 96, 128, 0.5);
+  border-top: 2px solid #3a4d64;
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.48);
+  opacity: 0;
+  transition: opacity 240ms ease;
 }
-.gb-head b {
-  font: 600 8.5px Plex;
-  letter-spacing: 0.15em;
-  color: #8fa0b8;
+.laneband.on {
+  opacity: 1;
 }
-.gb-value {
-  font: 800 15px Plex;
-  font-variant-numeric: tabular-nums;
-  color: var(--team-light);
-}
-.gb-chart {
-  display: block;
-  width: 100%;
-  height: 118px;
-  overflow: visible;
-}
-.gb-axis {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 2px;
-  font: 600 7px Plex;
-  letter-spacing: 0.08em;
-  color: rgba(160, 172, 192, 0.8);
-}
-.gb-foot {
+.lb-head {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-top: 6px;
-  padding-top: 5px;
-  border-top: 1px solid rgba(70, 96, 128, 0.28);
-  font: 600 8px Plex;
-  color: #93a4bb;
-}
-.gb-rival {
-  display: flex;
-  align-items: center;
-  gap: 5px;
+  gap: 6px;
   min-width: 0;
 }
-.gb-rival b {
-  font-weight: 800;
+.lb-role {
+  font: 800 9.5px Plex;
+  letter-spacing: 0.12em;
+  color: #8fa0b8;
+  flex: none;
+}
+.lb-verso {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  flex: 1;
+}
+.lb-verso b {
+  font: 700 9.5px Plex;
   color: #cfdaea;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.gb-rival i {
-  width: 6px;
-  height: 6px;
+.lb-verso em {
+  font: 600 7.5px Plex;
+  font-style: normal;
+  color: #6f8095;
   flex: none;
-  border-radius: 50%;
-  background: var(--team);
 }
-.gb-max {
-  color: #c9d6e6;
+.lb-b,
+.lb-r {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  flex: none;
+}
+.lb-b {
+  background: var(--blue);
+}
+.lb-r {
+  background: var(--red);
+}
+.lb-value {
+  font: 800 12.5px Plex;
+  font-variant-numeric: tabular-nums;
+  color: #87d4ff;
+  flex: none;
+}
+.lb-chart {
+  display: block;
+  width: 100%;
+  height: 40px;
+  overflow: visible;
+}
+.lb-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font: 600 7.5px Plex;
+  letter-spacing: 0.04em;
+  color: #93a4bb;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
@@ -988,7 +1004,8 @@ body {
   .card {
     animation: none;
   }
-  .goldband,
+  .lanebands,
+  .laneband,
   .goldpanel {
     transition: none;
   }

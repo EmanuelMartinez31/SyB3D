@@ -17,9 +17,9 @@ sealed class LegacyTcpIpcClient
     public async Task RunSessionAsync(CancellationToken cancellationToken)
     {
         using var tcp = new TcpClient(AddressFamily.InterNetwork) { NoDelay = true };
+
         await tcp.ConnectAsync("127.0.0.1", Port, cancellationToken);
         Console.WriteLine("TCP LEGACY CONECTADO en 127.0.0.1:4998.");
-
         using NetworkStream stream = tcp.GetStream();
         using var session = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
         var registration = new TaskCompletionSource<Response>(
@@ -136,4 +136,5 @@ sealed class LegacyTcpIpcClient
             offset += read;
         }
     }
+
 }

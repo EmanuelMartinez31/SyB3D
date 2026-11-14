@@ -21,6 +21,22 @@ var http = new HttpClient { Timeout = TimeSpan.FromSeconds(15) };
 // LB tambien actualiza lblib para la version exacta del juego. La sesion local
 // solo se usa para ese repositorio; no se solicitan features ni se autentica IPC.
 CredentialsConfig accountCredentials = StoredCredentials.Load();
+
+Console.WriteLine("=== ESTADO DE LA SESION DE LEAGUEBROADCAST ===");
+if (accountCredentials == null)
+{
+    Console.WriteLine("sesion: no hay archivo Credentials.bbd");
+}
+else
+{
+    Console.WriteLine("sesion: archivo leido");
+    Console.WriteLine("sesion valida: " + accountCredentials.IsValid());
+    Console.WriteLine("proveedor de la cuenta: " + accountCredentials.AuthProvider);
+    Console.WriteLine("tiene refresh token: " + !string.IsNullOrEmpty(accountCredentials.RefreshToken));
+    Console.WriteLine("tiene id token: " + !string.IsNullOrEmpty(accountCredentials.IdToken));
+}
+Console.WriteLine("=== FIN DEL ESTADO DE LA SESION ===");
+
 if (accountCredentials != null && !accountCredentials.IsValid() &&
     !string.IsNullOrEmpty(accountCredentials.RefreshToken) &&
     accountCredentials.AuthProvider == EmailPasswordAuth.COGNITO_IDENTITY_PROVIDER_NAME)

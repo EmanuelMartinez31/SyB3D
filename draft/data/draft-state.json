@@ -5,52 +5,52 @@
       {
         "type": "pick",
         "team": "blue",
-        "champion": "Illaoi"
+        "champion": "Amumu"
       },
       {
         "type": "pick",
         "team": "red",
-        "champion": "Katarina"
+        "champion": "Anivia"
       },
       {
         "type": "pick",
         "team": "red",
-        "champion": "Miss Fortune"
+        "champion": "Annie"
       },
       {
         "type": "pick",
         "team": "blue",
-        "champion": "Mordekaiser"
+        "champion": "Aphelios"
       },
       {
         "type": "pick",
         "team": "blue",
-        "champion": "Senna"
+        "champion": "Ashe"
       },
       {
         "type": "pick",
         "team": "red",
-        "champion": "Swain"
+        "champion": "Aurelion Sol"
       },
       {
         "type": "pick",
         "team": "red",
-        "champion": "Yasuo"
+        "champion": "Blitzcrank"
       },
       {
         "type": "pick",
         "team": "blue",
-        "champion": "Yuumi"
+        "champion": "Brand"
       },
       {
         "type": "pick",
         "team": "blue",
-        "champion": "Taric"
+        "champion": "Braum"
       },
       {
         "type": "pick",
         "team": "red",
-        "champion": "Sett"
+        "champion": "Briar"
       }
     ],
     "bans": [
@@ -62,47 +62,47 @@
       {
         "type": "ban",
         "team": "red",
-        "champion": "Anivia"
+        "champion": "Ahri"
       },
       {
         "type": "ban",
         "team": "blue",
-        "champion": "Aurelion Sol"
+        "champion": "Akali"
       },
       {
         "type": "ban",
         "team": "red",
-        "champion": "Corki"
+        "champion": "Akshan"
       },
       {
         "type": "ban",
         "team": "blue",
-        "champion": "Ekko"
+        "champion": "Alistar"
       },
       {
         "type": "ban",
         "team": "red",
-        "champion": "Gwen"
+        "champion": "Ambessa"
       },
       {
         "type": "ban",
         "team": "red",
-        "champion": "Twitch"
+        "champion": "Aurora"
       },
       {
         "type": "ban",
         "team": "blue",
-        "champion": "Vel'Koz"
+        "champion": "Azir"
       },
       {
         "type": "ban",
         "team": "red",
-        "champion": "Taric"
+        "champion": "Bard"
       },
       {
         "type": "ban",
         "team": "blue",
-        "champion": "Xin Zhao"
+        "champion": "Bel'Veth"
       }
     ],
     "info": {
@@ -110,61 +110,25 @@
       "blue": "UPA ESPORTS",
       "red": "ANAHUAC MAYAB",
       "blueShort": "UPA",
-      "redShort": "AMY",
+      "redShort": "AHMY",
       "blueLogo": "/uploads/blue-1793563196018.png",
       "redLogo": "/uploads/red-1793563200939.png",
       "logo": "https://i.postimg.cc/GTPr1MVF/Gamergrounds-isotipo-Mesa-de-trabajo-1-copia-15.png",
       "bg": ""
     },
-    "score": {
-      "format": "BO5",
-      "blue": 1,
-      "red": 0
-    },
+    "score": null,
     "roster": null,
     "history": {
-      "blue": [
-        "Karthus",
-        "Mel",
-        "Morgana",
-        "Sylas",
-        "Tahm Kench"
-      ],
-      "red": [
-        "Lucian",
-        "Lissandra",
-        "Orianna",
-        "Shen",
-        "Talon"
-      ]
+      "blue": [],
+      "red": []
     },
-    "histTeams": {
-      "UPA ESPORTS": [
-        "Karthus",
-        "Mel",
-        "Morgana",
-        "Sylas",
-        "Tahm Kench"
-      ],
-      "ANAHUAC MAYAB": [
-        "Lucian",
-        "Lissandra",
-        "Orianna",
-        "Shen",
-        "Talon"
-      ]
-    },
+    "histTeams": {},
     "teamBind": {},
     "sideTeams": null,
     "fearless": true,
-    "lcuEnabled": false
+    "lcuEnabled": true
   },
-  "seriesRevision": 47,
+  "seriesRevision": 50,
   "countedGames": [],
-  "pendingWinners": [
-    [
-      "LA1-1760727003",
-      "red"
-    ]
-  ]
+  "pendingWinners": []
 }

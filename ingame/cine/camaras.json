@@ -9,22 +9,22 @@
     "bot",
     "support"
   ],
-  "ver": "solo&cleanoutput&noaudio&codec=h264&quality=2&fps=30",
+  "ver": "solo&cleanoutput&noaudio&codec=h264&quality=2&fps=30&cover",
   "emitir": "quality=1&maxframerate=30&noaudio",
   "equipos": {
     "UPA ESPORTS": {
-      "top": "upaesptop96f90c",
-      "jungle": "upaespjgba60ee",
-      "mid": "upaespmid2bcae8",
-      "bot": "upaespadcb0b945",
-      "support": "upaespsupd80f25"
+      "top": "upaesptop2d385c",
+      "jungle": "upaespjge03412",
+      "mid": "upaespmid235c96",
+      "bot": "upaespadc14c233",
+      "support": "upaespsup079b85"
     },
     "ANAHUAC MAYAB": {
-      "top": "anahuatop7b186f",
-      "jungle": "anahuajg5cb1cf",
-      "mid": "anahuamid869439",
-      "bot": "anahuaadc65d42b",
-      "support": "anahuasup47de88"
+      "top": "anahuatop8a08fb",
+      "jungle": "anahuajg31ceb4",
+      "mid": "anahuamid607319",
+      "bot": "anahuaadc289e75",
+      "support": "anahuasup2795d0"
     }
   }
 }

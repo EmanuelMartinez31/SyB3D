@@ -23,6 +23,23 @@ QUÉ HACE CADA ARCHIVO
    replay-parar.vbs        pide http://localhost:3000/replay/parar
    replay-highlights.vbs   pide http://localhost:3000/replay/highlights
 
+   pelea-empezar.vbs       pide http://localhost:3000/combate/grabar
+   pelea-parar.vbs         pide http://localhost:3000/combate/parar
+   pelea-mostrar.vbs       pide http://localhost:3000/combate/mostrar
+
+Los tres de la pelea son para el daño de una teamfight:
+   · pelea-empezar   es la tecla única de grabar: la primera pulsación empieza a
+                     sumar el daño de héroe a héroe y la siguiente lo para. El
+                     nombre del archivo se queda igual para no tener que volver
+                     a elegirlo en el Stream Deck.
+   · pelea-parar     deja de sumar y se queda con lo grabado. Con la tecla única
+                     no hace falta; sigue aquí por si algún día quieres dos
+                     teclas separadas (entonces habría que apuntar la de
+                     empezar a /combate/iniciar).
+   · pelea-mostrar   saca el panel de daño en el HUD (dos paneles con el
+                     formato de las runas, uno por equipo). Otra pulsación lo
+                     quita.
+
 Cada uno es una sola línea. Lo que hace: lanza curl.exe (el programa que ya
 trae Windows para pedir direcciones) **con la ventana oculta** (el 0) y **sin
 quedarse esperando** (el False). curl pide la dirección, el servidor hace lo

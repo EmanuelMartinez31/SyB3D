@@ -187,7 +187,11 @@ const camera = new THREE.PerspectiveCamera(45, innerWidth/innerHeight, .1, 100);
 camera.position.set(0, 2.4, 14);
 const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
 renderer.setSize(innerWidth, innerHeight);
-renderer.setPixelRatio(devicePixelRatio);
+// (r72) En OBS el navegador va a 1x, así que esto no cambia nada del directo.
+// En un navegador normal, con la pantalla escalada al 150% o 200%, se pintaba a
+// 1.5x o 2x: entre 2 y 4 veces más píxeles para la tarjeta, y con el draft en
+// una pestaña eso se lleva por delante el vídeo de Twitch y YouTube.
+renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 1.5));
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 document.body.appendChild(renderer.domElement);
 
@@ -857,8 +861,27 @@ ws.onmessage = (e) => {
 };
 
 const clock = new THREE.Clock();
-(function tick() {
+// (r72) TOPE DE FOTOGRAMAS. Antes se pintaba a lo que diera el monitor: en una
+// pantalla de 144 Hz el draft pedía 144 fotogramas por segundo, y eso se come
+// la tarjeta gráfica (y con ella el vídeo de Twitch y YouTube si están en otra
+// pestaña). Ahora se pinta como mucho 60 veces por segundo.
+// En OBS no cambia nada: la fuente de navegador ya pinta a 30 o 60.
+// Se puede bajar con ?fps=30 en el enlace (útil para comprobar en el navegador
+// sin tocar el archivo). Por defecto 60, que es lo que ya pinta OBS.
+const fpsPedidos = Number((/[?&]fps=(\d+)/.exec(location.search) || [])[1]) || 60;
+const FPS_MAXIMOS = Math.min(120, Math.max(5, fpsPedidos));
+const MS_ENTRE_FOTOGRAMAS = 1000 / FPS_MAXIMOS;
+// Margen de 2 ms: así en una pantalla de 60 Hz no se pierde ni un fotograma por
+// decimales (16,67 ms llega justo) y en una de 144 Hz se pinta uno de cada tres.
+const MARGEN_MS = 2;
+let ultimoPintado = -MS_ENTRE_FOTOGRAMAS;
+let fotogramasPintados = 0;   // solo para el cuadro de datos de abajo
+(function tick(ahora) {
   requestAnimationFrame(tick);
+  const t = typeof ahora === 'number' ? ahora : performance.now();
+  if (t - ultimoPintado < MS_ENTRE_FOTOGRAMAS - MARGEN_MS) return;   // no toca todavía
+  ultimoPintado = t;
+  fotogramasPintados += 1;
   const dt = clock.getDelta();
   mixerHolder.forEach(m => m.update(dt));
 
@@ -991,6 +1014,31 @@ const clock = new THREE.Clock();
   }
   renderer.render(scene, camera);
 })();
+// (r72) Con ?datos=1 en el enlace se enseña un cuadro con lo que cuesta el
+// draft: fotogramas por segundo de verdad, píxeles por punto, llamadas de
+// dibujo y triángulos. Sin ese ?datos no se ve nada y no cambia nada.
+if (/[?&]datos/.test(location.search)) {
+  const cuadro = document.createElement('div');
+  cuadro.style.cssText = 'position:fixed;top:8px;left:8px;z-index:9999;' +
+    'font:12px/1.45 ui-monospace,monospace;background:rgba(0,0,0,.75);color:#9fe0ff;' +
+    'padding:7px 10px;border-radius:7px;white-space:pre;pointer-events:none';
+  document.body.appendChild(cuadro);
+  let previos = fotogramasPintados;
+  let cuando = performance.now();
+  setInterval(() => {
+    const ahora = performance.now();
+    const fps = ((fotogramasPintados - previos) * 1000) / Math.max(1, ahora - cuando);
+    previos = fotogramasPintados;
+    cuando = ahora;
+    const info = renderer.info.render;
+    cuadro.textContent =
+      `FPS de pintado: ${fps.toFixed(1)}  (tope ${FPS_MAXIMOS})\n` +
+      `píxeles por punto: ${renderer.getPixelRatio().toFixed(2)}\n` +
+      `llamadas de dibujo: ${info.calls}\n` +
+      `triángulos: ${info.triangles}`;
+  }, 500);
+}
+
 addEventListener('resize', () => {
   camera.aspect = innerWidth/innerHeight; camera.updateProjectionMatrix();
   renderer.setSize(innerWidth, innerHeight);

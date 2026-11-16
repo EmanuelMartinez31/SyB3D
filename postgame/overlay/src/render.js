@@ -262,6 +262,43 @@ function fillSpells(card, player, catalog) {
 // Actualiza encabezado y equipos, genera las diez tarjetas y devuelve a main.js
 // las zonas .model3d donde models.js debe dibujar cada campeón.
 // ============================================================================
+// (r81) Patrocinadores del encabezado. Son los mismos dos del panel
+// (sponsorIzquierda / sponsorDerecha, lo que va a cada lado del logo del
+// torneo en el draft). Si el panel no manda ninguno, se usa el archivo de
+// respaldo de la carpeta patrocinadores, igual que hace el draft.
+const EXTENSIONES_PATROCINADOR = ['png', 'webp', 'jpg', 'jpeg', 'svg'];
+const respaldoPatrocinador = { izquierda: null, derecha: null };
+
+function buscarPatrocinadorDeRespaldo(imagen, nombre) {
+  if (respaldoPatrocinador[nombre] === undefined) return;
+  if (respaldoPatrocinador[nombre]) {
+    imagen.src = respaldoPatrocinador[nombre];
+    imagen.hidden = false;
+    return;
+  }
+  let intento = 0;
+  const probar = () => {
+    if (intento >= EXTENSIONES_PATROCINADOR.length) {
+      respaldoPatrocinador[nombre] = '';   // no hay archivo: no se vuelve a probar
+      return;
+    }
+    const url = `/patrocinadores/${nombre}.${EXTENSIONES_PATROCINADOR[intento]}`;
+    const sonda = new Image();
+    sonda.onload = () => {
+      if (imagen.src) return;
+      respaldoPatrocinador[nombre] = url;
+      imagen.src = url;
+      imagen.hidden = false;
+    };
+    sonda.onerror = () => {
+      intento += 1;
+      probar();
+    };
+    sonda.src = url;
+  };
+  probar();
+}
+
 export function renderPostgame(summary, catalog) {
   const stage = document.getElementById('stage');
   if (!summary?.teams?.blue || !summary?.teams?.red) {
@@ -288,6 +325,25 @@ export function renderPostgame(summary, catalog) {
     };
     if (marca) tournamentLogo.src = marca;
     else tournamentLogo.removeAttribute('src');
+  }
+  // Patrocinadores: los dos del panel, uno a cada lado del título.
+  for (const lado of ['left', 'right']) {
+    const imagen = document.getElementById(`sponsor-${lado}`);
+    if (!imagen) continue;
+    const nombre = lado === 'left' ? 'izquierda' : 'derecha';
+    const campo = lado === 'left' ? 'sponsorIzquierda' : 'sponsorDerecha';
+    const url = String(info?.[campo] || '').trim();
+    imagen.onerror = () => {
+      imagen.hidden = true;
+    };
+    if (url) {
+      if (imagen.getAttribute('src') !== url) imagen.src = url;
+      imagen.hidden = false;
+    } else {
+      imagen.removeAttribute('src');
+      imagen.hidden = true;
+      buscarPatrocinadorDeRespaldo(imagen, nombre);
+    }
   }
   document.getElementById('demo-badge').hidden = !summary.demo;
   // Logos pequeños del encabezado. Las marcas de agua se asignan en fillCard().

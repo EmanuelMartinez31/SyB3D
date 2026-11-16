@@ -111,12 +111,37 @@ body {
 /* Logo del torneo junto al nombre. Si el panel no manda logo, el hueco
    desaparece y el nombre queda igual que antes. */
 .tournament-logo {
-  height: 26px;
+  /* (r81) Del mismo tamaño que los patrocinadores: antes medía 26 px y se
+     quedaba diminuto al lado de ellos. */
+  height: 52px;
   width: auto;
-  max-width: 60px;
+  max-width: 340px;
   object-fit: contain;
   flex: none;
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.65));
+}
+/* (r81) Los dos patrocinadores del panel, a los lados del título. El hueco es
+   el mismo del draft (340 x 78 px de tope) y cada logo se queda en su tamaño
+   natural si cabe; si es más grande, se encoge sin deformarse. */
+.sponsor-logo {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  max-width: 340px;
+  max-height: 78px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.6));
+}
+.sponsor-logo[hidden] {
+  display: none;
+}
+#sponsor-left {
+  right: calc(50% + 340px);
+}
+#sponsor-right {
+  left: calc(50% + 340px);
 }
 .tournament-logo[hidden] {
   display: none;

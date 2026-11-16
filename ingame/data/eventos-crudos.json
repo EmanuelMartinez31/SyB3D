@@ -1,0 +1,43 @@
+[
+ {
+  "cuando": "2026-11-16T23:09:50.096Z",
+  "lista": "DamageDealtEvents",
+  "gameId": "LA1-1762406714",
+  "gameTime": 41.306595,
+  "evento": {
+   "GameTime": 41.11891,
+   "SourceNetworkId": 1073742002,
+   "TargetNetworkId": 1073742006,
+   "DamageDealt": 0,
+   "DamageType": 3,
+   "AttackSuccessFlag": 7,
+   "Param4": 0,
+   "SpellIdentifierELFHash": 0,
+   "TargetHealthBefore": 0
+  }
+ },
+ {
+  "cuando": "2026-11-16T23:09:59.610Z",
+  "lista": "DeathEvents",
+  "gameId": "LA1-1762406714",
+  "gameTime": 50.824066,
+  "evento": {
+   "GameTime": 50.74899,
+   "KillerNetworkId": 1073742361,
+   "VictimNetworkId": 1073742361,
+   "GoldByTeam": [
+    2500,
+    2500
+   ]
+  }
+ },
+ {
+  "cuando": "2026-11-16T23:10:40.982Z",
+  "lista": "HeroDieEvents",
+  "gameId": "LA1-1762406714",
+  "gameTime": 92.18931,
+  "evento": {
+   "AssisterNetworkIds_Length": 5
+  }
+ }
+]

@@ -857,3 +857,185 @@ img{display:block;max-width:100%}
   color:var(--text-muted);border:1px solid oklch(0.45 0.02 285 / .8);
 }
 .camara-der .camara-estado{align-self:flex-end}
+
+/* ------------------------------------------------------------------
+   Avisos de asesinatos
+   La banda arranca justo encima del marco del minimapa y ocupa su misma
+   columna, de x=1635 a 1937. La fila nueva entra abajo y las anteriores
+   suben, por eso el contenedor se ancla por abajo y crece hacia arriba.
+   Cada fila son dos mitades pegadas: el matador a la izquierda con el
+   color de su equipo y la víctima a la derecha con el suyo. Cuando lo que
+   muere es un monstruo, su mitad va en gris (no es de ningún equipo) y
+   cuando es una torre, la fila lleva solo ese recuadro.
+   ------------------------------------------------------------------ */
+.kill-feed{
+  position:absolute;z-index:18;
+  /* La columna es la del minimapa visible: así la banda no se sale del lienzo
+     por la derecha y los nombres no se cortan contra el borde. */
+  right:var(--minimap-right);
+  bottom:calc(var(--minimap-bottom) + var(--minimap-size) + var(--minimap-mask));
+  width:calc(var(--minimap-size) + 2 * var(--minimap-mask));
+  /* Este recuadro es el que recorta: su borde de abajo no se mueve nunca
+     (está pegado al minimapa), y dentro va la banda que se desliza. Así la
+     fila nueva sale desde abajo sin asomarse por encima del minimapa. */
+  overflow:hidden;
+  pointer-events:none;
+}
+.kill-feed-inner{display:flex;flex-direction:column;gap:4px;width:100%;will-change:transform}
+.kill-feed[hidden]{display:none}
+/* La fila está visible por su cuenta; los movimientos (entrar desde abajo,
+   subir al entrar otra, salir) se hacen por Web Animations desde render.js. */
+.kill-row{
+  display:flex;flex:0 0 auto;height:42px;overflow:hidden;
+  filter:drop-shadow(0 3px 7px oklch(0.08 0.02 285 / .55));
+}
+.kill-row.is-saliendo{opacity:0}
+.kill-half{display:flex;align-items:center;gap:6px;min-width:0;padding:0 8px 0 7px}
+.kill-half[data-team="1"]{
+  background:linear-gradient(90deg,oklch(0.45 0.145 255 / .98),oklch(0.23 0.055 255 / .98));
+  box-shadow:inset 3px 0 0 var(--team-blue);
+}
+.kill-half[data-team="2"]{
+  background:linear-gradient(90deg,oklch(0.43 0.160 22 / .98),oklch(0.23 0.065 22 / .98));
+  box-shadow:inset 3px 0 0 var(--team-red);
+}
+.kill-half[data-team="0"]{
+  background:linear-gradient(90deg,oklch(0.36 0.020 285 / .98),oklch(0.22 0.018 285 / .98));
+  box-shadow:inset 3px 0 0 oklch(0.62 0.020 285);
+}
+.kill-killer{flex:1 1 58%;padding-left:9px}
+.kill-victim{flex:1 1 42%;opacity:.94}
+/* Fila con un nombre largo: las dos mitades se reparten por lo que piden los
+   nombres, en vez de recortarlos. Solo pasa cuando hace falta. */
+.kill-row.ancha .kill-killer,
+.kill-row.ancha .kill-victim{flex:1 1 auto}
+/* Fila con un solo recuadro (torres): ocupa todo el ancho. */
+.kill-row.sola .kill-victim{flex:1 1 100%;opacity:1}
+.kill-icon-wrap{position:relative;flex:0 0 32px;width:32px;height:32px;display:grid;place-items:center;overflow:hidden;border:1px solid oklch(0.96 0.010 95 / .30)}
+.kill-icon{width:100%;height:100%;object-fit:cover}
+.kill-half[data-tipo="monstruo"] .kill-icon,
+.kill-half[data-tipo="torre"] .kill-icon{object-fit:contain;padding:2px}
+.kill-icon-wrap .asset-fallback{font:800 15px/1 var(--font-ui);color:var(--text)}
+.kill-name{
+  min-width:0;overflow:hidden;white-space:nowrap;
+  font:700 15px/1 var(--font-ui);letter-spacing:.03em;color:var(--text);
+  text-shadow:0 1px 4px oklch(0.08 0.02 285 / .75);
+}
+.kill-victim .kill-name{font-weight:600;color:var(--text-muted)}
+.kill-half[data-tipo="monstruo"] .kill-name,
+.kill-half[data-tipo="torre"] .kill-name{font-weight:700;color:var(--text)}
+
+/* ------------------------------------------------------------------
+   Cartel de asesinato múltiple
+   Icono arriba y texto abajo, centrado y debajo de la barra de arriba
+   (la barra mide 94 px). El cartel EMPIEZA en 118 px y todo lo que crece
+   o late lo hace hacia abajo (origen de la transformación arriba), así
+   que nunca se monta sobre la barra. Solo sale de triple en adelante.
+   ------------------------------------------------------------------ */
+.multikill{
+  position:absolute;z-index:19;left:50%;top:118px;
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  pointer-events:none;
+  transform:translateX(-50%) scale(.86);transform-origin:50% 0;
+  opacity:0;visibility:hidden;
+  transition:opacity 200ms ease,transform 400ms cubic-bezier(.16,.84,.28,1),visibility 0s linear 400ms;
+}
+.multikill[hidden]{display:none}
+.multikill.is-on{
+  opacity:1;visibility:visible;transform:translateX(-50%) scale(1);
+  transition:opacity 200ms ease,transform 420ms cubic-bezier(.16,.84,.28,1),visibility 0s;
+}
+.multikill-burst{
+  position:absolute;left:50%;top:0;width:720px;height:360px;
+  transform:translateX(-50%);z-index:-1;opacity:0;pointer-events:none;
+  transition:opacity 320ms ease;
+}
+.multikill-burst::before,
+.multikill-burst::after{content:'';position:absolute;inset:-14%}
+.multikill-burst::before{
+  background:repeating-conic-gradient(from 0deg at 50% 50%,
+    oklch(0.96 0.140 95 / .30) 0deg 1.5deg, transparent 1.5deg 8deg);
+  animation:multikill-rayos 17s linear infinite;
+}
+.multikill-burst::after{
+  background:repeating-conic-gradient(from 22deg at 50% 50%,
+    oklch(0.98 0.120 95 / .22) 0deg 4deg, transparent 4deg 30deg);
+  animation:multikill-rayos-inverso 26s linear infinite;
+}
+.multikill-ring{
+  position:relative;display:grid;place-items:center;flex:0 0 auto;
+  border-radius:50%;overflow:hidden;
+  background:oklch(0.14 0.02 285 / .92);border:3px solid var(--accent);
+  box-shadow:0 7px 20px oklch(0.06 0.02 285 / .65);
+}
+.multikill-icon{width:100%;height:100%;object-fit:cover}
+.multikill-title{
+  position:relative;
+  font:800 32px/1 var(--font-ui);letter-spacing:.15em;text-transform:uppercase;
+  color:var(--text);
+  text-shadow:0 0 16px oklch(0.05 0.02 285 / .95),0 4px 14px oklch(0.05 0.02 285 / .9);
+}
+.multikill[data-nivel="3"] .multikill-ring{width:86px;height:86px}
+.multikill[data-nivel="3"] .multikill-title{font-size:32px}
+.multikill[data-nivel="4"] .multikill-ring{width:104px;height:104px;border-width:4px}
+.multikill[data-nivel="4"] .multikill-title{font-size:42px;letter-spacing:.17em}
+
+/* Penta: el momento grande. Rayos girando detrás, aro dorado que respira,
+   letra en degradado de oro con brillo y todo latiendo hacia abajo. */
+.multikill[data-nivel="5"]{gap:14px}
+.multikill[data-nivel="5"]{--burst-x:50%}
+.multikill[data-nivel="5"] .multikill-burst{
+  opacity:1;width:860px;height:430px;
+  background:radial-gradient(46% 40% at 50% 22%,oklch(0.94 0.145 95 / .42),transparent 72%);
+  -webkit-mask-image:radial-gradient(56% 58% at 50% 22%,#000 5%,transparent 74%);
+  mask-image:radial-gradient(56% 58% at 50% 22%,#000 5%,transparent 74%);
+}
+.multikill[data-nivel="5"].is-on .multikill-burst{animation:multikill-destello 1000ms ease-out 1 both}
+.multikill[data-nivel="5"] .multikill-ring{
+  width:138px;height:138px;border-width:5px;
+  /* Todo el resplandor va desplazado hacia abajo: así el cartel nunca
+     se monta sobre la barra de arriba. */
+  box-shadow:
+    0 0 0 8px oklch(0.88 0.140 95 / .20),
+    0 16px 32px oklch(0.88 0.140 95 / .40),
+    0 9px 26px oklch(0.06 0.02 285 / .70);
+  animation:multikill-latido 1100ms ease-in-out infinite alternate;
+}
+.multikill[data-nivel="5"] .multikill-ring::before{
+  content:'';position:absolute;inset:0;border-radius:50%;
+  background:radial-gradient(60% 60% at 50% 30%,oklch(0.98 0.100 95 / .35),transparent 70%);
+  animation:multikill-brillo-aro 1500ms ease-in-out infinite alternate;
+}
+.multikill[data-nivel="5"] .multikill-title{
+  font-size:68px;letter-spacing:.08em;
+  background:linear-gradient(180deg,oklch(0.99 0.060 95),oklch(0.90 0.150 92) 46%,oklch(0.74 0.150 68));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 3px 0 oklch(0.44 0.090 60 / .95)) drop-shadow(0 0 24px oklch(0.88 0.140 95 / .55));
+  text-shadow:none;
+  animation:multikill-brillo 1400ms ease-in-out infinite alternate;
+}
+@keyframes multikill-latido{
+  from{transform:scale(1)}
+  to{transform:scale(1.045)}
+}
+@keyframes multikill-brillo{
+  from{filter:drop-shadow(0 3px 0 oklch(0.44 0.090 60 / .95)) drop-shadow(0 0 18px oklch(0.88 0.140 95 / .40))}
+  to{filter:drop-shadow(0 3px 0 oklch(0.44 0.090 60 / .95)) drop-shadow(0 0 34px oklch(0.90 0.150 95 / .80))}
+}
+@keyframes multikill-rayos{
+  from{transform:rotate(0deg)}
+  to{transform:rotate(360deg)}
+}
+@keyframes multikill-rayos-inverso{
+  from{transform:rotate(0deg)}
+  to{transform:rotate(-360deg)}
+}
+@keyframes multikill-brillo-aro{
+  from{opacity:.25}
+  to{opacity:.80}
+}
+@keyframes multikill-destello{
+  0%{filter:brightness(2.1) saturate(1.35)}
+  55%{filter:brightness(1.25) saturate(1.15)}
+  100%{filter:none}
+}

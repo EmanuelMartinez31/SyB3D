@@ -2110,6 +2110,351 @@ function renderCamaras(state) {
   camPareja = indice;
 }
 
+/* ------------------------------------------------------------------
+   AVISOS DE ASESINATOS
+   Los asesinatos ya llegan en el GameInfo (GameEvents.DeathEvents). El
+   servidor los separa, quita los repetidos y encadena los del mismo
+   campeón; aquí solo se pintan.
+
+   · Arriba del minimapa va una fila por asesinato, con el matador y la
+     víctima pegados y cada mitad con el color de su equipo. La fila nueva
+     entra abajo y las anteriores suben. Cada fila dura 4 s.
+   · El cartel central sale SOLO de triple en adelante (el doble no lleva
+     cartel). Aparece 2 s después del último asesinato de la cadena, para
+     dar tiempo a que encadene otro (de triple a cuádruple), y se queda
+     4 s. Si encadena mientras está en pantalla, crece en el sitio.
+   ------------------------------------------------------------------ */
+const KILL_FEED_VISIBLE_MS = 4000;
+const KILL_FEED_MAX_FILAS = 5;
+const MULTIKILL_ESPERA_MS = 2000;
+const MULTIKILL_VISIBLE_MS = 4000;
+const MULTIKILL_TITULOS = { 3: 'ASESINATO TRIPLE', 4: 'ASESINATO CUÁDRUPLE', 5: 'ASESINATO PENTA' };
+
+const killFeedVistos = new Set();
+// Al conectar con una partida ya empezada no se repiten los asesinatos viejos,
+// pero los de los últimos segundos SÍ tienen que salir: antes se perdía el
+// primero de todos.
+const KILL_FEED_ANTIGUEDAD_S = 3;
+let killFeedPrimerEstado = true;
+const multikill = { id: null, visible: false, mostrar: null, ocultar: null };
+
+function inicialDe(parte) {
+  const texto = String(nombreDeParte(parte) || '?').trim();
+  return (texto[0] || '?').toUpperCase();
+}
+
+// Nombre visible de un jugador: nunca el # ni lo que venga detrás.
+function sinEtiqueta(texto) {
+  const valor = String(texto ?? '');
+  const corte = valor.indexOf('#');
+  return (corte >= 0 ? valor.slice(0, corte) : valor).trim();
+}
+
+// Lo que se escribe en el recuadro: el nombre del jugador si es un campeón, y
+// el nombre del bicho si es un monstruo o «Torre» si es una torre.
+function nombreDeParte(parte) {
+  if (parte?.tipo === 'monstruo') return parte.nombre || 'Objetivo';
+  if (parte?.tipo === 'torre') return parte.nombre || 'Torre';
+  return sinEtiqueta(parte?.player) || parte?.champion || '—';
+}
+
+// El nombre se ajusta al hueco bajando el tamaño de letra: nunca se recorta
+// con puntos suspensivos.
+const KILL_NOMBRE_MAX_PX = 15;
+const KILL_NOMBRE_MIN_PX = 9.5;
+// Por debajo de este tamaño de letra no se baja si el reparto de la fila se
+// puede ensanchar: antes se ensancha la mitad del nombre que se achica la letra.
+const KILL_NOMBRE_COMODO_PX = 11.5;
+function ajustarNombreDeAsesinato(elemento, minimo = KILL_NOMBRE_MIN_PX, permitirSalto = false) {
+  elemento.style.fontSize = '';
+  elemento.style.letterSpacing = '';
+  elemento.style.whiteSpace = '';
+  elemento.style.lineHeight = '';
+  if (!elemento.clientWidth) return;
+  let tamano = KILL_NOMBRE_MAX_PX;
+  while (elemento.scrollWidth > elemento.clientWidth && tamano > minimo) {
+    tamano = Math.max(minimo, tamano - 0.5);
+    elemento.style.fontSize = `${tamano}px`;
+  }
+  if (elemento.scrollWidth > elemento.clientWidth) elemento.style.letterSpacing = '0';
+  // Si aun así no cabe (nombre muy largo), se parte en dos renglones dentro de
+  // la fila antes que recortarlo.
+  if (permitirSalto && elemento.scrollWidth > elemento.clientWidth) {
+    elemento.style.whiteSpace = 'normal';
+    elemento.style.lineHeight = '0.92';
+  }
+}
+
+// Ajuste de los dos nombres de una fila. Primero se respeta el reparto de
+// siempre (58 % / 42 %). Si con ese reparto hay que bajar demasiado la letra,
+// la fila se ensancha a lo que pidan los nombres, y solo entonces se achica.
+function ajustarNombresDeFila(fila) {
+  const nombres = [...fila.querySelectorAll('.kill-name')];
+  const desborda = () => nombres.some(nombre => nombre.scrollWidth > nombre.clientWidth + 1);
+  const ajustar = (minimo, salto) => {
+    nombres.forEach(nombre => ajustarNombreDeAsesinato(nombre, minimo, salto));
+  };
+  fila.classList.remove('ancha');
+  ajustar(KILL_NOMBRE_COMODO_PX, false);
+  if (!desborda()) return;
+  // Se ensancha el reparto de la fila antes de seguir achicando la letra.
+  fila.classList.add('ancha');
+  ajustar(KILL_NOMBRE_MIN_PX, false);
+  if (!desborda()) return;
+  // Último recurso, ya con la letra al mínimo: dos renglones antes que recortar.
+  ajustar(KILL_NOMBRE_MIN_PX, true);
+}
+
+// Icono de cada mitad: la cara del campeón, la torre, o el bicho que ha muerto
+// (con su variante si es un dragón elemental).
+function iconoDeParte(parte, catalog) {
+  if (parte?.tipo === 'torre') return './assets/objectives/tower.png';
+  if (parte?.tipo === 'monstruo') {
+    if (parte.kind === 'dragon') return dragonIconSource(parte.dragonType || null);
+    const hoja = SECONDARY_OBJECTIVE_ICONS[parte.kind];
+    return hoja ? `./assets/objectives/${hoja}.png` : null;
+  }
+  return parte?.champion && catalog ? catalog.championUrl(parte.champion) : null;
+}
+
+function mitadDeAsesinato(parte, rol, catalog) {
+  const tipo = parte?.tipo === 'monstruo' || parte?.tipo === 'torre' ? parte.tipo : 'campeon';
+  const mitad = document.createElement('span');
+  mitad.className = `kill-half kill-${rol}`;
+  mitad.dataset.tipo = tipo;
+  // El color de la mitad sale del equipo: el del campeón, el de la torre caída,
+  // y neutro para los monstruos, que no son de nadie.
+  mitad.dataset.team = tipo === 'monstruo' ? '0' : parte?.team === 2 ? '2' : parte?.team === 1 ? '1' : '0';
+
+  const icono = assetWithFallback('kill-icon-wrap', inicialDe(parte));
+  icono.img.className = 'kill-icon';
+  setImage(
+    icono.img,
+    iconoDeParte(parte, catalog),
+    nombreDeParte(parte),
+    icono.fallback,
+    inicialDe(parte)
+  );
+
+  const nombre = document.createElement('span');
+  nombre.className = 'kill-name';
+  setText(nombre, nombreDeParte(parte));
+
+  mitad.append(icono.wrap, nombre);
+  return mitad;
+}
+
+// Desplazamiento suave de la banda: cuando entra una fila, la banda crece
+// hacia arriba de golpe; en vez de eso se compensa ese salto y se suelta con
+// una transición, así las filas anteriores suben deslizándose.
+// Los movimientos se hacen con la Web Animations API: no dependen de reglas
+// de CSS, así que se mueven igual aunque algo las pise.
+const KILL_FEED_ENTRADA_MS = 380;
+const KILL_FEED_ENTRADA_PX = 34;
+const KILL_FEED_DESPLAZAMIENTO_MS = 380;
+const KILL_FEED_SALIDA_MS = 260;
+const KILL_FEED_CURVA = 'cubic-bezier(.16,.84,.28,1)';
+
+function animar(elemento, fotogramas, opciones) {
+  if (!elemento || typeof elemento.animate !== 'function') return null;
+  try {
+    return elemento.animate(fotogramas, opciones);
+  } catch (error) {
+    return null;
+  }
+}
+
+// Desplazamiento en curso de la banda (0 si está quieta).
+function desplazamientoVisual(elemento) {
+  if (typeof getComputedStyle !== 'function') return 0;
+  const valor = getComputedStyle(elemento).transform;
+  if (!valor || valor === 'none') return 0;
+  try {
+    const matriz = new DOMMatrixReadOnly(valor);
+    return Number.isFinite(matriz.m42) ? matriz.m42 : 0;
+  } catch (error) {
+    return 0;
+  }
+}
+
+function desplazarBanda(contenedor, banda, posicionPrevia) {
+  const desplazamiento = posicionPrevia - contenedor.offsetTop; // > 0: creció hacia arriba
+  // Si la banda venía moviéndose, se arranca desde donde está en pantalla.
+  const enCurso = typeof banda.getAnimations === 'function' ? banda.getAnimations() : [];
+  const extra = enCurso.length ? desplazamientoVisual(banda) : 0;
+  enCurso.forEach(animacion => animacion.cancel());
+  const partida = desplazamiento + extra;
+  if (!partida) return;
+  animar(
+    banda,
+    [{ transform: `translateY(${partida}px)` }, { transform: 'translateY(0px)' }],
+    { duration: KILL_FEED_DESPLAZAMIENTO_MS, easing: KILL_FEED_CURVA }
+  );
+}
+
+// La banda de filas va dentro del contenedor: el contenedor recorta siempre en
+// el mismo sitio (el borde de arriba del minimapa) y la banda es lo que se
+// desliza, así la fila nueva nunca se asoma por encima del minimapa.
+function bandaDeFilas(contenedor) {
+  let banda = contenedor.querySelector('.kill-feed-inner');
+  if (!banda) {
+    banda = document.createElement('div');
+    banda.className = 'kill-feed-inner';
+    contenedor.append(banda);
+  }
+  return banda;
+}
+
+function agregarFilaAsesinato(contenedor, asesinato, catalog) {
+  const banda = bandaDeFilas(contenedor);
+  // Dónde está la banda ahora, antes de meter la fila nueva.
+  const posicionPrevia = contenedor.offsetTop;
+
+  const fila = document.createElement('div');
+  fila.className = 'kill-row';
+  // Las torres no traen matador: la fila lleva solo el recuadro de la torre.
+  if (asesinato?.killer) {
+    fila.append(mitadDeAsesinato(asesinato.killer, 'killer', catalog));
+  } else {
+    fila.classList.add('sola');
+  }
+  fila.append(mitadDeAsesinato(asesinato?.victim, 'victim', catalog));
+  contenedor.hidden = false;
+  banda.append(fila);
+  const filas = banda.querySelectorAll('.kill-row');
+  if (filas.length > KILL_FEED_MAX_FILAS) filas[0].remove();
+
+  ajustarNombresDeFila(fila);
+  desplazarBanda(contenedor, banda, posicionPrevia);
+
+  // Entra desde abajo.
+  const entrada = animar(
+    fila,
+    [
+      { opacity: 0, transform: `translateY(${KILL_FEED_ENTRADA_PX}px)` },
+      { opacity: 1, transform: 'translateY(0px)' }
+    ],
+    { duration: KILL_FEED_ENTRADA_MS, easing: KILL_FEED_CURVA, fill: 'backwards' }
+  );
+  if (!entrada) fila.classList.add('is-on');
+
+  setTimeout(() => {
+    if (typeof fila.getAnimations === 'function') {
+      fila.getAnimations().forEach(animacion => animacion.cancel());
+    }
+    fila.classList.remove('is-on');
+    fila.classList.add('is-saliendo');
+    const salida = animar(
+      fila,
+      [
+        { opacity: 1, transform: 'translateY(0px)' },
+        { opacity: 0, transform: 'translateY(-9px)' }
+      ],
+      { duration: KILL_FEED_SALIDA_MS, easing: 'ease-in', fill: 'forwards' }
+    );
+    setTimeout(() => {
+      // Al quitarse la fila la banda encoge, y las demás bajarían de golpe:
+      // se compensa igual que al entrar, para que bajen deslizándose.
+      const posicionPrevia = contenedor.offsetTop;
+      fila.remove();
+      desplazarBanda(contenedor, banda, posicionPrevia);
+    }, salida ? KILL_FEED_SALIDA_MS : 0);
+  }, KILL_FEED_VISIBLE_MS);
+}
+
+function renderKillFeed(state, catalog) {
+  const contenedor = byId('kill-feed');
+  if (!contenedor) return;
+  const asesinatos = Array.isArray(state?.killFeed?.asesinatos) ? state.killFeed.asesinatos : [];
+  const banda = bandaDeFilas(contenedor);
+  if (!asesinatos.length) {
+    killFeedVistos.clear();
+    killFeedPrimerEstado = true;
+    if (typeof banda.getAnimations === 'function') {
+      banda.getAnimations().forEach(animacion => animacion.cancel());
+    }
+    banda.replaceChildren();
+    banda.style.transition = '';
+    banda.style.transform = '';
+    contenedor.hidden = true;
+    return;
+  }
+  const gameTime = finite(state?.meta?.gameTime) ? state.meta.gameTime : null;
+  let nueva = false;
+  for (const asesinato of asesinatos) {
+    if (!asesinato?.id || killFeedVistos.has(asesinato.id)) continue;
+    killFeedVistos.add(asesinato.id);
+    const antiguo = killFeedPrimerEstado && gameTime !== null && finite(asesinato.gameTime)
+      && gameTime - asesinato.gameTime > KILL_FEED_ANTIGUEDAD_S;
+    if (antiguo) continue;
+    agregarFilaAsesinato(contenedor, asesinato, catalog);
+    nueva = true;
+  }
+  killFeedPrimerEstado = false;
+  if (nueva) contenedor.hidden = false;
+}
+
+function pintarMultikill(cadena, catalog) {
+  const elemento = byId('multikill');
+  if (!elemento) return;
+  const nivel = Math.min(Math.max(Math.round(cadena.nivel), 3), 5);
+  elemento.dataset.nivel = String(nivel);
+  setText(byId('multikill-title'), MULTIKILL_TITULOS[nivel] || '');
+
+  const campeon = cadena?.killer?.champion || null;
+  setImage(
+    byId('multikill-icon'),
+    campeon && catalog ? catalog.championUrl(campeon) : null,
+    campeon ? (catalog.championName(campeon) || campeon) : '',
+    null,
+    ''
+  );
+}
+
+function mostrarMultikill() {
+  const elemento = byId('multikill');
+  if (!elemento) return;
+  elemento.hidden = false;
+  requestAnimationFrame(() => elemento.classList.add('is-on'));
+  multikill.visible = true;
+}
+
+function ocultarMultikill() {
+  const elemento = byId('multikill');
+  clearTimeout(multikill.mostrar);
+  clearTimeout(multikill.ocultar);
+  multikill.visible = false;
+  if (!elemento) return;
+  elemento.classList.remove('is-on');
+  setTimeout(() => { if (!multikill.visible) elemento.hidden = true; }, 340);
+}
+
+function renderMultikill(state, catalog) {
+  const cadena = state?.killFeed?.cadena || null;
+  const nivel = finite(cadena?.nivel) ? cadena.nivel : 0;
+  if (nivel < 3 || !cadena?.id) {
+    multikill.id = null;
+    clearTimeout(multikill.mostrar);
+    if (multikill.visible) ocultarMultikill();
+    return;
+  }
+  if (cadena.id === multikill.id) return;   // misma cadena: no se toca
+  multikill.id = cadena.id;
+  pintarMultikill(cadena, catalog);
+
+  clearTimeout(multikill.mostrar);
+  clearTimeout(multikill.ocultar);
+  if (multikill.visible) {
+    // Ya estaba en pantalla: se actualiza en el sitio y se le reinician los 4 s.
+    multikill.ocultar = setTimeout(ocultarMultikill, MULTIKILL_VISIBLE_MS);
+    return;
+  }
+  multikill.mostrar = setTimeout(() => {
+    mostrarMultikill();
+    multikill.ocultar = setTimeout(ocultarMultikill, MULTIKILL_VISIBLE_MS);
+  }, MULTIKILL_ESPERA_MS);
+}
+
 export function renderIngameState(state, catalog) {
   if (!state || typeof state !== 'object') return;
   if (cardDebug) renderCardDebug(state);
@@ -2138,4 +2483,6 @@ export function renderIngameState(state, catalog) {
   const bluePlayers = renderTeamPlayers(1, blueContainer);
   const redPlayers = renderTeamPlayers(2, redContainer);
   renderGoldMatchups(bluePlayers, redPlayers);
+  renderKillFeed(state, catalog);
+  renderMultikill(state, catalog);
 }

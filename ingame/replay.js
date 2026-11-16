@@ -95,6 +95,12 @@ const POR_DEFECTO = {
   // crecer no se apaga el ojito). 0 milisegundos = de golpe, como antes.
   transicion: { activa: true, milisegundos: 340 },
 
+  // El audio del juego se silencia mientras corre la repeticion (el juego esta
+  // pequeno detras del video) y se devuelve en cuanto vuelve a hacerse grande.
+  // Si "audioJuego" va vacio, se buscan solas las fuentes que llevan ese audio.
+  silenciarJuego: true,
+  audioJuego: [],
+
   // Modo antiguo, solo si todavia no has aprendido los acomodos: lo que se
   // hace pequeno a la esquina mientras corre la repeticion.
   encoger: ['Juego'],
@@ -556,6 +562,9 @@ function crearReplay({ app, log = () => {} } = {}) {
     // que se le pasa a la fuente VLC de HIGHLIGHTS.
     highlights: [],        // [{ archivo, segundos, cuando }]
     ojoEnganchado: false,  // ya se esta escuchando el aviso del ojito
+    // Fuentes con audio que se silenciaron al encoger el juego, con el estado
+    // que tenian antes: nombre -> estaba ya en silencio.
+    silenciados: new Map(),
     nombresDeItem: new Map()   // "Escena|id" -> nombre de la fuente
   };
   estado.highlights = leerHighlights();
@@ -687,6 +696,91 @@ function crearReplay({ app, log = () => {} } = {}) {
     await reaccionarAlOjo(cliente, visible);
   }
 
+  // ----------------------------------------------------------------------
+  // Silencio del juego durante la repeticion
+  // ----------------------------------------------------------------------
+  // Con el juego pequeno detras del video, su audio se apaga para que solo se
+  // oiga la repeticion. Al volver a grande se devuelve tal como estaba.
+  //
+  // Que fuentes se silencian: si en el config esta "audioJuego" con nombres, se
+  // usan esos. Si no, se buscan en OBS las que llevan el audio del juego (la
+  // que se llama igual que el juego, las de "audio de aplicacion" y el audio de
+  // escritorio) y se descartan las que no tienen sonido.
+  async function entradasDeAudio(cliente) {
+    const config = estado.config;
+    const pedidas = Array.isArray(config.audioJuego)
+      ? config.audioJuego.filter((nombre) => typeof nombre === 'string' && nombre.trim())
+      : (typeof config.audioJuego === 'string' && config.audioJuego.trim() ? [config.audioJuego] : []);
+    if (pedidas.length) return pedidas;
+    try {
+      const { inputs } = await cliente.enviar('GetInputList', {});
+      const lista = Array.isArray(inputs) ? inputs : [];
+      const juego = String(nombreDelJuego() || '').toLowerCase();
+      const conNombreDelJuego = lista.filter((i) => juego && String(i.inputName || '').toLowerCase() === juego);
+      const deAplicacion = lista.filter((i) => String(i.inputKind || '') === 'wasapi_process_output_capture');
+      const deEscritorio = lista.filter((i) => String(i.inputKind || '') === 'wasapi_output_capture');
+      const nombres = [];
+      for (const entrada of [...conNombreDelJuego, ...deAplicacion, ...deEscritorio]) {
+        // Solo se queda con las que de verdad tienen sonido: si no, OBS da error.
+        try {
+          await cliente.enviar('GetInputMute', { inputName: entrada.inputName });
+          nombres.push(entrada.inputName);
+        } catch { /* esa fuente no lleva audio */ }
+      }
+      return [...new Set(nombres)];
+    } catch (error) {
+      log(`[replay] Aviso: no se pudo mirar el audio de OBS: ${error.message}`);
+      return [];
+    }
+  }
+
+  async function silenciarJuego(cliente, silenciar) {
+    const config = estado.config;
+    if (config.silenciarJuego === false) return;   // se puede dejar apagado en el config
+    try {
+      if (silenciar) {
+        if (estado.silenciados.size) return;        // ya estaba silenciado
+        const nombres = await entradasDeAudio(cliente);
+        if (!nombres.length) {
+          log('[replay] Aviso: no encontre ninguna fuente con el audio del juego para silenciarla. ' +
+            'Pon su nombre en "audioJuego" de ingame/cine/replay.json');
+          return;
+        }
+        for (const nombre of nombres) {
+          try {
+            const { inputMuted } = await cliente.enviar('GetInputMute', { inputName: nombre });
+            estado.silenciados.set(nombre, Boolean(inputMuted));
+            if (!inputMuted) {
+              await cliente.enviar('SetInputMute', { inputName: nombre, inputMuted: true });
+            }
+          } catch (error) {
+            log(`[replay] Aviso: no se pudo silenciar "${nombre}": ${error.message}`);
+          }
+        }
+        if (estado.silenciados.size) {
+          log(`[replay] Audio del juego silenciado (${[...estado.silenciados.keys()].join(', ')})`);
+        }
+        return;
+      }
+
+      if (!estado.silenciados.size) return;
+      const antes = [...estado.silenciados.entries()];
+      estado.silenciados.clear();
+      for (const [nombre, estabaSilenciada] of antes) {
+        // Si ya estaba en silencio antes de la repeticion, se deja como estaba.
+        if (estabaSilenciada) continue;
+        try {
+          await cliente.enviar('SetInputMute', { inputName: nombre, inputMuted: false });
+        } catch (error) {
+          log(`[replay] Aviso: no se pudo devolver el audio de "${nombre}": ${error.message}`);
+        }
+      }
+      log(`[replay] Audio del juego devuelto (${antes.map(([nombre]) => nombre).join(', ')})`);
+    } catch (error) {
+      log(`[replay] Aviso: silencio del juego: ${error.message}`);
+    }
+  }
+
   // Pone el acomodo que toca segun el ojito y arranca o reinicia la repeticion.
   //
   //   ojito puesto  -> acomodo "replay" y el video empieza SIEMPRE desde el
@@ -726,17 +820,31 @@ function crearReplay({ app, log = () => {} } = {}) {
       // trabajo, y solo cuando el video ya va se encoge.
       if (estado.armado) await arrancar(cliente);   // desde el recorte, no donde iba
       void aplicarCuadroJuego(cliente, {
-        // Se apaga el HUD en el mismo fotograma en que empieza a encoger.
-        alEmpezar: () => cambiarVisibilidad(cliente, ocultar, false)
+        // Se apaga el HUD y se silencia el juego en el mismo fotograma en que
+        // empieza a encoger.
+        alEmpezar: () => {
+          void silenciarJuego(cliente, true);
+          return cambiarVisibilidad(cliente, ocultar, false);
+        }
       }).catch((error) => log(`[replay] Aviso: ${error.message}`));
-      if (!juego) await cambiarVisibilidad(cliente, ocultar, false);   // modo antiguo sin juego
+      if (!juego) {
+        // modo antiguo sin juego
+        await cambiarVisibilidad(cliente, ocultar, false);
+        await silenciarJuego(cliente, true);
+      }
     } else {
       // Y al volver, el HUD reaparece en el mismo fotograma en que el juego
       // empieza a crecer (no al final, para no ver el hueco).
       await devolverJuegoConTransicion(cliente, {
-        alEmpezar: () => cambiarVisibilidad(cliente, ocultar, true)
+        // Y al volver, el audio del juego se devuelve en el mismo fotograma en
+        // que empieza a crecer.
+        alEmpezar: () => {
+          void silenciarJuego(cliente, false);
+          return cambiarVisibilidad(cliente, ocultar, true);
+        }
       });
       if (!juego) await cambiarVisibilidad(cliente, ocultar, true);
+      await silenciarJuego(cliente, false);
     }
     if (visible) {
       // (el arranque ya se hizo arriba, antes de encoger el juego)
@@ -2088,7 +2196,19 @@ function crearReplay({ app, log = () => {} } = {}) {
       clearTimeout(estado.temporizador);
       estado.temporizador = null;
     }
-    if (!estado.corriendo) return { estado: 'no habia nada corriendo' };
+    if (!estado.corriendo) {
+      // Red de seguridad: si por lo que sea el juego quedo silenciado, se
+      // devuelve el audio igual.
+      if (estado.silenciados.size) {
+        try {
+          await silenciarJuego(await conectar(), false);
+        } catch (error) {
+          estado.silenciados.clear();
+          log(`[replay] Aviso: no se pudo devolver el audio: ${error.message}`);
+        }
+      }
+      return { estado: 'no habia nada corriendo' };
+    }
     let cliente;
     try {
       cliente = await conectar();
@@ -2122,9 +2242,14 @@ function crearReplay({ app, log = () => {} } = {}) {
     }
     if (juego) {
       await devolverJuegoConTransicion(cliente, {
-        alEmpezar: () => cambiarVisibilidad(cliente, ocultarAlFinal, true)
+        alEmpezar: () => {
+          void silenciarJuego(cliente, false);
+          return cambiarVisibilidad(cliente, ocultarAlFinal, true);
+        }
       });
     }
+    // Si no habia juego que devolver, el audio se devuelve igual.
+    await silenciarJuego(cliente, false);
     // 2) Y se comprueba en OBS que de verdad ya esta en su sitio antes de
     //    apagar nada.
     const confirmado = await esperarAcomodo(cliente, 'partida',

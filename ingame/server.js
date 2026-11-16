@@ -1339,6 +1339,340 @@ const goldSeriesTimer = setInterval(async () => {
 }, 3000);
 goldSeriesTimer.unref();
 
+// ============================================================================
+// ASESINATOS ENTRE CAMPEONES Y ASESINATOS MÚLTIPLES
+// El GameInfo ya trae los asesinatos en GameEvents.DeathEvents, con el matador,
+// la víctima y el segundo de partida. Aquí solo se separan los que son entre
+// campeones (los objetivos y los súbditos también salen en esa lista), se
+// descartan los ya contados y se encadenan para saber si van dos, tres,
+// cuatro o cinco seguidos.
+// Márgenes del propio juego: 10 s entre asesinato y asesinato del mismo
+// campeón, y 30 s del cuádruple al penta.
+// ============================================================================
+const MARGEN_CADENA_S = 10;
+const MARGEN_PENTA_S = 30;
+const ASESINATOS_QUE_SE_MANDAN = 8;
+// Lo que se escribe cuando quien mata o quien muere no es un campeón.
+const NOMBRES_DE_OBJETIVO = {
+  dragon: 'Dragón',
+  baron: 'Barón',
+  riftHerald: 'Heraldo',
+  grubs: 'Vacularbas',
+  atakhan: 'Atakhan'
+};
+
+// Cuando llega una muerte que no se puede emparejar con nadie (el juego no
+// dice quién la causó), se apunta el evento tal cual en este archivo para
+// poder mirarlo después en vez de adivinar.
+const ASESINATOS_CRUDOS_PATH = path.join(DATA_DIR, 'asesinatos-crudos.json');
+// Muestra del primer evento de cada lista de GameEvents, una vez por partida.
+// Es el diagnóstico para saber qué manda el juego en cada caso (por ejemplo,
+// cómo viene el primer asesinato de la partida).
+const EVENTOS_CRUDOS_PATH = path.join(DATA_DIR, 'eventos-crudos.json');
+let eventosCrudos = [];
+let eventosCrudosTimer = null;
+function anotarEventoCrudo(lista, evento, gameId, gameTime) {
+  eventosCrudos.push({ cuando: new Date().toISOString(), lista, gameId, gameTime, evento });
+  if (eventosCrudos.length > 60) eventosCrudos.shift();
+  console.log('[eventos] muestra de ' + lista + ': ' + JSON.stringify(evento));
+  clearTimeout(eventosCrudosTimer);
+  eventosCrudosTimer = setTimeout(() => {
+    fs.promises.writeFile(EVENTOS_CRUDOS_PATH, JSON.stringify(eventosCrudos, null, 1)).catch(() => {});
+  }, 400);
+}
+let asesinatosCrudos = [];
+let asesinatosCrudosTimer = null;
+function guardarAsesinatoCrudo(entrada) {
+  asesinatosCrudos.push(entrada);
+  if (asesinatosCrudos.length > 40) asesinatosCrudos.shift();
+  clearTimeout(asesinatosCrudosTimer);
+  asesinatosCrudosTimer = setTimeout(() => {
+    fs.promises.writeFile(ASESINATOS_CRUDOS_PATH, JSON.stringify(asesinatosCrudos, null, 1))
+      .catch(() => {});
+  }, 400);
+}
+
+let killTracking = {
+  gameId: null,
+  previousGameTime: null,
+  vistos: new Map(),
+  // Torres vistas (id → equipo) y monstruos vistos (id → nombre), para poder
+  // nombrar al que ejecuta: una torre o un bicho que mata a un campeón.
+  torres: new Map(),
+  monstruos: new Map(),
+  listas: new Set(),
+  asesinatos: [],
+  cadena: null,
+  secuencia: 0
+};
+
+function resetKillTracking(gameId) {
+  killTracking = {
+    gameId,
+    previousGameTime: null,
+    vistos: new Map(),
+    torres: new Map(),
+    monstruos: new Map(),
+    listas: new Set(),
+    asesinatos: [],
+    cadena: null,
+    secuencia: 0
+  };
+}
+
+// Listas de GameEvents que también pueden traer una muerte de campeón. El
+// primer asesinato de la partida llega en FirstBloodEvents, así que hay que
+// mirarlas además de DeathEvents: si no, la primera kill se queda sin cartel.
+const LISTAS_DE_MUERTE_EXTRA = ['FirstBloodEvents', 'HeroDieEvents'];
+
+// Lectura defensiva para esas listas: se prueban los nombres de campo que se
+// usan en este tipo de eventos. Si no está ninguno, no se inventa nada.
+function idsDeMuerte(evento) {
+  const num = valor => (typeof valor === 'number' && Number.isFinite(valor) ? valor : null);
+  return {
+    killer: num(evento?.KillerNetworkId) ?? num(evento?.KillerId) ?? num(evento?.SourceNetworkId),
+    victim: num(evento?.VictimNetworkId) ?? num(evento?.VictimId) ?? num(evento?.TargetNetworkId),
+    at: num(evento?.GameTime) ?? num(evento?.EventTime)
+  };
+}
+
+// Nombre del monstruo tal como lo da el juego, sin prefijos ni sufijos raros.
+// Se descartan los marcadores de campamento, que no son bichos.
+function nombreDeMonstruo(unidad) {
+  const identificador = String(unidad?.Common?.Identifier || '');
+  const bruto = String(unidad?.Info?.Name || '');
+  if (/RespawnMarker|TestCube|Sigil/i.test(identificador) || /RespawnMarker|TestCube|Sigil/i.test(bruto)) return null;
+  return bruto.replace(/^Minion_/, '').replace(/[\d.]+$/, '').trim() || null;
+}
+
+// Quién ha matado cuando el matador NO es un campeón: una torre o un monstruo.
+// Es lo que se llama ejecución.
+function ejecutorDe(killerId) {
+  const torre = killTracking.torres.get(killerId);
+  if (torre) return { tipo: 'torre', nombre: 'Torre', team: torre.team };
+  const kind = objectiveTracking.objectiveKinds.get(killerId);
+  if (kind) {
+    return {
+      tipo: 'monstruo',
+      kind,
+      nombre: NOMBRES_DE_OBJETIVO[kind] || null,
+      dragonType: objectiveTracking.dragonTypes.get(killerId) || null,
+      team: null
+    };
+  }
+  const nombre = killTracking.monstruos.get(killerId);
+  if (nombre) return { tipo: 'monstruo', kind: null, nombre, dragonType: null, team: null };
+  return null;
+}
+
+function updateKillFeed(game, players, turrets) {
+  const gameId = game.GameId ?? null;
+  const gameTime = finiteNumber(game.GameTime);
+  const newGame = gameId !== null && killTracking.gameId !== null && gameId !== killTracking.gameId;
+  const timeReset = gameTime !== null && killTracking.previousGameTime !== null
+    && gameTime + 5 < killTracking.previousGameTime;
+  if (newGame || timeReset || (gameId !== null && killTracking.gameId === null)) {
+    resetKillTracking(gameId);
+  }
+  killTracking.previousGameTime = gameTime;
+
+  const porId = new Map();
+  for (const player of players || []) {
+    const id = finiteNumber(player?.id);
+    if (id !== null) porId.set(id, player);
+  }
+
+  // Torres y monstruos que hay ahora, para reconocerlos si matan.
+  for (const turret of turrets || []) {
+    const id = finiteNumber(turret?.id);
+    if (id !== null) killTracking.torres.set(id, { team: finiteNumber(turret?.team) });
+  }
+  for (const unidad of game.NeutralMinions || []) {
+    const id = finiteNumber(unidad?.Info?.NetworkId);
+    if (id === null) continue;
+    const nombre = nombreDeMonstruo(unidad);
+    if (nombre) killTracking.monstruos.set(id, nombre);
+  }
+
+  const resumenDeCampeon = player => ({
+    id: finiteNumber(player?.id),
+    team: finiteNumber(player?.team),
+    champion: player?.champion ?? null,
+    player: player?.player ?? null
+  });
+
+  const anotar = fila => {
+    killTracking.asesinatos.push(fila);
+    if (killTracking.asesinatos.length > ASESINATOS_QUE_SE_MANDAN) killTracking.asesinatos.shift();
+  };
+
+  // Una misma muerte puede llegar repetida en varios GameInfo con el instante
+  // redondeado de otra forma. Se compara la pareja matador/víctima y se
+  // descarta si es la misma de hace menos de dos segundos: así no se duplica,
+  // pero dos muertes distintas (aunque sean en el mismo instante) sí salen.
+  const esRepetida = (clave, at) => {
+    const antes = killTracking.vistos.get(clave);
+    const ahora = at ?? gameTime ?? 0;
+    if (antes !== undefined && Math.abs(ahora - antes) <= 2) return true;
+    killTracking.vistos.set(clave, ahora);
+    return false;
+  };
+
+  // Fila de asesinato entre campeones, con su cadena de multikill.
+  const registrarAsesinato = (killerId, victimId, at, origen) => {
+    const killer = killerId === null ? null : porId.get(killerId);
+    const victima = victimId === null ? null : porId.get(victimId);
+    if (!killer || !victima || killerId === victimId) return false;
+    if (esRepetida(`campeon|${killerId}|${victimId}`, at)) return false;
+    killTracking.secuencia += 1;
+    const base = `${String(gameId ?? 'partida')}:${killTracking.secuencia}`;
+    anotar({
+      id: base,
+      gameTime: at,
+      killer: resumenDeCampeon(killer),
+      victim: { tipo: 'campeon', ...resumenDeCampeon(victima) }
+    });
+
+    const cadena = killTracking.cadena;
+    let nivel = 1;
+    if (cadena && cadena.killerId === killerId && at !== null && cadena.lastTime !== null && at >= cadena.lastTime) {
+      if (cadena.nivel >= 5) {
+        nivel = 1; // después del penta, la siguiente muerte empieza otra cadena
+      } else {
+        const margen = cadena.nivel >= 4 ? MARGEN_PENTA_S : MARGEN_CADENA_S;
+        if (at - cadena.lastTime <= margen) nivel = cadena.nivel + 1;
+      }
+    }
+    killTracking.cadena = {
+      id: `${base}:${nivel}`,
+      killerId,
+      nivel,
+      gameTime: at,
+      lastTime: at,
+      killer: resumenDeCampeon(killer)
+    };
+    console.log(`[asesinato] ${killer.player} -> ${victima.player} (${origen}, ${at ?? '?'} s) nivel ${nivel}`);
+    return true;
+  };
+
+  // Muestra de cada lista de eventos, una vez por partida.
+  for (const [lista, contenido] of Object.entries(game.GameEvents || {})) {
+    if (!Array.isArray(contenido) || !contenido.length) continue;
+    if (killTracking.listas.has(lista)) continue;
+    killTracking.listas.add(lista);
+    anotarEventoCrudo(lista, contenido[0], gameId, gameTime);
+  }
+
+  for (const event of game.GameEvents?.DeathEvents || []) {
+    const killerId = finiteNumber(event?.KillerNetworkId);
+    const victimId = finiteNumber(event?.VictimNetworkId);
+    const at = finiteNumber(event?.GameTime) ?? gameTime;
+    if (victimId === null) continue;
+    const killer = killerId === null ? null : porId.get(killerId);
+    const victimaCampeon = porId.get(victimId);
+    const tipoObjetivo = objectiveTracking.objectiveKinds.get(victimId) || null;
+
+    // 1) Asesinato entre campeones: fila con los dos y cadena de multikill.
+    if (victimaCampeon && killer && killerId !== victimId) {
+      registrarAsesinato(killerId, victimId, at, 'DeathEvents');
+      continue;
+    }
+
+    // 2) Ejecución: un campeón muere a manos de una torre o de un monstruo.
+    if (victimaCampeon && killerId !== null) {
+      const ejecutor = ejecutorDe(killerId);
+      if (!ejecutor) {
+        // No se sabe quién lo mató: la fila sale solo con el campeón muerto,
+        // para que la muerte no se pierda, y se guarda el evento crudo.
+        if (esRepetida(`desconocido|${killerId}|${victimId}`, at)) continue;
+        killTracking.secuencia += 1;
+        anotar({
+          id: `${String(gameId ?? 'partida')}:${killTracking.secuencia}`,
+          gameTime: at,
+          killer: null,
+          victim: { tipo: 'campeon', ...resumenDeCampeon(victimaCampeon) }
+        });
+        guardarAsesinatoCrudo({
+          cuando: new Date().toISOString(),
+          motivo: 'matador no reconocido',
+          gameId,
+          gameTime: at,
+          evento: event
+        });
+        console.log('[asesinato] ' + victimaCampeon.player + ' murio y no se reconoce al matador: ' + JSON.stringify(event));
+        continue;
+      }
+      if (esRepetida(`ejecucion|${killerId}|${victimId}`, at)) continue;
+      killTracking.secuencia += 1;
+      anotar({
+        id: `${String(gameId ?? 'partida')}:${killTracking.secuencia}`,
+        gameTime: at,
+        killer: ejecutor,
+        victim: { tipo: 'campeon', ...resumenDeCampeon(victimaCampeon) }
+      });
+      console.log(`[asesinato] ${ejecutor.nombre || ejecutor.tipo} -> ${victimaCampeon.player} (ejecucion)`);
+      continue;
+    }
+
+    // 3) Campeón muerto sin matador en el evento (ejecutado sin dueño):
+    //    también sale, solo con el campeón, y se guarda el evento crudo.
+    if (victimaCampeon) {
+      if (esRepetida(`sin-matador|${victimId}`, at)) continue;
+      killTracking.secuencia += 1;
+      anotar({
+        id: `${String(gameId ?? 'partida')}:${killTracking.secuencia}`,
+        gameTime: at,
+        killer: null,
+        victim: { tipo: 'campeon', ...resumenDeCampeon(victimaCampeon) }
+      });
+      guardarAsesinatoCrudo({
+        cuando: new Date().toISOString(),
+        motivo: 'muerte sin matador',
+        gameId,
+        gameTime: at,
+        evento: event
+      });
+      console.log('[asesinato] ' + victimaCampeon.player + ' murio sin matador en el evento: ' + JSON.stringify(event));
+      continue;
+    }
+
+    // 4) Monstruo muerto a manos de un campeón: fila con el bicho y su nombre.
+    if (tipoObjetivo && killer) {
+      if (esRepetida(`objetivo|${killerId}|${victimId}`, at)) continue;
+      killTracking.secuencia += 1;
+      anotar({
+        id: `${String(gameId ?? 'partida')}:${killTracking.secuencia}`,
+        gameTime: at,
+        killer: resumenDeCampeon(killer),
+        victim: {
+          tipo: 'monstruo',
+          kind: tipoObjetivo,
+          nombre: NOMBRES_DE_OBJETIVO[tipoObjetivo] || null,
+          dragonType: objectiveTracking.dragonTypes.get(victimId) || null
+        }
+      });
+    }
+  }
+
+  // Además de DeathEvents, se miran las listas del primer asesinato y de la
+  // muerte de campeón por si ese asesinato no viene en DeathEvents. Si viene
+  // en las dos, la comprobación de repetidos deja una sola fila.
+  for (const lista of LISTAS_DE_MUERTE_EXTRA) {
+    for (const event of game.GameEvents?.[lista] || []) {
+      const { killer, victim, at } = idsDeMuerte(event);
+      const cuando = at ?? gameTime;
+      if (registrarAsesinato(killer, victim, cuando, lista)) continue;
+    }
+  }
+
+  return {
+    asesinatos: killTracking.asesinatos,
+    // Lo que el HUD necesita para el cartel central: el nivel de la cadena y
+    // quién la lleva. El HUD solo pinta a partir de triple.
+    cadena: killTracking.cadena
+  };
+}
+
 function buildIngameState(game, meta) {
   const gameTime = finiteNumber(game.GameTime);
   const gameId = game.GameId ?? null;
@@ -1352,6 +1686,7 @@ function buildIngameState(game, meta) {
   // Se resuelve después de tener a los jugadores: el buff pertenece al equipo
   // que mató el objetivo, así que se valida por equipo y luego por campeón.
   const buffsDeObjetivo = resolveObjectiveBuffs(players, gameTime);
+  const killFeed = updateKillFeed(game, players, turrets);
 
   const teams = [1, 2].map((team, index) => {
     const members = players.filter(player => player.team === team);
@@ -1401,6 +1736,7 @@ function buildIngameState(game, meta) {
     },
     structures: { turrets, inhibitors, nexus },
     wards: compactWards(game),
+    killFeed,
     eventCounts: eventCounts(game.GameEvents)
   };
 }
@@ -1784,6 +2120,12 @@ const diskTimer = setInterval(async () => {
 diskTimer.unref();
 
 app.use(express.json({ limit: '8mb' }));
+// Deja rastro en la ventana negra de cuándo el HUD pide sus archivos: sirve
+// para saber si la escena está corriendo la versión nueva o una vieja.
+app.use('/overlay', (req, res, next) => {
+  if (/^\/src\/[^/]+\.(js|css)$/.test(req.path)) console.log('[hud] ' + req.originalUrl);
+  next();
+});
 app.use('/overlay', express.static(OVERLAY_DIR));
 
 // Cámaras de los jugadores: los 10 enlaces de VDO.Ninja (5 por equipo), uno por
@@ -1854,6 +2196,19 @@ app.post('/sensor', (req, res) => {
     );
   }
   res.sendStatus(204);
+});
+
+// Diagnóstico de asesinatos: lo que el HUD tiene en la banda, la cadena y las
+// muestras crudas de los eventos del juego. Se abre desde el navegador en
+// http://localhost:3000/asesinatos
+app.get('/asesinatos', (req, res) => {
+  res.json({
+    gameId: killTracking.gameId,
+    asesinatos: killTracking.asesinatos,
+    cadena: killTracking.cadena,
+    eventosCrudos,
+    asesinatosCrudos
+  });
 });
 
 app.get('/status', (req, res) => {

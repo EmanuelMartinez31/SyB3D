@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>SyB Ingame Overlay</title>
   <link rel="icon" href="data:,">
-  <link rel="stylesheet" href="./src/styles.css">
+  <link rel="stylesheet" href="./src/styles.css?v=79">
   <script type="importmap">
     {
       "imports": {
@@ -205,11 +205,22 @@
         </div>
       </section>
 
+      <!-- Avisos de asesinatos. Las filas van encima del marco del minimapa,
+           en su misma columna: cada asesinato añade una fila nueva abajo y las
+           anteriores suben. El cartel central solo sale de triple en adelante. -->
+      <section id="kill-feed" class="kill-feed" aria-label="Asesinatos" hidden></section>
+
+      <aside id="multikill" class="multikill" aria-label="Asesinato múltiple" hidden>
+        <span class="multikill-burst" aria-hidden="true"></span>
+        <span class="multikill-ring"><img id="multikill-icon" class="multikill-icon" alt=""></span>
+        <strong id="multikill-title" class="multikill-title"></strong>
+      </aside>
+
       <div class="minimap-frame" aria-hidden="true"></div>
 
       <aside class="sponsor" aria-label="Espacio para patrocinadores"></aside>
     </div>
   </main>
-  <script type="module" src="./src/main.js"></script>
+  <script type="module" src="./src/main.js?v=79"></script>
 </body>
 </html>

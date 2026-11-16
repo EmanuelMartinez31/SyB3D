@@ -59,6 +59,8 @@
   "ocultar": [
     "HUD"
   ],
+  "silenciarJuego": true,
+  "audioJuego": [],
   "esquina": "inferior-derecha",
   "anchoPip": 480,
   "margen": 24,

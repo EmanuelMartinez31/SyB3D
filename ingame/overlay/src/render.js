@@ -124,11 +124,70 @@ function wireImageFallback(img, fallback) {
 
 const teamLogoAssets = new Map();
 
+// (r71) Las siglas caben SIEMPRE en su hueco. El hueco mide 52 px y NO se
+// ensancha: si se ensancha, la tabla de 906 px y todo lo que va colgado de la
+// barra se descuadra. Lo que se ajusta es el tamaño de la letra: si las siglas
+// caben se quedan al tamaño normal de la hoja, y si no, bajan justo lo
+// necesario para que se lean enteras (sin recortes y sin puntos suspensivos).
+//
+// Se mide el texto de verdad (con un Range, que respeta la letra y el espacio
+// entre letras) y no scrollWidth: con "text-overflow: ellipsis" y overflow
+// oculto, scrollWidth se queda corto y daba por bueno un texto que se recortaba.
+function anchoDelTexto(elemento) {
+  const rango = document.createRange();
+  rango.selectNodeContents(elemento);
+  return rango.getBoundingClientRect().width;
+}
+
+// Lo último que se ajustó en cada hueco: si el texto no cambió, no se vuelve a
+// medir (esto se llama en cada actualización del HUD).
+const siglasAjustadas = new WeakMap();
+
+function ajustarSiglas(elemento) {
+  if (!elemento || !elemento.textContent) return;
+  const texto = elemento.textContent;
+  if (siglasAjustadas.get(elemento) === texto) return;
+  siglasAjustadas.set(elemento, texto);
+  elemento.style.fontSize = '';
+  elemento.style.letterSpacing = '';
+  // El hueco se mide igual que el texto (las dos cosas después del escalado
+  // de la escena), así el ajuste vale con cualquier tamaño de lienzo.
+  const hueco = elemento.getBoundingClientRect().width || 52;
+  if (!hueco) return;
+  const base = parseFloat(getComputedStyle(elemento).fontSize) || 27;
+  // 1) Primero se aprieta el espacio entre letras: con 4 o 5 letras gana unos
+  //    píxeles sin tocar el tamaño de la letra.
+  if (anchoDelTexto(elemento) > hueco) elemento.style.letterSpacing = '0';
+  // 2) Y si aún no cabe, se baja la letra lo justo (de medio en medio).
+  let tam = base;
+  let vueltas = 0;
+  while (anchoDelTexto(elemento) > hueco && tam > 12 && vueltas < 60) {
+    tam -= 0.5;
+    elemento.style.fontSize = `${tam}px`;
+    vueltas += 1;
+  }
+}
+
+// Si las siglas se pintaron antes de que cargara la fuente, se vuelven a
+// ajustar cuando la fuente está lista (si no, mediría con otra letra).
+if (typeof document !== 'undefined' && document.fonts && document.fonts.ready) {
+  document.fonts.ready.then(() => {
+    for (const id of ['blue-name', 'red-name']) {
+      const elemento = document.getElementById(id);
+      if (elemento) siglasAjustadas.delete(elemento);   // se vuelve a medir
+      ajustarSiglas(elemento);
+    }
+  }).catch(() => {});
+}
+
 function renderTeamIdentity(prefix, info) {
   const { fullName, shortName } = teamShortName(prefix, info);
 
-  setText(byId(`${prefix}-name`), shortName);
-  byId(`${prefix}-name`).title = fullName;
+  const siglas = byId(`${prefix}-name`);
+  setText(siglas, shortName);
+  siglas.title = fullName;
+  // (r71) Que las siglas quepan SIEMPRE: 3, 4 o 5 letras.
+  ajustarSiglas(siglas);
   setText(byId(`score-${prefix}-name`), fullName);
 
   if (!teamLogoAssets.has(prefix)) {

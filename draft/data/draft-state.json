@@ -8,7 +8,7 @@
       "blue": "T2",
       "red": "OCELOTL ESPORTS",
       "blueShort": "T2",
-      "redShort": "OCE",
+      "redShort": "OCEL",
       "blueLogo": "/uploads/red-1794793317350.png",
       "redLogo": "/uploads/blue-1794793264215.png",
       "logo": "/uploads/general-1794861248882.png",
@@ -23,8 +23,14 @@
       "red": []
     },
     "histTeams": {},
-    "teamBind": {},
-    "sideTeams": null,
+    "teamBind": {
+      "T2": [],
+      "OCELOTL ESPORTS": []
+    },
+    "sideTeams": {
+      "blue": "T2",
+      "red": "OCELOTL ESPORTS"
+    },
     "fearless": true,
     "lcuEnabled": true
   },

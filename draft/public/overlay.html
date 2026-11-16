@@ -16,6 +16,26 @@
     transform-origin: bottom center;
   }
   .teamcol { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+
+  /* ===== PATROCINADORES: uno a cada lado del logo del torneo =====
+     Van en posicion absoluta dentro de #draftbar, asi que NO ocupan sitio: el
+     resto del draft se queda exactamente donde estaba. El hueco bueno es la
+     franja de los baneos (los baneos van pegados a las orillas y por dentro
+     queda libre), a la altura del logo. bottom = alto de las cartas (208) +
+     la separacion (10): asi la franja cae justo sobre los baneos aunque el
+     bloque central cambie de alto. */
+  .sponsor {
+    position: absolute; bottom: 218px; height: 78px; width: 340px;
+    display: flex; align-items: center;
+    opacity: 0; transition: opacity .4s ease; pointer-events: none;
+  }
+  .sponsor.on { opacity: 1; }
+  .sponsor.left { right: calc(50% + 254px); justify-content: flex-end; }
+  .sponsor.right { left: calc(50% + 254px); justify-content: flex-start; }
+  .sponsor img {
+    max-height: 100%; max-width: 100%; object-fit: contain; display: block;
+    filter: drop-shadow(0 2px 8px rgba(0,0,0,.7));
+  }
   .teamcol.team-blue { align-items: flex-start; }
   .teamcol.team-red { align-items: flex-end; }
   .team-boxes { display: flex; gap: 10px; }
@@ -128,6 +148,10 @@
 <div id="redUsed"></div>
 
 <div id="draftbar">
+  <!-- Patrocinadores: uno a cada lado del logo del torneo, en la franja libre
+       que queda por dentro de los baneos. No ocupan sitio. -->
+  <div class="sponsor left" id="sponsorLeft"></div>
+  <div class="sponsor right" id="sponsorRight"></div>
   <div class="teamcol team-blue">
     <div class="ban-boxes" id="blueBans"></div>
     <div class="team-boxes" id="blueBoxes"></div>
@@ -326,6 +350,13 @@ function applyInfo(data) {
   const bt = data.blue ? `<span class="tb">${data.blue}</span>` : '<span class="tb">AZUL</span>';
   const rt = data.red ? `<span class="tr">${data.red}</span>` : '<span class="tr">ROJO</span>';
   document.getElementById('matchTeams').innerHTML = bt + '<span class="vs">VS</span>' + rt;
+  // Patrocinadores: manda el panel. Si no dice nada, se queda el archivo de la
+  // carpeta (patrocinadores/izquierda.png y derecha.png), si lo hay.
+  for (const p of PATROCINADORES) {
+    const suyo = String(data[p.campo] || '').trim();
+    if (suyo) ponerPatrocinador(p.id, suyo);
+    else patrocinadorPorDefecto(p.id, p.archivo);
+  }
 }
 
 function applyScore(d) {
@@ -965,6 +996,48 @@ addEventListener('resize', () => {
   renderer.setSize(innerWidth, innerHeight);
   fitBar();
 });
+
+// ===== PATROCINADORES: un logo a cada lado del logo del torneo =====
+// El panel de control manda el enlace de cada uno: puede ser un archivo subido
+// desde el panel (llega como /uploads/...) o una URL de internet. Las dos
+// formas valen igual. Si el panel no manda nada, se usa el archivo de la
+// carpeta  draft/public/patrocinadores/izquierda.png  y  derecha.png
+// (tambien valen .webp, .jpg, .jpeg y .svg). Si no hay nada, el hueco no se ve
+// y el draft queda exactamente como estaba. No se mueve nada.
+const EXTENSIONES_PATROCINADOR = ['png', 'webp', 'jpg', 'jpeg', 'svg'];
+const PATROCINADORES = [
+  { id: 'sponsorLeft', archivo: 'izquierda', campo: 'sponsorIzquierda' },
+  { id: 'sponsorRight', archivo: 'derecha', campo: 'sponsorDerecha' }
+];
+const patrocinadorPuesto = { sponsorLeft: null, sponsorRight: null };
+function ponerPatrocinador(id, url) {
+  const hueco = document.getElementById(id);
+  if (!hueco) return;
+  if (!url) {
+    hueco.innerHTML = ''; hueco.classList.remove('on'); patrocinadorPuesto[id] = null; return;
+  }
+  if (patrocinadorPuesto[id] === url) return;      // ya esta puesto: no se recarga
+  patrocinadorPuesto[id] = url;
+  const img = new Image();
+  img.alt = 'Patrocinador';
+  img.onload = () => { hueco.innerHTML = ''; hueco.appendChild(img); hueco.classList.add('on'); };
+  img.onerror = () => { hueco.innerHTML = ''; hueco.classList.remove('on'); patrocinadorPuesto[id] = null; };
+  img.src = url;
+}
+function patrocinadorPorDefecto(id, nombre) {
+  if (patrocinadorPuesto[id]) return;
+  let intento = 0;
+  const probar = () => {
+    if (intento >= EXTENSIONES_PATROCINADOR.length) return;   // sin archivo: no se muestra nada
+    const url = `patrocinadores/${nombre}.${EXTENSIONES_PATROCINADOR[intento]}`;
+    const img = new Image();
+    img.onload = () => { if (!patrocinadorPuesto[id]) ponerPatrocinador(id, url); };
+    img.onerror = () => { intento += 1; probar(); };
+    img.src = url;
+  };
+  probar();
+}
+for (const p of PATROCINADORES) patrocinadorPorDefecto(p.id, p.archivo);
 </script>
 </body>
 </html>

@@ -1,0 +1,18 @@
+PATROCINADORES DEL DRAFT
+========================
+
+Lo normal es ponerlos desde el PANEL (http://localhost:3000/), en las filas
+«Patrocinador izquierdo» y «Patrocinador derecho»: puedes pegar un enlace o
+subir un archivo, las dos cosas hacen lo mismo.
+
+Esta carpeta es solo el respaldo, por si el panel no manda nada:
+
+    izquierda.png     (el que va a la izquierda del logo del torneo)
+    derecha.png       (el que va a la derecha)
+
+También valen .webp, .jpg, .jpeg y .svg.
+
+Hueco máximo en pantalla: 340 x 78 píxeles (lienzo de 1920). Lo más grande se
+encoge manteniendo la proporción.
+
+Si falta un archivo, su hueco no se ve y el draft queda igual.

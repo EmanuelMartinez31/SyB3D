@@ -109,7 +109,7 @@ const POR_DEFECTO = {
   margen: 24,        // separacion al borde
 
   // Botones disponibles. Todas salen del mismo bufer.
-  duraciones: [10, 30, 60, 90],
+  duraciones: [10, 30, 45, 60],
 
   // Lo que dura el bufer de OBS; debe ser mayor que la repeticion mas larga.
   buferSegundos: 120,
@@ -540,6 +540,13 @@ function crearReplay({ app, log = () => {} } = {}) {
     // El recorte se deja puesto ANTES del ojito: al darle, solo hay que darle
     // al PLAY y arranca de golpe (sin la pausita de recortar en ese momento).
     recorteListo: null,    // { desde, total, duracionReal, archivo, cuando }
+    // (r67) La REPLAY reproduce el TROZO ya cortado (los ultimos N segundos del
+    // bufer) en vez del bufer entero. Asi no hay que mover el cursor dentro del
+    // bufer: el archivo ya dura lo que se ve y empieza el solo por el
+    // principio. Mover el cursor es lo que fallaba: cuando OBS no lo movia, se
+    // veian los PRIMEROS segundos del bufer en vez de los ultimos.
+    esTrozo: false,
+    trozo: null,           // ruta del trozo que se esta reproduciendo
     // El movimiento del juego: quien manda ahora mismo. Si se pide otro, el
     // anterior se corta en el fotograma en el que este (asi nunca se pelean
     // dos animaciones por la misma fuente).
@@ -835,7 +842,13 @@ function crearReplay({ app, log = () => {} } = {}) {
     // 3) Recorte: pausa, adelantar, comprobar, y si no quedo, reintentar.
     let desde = null;
     let aplicado = { bien: false, cursor: 0 };
-    if (total > 500) {
+    if (estado.esTrozo) {
+      // Va el trozo ya cortado: dura lo que se pidio y empieza por el
+      // principio, asi que no se adelanta nada (esto es lo que fallaba antes).
+      desde = 0;
+      log(`[replay] Va el trozo cortado (${(total / 1000).toFixed(1)} s): arranca por el ` +
+        'principio, sin adelantar el cursor');
+    } else if (total > 500) {
       desde = Math.max(0, total - estado.segundos * 1000);
       aplicado = await aplicarRecorte(cliente, desde);
       log(aplicado.bien
@@ -859,7 +872,10 @@ function crearReplay({ app, log = () => {} } = {}) {
     //    final esperando unos segundos que no existen.
     const disponible = desde === null || total <= 500 ? estado.segundos * 1000
       : Math.max(0, total - desde);
-    const duracionReal = Math.min(estado.segundos * 1000, disponible);
+    // Con el trozo, lo que dura el archivo ES la repeticion (puede empezar
+    // 1-2 s antes por el fotograma clave, nunca acaba antes de tiempo).
+    const duracionReal = estado.esTrozo && total > 500
+      ? total : Math.min(estado.segundos * 1000, disponible);
     estado.duracionReal = duracionReal;
     if (total > 500 && duracionReal < estado.segundos * 1000 - 250) {
       log(`[replay] El bufer solo tenia ${(total / 1000).toFixed(1)} s y pediste ` +
@@ -1554,7 +1570,35 @@ function crearReplay({ app, log = () => {} } = {}) {
 
   async function prepararRepeticion(cliente, archivo) {
     const config = estado.config;
-    // La fuente de medios tiene que poder adelantarse y no cerrarse sola.
+    // 0) ¿De que tipo es la fuente? Una de VLC IGNORA local_file: se queda con
+    //    el primer video de su lista para siempre, y por websocket no hay forma
+    //    de cambiarle el archivo. Si es el caso, se dice claro en la ventana
+    //    negra en vez de ver una y otra vez la misma repeticion.
+    let tipo = null;
+    try {
+      tipo = (await cliente.enviar('GetInputKind', { inputName: config.fuenteReplay })).inputKind || null;
+    } catch { /* si no contesta, se sigue */ }
+    if (tipo && tipo !== 'ffmpeg_source') {
+      log(`[replay] AVISO: "${config.fuenteReplay}" es de tipo "${tipo}", no una Fuente de medios. ` +
+        'Una fuente de VLC no cambia de archivo por websocket: siempre se vera el primer video de su ' +
+        'lista. Cambia esa fuente por una de tipo "Fuente de medios" (o crea una nueva con ese nombre).');
+    }
+    // 1) SOLTAR el video anterior antes de poner el nuevo. Cambiando solo
+    //    local_file, OBS puede quedarse con el reproductor de antes: la fuente
+    //    esta oculta y "cerrar el archivo cuando no esta activa" va apagado, asi
+    //    que el ajuste dice el archivo nuevo pero dentro sigue el viejo (y se
+    //    ve la repeticion anterior, o siempre la primera). Quitando
+    //    is_local_file el reproductor se destruye de verdad y el siguiente
+    //    SetInputSettings abre el archivo nuevo desde cero.
+    try {
+      await cliente.enviar('SetInputSettings', {
+        inputName: config.fuenteReplay,
+        inputSettings: { is_local_file: false },
+        overlay: true
+      });
+      await new Promise((r) => setTimeout(r, 150));
+    } catch { /* si no deja soltarlo, se intenta el cambio directo de abajo */ }
+    // 2) La fuente de medios tiene que poder adelantarse y no cerrarse sola.
     await cliente.enviar('SetInputSettings', {
       inputName: config.fuenteReplay,
       inputSettings: {
@@ -2190,12 +2234,35 @@ function crearReplay({ app, log = () => {} } = {}) {
       estado.recorteDesde = null;
       estado.duracionBufer = 0;
       estado.duracionReal = 0;
+      estado.esTrozo = false;
+      estado.trozo = null;
       const cliente = await conectar();
       await sincronizarOjo(cliente);
 
       // 0 y 1) El bufer se enciende si hace falta y se guarda. OBS avisa
       // cuando el archivo ya esta escrito.
       const archivo = await guardarBufer(cliente);
+
+      // 1b) EL TROZO. Se cortan los ULTIMOS `duracion` segundos del bufer y es
+      //     ESE archivo el que reproduce la REPLAY. Asi no hay ningun salto de
+      //     cursor dentro del bufer: el trozo ya empieza donde toca y acaba
+      //     donde acaba la repeticion. El corte no recodifica, asi que tarda
+      //     menos de un segundo.
+      if (buscarFfmpeg()) {
+        const corte = await recortarRepeticion(archivo, 0, duracion);
+        if (corte.ruta) {
+          estado.esTrozo = true;
+          estado.trozo = corte.ruta;
+          log(`[replay] Trozo de ${duracion} s cortado del final del bufer ` +
+            `(${corte.megabytes} MB): cada repeticion reproduce SOLO esto, sin adelantar el cursor`);
+        } else {
+          log(`[replay] AVISO: no se pudo cortar el trozo (${corte.error}). ` +
+            'Se usara el bufer entero y se adelantara el cursor al darle al ojito.');
+        }
+      } else {
+        log('[replay] AVISO: no se encontro ffmpeg, asi que no hay trozo: se usara el bufer ' +
+          'entero y se adelantara el cursor al darle al ojito (eso puede fallar).');
+      }
 
 
       // 2) Se recuerda como esta la escena (solo hace falta en el modo antiguo,
@@ -2212,8 +2279,15 @@ function crearReplay({ app, log = () => {} } = {}) {
       //    fotograma de la repeticion anterior.
       await reposarVideo(cliente);
       estado.recorteDesde = null;
-      await prepararRepeticion(cliente, archivo);
-      log(`[replay] En la fuente REPLAY va solo la repeticion nueva: ${path.basename(archivo)}`);
+      const aReproducir = estado.trozo || archivo;
+      const puesto = await prepararRepeticion(cliente, aReproducir);
+      if (puesto) {
+        log(`[replay] En la fuente REPLAY va solo la repeticion nueva: ${path.basename(aReproducir)}`);
+      } else {
+        log(`[replay] AVISO: OBS no confirmo el archivo nuevo en "${estado.config.fuenteReplay}". ` +
+          `Si lo que se ve no es "${path.basename(aReproducir)}", mira el aviso de tipo de fuente de ` +
+          'arriba o cambia el archivo a mano en Propiedades de esa fuente.');
+      }
       // Se pregunta por la duracion sin quedarse colgado: si OBS no la da con
       // la fuente oculta, se mide otra vez al darle al ojito (arrancar()).
       const total = await duracionDe(cliente, 12);
@@ -2227,14 +2301,27 @@ function crearReplay({ app, log = () => {} } = {}) {
       //     el bufer: asi se puede dejar SOLO el trozo de la repeticion (los
       //     N segundos del boton) y no los 120 s del bufer. El corte se hace
       //     aparte para no retrasar nada.
-      void anotarYRefrescar(archivo, duracion, total).catch((error) =>
+      void anotarYRefrescar(archivo, duracion, total, estado.trozo).catch((error) =>
         log(`[replay] Aviso: la lista de HIGHLIGHTS no se pudo actualizar: ${error.message}`));
 
       // 4) El recorte se deja PUESTO AHORA (pausado y comprobado), mientras
       //    esperas a darle al ojito. Antes se recortaba justo al darle, y ese
       //    trabajo (parar, adelantar, comprobar) era la pausita que se veia en
       //    directo entre el clic y el video. Ahora al ojito solo queda el PLAY.
-      if (total > 0) {
+      if (estado.esTrozo) {
+        // El trozo ya dura lo que se pide: se deja parado en el segundo 0 y al
+        // ojito solo queda arrancarlo. Nada de adelantar el cursor.
+        estado.recorteDesde = 0;
+        estado.recorteListo = null;
+        estado.duracionReal = total > 500 ? total : duracion * 1000;
+        try {
+          await cliente.enviar('TriggerMediaInputAction', {
+            inputName: config.fuenteReplay, mediaAction: 'OBS_WEBSOCKET_MEDIA_INPUT_ACTION_STOP'
+          });
+        } catch { /* nada */ }
+        log(`[replay] Trozo listo en la fuente REPLAY: dura ${(estado.duracionReal / 1000).toFixed(1)} s ` +
+          'y empieza por el principio. Al ojito solo hay que darle al PLAY');
+      } else if (total > 0) {
         log(`[replay] El bufer dura ${(total / 1000).toFixed(1)} s. Si pides ${duracion} s, ` +
           `empezara en el segundo ${(Math.max(0, total - duracion * 1000) / 1000).toFixed(1)} ` +
           'cuando le des al ojito');
@@ -2268,8 +2355,9 @@ function crearReplay({ app, log = () => {} } = {}) {
         recorteDesde: estado.recorteDesde === null ? null : estado.recorteDesde / 1000,
         // Donde va a empezar cuando le des al ojito. El salto se hace alli y
         // alli se comprueba; aqui solo se calcula para que lo veas.
-        recortePrevisto: estado.duracionBufer > 0
-          ? Math.round(Math.max(0, estado.duracionBufer - duracion * 1000) / 100) / 10 : null,
+        recortePrevisto: estado.esTrozo ? 0 : (estado.duracionBufer > 0
+          ? Math.round(Math.max(0, estado.duracionBufer - duracion * 1000) / 100) / 10 : null),
+        esTrozo: Boolean(estado.esTrozo),
         duracionBufer: estado.duracionBufer / 1000,
         seVeran: Math.round(Math.min(duracion * 1000,
           Math.max(0, (estado.duracionBufer || 0))) / 100) / 10,
@@ -2285,10 +2373,16 @@ function crearReplay({ app, log = () => {} } = {}) {
   // Anota la repeticion en HIGHLIGHTS. Si se puede, deja SOLO el trozo que se
   // ve en la repeticion (los N segundos del boton) en vez de los 120 s del
   // bufer; si no hay ffmpeg, va el bufer completo y se dice.
-  async function anotarYRefrescar(archivo, segundos, totalMs) {
+  async function anotarYRefrescar(archivo, segundos, totalMs, yaCortado = null) {
     let paraLaLista = archivo;
     const desdeMs = Math.max(0, (Number(totalMs) || 0) - segundos * 1000);
-    if (Number(totalMs) > 500 && buscarFfmpeg()) {
+    if (yaCortado) {
+      // (r67) El trozo de la repeticion ya esta cortado: se apunta ese mismo,
+      // sin cortar dos veces el mismo archivo.
+      paraLaLista = yaCortado;
+      log(`[replay] HIGHLIGHTS: se apunta el trozo que ya se corto para la repeticion ` +
+        `(${segundos} s): ${path.basename(yaCortado)}`);
+    } else if (Number(totalMs) > 500 && buscarFfmpeg()) {
       const corte = await recortarRepeticion(archivo, desdeMs, segundos);
       if (corte.ruta) {
         paraLaLista = corte.ruta;

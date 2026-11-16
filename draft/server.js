@@ -453,6 +453,30 @@ app.post('/api/team-logo/:side', express.raw({ type: 'image/*', limit: '8mb' }),
   res.status(201).json({ url: `/uploads/${filename}` });
 });
 
+// (r70) Subir CUALQUIER logo por archivo: los dos del equipo, el del torneo y los
+// dos de patrocinadores. Devuelve la misma URL que se escribiria a mano, asi el
+// enlace y el archivo funcionan igual en el overlay.
+const CAMPOS_DE_LOGO = ['blue', 'red', 'general', 'sponsorIzquierda', 'sponsorDerecha'];
+app.post('/api/logo/:campo', express.raw({ type: 'image/*', limit: '8mb' }), (req, res) => {
+  const campo = String(req.params.campo || '');
+  if (!CAMPOS_DE_LOGO.includes(campo)) {
+    return res.status(400).json({ error: `Logo desconocido: "${campo}". Los que hay: ${CAMPOS_DE_LOGO.join(', ')}` });
+  }
+  if (!Buffer.isBuffer(req.body) || !req.body.length) {
+    return res.status(400).json({ error: 'Imagen vacía o tipo no admitido' });
+  }
+  const extensiones = {
+    'image/png': '.png', 'image/jpeg': '.jpg', 'image/webp': '.webp',
+    'image/gif': '.gif', 'image/svg+xml': '.svg'
+  };
+  const extension = extensiones[String(req.get('content-type')).split(';')[0].toLowerCase()];
+  if (!extension) return res.status(415).json({ error: 'Usa PNG, JPG, WEBP, GIF o SVG' });
+  const filename = `${campo}-${Date.now()}${extension}`;
+  fs.mkdirSync(UPLOAD_DIR, { recursive: true });
+  fs.writeFileSync(path.join(UPLOAD_DIR, filename), req.body);
+  res.status(201).json({ url: `/uploads/${filename}` });
+});
+
 app.post('/series/game-winner', express.json({ limit: '32kb' }), (req, res) => {
   const gameId = String(req.body?.gameId || '').trim();
   const winner = req.body?.winner;

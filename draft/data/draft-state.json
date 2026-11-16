@@ -1,119 +1,19 @@
 {
   "version": 1,
   "state": {
-    "picks": [
-      {
-        "type": "pick",
-        "team": "blue",
-        "champion": "Amumu"
-      },
-      {
-        "type": "pick",
-        "team": "red",
-        "champion": "Anivia"
-      },
-      {
-        "type": "pick",
-        "team": "red",
-        "champion": "Annie"
-      },
-      {
-        "type": "pick",
-        "team": "blue",
-        "champion": "Aphelios"
-      },
-      {
-        "type": "pick",
-        "team": "blue",
-        "champion": "Ashe"
-      },
-      {
-        "type": "pick",
-        "team": "red",
-        "champion": "Aurelion Sol"
-      },
-      {
-        "type": "pick",
-        "team": "red",
-        "champion": "Blitzcrank"
-      },
-      {
-        "type": "pick",
-        "team": "blue",
-        "champion": "Brand"
-      },
-      {
-        "type": "pick",
-        "team": "blue",
-        "champion": "Braum"
-      },
-      {
-        "type": "pick",
-        "team": "red",
-        "champion": "Briar"
-      }
-    ],
-    "bans": [
-      {
-        "type": "ban",
-        "team": "blue",
-        "champion": "Aatrox"
-      },
-      {
-        "type": "ban",
-        "team": "red",
-        "champion": "Ahri"
-      },
-      {
-        "type": "ban",
-        "team": "blue",
-        "champion": "Akali"
-      },
-      {
-        "type": "ban",
-        "team": "red",
-        "champion": "Akshan"
-      },
-      {
-        "type": "ban",
-        "team": "blue",
-        "champion": "Alistar"
-      },
-      {
-        "type": "ban",
-        "team": "red",
-        "champion": "Ambessa"
-      },
-      {
-        "type": "ban",
-        "team": "red",
-        "champion": "Aurora"
-      },
-      {
-        "type": "ban",
-        "team": "blue",
-        "champion": "Azir"
-      },
-      {
-        "type": "ban",
-        "team": "red",
-        "champion": "Bard"
-      },
-      {
-        "type": "ban",
-        "team": "blue",
-        "champion": "Bel'Veth"
-      }
-    ],
+    "picks": [],
+    "bans": [],
     "info": {
-      "tournament": "GAMEGROUNDS",
-      "blue": "UPA ESPORTS",
-      "red": "ANAHUAC MAYAB",
-      "blueShort": "UPA",
-      "redShort": "AHMY",
-      "blueLogo": "/uploads/blue-1793563196018.png",
-      "redLogo": "/uploads/red-1793563200939.png",
-      "logo": "https://i.postimg.cc/GTPr1MVF/Gamergrounds-isotipo-Mesa-de-trabajo-1-copia-15.png",
+      "tournament": "INTERS 2026",
+      "blue": "T2",
+      "red": "OCELOTL ESPORTS",
+      "blueShort": "T2",
+      "redShort": "OCE",
+      "blueLogo": "/uploads/red-1794793317350.png",
+      "redLogo": "/uploads/blue-1794793264215.png",
+      "logo": "/uploads/general-1794861248882.png",
+      "sponsorIzquierda": "/uploads/sponsorIzquierda-1794861218432.png",
+      "sponsorDerecha": "/uploads/sponsorDerecha-1794861224638.png",
       "bg": ""
     },
     "score": null,
@@ -128,7 +28,7 @@
     "fearless": true,
     "lcuEnabled": true
   },
-  "seriesRevision": 50,
+  "seriesRevision": 54,
   "countedGames": [],
   "pendingWinners": []
 }

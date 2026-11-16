@@ -65,8 +65,8 @@
   "duraciones": [
     10,
     30,
-    60,
-    90
+    45,
+    60
   ],
   "buferSegundos": 120,
   "highlights": {

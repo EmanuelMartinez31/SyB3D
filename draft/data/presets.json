@@ -12,5 +12,19 @@
       "redLogo": "/uploads/red-1793563200939.png"
     },
     "updatedAt": "2026-11-01T20:04:43.924Z"
+  },
+  {
+    "id": "mwilmmy8-y6r9oi",
+    "name": "IPN",
+    "data": {
+      "tournament": "INTERS 2026",
+      "blue": "T2",
+      "red": "OCELOTL ESPORTS",
+      "blueShort": "T2",
+      "redShort": "OCE",
+      "blueLogo": "/uploads/red-1794793317350.png",
+      "redLogo": "/uploads/blue-1794793264215.png"
+    },
+    "updatedAt": "2026-11-16T20:34:44.862Z"
   }
 ]

@@ -557,20 +557,29 @@
               <div class="team-heading"><h3>Equipo azul</h3><span>LADO AZUL</span></div>
               <div class="team-fields"><label class="field"><span class="field-label">Nombre completo</span><input id="blueName" placeholder="Equipo azul"></label><label class="field"><span class="field-label">Siglas</span><input id="blueShort" class="short-input" placeholder="SYB" maxlength="5"></label></div>
               <div class="logo-row"><img id="blueLogoPreview" class="team-logo-preview" alt="Logo azul" hidden><label class="field"><span class="field-label">Logo del equipo</span><input id="blueLogoFile" type="file" accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml" onchange="uploadTeamLogo('blue', this)"></label></div>
+              <label class="field"><span class="field-label">… o el enlace del logo</span><input id="blueLogoUrl" placeholder="https://... (también vale subir el archivo)" onchange="logoPorEnlace('blue', this.value)"></label>
             </section>
             <section class="team-block red">
               <div class="team-heading"><h3>Equipo rojo</h3><span>LADO ROJO</span></div>
               <div class="team-fields"><label class="field"><span class="field-label">Nombre completo</span><input id="redName" placeholder="Equipo rojo"></label><label class="field"><span class="field-label">Siglas</span><input id="redShort" class="short-input" placeholder="RGE" maxlength="5"></label></div>
               <div class="logo-row"><img id="redLogoPreview" class="team-logo-preview" alt="Logo rojo" hidden><label class="field"><span class="field-label">Logo del equipo</span><input id="redLogoFile" type="file" accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml" onchange="uploadTeamLogo('red', this)"></label></div>
+              <label class="field"><span class="field-label">… o el enlace del logo</span><input id="redLogoUrl" placeholder="https://... (también vale subir el archivo)" onchange="logoPorEnlace('red', this.value)"></label>
             </section>
           </div>
           <details class="advanced">
             <summary>Recursos avanzados del draft</summary>
             <div class="form-grid">
               <label class="field"><span class="field-label">URL del logo general</span><input id="logoUrl" placeholder="https://..."><span class="field-hint">Se muestra en el centro del overlay del draft.</span></label>
+              <label class="field"><span class="field-label">… o el archivo del logo general</span><input id="logoGeneralFile" type="file" accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml" onchange="uploadLogo('general', this, 'logoUrl')"><span class="field-hint">Las dos formas hacen lo mismo: rellena el enlace de arriba.</span></label>
               <label class="field"><span class="field-label">URL del fondo</span><input id="bgUrl" placeholder="Imagen o video .mp4"><span class="field-hint">Fondo opcional de la escena del draft.</span></label>
             </div>
           </details>
+          <div class="form-grid">
+            <label class="field"><span class="field-label">Patrocinador izquierdo · enlace</span><input id="sponsorIzquierdaUrl" placeholder="https://..."><span class="field-hint">Va a la izquierda del logo del torneo, en el draft.</span></label>
+            <label class="field"><span class="field-label">Patrocinador izquierdo · archivo</span><input id="sponsorIzquierdaFile" type="file" accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml" onchange="uploadLogo('sponsorIzquierda', this, 'sponsorIzquierdaUrl')"><span class="field-hint">Las dos formas hacen lo mismo.</span></label>
+            <label class="field"><span class="field-label">Patrocinador derecho · enlace</span><input id="sponsorDerechaUrl" placeholder="https://..."><span class="field-hint">Va a la derecha del logo del torneo, en el draft.</span></label>
+            <label class="field"><span class="field-label">Patrocinador derecho · archivo</span><input id="sponsorDerechaFile" type="file" accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml" onchange="uploadLogo('sponsorDerecha', this, 'sponsorDerechaUrl')"><span class="field-hint">Las dos formas hacen lo mismo.</span></label>
+          </div>
           <div class="form-actions"><p>Los cambios se aplican al draft, ingame y postpartida con la misma acción.</p><button class="primary" onclick="sendInfo()">Sincronizar información</button></div>
         </section>
 
@@ -1052,29 +1061,51 @@ function applyInfoToPanel(data) {
     document.getElementById(ids[key]).value = data[key] || '';
   });
   document.getElementById('logoUrl').value = data.logo || '';
+  document.getElementById('sponsorIzquierdaUrl').value = data.sponsorIzquierda || '';
+  document.getElementById('sponsorDerechaUrl').value = data.sponsorDerecha || '';
   ['blue', 'red'].forEach(side => {
     document.getElementById(`${side}Short`).value = data[`${side}Short`] || '';
     teamLogos[side] = data[`${side}Logo`] || '';
+    document.getElementById(`${side}LogoUrl`).value = teamLogos[side];
     setLogoPreview(side, teamLogos[side]);
   });
 }
-async function uploadTeamLogo(side, input) {
+// (r70) Un solo camino para subir CUALQUIER logo. Devuelve la misma URL que se
+// escribiría a mano, así que el enlace y el archivo valen igual.
+async function uploadLogo(campo, input, inputId) {
   const file = input.files?.[0];
   if (!file) return;
-  if (file.size > 8 * 1024 * 1024) return log('⚠️ El logo supera el límite de 8 MB');
+  if (file.size > 8 * 1024 * 1024) {
+    input.value = '';
+    return log('⚠️ El logo supera el límite de 8 MB');
+  }
   try {
-    const response = await fetch(`/api/team-logo/${side}`, {
+    const response = await fetch(`/api/logo/${campo}`, {
       method: 'POST', headers: { 'Content-Type': file.type }, body: file
     });
     const result = await response.json();
     if (!response.ok) throw new Error(result.error || `HTTP ${response.status}`);
-    teamLogos[side] = result.url;
-    setLogoPreview(side, result.url);
+    if (inputId) document.getElementById(inputId).value = result.url;
+    if (campo === 'blue' || campo === 'red') {
+      teamLogos[campo] = result.url;
+      setLogoPreview(campo, result.url);
+    }
+    input.value = '';
     sendInfo();
-    log(`🖼️ Logo ${side === 'blue' ? 'azul' : 'rojo'} subido y sincronizado`);
+    log(`🖼️ Logo «${campo}» subido y sincronizado (${(file.size / 1024).toFixed(0)} KB)`);
   } catch (error) {
     log(`⚠️ No se pudo subir el logo: ${error.message}`);
   }
+}
+function uploadTeamLogo(side, input) {
+  return uploadLogo(side, input, `${side}LogoUrl`);
+}
+// Escribir (o pegar) el enlace del logo de un equipo: misma ruta que el archivo.
+function logoPorEnlace(side, valor) {
+  teamLogos[side] = String(valor || '').trim();
+  const campo = document.getElementById(`${side}LogoUrl`);
+  if (campo) campo.value = teamLogos[side];
+  setLogoPreview(side, teamLogos[side]);
 }
 function sendInfo() {
   send({ type: 'info', data: {
@@ -1086,6 +1117,8 @@ function sendInfo() {
     blueLogo: teamLogos.blue,
     redLogo: teamLogos.red,
     logo: document.getElementById('logoUrl').value,
+    sponsorIzquierda: document.getElementById('sponsorIzquierdaUrl').value.trim(),
+    sponsorDerecha: document.getElementById('sponsorDerechaUrl').value.trim(),
     bg: document.getElementById('bgUrl').value
   }});
   log("📢 Info del torneo enviada al draft e ingame");
@@ -1150,7 +1183,9 @@ async function savePreset() {
         blueShort: document.getElementById('blueShort').value,
         redShort: document.getElementById('redShort').value,
         blueLogo: teamLogos.blue,
-        redLogo: teamLogos.red
+        redLogo: teamLogos.red,
+        sponsorIzquierda: document.getElementById('sponsorIzquierdaUrl').value.trim(),
+        sponsorDerecha: document.getElementById('sponsorDerechaUrl').value.trim()
       }})
     });
     await loadPresetList(result.preset.id);
@@ -1170,8 +1205,11 @@ function loadSelectedPreset() {
   document.getElementById('redShort').value = data.redShort || '';
   ['blue', 'red'].forEach(side => {
     teamLogos[side] = data[`${side}Logo`] || '';
+    document.getElementById(`${side}LogoUrl`).value = teamLogos[side];
     setLogoPreview(side, teamLogos[side]);
   });
+  document.getElementById('sponsorIzquierdaUrl').value = data.sponsorIzquierda || '';
+  document.getElementById('sponsorDerechaUrl').value = data.sponsorDerecha || '';
   // El logo general y el fondo actuales se conservan; picks y marcador no cambian.
   sendInfo();
   log(`📂 Preset «${preset.name}» cargado y sincronizado`);

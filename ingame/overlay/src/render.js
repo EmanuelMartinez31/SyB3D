@@ -2274,13 +2274,10 @@ function camPintarCaja(caja, lado, equipo, linea, state, indiceVisible) {
   caja.classList.toggle('is-viva', emitiendo);
   const rol = caja.querySelector('.camara-rol');
   const nombre = caja.querySelector('.camara-nombre');
-  const chip = caja.querySelector('.camara-estado');
+  // R98 · el pie de la cámara enseña SOLO la línea y el nombre del jugador.
+  // Aquí había un tercer texto ("CÁMARA") que sobraba.
   if (rol) setText(rol, CAM_ETIQUETA[linea] || '');
   if (nombre) setText(nombre, camNombre(state, lado === 'izq' ? 1 : 2, linea));
-  // El chip solo dice qué está mirando. VDO.Ninja no avisa al HUD si el jugador
-  // ya entró (se comprobó: no manda ningún mensaje al conectar), así que poner
-  // "EN VIVO" seria mentir: mientras no llegue imagen, la caja se ve oscura.
-  if (chip) setText(chip, 'CÁMARA');
 }
 
 let camRelojListo = false;

@@ -183,7 +183,7 @@ const LOCK_PATHS = [
   'D:\\Riot Games\\League of Legends\\lockfile',
   'C:\\Program Files\\Riot Games\\League of Legends\\lockfile'
 ];
-const lcu = { timer: null, prev: new Map(), roles: new Map(), roster: null, champMap: null, lastTimerSec: null, timerBase: null, lastPhase: null };
+const lcu = { timer: null, prev: new Map(), roles: new Map(), hovers: new Map(), roster: null, champMap: null, lastTimerSec: null, timerBase: null, lastPhase: null, sesion: null };
 const ROLE_ORDER_SRV = ['TOP', 'JUNGLE', 'MIDDLE', 'BOTTOM', 'UTILITY'];
 
 function findLockfile() {
@@ -216,6 +216,40 @@ async function loadChampMap() {
 let lastLcuState = '';
 function lcuState(s) { if (s !== lastLcuState) { lastLcuState = s; console.log(s); } }
 
+// R97d · BANEOS TAL COMO LOS TIENE EL CLIENTE AHORA MISMO.
+// No se fía de avisos anteriores: mira la última sesión de champ select y saca
+// todos los baneos confirmados, en el orden del draft. Si el cliente no tiene
+// sesión, devuelve null (y se usa lo guardado).
+function bansDelCliente() {
+  const sesion = lcu.sesion;
+  if (!sesion || !Array.isArray(sesion.actions) || !lcu.champMap) return null;
+  const lista = [];
+  for (const set of sesion.actions) {
+    for (const a of set) {
+      if (a.type !== 'ban' || !a.completed || !a.championId) continue;
+      const nombre = lcu.champMap[a.championId];
+      if (!nombre) continue;
+      const celda = Number(a.actorCellId);
+      const lado = celda < 5 ? 'blue' : 'red';
+      const puesto = celda < 5 ? celda : celda - 5;
+      lista.push({ id: Number(a.id) || 0, type: 'ban', team: lado, champion: nombre, role: ROLE_ORDER_SRV[puesto], auto: true });
+    }
+  }
+  lista.sort((x, y) => x.id - y.id);
+  return lista.map(({ id, ...resto }) => resto);
+}
+
+// Une la lista del cliente con la guardada: lo del cliente manda, y lo que ya
+// se había avisado y el cliente ya no enseña (porque cambia de fase y solo lista
+// la última) se conserva detrás. Nunca se pierde un baneo ni se repite.
+function fusionarBans(vivos, guardados) {
+  const previos = (guardados || []).filter(b => b && b.auto);
+  const clave = (b) => `${b.team}|${b.champion}`;
+  const yaVistos = new Set(previos.map(clave));
+  const nuevos = (vivos || []).filter(b => !yaVistos.has(clave(b)));
+  return [...previos, ...nuevos];
+}
+
 function updatePickRole(team, champion, role) {
   const pick = [...state.picks].reverse().find(p => p.team === team && p.champion === champion);
   if (!pick || pick.role === role) return false;
@@ -237,6 +271,7 @@ async function lcuTick() {
     return;
   }
   lcuState('LCU: ¡EN CHAMP SELECT! monitoreando...');
+  lcu.sesion = session;   // R97d · la última sesión vista, para poder preguntar
 
   const current = new Map();
   for (const set of session.actions) {
@@ -244,7 +279,11 @@ async function lcuTick() {
       if (a.completed && a.championId) current.set(a.id, { type: a.type, championId: a.championId, cell: a.actorCellId });
     }
   }
-  if (current.size === 0) { lcu.prev = new Map(); lcu.roles = new Map(); } // draft nuevo: resetea, pero sigue (timer/roster)
+  // Draft nuevo: se olvidan las acciones vistas y los puestos. Las
+  // preselecciones NO se borran a lo bruto: se recalculan cada segundo y, si ya
+  // no están en el cliente, sale el aviso de quitarlas (si se borrara aquí la
+  // lista, el aviso no se emitiría nunca y la carta 2D se quedaría con el hover).
+  if (current.size === 0) { lcu.prev = new Map(); lcu.roles = new Map(); }
 
   const cellPlayer = {};
   [...(session.myTeam || []), ...(session.theirTeam || [])].forEach(p => {
@@ -267,9 +306,58 @@ async function lcuTick() {
   }
   lcu.prev = current;
 
+  // R97 · PRESELECCIONES (hover). El LCU enseña el campeón que un jugador está
+  // marcando ANTES de confirmarlo, y muchas veces lo cambia. Eso NO es un pick:
+  // aquí se separa y se manda aparte (mensaje 'hover'), para que el overlay lo
+  // pinte solo en la carta 2D y no cree el campeón 3D hasta la confirmación.
+  //   · acciones de pick NO completadas con championId  -> hover en curso
+  //   · championPickIntent del jugador                   -> hover marcado
+  //   · si la celda ya tiene su pick completado, manda el pick: no hay hover
+  const confirmadas = new Set();
+  for (const set of session.actions) {
+    for (const a of set) {
+      if (a.type === 'pick' && a.completed) confirmadas.add(a.actorCellId);
+    }
+  }
+  const hovers = new Map();   // celda -> id de campeón preseleccionado
+  for (const set of session.actions) {
+    for (const a of set) {
+      if (a.type !== 'pick' || a.completed || !a.championId) continue;
+      if (confirmadas.has(a.actorCellId)) continue;
+      hovers.set(a.actorCellId, a.championId);
+    }
+  }
+  [...(session.myTeam || []), ...(session.theirTeam || [])].forEach(p => {
+    if (!p || typeof p.cellId !== 'number') return;
+    if (confirmadas.has(p.cellId)) return;
+    if (p.championPickIntent && !hovers.has(p.cellId)) hovers.set(p.cellId, p.championPickIntent);
+  });
+  if (lcu.champMap) {
+    new Set([...lcu.hovers.keys(), ...hovers.keys()]).forEach(cell => {
+      const antes = lcu.hovers.get(cell) || 0;
+      const ahora = hovers.get(cell) || 0;
+      if (antes === ahora) return;
+      const team = cell < 5 ? 'blue' : 'red';
+      const role = ROLE_ORDER_SRV[cell < 5 ? cell : cell - 5];
+      const nombre = ahora ? (lcu.champMap[ahora] || null) : null;
+      broadcast({ type: 'hover', team, cell, champion: nombre, role, player: cellPlayer[cell] || '' });
+      console.log(nombre
+        ? `LCU → PRESELECCIÓN ${team} (${role}): ${nombre}`
+        : `LCU → preselección quitada ${team} (${role})`);
+    });
+  }
+  lcu.hovers = hovers;
+
+  // R97c · LOS BANEOS VUELVEN A SALIR COMO EN LA r97 (los 5 por equipo).
+  // La r97b los reconstruía y comparaba con lo guardado; en el cliente de verdad
+  // eso dejaba fuera los dos de la segunda fase. Se queda la vía de siempre,
+  // que funcionaba, y el arreglo del overlay (que repinta la fila entera).
+
   // Movimientos (swap): el campeón va al slot fijo del jugador
   [...(session.myTeam || []), ...(session.theirTeam || [])].forEach(p => {
     if (!p.championId || !lcu.champMap || !lcu.champMap[p.championId]) return;
+    // R97 · si ese campeón es solo una preselección, no se mueve nada todavía.
+    if (hovers.has(p.cellId)) return;
     const slot = p.cellId < 5 ? p.cellId : p.cellId - 5;
     const now = { champ: lcu.champMap[p.championId], role: ROLE_ORDER_SRV[slot] };
     const prev = lcu.roles.get(p.cellId);
@@ -303,6 +391,25 @@ async function lcuTick() {
     broadcast({ type: 'roster', data: roster });
     draftStateChanged = true;
   }
+  // R97d · LO GUARDADO SE PONE DE ACUERDO CON EL CLIENTE. Si la sesión trae una
+  // lista de baneos distinta de la guardada, se adopta la del cliente (es la
+  // buena) y se avisa a los overlay de la lista entera. Así da igual que un
+  // aviso se pierda: la fila se corrige sola en la siguiente vuelta.
+  const baneosVivos = bansDelCliente();
+  // Si la sesión no trae NINGÚN baneo (el cliente parpadea entre fases) no se
+  // borra lo que ya había: sería un parpadeo en pantalla.
+  if (baneosVivos && baneosVivos.length) {
+    const firma = (l) => l.map(b => `${b.team}|${b.champion}`).join(',');
+    const fusion = fusionarBans(baneosVivos, state.bans);
+    if (firma(fusion) !== firma(state.bans.filter(b => b.auto))) {
+      const manuales = state.bans.filter(b => !b.auto);
+      state.bans = [...fusion, ...manuales];
+      draftStateChanged = true;
+      broadcast({ type: 'bans-estado', data: fusion });
+      console.log(`LCU → BANEOS sincronizados: ${fusion.length} (${fusion.map(b => b.champion).join(', ')})`);
+    }
+  }
+
   if (draftStateChanged) saveDraftState();
 
   // Timer: se calcula localmente (el LCU entrega valores congelados entre acciones)
@@ -343,7 +450,7 @@ function lcuStart() {
 }
 function lcuStop() {
   clearInterval(lcu.timer); lcu.timer = null;
-  lcu.prev = new Map(); lcu.roles = new Map(); lcu.lastTimerSec = null;
+  lcu.prev = new Map(); lcu.roles = new Map(); lcu.hovers = new Map(); lcu.lastTimerSec = null;
   console.log('LCU: monitoreo detenido');
 }
 // =======================================================================
@@ -361,7 +468,25 @@ app.get('/draft-status', (req, res) => {
     overlayClients: clients.filter(client => client.clientRole === 'overlay').length,
     panelClients: clients.filter(client => client.clientRole === 'panel').length,
     lcuActive: Boolean(lcu.timer),
-    lcuState: lastLcuState || 'Automático detenido'
+    lcuState: lastLcuState || 'Automático detenido',
+    // R97 · qué preselecciones ve el cliente en este momento (sin nombres de
+    // jugador ni credenciales). Sirve para comprobar que llegan.
+    // R97e · de dónde salen los baneos, para poder separar los dos casos:
+    //   · draft MANUAL (automático parado): manda el panel. Aquí se ve lo que ha
+    //     llegado de verdad.
+    //   · draft AUTOMÁTICO: manda el cliente de LoL. "delCliente" dice cuántos
+    //     tiene él en ese momento.
+    baneosGuardados: state.bans.length,
+    baneosDelCliente: (() => {
+      const vivos = bansDelCliente();
+      return vivos ? vivos.length : 0;
+    })(),
+    ultimosBaneos: state.bans.slice(-10).map(b => `${b.team}:${b.champion}`),
+    preselecciones: [...lcu.hovers.entries()].map(([cell, id]) => ({
+      lado: cell < 5 ? 'blue' : 'red',
+      celda: cell,
+      campeon: (lcu.champMap && lcu.champMap[id]) || id
+    }))
   });
 });
 
@@ -509,7 +634,12 @@ wss.on('connection', (ws, request) => {
     let msg;
     try { msg = JSON.parse(raw); } catch { return; }
     if (msg.type === 'pick') state.picks.push(msg);
-    if (msg.type === 'ban') state.bans.push(msg);
+    if (msg.type === 'ban') {
+      state.bans.push(msg);
+      // R97e · en draft MANUAL esto es lo que llega del panel. Si aquí salen 3 y
+      // tú has baneado 5 en el panel, el que recorta es el panel, no el overlay.
+      console.log(`PANEL → BAN ${msg.team}: ${msg.champion} (van ${state.bans.length})`);
+    }
     if (msg.type === 'info') {
       const prev = state.sideTeams;
       state.info = msg.data;
@@ -536,6 +666,16 @@ wss.on('connection', (ws, request) => {
       msg.action === 'start' ? lcuStart() : lcuStop();
       saveDraftState();
       broadcast({ type: 'lcu-state', data: state.lcuEnabled });
+      return;
+    }
+    // R97c · el overlay pide la fila de baneos cuando le falta alguno. Solo para
+    // ese cliente: no se reenvía a los demás ni se guarda nada.
+    if (msg.type === 'pedir-bans') {
+      // R97d · se responde con lo que tiene el cliente AHORA; si no hay sesión,
+      // con lo guardado.
+      const vivos = bansDelCliente();
+      const lista = vivos && vivos.length ? fusionarBans(vivos, state.bans) : state.bans;
+      ws.send(JSON.stringify({ type: 'bans-estado', data: lista }));
       return;
     }
     if (msg.type === 'role') updatePickRole(msg.team, msg.champion, msg.role);

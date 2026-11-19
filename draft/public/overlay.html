@@ -48,6 +48,11 @@
   }
   .team-red .pbox { border-color: #7f1d1d; }
   .pbox img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  /* R97 · PRESELECCIÓN (hover del jugador en el cliente de LoL): se ve SOLO en
+     la carta 2D, atenuada y con el borde punteado, para que nadie la confunda
+     con un campeón ya elegido. Nunca crea el campeón 3D: eso llega al confirmar. */
+  .pbox.preview { border-style: dashed; border-color: #94a3b8; }
+  .pbox img.preview { opacity: .45; filter: grayscale(.45) brightness(.9); }
   .pbox .pname {
     position: absolute; bottom: 0; left: 0; right: 0;
     font-size: 16px; font-weight: 700; text-align: center; color: #fff;
@@ -134,6 +139,28 @@
   #timerNum { font-size: 130px; font-weight: 900; line-height: 1; }
   #timerPhase { font-size: 17px; font-weight: 800; letter-spacing: 3px; opacity: .95; text-transform: uppercase; }
 </style>
+<!-- ===== R85b · DRAFT 1 VS 1 =================================================
+     Todo lo de aquí solo se aplica cuando el panel envía modo = 1v1.
+     En 5v5 el body no lleva data-modo-draft="1v1" y no cambia ni un píxel.
+     · una sola base (retrato) por lado
+     · baneos = los que elija el panel (0, 1 o 3), siguen viéndose junto al jugador
+     ========================================================================= -->
+<style>
+  /* R86 · 1 vs 1: los campeones van en 3D, grandes, a los lados del bloque
+     central. Los retratos de la barra (las cartas 2D) no se usan. */
+  body[data-modo-draft="1v1"] .team-boxes { display: none; }
+  body[data-modo-draft="1v1"] .team-boxes .pbox:nth-child(n+2) { display: none; }
+  body[data-modo-draft="1v1"][data-baneos-draft="0"] .ban-boxes { display: none; }
+  body[data-modo-draft="1v1"][data-baneos-draft="1"] .ban-boxes .bbox:nth-child(n+2) { display: none; }
+  body[data-modo-draft="1v1"][data-baneos-draft="3"] .ban-boxes .bbox:nth-child(n+4) { display: none; }
+
+  /* R86 · LOS BANEOS Y LOS PATROCINADORES.
+     En 1 vs 1 los retratos de la barra ya no se usan (los campeones van en 3D),
+     así que la fila de baneos baja a la franja de abajo y el patrocinador se
+     queda arriba, en su sitio de siempre: medido a 1920 con 0, 1 y 3 baneos, no
+     se tocan ni un píxel. */
+  body[data-modo-draft="1v1"] .sponsor { z-index: 3; }
+</style>
 </head>
 <body>
 <div id="ui"></div>
@@ -219,12 +246,44 @@ const ring = new THREE.Mesh(new THREE.TorusGeometry(2.2, .04, 16, 100),
   new THREE.MeshBasicMaterial({ color: 0x58a6ff }));
 ring.rotation.x = Math.PI/2; ring.position.y = .01; scene.add(ring);
 
+// ===== R86 · MODO DEL DRAFT =====
+// El panel manda info.modo ('5v5' | '1v1' | '2v2') y info.baneos (0 | 1 | 3).
+// Por defecto 5v5: si el panel no dice nada, todo funciona como siempre.
+// Se declara ARRIBA porque lineupPos() ya necesita saber el modo al cargar.
+let modoDraft = '5v5';
+let baneosDraft = 5;
+const es1v1 = () => modoDraft === '1v1';
+const maxFichas = () => (es1v1() ? 1 : 5);
+const maxBaneos = () => (es1v1() ? baneosDraft : 5);
+
+// En 1v1 no hay podio: los dos campeones salen a la vez, cada uno en su base.
+const reserva1v1 = { blue: null, red: null };
+
+// R86 · encuadre del 1 vs 1: dos campeones GRANDES a los lados del bloque
+// central de la barra, con su nombre de invocador debajo.
+const CINE_1V1 = {
+  x: 5.1,          // R87 · a las orillas, por fuera de los patrocinadores
+  z: 3.2,          // más cerca de la cámara = más grandes
+  escala: 1.45,    // el muñeco, un 45 % más grande que en el 5 vs 5
+  cam: [0, 2.1, 12.4],
+  tgt: [0, 1.75, 3.2]
+};
+const CARTEL_1V1 = { ancho: 2.1, alto: 0.5 };   // el cartel del nombre, bajo los pies
+const rosterActual = { blue: [], red: [] };
+const etiquetas1v1 = { blue: null, red: null };
+
 function lineupPos(team, i) {
+  if (es1v1()) {
+    // R86 · 1 vs 1: una sola base por lado, cerca de la cámara y abierta a los
+    // lados, para que el campeón se vea grande.
+    return new THREE.Vector3((team === 'blue' ? -1 : 1) * CINE_1V1.x, -0.25, CINE_1V1.z);
+  }
   const spread = 2.0;
   const x = (team === 'blue' ? -1 : 1) * (2.7 + i * spread);
   const z = 1.2 - i * 0.55;
   return new THREE.Vector3(x, -0.25, z);
 }
+const pedestales = { blue: [], red: [] };
 for (let t = 0; t < 2; t++) {
   const team = t === 0 ? 'blue' : 'red';
   for (let i = 0; i < 5; i++) {
@@ -236,6 +295,7 @@ for (let t = 0; t < 2; t++) {
     const p = lineupPos(team, i);
     d.position.set(p.x, -.33, p.z);
     scene.add(d);
+    pedestales[team].push(d);
   }
 }
 
@@ -292,19 +352,85 @@ function champImg(name) {
   return img;
 }
 
+// ===== R97 · PRESELECCIONES (hover) ==========================================
+// El jugador marca un campeón en el cliente de LoL y muchas veces lo cambia
+// antes de confirmar. La preselección se enseña SOLO en la carta 2D, atenuada.
+// El campeón 3D no aparece hasta el pick confirmado. En 1 vs 1 no hay cartas
+// 2D visibles, así que ahí no se enseña nada hasta confirmar.
+//
+// Cada celda del draft (0..4 azul, 5..9 rojo) tiene su carta: el jugador de esa
+// celda es siempre el mismo, así que la preselección va a su carta y no a la
+// primera libre (que es lo que hace el pick cuando llega sin puesto).
+const preselecciones = { blue: new Map(), red: new Map() };   // celda -> { champion, box }
+
+function olvidarPreseleccionDeCaja(team, box) {
+  for (const [celda, v] of preselecciones[team]) {
+    if (v.box === box) preselecciones[team].delete(celda);
+  }
+}
+
+function cartaDeLaCelda(team, celda, role) {
+  const boxes = [...document.querySelectorAll(`#${team}Boxes .pbox`)];
+  const i = slotForRole(role);
+  if (i != null && boxes[i]) return boxes[i];
+  const deCelda = boxes[celda < 5 ? celda : celda - 5];
+  if (deCelda) return deCelda;
+  return boxes.find(b => !b.querySelector('img')) || null;
+}
+
+function quitarPreseleccion(team, celda) {
+  const previa = preselecciones[team].get(celda);
+  if (!previa) return;
+  preselecciones[team].delete(celda);
+  const box = previa.box;
+  if (!box) return;
+  box.querySelectorAll('img.preview').forEach(im => im.remove());
+  if (!box.querySelector('img')) box.classList.remove('preview');
+}
+
+function pintarPreseleccion(msg) {
+  const team = msg.team === 'red' ? 'red' : 'blue';
+  const celda = Number(msg.cell);
+  if (!Number.isFinite(celda)) return;
+  if (es1v1()) { quitarPreseleccion(team, celda); return; }   // 1 vs 1: sin 2D
+  if (!msg.champion) { quitarPreseleccion(team, celda); return; }
+  const previa = preselecciones[team].get(celda);
+  if (previa && previa.champion === msg.champion) return;     // ya está puesta
+  quitarPreseleccion(team, celda);
+  const box = cartaDeLaCelda(team, celda, msg.role);
+  if (!box) return;
+  if (box.dataset.champ === msg.champion) return;             // ya confirmado: manda el pick
+  if (box.querySelector('img:not(.preview)')) return;         // esa carta ya es de un pick
+  const im = champImg(msg.champion);
+  im.classList.add('preview');
+  im.dataset.preview = msg.champion;
+  box.appendChild(im);
+  box.classList.add('preview');
+  preselecciones[team].set(celda, { champion: msg.champion, box });
+}
+// ============================================================================
+
 function fillBox(team, name, player, role) {
   const boxes = document.querySelectorAll(`#${team}Boxes .pbox`);
-  let i = role ? slotForRole(role) : null;
-  if (i == null || !boxes[i] || boxes[i].querySelector('img')) {
-    i = [...boxes].findIndex(b => !b.querySelector('img'));
+  let i = (!es1v1() && role) ? slotForRole(role) : null;
+  // R97 · una preselección (img.preview) NO ocupa el hueco: el campeón
+  // confirmado entra igual y la preselección se va.
+  if (i == null || !boxes[i] || boxes[i].querySelector('img:not(.preview)')) {
+    i = [...boxes].findIndex(b => !b.querySelector('img:not(.preview)'));
     if (i < 0) return;
   }
   const box = boxes[i];
+  box.querySelectorAll('img.preview').forEach(im => im.remove());
+  if (!box.querySelector('img')) box.classList.remove('preview');
+  olvidarPreseleccionDeCaja(team, box);
   const im = champImg(name);
   im.dataset.champ = name;
   box.appendChild(im);
   box.dataset.champ = name;
-  const nm = box.querySelector('.pname');
+  // R85b · 1v1: si el cliente no ha dado nombre, el hueco del invocador se crea
+  // igualmente para que el nombre del roster (LoL) tenga dónde ir.
+  let nm = box.querySelector('.pname');
+  if (!nm && es1v1()) { nm = document.createElement('span'); nm.className = 'pname'; box.appendChild(nm); }
   if (nm && !nm.textContent && player) nm.textContent = player;
 }
 
@@ -312,7 +438,31 @@ function fillBanBox(team, name) {
   const i = Math.min(banCounters[team], 4);
   banCounters[team]++;
   const box = document.querySelectorAll(`#${team}Bans .bbox`)[i];
-  box.appendChild(champImg(name));
+  if (box) box.appendChild(champImg(name));
+}
+
+// R97b · LA FILA DE BANEOS ENTERA. Al abrir el overlay (o al recargarlo) se
+// repintan los baneos que ya habían pasado; antes solo se repintaban los
+// campeones, así que la fila se quedaba a medias (salían 1 o 3 de 5).
+let firmaBans = null;
+function pintarBans(lista) {
+  const buena = (lista || []).filter(b => b && b.champion);
+  const porEquipo = { blue: 0, red: 0 };
+  const firma = buena.map(b => {
+    const team = b.team === 'red' ? 'red' : 'blue';
+    if (porEquipo[team] >= maxBaneos()) return '';
+    porEquipo[team]++;
+    return `${team}|${b.champion}`;
+  }).filter(Boolean).join(',');
+  if (firma === firmaBans) return;      // ya está igual: no se toca (sin parpadeos)
+  firmaBans = firma;
+  banCounters.blue = 0; banCounters.red = 0;
+  document.querySelectorAll('.ban-boxes .bbox').forEach(b => { b.innerHTML = ''; });
+  buena.forEach(b => {
+    const team = b.team === 'red' ? 'red' : 'blue';
+    if (banCounters[team] >= maxBaneos()) return;
+    fillBanBox(team, b.champion);
+  });
 }
 
 // ===== Usados (fearless) =====
@@ -329,13 +479,16 @@ function renderUsed(team, list) {
 
 function clearBoxes() {
   document.querySelectorAll('.pbox img').forEach(im => im.remove());
-  document.querySelectorAll('.pbox').forEach(b => { delete b.dataset.champ; });
+  document.querySelectorAll('.pbox').forEach(b => { delete b.dataset.champ; b.classList.remove('preview'); });
+  preselecciones.blue.clear(); preselecciones.red.clear();
+  firmaBans = '';
   document.querySelectorAll('.bbox').forEach(b => b.innerHTML = '');
   banCounters.blue = 0; banCounters.red = 0;
 }
 
 function applyInfo(data) {
   if (!data) return;
+  aplicarModoDraft(data);
   currentInfoData = data;
   const oldBg = document.getElementById('bg');
   if (oldBg) oldBg.remove();
@@ -378,6 +531,7 @@ function applyScore(d) {
 // ===== Roster: nombres de jugador fijos por posición (llegan al iniciar la selección) =====
 function applyRoster(r) {
   if (!r) return;
+  ['blue', 'red'].forEach(team => { rosterActual[team] = (r[team] || []).slice(); });
   ['blue', 'red'].forEach(team => {
     (r[team] || []).forEach((nm, i) => {
       const box = document.querySelectorAll(`#${team}Boxes .pbox`)[i];
@@ -387,6 +541,14 @@ function applyRoster(r) {
       sp.textContent = nm || '';
       sp.style.display = nm ? '' : 'none';
     });
+    // R86 · si el nombre del cliente llega después del pick, se repinta la etiqueta.
+    if (es1v1() && etiquetas1v1[team]) {
+      const nuevo = nombreDelJugador(team, etiquetas1v1[team].nombreAnterior);
+      if (nuevo && nuevo !== etiquetas1v1[team].nombre) {
+        etiquetas1v1[team].nombreAnterior = nuevo;
+        ponerEtiqueta1v1(team, nuevo);
+      }
+    }
   });
 }
 
@@ -416,6 +578,106 @@ const counters = { blue: 0, red: 0 };
 const pending = { blue: 0, red: 0 };
 const holdersByTeam = { blue: [], red: [] };
 const fxWaves = [];
+
+function nombreDelJugador(team, player) {
+  // El del cliente (roster del LoL) manda; si no hay, el del panel.
+  const delCliente = (rosterActual[team] || [])[0];
+  return (delCliente && String(delCliente).trim()) || String(player || '').trim();
+}
+function dibujarEtiqueta1v1(l) {
+  const g = l.cv.getContext('2d');
+  const W = l.cv.width, H = l.cv.height;
+  g.clearRect(0, 0, W, H);
+  g.fillStyle = 'rgba(5,8,15,.88)';
+  g.strokeStyle = l.team === 'blue' ? '#3b82f6' : '#ef4444';
+  g.lineWidth = 10;
+  roundRect(g, 8, 8, W - 16, H - 16, 26);
+  g.fill(); g.stroke();
+  let size = 66;
+  do { g.font = `bold ${size}px system-ui, sans-serif`; size -= 2; }
+  while (size > 22 && g.measureText(l.nombre).width > W - 64);
+  g.fillStyle = '#fff'; g.textAlign = 'center'; g.textBaseline = 'middle';
+  g.fillText(l.nombre, W / 2, H / 2 + 3);
+  l.sp.material.map.needsUpdate = true;
+}
+function quitarEtiqueta1v1(team) {
+  const l = etiquetas1v1[team];
+  if (!l) return;
+  scene.remove(l.sp);
+  l.sp.material.map.dispose();
+  l.sp.material.dispose();
+  etiquetas1v1[team] = null;
+}
+function ponerEtiqueta1v1(team, nombre) {
+  quitarEtiqueta1v1(team);
+  if (nombre) {
+    const cv = document.createElement('canvas');
+    cv.width = 640; cv.height = 120;
+    const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(cv), depthTest: false, transparent: true }));
+    sp.scale.set(CARTEL_1V1.ancho, CARTEL_1V1.alto, 1);
+    const p = lineupPos(team, 0);
+    sp.position.set(p.x, -0.52, p.z + 0.55);
+    const l = { sp, cv, team, nombre };
+    dibujarEtiqueta1v1(l);
+    scene.add(sp);
+    etiquetas1v1[team] = l;
+  }
+  // Las cartas 2D siguen guardando el nombre (por si hace falta al volver a 5v5).
+  const caja = document.querySelectorAll(`#${team}Boxes .pbox`)[0];
+  if (caja) {
+    let nm = caja.querySelector('.pname');
+    if (!nm) { nm = document.createElement('span'); nm.className = 'pname'; caja.appendChild(nm); }
+    nm.textContent = nombre || '';
+    nm.style.display = nombre ? '' : 'none';
+  }
+}
+
+function aplicarModoDraft(data) {
+  const modo = String((data && (data.modo || data.modoPartida)) || '').toLowerCase();
+  const modoNuevo = (modo === '1v1' || modo === '2v2') ? modo : '5v5';
+  const b = Number(data && data.baneos);
+  const cambioDeModo = modoNuevo !== modoDraft;
+  modoDraft = modoNuevo;
+  baneosDraft = ([0, 1, 3].includes(b)) ? b : 5;
+  document.body.dataset.modoDraft = modoDraft === '5v5' ? '' : modoDraft;
+  document.body.dataset.baneosDraft = String(maxBaneos());
+  // Bases 3D: en 1v1 queda una por lado (más grande), en el resto las cinco.
+  const n = maxFichas();
+  ['blue', 'red'].forEach(team => {
+    (pedestales[team] || []).forEach((d, i) => {
+      d.visible = i < n;
+      if (i === 0) {
+        const p = lineupPos(team, 0);
+        d.position.set(p.x, -.33, p.z);
+        d.scale.setScalar(es1v1() ? 1.35 : 1);
+      }
+    });
+  });
+  // Con el modo 1 vs 1: la escena cambia de encuadre y no hay podio ni líneas.
+  if (es1v1()) {
+    if (cambioDeModo) {
+      camera.position.set(CINE_1V1.cam[0], CINE_1V1.cam[1], CINE_1V1.cam[2]);
+      controls.target.set(CINE_1V1.tgt[0], CINE_1V1.tgt[1], CINE_1V1.tgt[2]);
+      controls.update();
+      reserva1v1.blue = null; reserva1v1.red = null;
+    }
+  } else if (cambioDeModo) {
+    // Al volver a 5 vs 5 se devuelve la cámara de siempre (y solo al cambiar de
+    // modo: si no, cada vez que llegara un info se perdería la vista que hayas
+    // movido con el ratón).
+    camera.position.set(0, 2.4, 14);
+    controls.target.set(0, 0.85, 0);
+    controls.update();
+    quitarEtiqueta1v1('blue'); quitarEtiqueta1v1('red');
+    reserva1v1.blue = null; reserva1v1.red = null;
+  }
+  if (podium) podium.visible = !es1v1();
+  if (ring) ring.visible = !es1v1();
+  // En 1v1 no hay líneas: fuera las etiquetas TOP/JG/MID/ADC/SUP de las bases que
+  // ya no existen (quedan solo las 2 bases, una por lado).
+  try { laneLabels.forEach(l => { l.sp.visible = !es1v1(); }); } catch (e) {}
+  try { fitBar(); } catch (e) {}
+}
 
 const ui = document.getElementById('ui');
 function logUI(t) { /* silenciado: el overlay ya no muestra mensajes */ }
@@ -556,6 +818,10 @@ function endDraftShow() {
   w.style.opacity = '0';
   setTimeout(() => { w.style.display = 'none'; w.style.opacity = '1'; w.style.transition = ''; }, 2100);
   setTimeout(() => {
+    // R86 · En 1 vs 1 y 2 vs 2 no hay presentación: nada de viajar al azul, al
+    // rojo y volver con los logos de equipo (no hay equipos). Se queda la escena
+    // quieta, sin efectos de equipo, y solo se marca el draft como completo.
+    if (modoDraft !== '5v5') { logUI('🏆 ¡DRAFT COMPLETO! 🏆'); return; }
     teamCompleteFX('blue', true);
     teamCompleteFX('red', true);
     startCinematic();
@@ -563,7 +829,8 @@ function endDraftShow() {
   }, 1000);
 }
 function checkDraftComplete() {
-  if (!draftDone && counters.blue === 5 && counters.red === 5) setTimeout(endDraftShow, 2000);
+  const n = maxFichas();
+  if (!draftDone && counters.blue === n && counters.red === n) setTimeout(endDraftShow, 2000);
 }
 // ===== Líneas FIJAS: etiquetas TOP/JG/MID/ADC/SUP permanentes en cada slot =====
 const ROLE_ORDER = ['TOP', 'JUNGLE', 'MIDDLE', 'BOTTOM', 'UTILITY'];
@@ -623,6 +890,7 @@ for (let t = 0; t < 2; t++) {
 }
 function slotForRole(role) { const i = ROLE_ORDER.indexOf(role); return i < 0 ? null : i; }
 function nextSlot(team, preferred, exclude) {
+  if (es1v1()) return 0;
   const used = new Set((holdersByTeam[team] || []).filter(h => h !== exclude).map(h => h.userData.slot));
   if (preferred != null && !used.has(preferred)) return preferred;
   for (let i = 0; i < 5; i++) if (!used.has(i)) return i;
@@ -642,10 +910,17 @@ function swap2D(team, name, i) {
   const boxA = boxes.find(b => b.dataset.champ === name);
   const boxB = boxes[i];
   if (!boxA || !boxB || boxA === boxB) return;
-  const imgA = boxA.querySelector('img');
-  const imgB = boxB.querySelector('img');
+  const imgA = boxA.querySelector('img:not(.preview)');
+  const imgB = boxB.querySelector('img:not(.preview)');
   if (imgB) boxA.appendChild(imgB);
   if (imgA) boxB.appendChild(imgA);
+  // R97 · si en alguna de las dos había una preselección, se va: esa carta ya
+  // es de un campeón confirmado.
+  [boxA, boxB].forEach(box => {
+    box.querySelectorAll('img.preview').forEach(im => im.remove());
+    if (!box.querySelector('img')) box.classList.remove('preview');
+    olvidarPreseleccionDeCaja(team, box);
+  });
   const cA = imgB ? imgB.dataset.champ : '';
   const cB = imgA ? imgA.dataset.champ : '';
   if (cA) boxA.dataset.champ = cA; else delete boxA.dataset.champ;
@@ -748,12 +1023,40 @@ function finishDraftWhenReady() {
   endDraftShow();
 }
 
+// R85b · Los dos campeones del 1v1 aparecen AL MISMO TIEMPO, cada uno en su base.
+function revelar1v1SiListo() {
+  if (!es1v1()) return;
+  const azul = reserva1v1.blue, rojo = reserva1v1.red;
+  if (!azul || !rojo) return;
+  if (azul.holder.userData.cancelled || rojo.holder.userData.cancelled) return;
+  reserva1v1.blue = null; reserva1v1.red = null;
+  [azul, rojo].forEach(e => {
+    const { holder, team, name, player } = e;
+    pending[team] = Math.max(0, pending[team] - 1);
+    holder.userData.pending = false;
+    const p = lineupPos(team, 0);
+    holder.position.copy(p);
+    holder.rotation.y = (team === 'blue' ? .5 : -.5) + (ROT_FIX[name] || 0);
+    holder.userData.target = p;
+    holder.userData.targetRot = holder.rotation.y;
+    holder.userData.normAt = performance.now() + 300;
+    holder.userData.escalaFinal = CINE_1V1.escala;
+    holder.scale.setScalar(.01);
+    scene.add(holder);
+    counters[team]++;
+    fillBox(team, name, player, null);
+    ponerEtiqueta1v1(team, nombreDelJugador(team, player));
+    logUI(`🎬 1 VS 1 · ${team === 'blue' ? '🔵' : '🔴'} ${name}`);
+  });
+  checkDraftComplete();
+}
+
 function showChampion(team, name, instant = false, role = null, player = null) {
-  if (counters[team] + pending[team] >= 5) {
+  if (counters[team] + pending[team] >= maxFichas()) {
     logUI(`⚠️ Máximo 5 picks para el equipo ${team === 'blue' ? 'azul' : 'rojo'}`);
     return;
   }
-  fillBox(team, name, player, role);
+  if (!es1v1()) fillBox(team, name, player, role);  // en 1v1 se pinta al revelar los dos
   const holder = new THREE.Group();
   holder.name = `champ-${champCount++}`;
   holder.userData.team = team;
@@ -766,8 +1069,23 @@ function showChampion(team, name, instant = false, role = null, player = null) {
     counters[team]++;
     holder.position.copy(lineupPos(team, i));
     holder.rotation.y = (team === 'blue' ? .5 : -.5) + (ROT_FIX[name] || 0);
-    holder.scale.setScalar(1);
+    holder.scale.setScalar(es1v1() ? CINE_1V1.escala : 1);
     scene.add(holder);
+    if (es1v1()) ponerEtiqueta1v1(team, nombreDelJugador(team, player));
+  } else if (es1v1()) {
+    // R85b · 1v1: nada de podio. El campeón se queda reservado, fuera de la
+    // escena, hasta que los dos lados tengan el suyo; entonces salen juntos,
+    // cada uno directamente en su base.
+    pending[team]++;
+    holder.userData.pending = true;
+    holder.userData.slot = 0;
+    holder.position.set(0, 0, 0);
+    holder.scale.setScalar(.01);
+    holdersByTeam[team].push(holder);
+    reserva1v1[team] = { holder, team, name, player, role };
+    logUI(`⏳ Pick ${team === 'blue' ? '🔵' : '🔴'}: ${name} (esperando al otro)`)
+    revelar1v1SiListo();
+    return;
   } else {
     // El espacio se reserva al llegar, pero el modelo espera fuera de la escena.
     pending[team]++;
@@ -786,6 +1104,8 @@ const ws = new WebSocket(`ws://${location.host}/?client=overlay`);
 ws.onmessage = (e) => {
   const msg = JSON.parse(e.data);
   if (msg.type === 'pick') showChampion(msg.team, msg.champion, false, msg.role, msg.player);
+  if (msg.type === 'hover') pintarPreseleccion(msg);   // R97 · solo carta 2D, nunca 3D
+  if (msg.type === 'bans-estado') pintarBans(msg.data);  // R97c · fila de baneos completa
   if (msg.type === 'role') setRole(msg.team, msg.champion, msg.role);
   if (msg.type === 'roster') applyRoster(msg.data);
   if (msg.type === 'timer') applyTimer(msg.data);
@@ -794,11 +1114,11 @@ ws.onmessage = (e) => {
     setTimeout(finishDraftWhenReady, 4000);
   }
   if (msg.type === 'ban') {
-    if (banCounters[msg.team] >= 5) {
+    if (banCounters[msg.team] >= maxBaneos()) {
       logUI(`⚠️ Máximo 5 bans para el equipo ${msg.team === 'blue' ? 'azul' : 'rojo'}`);
     } else {
       fillBanBox(msg.team, msg.champion);
-      logUI(`🚫 Ban ${msg.team === 'blue' ? '🔵' : '🔴'} (${banCounters[msg.team]}/5): ${msg.champion}`);
+      logUI(`🚫 Ban ${msg.team === 'blue' ? '🔵' : '🔴'} (${banCounters[msg.team]}/${maxBaneos()}): ${msg.champion}`);
     }
   }
   if (msg.type === 'undo') {
@@ -811,6 +1131,8 @@ ws.onmessage = (e) => {
       const holder = holdersByTeam[msg.team].pop();
       if (holder) {
         holder.userData.cancelled = true;
+        if (reserva1v1[msg.team] && reserva1v1[msg.team].holder === holder) reserva1v1[msg.team] = null;
+        if (es1v1()) quitarEtiqueta1v1(msg.team);
         if (holder.userData.pending) {
           holder.userData.pending = false;
           pending[msg.team] = Math.max(0, pending[msg.team] - 1);
@@ -825,7 +1147,7 @@ ws.onmessage = (e) => {
         scene.remove(holder);
       }
       const bx = [...document.querySelectorAll(`#${msg.team}Boxes .pbox`)].find(b => b.dataset.champ === msg.champion);
-      if (bx) { delete bx.dataset.champ; const im = bx.querySelector('img'); if (im) im.remove(); }
+      if (bx) { delete bx.dataset.champ; const im = bx.querySelector('img:not(.preview)'); if (im) im.remove(); }
     }
     logUI('↩️ Última acción deshecha');
   }
@@ -844,6 +1166,8 @@ ws.onmessage = (e) => {
     pending.blue = 0; pending.red = 0;
     holdersByTeam.blue = []; holdersByTeam.red = [];
     draftDone = false;
+    reserva1v1.blue = null; reserva1v1.red = null;
+    quitarEtiqueta1v1('blue'); quitarEtiqueta1v1('red');
     cine = null;
     ['blue', 'red'].forEach(t => { if (teamLogoSprites[t]) { teamLogoSprites[t].visible = false; teamLogoSprites[t].material.opacity = 0; } });
     showOverlayChrome();
@@ -851,14 +1175,34 @@ ws.onmessage = (e) => {
     logUI('Listo para nuevo draft');
   }
   if (msg.type === 'init') {
+    // R97 · al abrir el overlay se empieza sin preselecciones: solo cuenta el
+    // estado guardado (los picks confirmados), que llegan como pick.
+    document.querySelectorAll('.pbox img.preview').forEach(im => im.remove());
+    document.querySelectorAll('.pbox.preview').forEach(b => b.classList.remove('preview'));
+    preselecciones.blue.clear(); preselecciones.red.clear();
     showOverlayChrome();
     applyInfo(msg.state?.info);
     applyScore(msg.state?.score);
     applyRoster(msg.state?.roster);
     if (msg.state?.history) { renderUsed('blue', msg.state.history.blue); renderUsed('red', msg.state.history.red); }
+    pintarBans(msg.state?.bans);   // R97b · la fila de baneos, completa
     (msg.state?.picks || []).forEach(p => showChampion(p.team, p.champion, true, p.role, p.player));
   }
 };
+
+// R97c · RED DE SEGURIDAD DE LOS BANEOS. Mientras la fila no esté completa se le
+// pide la lista al servidor cada 4 s (como mucho 150 veces, 10 minutos). Si un
+// baneo se pierde por lo que sea —o si el overlay se abre a mitad del draft—
+// aparece igualmente. No toca nada más.
+// Se pide la fila cada 4 s mientras dure el draft (hasta 10 minutos). Si la fila
+// ya coincide, el repintado no hace nada, así que no hay parpadeo.
+let pedidosDeBans = 0;
+setInterval(() => {
+  if (pedidosDeBans >= 150 || draftDone) return;
+  if (!ws || ws.readyState !== WebSocket.OPEN) return;
+  pedidosDeBans++;
+  ws.send(JSON.stringify({ type: 'pedir-bans' }));
+}, 4000);
 
 const clock = new THREE.Clock();
 // (r72) TOPE DE FOTOGRAMAS. Antes se pintaba a lo que diera el monitor: en una
@@ -948,7 +1292,8 @@ let fotogramasPintados = 0;   // solo para el cuadro de datos de abajo
           }
         } else o.userData.fixTo = null;
       }
-      if (o.scale.x < 1) o.scale.setScalar(Math.min(1, o.scale.x + dt * 2.5));
+      const escFinal = o.userData.escalaFinal || 1;
+      if (o.scale.x < escFinal) o.scale.setScalar(Math.min(escFinal, o.scale.x + dt * 2.5));
       if (o.userData.target) {
         o.position.lerp(o.userData.target, 1 - Math.pow(0.02, dt));
         if (o.userData.targetRot !== undefined)

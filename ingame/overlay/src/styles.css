@@ -1039,3 +1039,290 @@ img{display:block;max-width:100%}
   55%{filter:brightness(1.25) saturate(1.15)}
   100%{filter:none}
 }
+
+/* ==================================================================
+   MODO 1 VS 1  (r82)
+   Todo lo de aquí abajo solo actúa cuando el cuerpo lleva
+   data-modo="1v1", que lo pone render.js según lo que diga el panel.
+   El 5 vs 5 no se toca: sin ese atributo, todas estas reglas no existen.
+   ================================================================== */
+
+/* La barra de arriba gana una segunda fila para las tres reglas. */
+body[data-modo="1v1"] .topbar{
+  /* Más angosta que la del 5 vs 5: con nombre y CS por lado, la de 926 dejaba
+     un hueco muerto enorme entre los dos datos. Sigue centrada. */
+  left:580px;
+  width:760px;
+  height:132px;
+  grid-template-rows:94px 38px;
+  align-content:start;
+}
+
+/* En el 1 vs 1 la barra solo lleva el nombre y el CS de cada uno. Fuera el
+   oro, las torres, los asesinatos del centro y las victorias de la serie. */
+body[data-modo="1v1"] .top-gold-wrap,
+body[data-modo="1v1"] .top-stat:not(.top-cs),
+body[data-modo="1v1"] .center-kills{display:none!important}
+/* (r93) Los puntos de la serie SÍ se ven en el 1 vs 1: en un BO3 o BO5 son
+   la cuenta de la serie. Antes se ocultaban junto con el oro y las torres. */
+body[data-modo="1v1"] .game-center{grid-template-columns:1fr}
+body[data-modo="1v1"] .top-cs{flex:0 0 auto;padding-inline:8px}
+body[data-modo="1v1"] .top-cs strong{font-size:27px}
+
+/* Sin logos de equipo: el escudo no se dibuja y el nombre del jugador se
+   queda con todo el hueco. */
+body[data-modo="1v1"] .team-emblem{display:none}
+body[data-modo="1v1"] .top-team{gap:6px}
+/* El nombre mira hacia su propio CS, que es lo que tiene al lado, para que no
+   quede hueco entre los dos. */
+body[data-modo="1v1"] .team-identity{flex:1 1 auto;min-width:0;text-align:right}
+body[data-modo="1v1"] .top-team-red .team-identity{text-align:left}
+body[data-modo="1v1"] .team-identity strong{font-size:21px;letter-spacing:.01em}
+
+/* El CS, que se va de la tabla a la barra. */
+body[data-modo="1v1"] .top-cs{display:flex;flex:0 0 74px;gap:4px}
+.top-cs{display:none}
+.cs-tag{color:var(--text-muted);font:700 10px/1 var(--font-number);letter-spacing:.08em}
+.top-cs strong{font-size:23px}
+
+/* Las tres reglas, como segunda fila de la barra. Solo el texto: aquí no se
+   marca cuál se cumplió, eso lo dice el anuncio de victoria. */
+.win-rules{display:none;grid-column:1 / -1;grid-row:2;align-items:center;justify-content:center;gap:26px;
+  background:oklch(0.15 0.018 285 / 0.98);border-top:1px solid var(--line);padding:0 10px}
+body[data-modo="1v1"] .win-rules{display:flex}
+.win-rule{font:700 11px/1 var(--font-ui);letter-spacing:.13em;white-space:nowrap;color:var(--text-muted)}
+
+/* La tabla: un solo piso, la mitad de alta y todo más grande. */
+body[data-modo="1v1"] .scoreboard{
+  /* Se ensancha solo aquí para que las barras de vida y maná quepan grandes:
+     con 906 px la fila no daba más de 100 px de barra. Sigue centrada. */
+  left:420px;
+  width:1080px;
+  height:128px;
+}
+body[data-modo="1v1"] .teams-grid{height:126px}
+body[data-modo="1v1"] .matchup-row{height:126px}
+body[data-modo="1v1"] .lane-difference small{font-size:10px}
+body[data-modo="1v1"] .lane-difference strong{font-size:15px}
+/* Sin wards: aquí no hay nada que vigilar. */
+body[data-modo="1v1"] .vision-score{display:none}
+
+body[data-modo="1v1"] .player-row{
+  height:126px;
+  grid-template-columns:44px 44px 76px minmax(120px,1fr) 126px;
+  grid-template-areas:'spells runes champion info items';
+  gap:2px;
+}
+body[data-modo="1v1"] .team-blue .player-row{
+  grid-template-columns:126px minmax(120px,1fr) 76px 44px 44px;
+  grid-template-areas:'items info champion runes spells';
+}
+/* Aquí no hay misiones de línea. */
+body[data-modo="1v1"] .player-quest{display:none!important}
+/* En el 1 vs 1 la tabla no lleva ni CS ni KDA ni el nombre: eso se va a la barra. */
+body[data-modo="1v1"] .player-stats{display:none}
+body[data-modo="1v1"] .player-name{display:none}
+
+/* Iconos, retrato y barras más grandes. */
+body[data-modo="1v1"] .icon-stack{height:auto;gap:6px}
+body[data-modo="1v1"] .spell-icon,
+body[data-modo="1v1"] .rune-icon{width:40px;height:40px}
+body[data-modo="1v1"] .cooldown{font-size:15px}
+body[data-modo="1v1"] .champion-wrap,
+body[data-modo="1v1"] .champion-icon{width:76px;height:76px}
+body[data-modo="1v1"] .champion-level{min-width:24px;height:22px;font-size:14px}
+body[data-modo="1v1"] .respawn-timer{min-width:30px;height:20px;font-size:15px}
+body[data-modo="1v1"] .player-info{gap:4px}
+body[data-modo="1v1"] .resource-bars{max-width:none;gap:3px;padding-bottom:0}
+body[data-modo="1v1"] .bar{height:9px}
+body[data-modo="1v1"] .bar-xp{height:7px}
+
+/* Los siete huecos del inventario, en dos filas para que quepan grandes. */
+body[data-modo="1v1"] .items{grid-template-columns:repeat(4,30px);grid-auto-rows:30px;gap:2px}
+body[data-modo="1v1"] .item-slot{width:30px;height:30px}
+body[data-modo="1v1"] .item-count{font-size:11px}
+body[data-modo="1v1"] .vision-score{min-width:18px;font-size:11px}
+
+/* En el 1 vs 1 no van ni los contadores de monstruos ni sus modelos 3D. */
+body[data-modo="1v1"] .objective-ribbon,
+body[data-modo="1v1"] #voidgrub-alert,
+body[data-modo="1v1"] #baron-alert,
+body[data-modo="1v1"] #herald-alert,
+body[data-modo="1v1"] #dragon-alert{display:none!important}
+
+/* Presentación del inicio en el 1 vs 1: runas y fichas de los dos jugadores. */
+
+/* Las runas: hay una sola fila por lado, así que el recuadro se ensancha y los
+   iconos crecen para llenarlo en vez de quedar perdidos. */
+/* La tira del inicio (los dos nombres y el VS) ocupa de 0 a 196: los recuadros
+   de runas empiezan debajo, en 212, para no taparla. */
+body[data-modo="1v1"] .rune-intro{top:212px}
+body[data-modo="1v1"] .rune-side{width:520px}
+body[data-modo="1v1"] .rune-row{
+  grid-template-columns:150px 120px 1fr;
+  gap:18px;
+  flex:0 0 auto;
+}
+body[data-modo="1v1"] .rune-panel-red .rune-row{grid-template-columns:1fr 120px 150px}
+body[data-modo="1v1"] .rune-champ{width:150px;height:150px}
+body[data-modo="1v1"] .rune-champ .asset-fallback{font-size:44px}
+body[data-modo="1v1"] .rune-key{width:120px;height:120px}
+body[data-modo="1v1"] .rune-key .asset-fallback{font-size:40px}
+body[data-modo="1v1"] .rune-minors{grid-template-columns:repeat(3,62px);grid-auto-rows:62px;gap:8px}
+body[data-modo="1v1"] .rune-minor{width:62px;height:62px}
+body[data-modo="1v1"] .rune-list{padding:16px 16px 18px;gap:0}
+body[data-modo="1v1"] .rune-panel-title{flex:0 0 58px;font-size:33px}
+body[data-modo="1v1"] .rune-team-head{flex:0 0 96px;justify-content:center;gap:0}
+body[data-modo="1v1"] .rune-team-emblem{display:none}
+body[data-modo="1v1"] .rune-team-name{font-size:30px}
+body[data-modo="1v1"] .rune-panel-red .rune-team-name{text-align:center;flex:0 1 auto}
+
+/* La tira del inicio: en el 1 vs 1 no hay logo, así que se quitan el escudo de
+   cada lado y el hueco del logo del torneo. Quedan el nombre del jugador y el
+   VS, nada más. */
+body[data-modo="1v1"] .intro-emblem,
+body[data-modo="1v1"] .intro-tournament{display:none!important}
+
+/* Las fichas: una por lado, las dos a la vez durante todo el recorrido. Se
+   ensanchan lo mismo que la tabla del 1 vs 1 y quedan un poco más altas. */
+body[data-modo="1v1"] .deck-intro{width:1080px}
+body[data-modo="1v1"] .deck-side{height:300px}
+body[data-modo="1v1"] .deck-role{height:300px}
+body[data-modo="1v1"] .deck-role-label{font-size:19px;letter-spacing:.18em}
+
+/* Anuncio de victoria del 1 vs 1: en el centro de la pantalla, grande. */
+.victory{
+  position:absolute;z-index:34;left:50%;top:45%;transform:translate(-50%,-50%);
+  pointer-events:none;
+}
+.victory-card{
+  display:flex;flex-direction:column;align-items:center;gap:14px;
+  padding:22px 54px 26px;min-width:520px;
+  background:linear-gradient(180deg,oklch(0.20 0.022 285 / 0.97),oklch(0.13 0.018 285 / 0.97));
+  border:1px solid oklch(0.45 0.03 285 / 0.9);border-top:3px solid var(--accent);
+  clip-path:polygon(22px 0,calc(100% - 22px) 0,100% 22px,100% calc(100% - 22px),calc(100% - 22px) 100%,22px 100%,0 calc(100% - 22px),0 22px);
+  filter:drop-shadow(0 10px 22px oklch(0.08 0.02 285 / 0.75));
+  animation:victory-in 420ms cubic-bezier(.16,.84,.44,1.02) both;
+}
+.victory-kicker{
+  font:800 54px/1 var(--font-ui);letter-spacing:.14em;
+  color:var(--accent);text-shadow:0 0 18px oklch(0.88 0.140 95 / 0.35);
+}
+.victory-body{display:flex;align-items:center;gap:22px}
+.victory-portrait{position:relative;width:96px;height:96px;flex:0 0 96px;border:2px solid var(--accent);background:var(--p-ink-700)}
+.victory-icon{width:100%;height:100%;object-fit:cover}
+.victory-letter{position:absolute;inset:0;display:grid;place-items:center;font:700 40px/1 var(--font-ui);color:var(--text-muted)}
+.victory-text{display:flex;flex-direction:column;gap:6px;min-width:0}
+.victory-name{font:700 40px/1 var(--font-ui);letter-spacing:.01em;white-space:nowrap;max-width:420px;overflow:hidden;text-overflow:clip}
+.victory-reason-wrap{display:flex;align-items:baseline;gap:9px}
+.victory-reason-label{color:var(--text-muted);font:600 13px/1 var(--font-ui);letter-spacing:.16em}
+.victory-reason{font:700 20px/1 var(--font-ui);letter-spacing:.12em;color:var(--text)}
+.victory.azul{border-color:var(--p-blue-300)}
+.victory.azul .victory-card{border-top-color:var(--p-blue-300);border-color:oklch(0.58 0.185 255 / 0.65)}
+.victory.azul .victory-kicker{color:var(--p-blue-300);text-shadow:0 0 18px oklch(0.76 0.120 245 / 0.40)}
+.victory.azul .victory-portrait{border-color:var(--p-blue-300)}
+.victory.rojo .victory-card{border-top-color:var(--p-red-300);border-color:oklch(0.55 0.205 22 / 0.65)}
+.victory.rojo .victory-kicker{color:var(--p-red-300);text-shadow:0 0 18px oklch(0.72 0.145 25 / 0.40)}
+.victory.rojo .victory-portrait{border-color:var(--p-red-300)}
+@keyframes victory-in{
+  from{opacity:0;transform:scale(.92) translateY(10px)}
+  to{opacity:1;transform:scale(1) translateY(0)}
+}
+/* Solo existe en el 1 vs 1. */
+body:not([data-modo="1v1"]) .victory{display:none!important}
+
+/* ------------------------------------------------------------------
+   (r90) La barra de recurso cambia según lo que gaste el campeón.
+
+   El maná se queda con el azul de siempre y no se toca. Los demás llevan
+   su color: energía amarilla, furia naranja, flujo blanco, pozo sangriento
+   rojo oscuro, escudo gris, ferocidad naranja, calor rojo, coraje ámbar y
+   ráfaga carmesí roja. El que no gasta nada (Garen, Katarina, Riven, Dr.
+   Mundo, Viego, Zac, Bel'Veth) no dibuja barra: se quita, no se deja vacía.
+
+   El tipo lo pone render.js en data-recurso; el color vive aquí.
+   ------------------------------------------------------------------ */
+.fight-bar-mp[data-recurso] b{transition:width 220ms linear}
+.fight-bar.is-sin{display:none}
+.fight-bar-mp[data-recurso="energia"] b{background:linear-gradient(90deg,oklch(0.74 0.16 95),oklch(0.90 0.14 100))}
+.fight-bar-mp[data-recurso="furia"] b{background:linear-gradient(90deg,oklch(0.66 0.19 45),oklch(0.80 0.16 55))}
+.fight-bar-mp[data-recurso="flujo"] b{background:linear-gradient(90deg,oklch(0.84 0.03 230),oklch(0.95 0.02 220))}
+.fight-bar-mp[data-recurso="sangre"] b{background:linear-gradient(90deg,oklch(0.46 0.19 20),oklch(0.60 0.20 25))}
+.fight-bar-mp[data-recurso="escudo"] b{background:linear-gradient(90deg,oklch(0.74 0.01 260),oklch(0.88 0.01 260))}
+.fight-bar-mp[data-recurso="ferocidad"] b{background:linear-gradient(90deg,oklch(0.70 0.20 55),oklch(0.84 0.17 65))}
+.fight-bar-mp[data-recurso="calor"] b{background:linear-gradient(90deg,oklch(0.58 0.22 32),oklch(0.72 0.20 40))}
+.fight-bar-mp[data-recurso="coraje"] b{background:linear-gradient(90deg,oklch(0.64 0.13 65),oklch(0.78 0.12 75))}
+.fight-bar-mp[data-recurso="carmesi"] b{background:linear-gradient(90deg,oklch(0.50 0.21 15),oklch(0.64 0.21 20))}
+.bar-resource[data-recurso="energia"] > span{background:oklch(0.74 0.16 95)}
+.bar-resource[data-recurso="furia"] > span{background:oklch(0.66 0.19 45)}
+.bar-resource[data-recurso="flujo"] > span{background:oklch(0.84 0.03 230)}
+.bar-resource[data-recurso="sangre"] > span{background:oklch(0.46 0.19 20)}
+.bar-resource[data-recurso="escudo"] > span{background:oklch(0.74 0.01 260)}
+.bar-resource[data-recurso="ferocidad"] > span{background:oklch(0.70 0.20 55)}
+.bar-resource[data-recurso="calor"] > span{background:oklch(0.58 0.22 32)}
+.bar-resource[data-recurso="coraje"] > span{background:oklch(0.64 0.13 65)}
+.bar-resource[data-recurso="carmesi"] > span{background:oklch(0.50 0.21 15)}
+
+/* ------------------------------------------------------------------
+   (r91) 1 vs 1: fuera las runas y fuera los monstruos.
+
+   En el Abismo no hay vacularbas, ni heraldos, ni barones, así que la
+   cinta de contadores y los temporizadores de objetivo no dicen nada:
+   solo hacen bulto debajo y al lado de la barra.
+   ------------------------------------------------------------------ */
+body[data-modo="1v1"] #rune-intro{display:none!important}
+body[data-modo="1v1"] .objective-ribbon{display:none!important}
+body[data-modo="1v1"] .objectives{display:none!important}
+
+/* ------------------------------------------------------------------
+   (r91) La barra del 1 vs 1 con las letras grandes.
+
+   Antes sobraba sitio dentro de la barra y el nombre se quedaba en 21 px
+   con puntos suspensivos. Ahora la barra se ensancha lo justo para que el
+   nombre y el CS entren grandes y enteros.
+   ------------------------------------------------------------------ */
+body[data-modo="1v1"] .topbar{left:460px;width:1000px;grid-template-columns:1fr 176px 1fr}
+body[data-modo="1v1"] .team-identity strong{font-size:30px;letter-spacing:.005em}
+/* El hueco del CS se reserva fijo, con sitio para tres cifras: si creciera con
+   el número, a los 100 súbditos el nombre se quedaría sin espacio y se cortaría. */
+body[data-modo="1v1"] .top-cs{flex:0 0 104px;gap:6px;padding-inline:8px}
+body[data-modo="1v1"] .top-team-blue .top-cs{justify-content:flex-start}
+body[data-modo="1v1"] .top-team-red .top-cs{justify-content:flex-end}
+body[data-modo="1v1"] .top-cs strong{font-size:38px}
+body[data-modo="1v1"] .cs-tag{font-size:15px;letter-spacing:.05em}
+
+/* ------------------------------------------------------------------
+   (r92) La barra del 1 vs 1, simétrica.
+
+   Antes el nombre y el CS se pegaban al centro y el hueco que sobraba se
+   iba al borde de fuera, así que el conjunto no quedaba igual a los dos
+   lados: el nombre del lado rojo se veía más separado de su CS. Ahora el
+   bloque nombre + CS se centra en su mitad, con la misma separación en
+   los dos lados.
+   ------------------------------------------------------------------ */
+body[data-modo="1v1"] .top-team{justify-content:center;gap:10px}
+body[data-modo="1v1"] .team-identity{flex:0 1 auto;min-width:0}
+body[data-modo="1v1"] .top-cs{flex:0 0 auto;padding:0;gap:6px}
+
+/* ------------------------------------------------------------------
+   (r92) Fuera la banda de asesinatos del 1 vs 1.
+
+   Va pegada encima del minimapa y en un 1 contra 1 no aporta nada.
+   ------------------------------------------------------------------ */
+body[data-modo="1v1"] #kill-feed{display:none!important}
+
+/* ------------------------------------------------------------------
+   (r93) Los puntos de la serie vuelven al 1 vs 1.
+
+   En la r82 se quitaron porque solo había nombre y CS. En un BO3 o un BO5
+   hacen falta: un cuadro por victoria necesaria, relleno el que ya la tiene.
+   Van pegados a los dos extremos de la barra, para no mover el nombre ni el
+   CS, que siguen centrados en su mitad.
+   ------------------------------------------------------------------ */
+body[data-modo="1v1"] .top-team{position:relative}
+body[data-modo="1v1"] .top-team .series-score{
+  position:absolute;top:12px;bottom:22px;left:26px;
+  height:auto;margin:0;z-index:1
+}
+body[data-modo="1v1"] .top-team-red .series-score{left:auto;right:26px}
+body[data-modo="1v1"] .series-score .series-pip{min-height:8px}

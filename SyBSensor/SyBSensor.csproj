@@ -1,7 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net10.0-windows</TargetFramework>
+    <!-- r90 · League Broadcast se ha actualizado y sus librerias ahora son de
+         .NET 11 (System.Runtime 11.0.0.0). Para poder referenciarlas hay que
+         compilar tambien contra .NET 11: con net10.0 el compilador lo rechaza
+         con CS1705. -->
+    <TargetFramework>net11.0-windows</TargetFramework>
     <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <AssemblyName>SyBSensor</AssemblyName>
@@ -17,8 +21,23 @@
     <Reference Include="FlatSharp.Runtime"><HintPath>$(LbDir)FlatSharp.Runtime.dll</HintPath></Reference>
     <Reference Include="Microsoft.Extensions.Logging.Abstractions"><HintPath>$(LbDir)Microsoft.Extensions.Logging.Abstractions.dll</HintPath></Reference>
   </ItemGroup>
+  <!-- r90 · Lo que se copia al lado del ejecutable. Todo con comodines: si en la
+       carpeta de League Broadcast falta algo (por ejemplo lblib.dll, que en la
+       version nueva ya no viene suelta: se descarga por parche del juego), el
+       comodin simplemente no la encuentra y NO rompe la compilacion. -->
   <ItemGroup>
-    <LbDeps Include="$(LbDir)FlatSharp*.dll;$(LbDir)Microsoft.Extensions.Logging*.dll;$(LbDir)lblib.dll;$(LbDir)BlueBottleClient.Common.dll;$(LbDir)BlueBottleClient.GameLib.dll;$(LbDir)AWSSDK*.dll;$(LbDir)System.IdentityModel.Tokens.Jwt.dll;$(LbDir)Microsoft.IdentityModel*.dll" />
+    <LbDeps Include="$(LbDir)Farsight.dll" />
+    <LbDeps Include="$(LbDir)BlueBottleClient*.dll" />
+    <LbDeps Include="$(LbDir)lblib*.dll" />
+    <LbDeps Include="$(LbDir)FlatSharp*.dll" />
+    <LbDeps Include="$(LbDir)Microsoft.Extensions.Logging*.dll" />
+    <LbDeps Include="$(LbDir)AWSSDK*.dll" />
+    <LbDeps Include="$(LbDir)System.IdentityModel.Tokens.Jwt.dll" />
+    <LbDeps Include="$(LbDir)Microsoft.IdentityModel*.dll" />
+    <LbDeps Include="$(LbDir)System.Reactive*.dll" />
+    <LbDeps Include="$(LbDir)Microsoft.IO.RecyclableMemoryStream*.dll" />
+    <LbDeps Include="$(LbDir)ZstdSharp.dll" />
+    <LbDeps Include="$(LbDir)System.IO.Hashing.dll" />
   </ItemGroup>
   <Target Name="CopyLbDeps" AfterTargets="Build" BeforeTargets="Run">
   <Copy SourceFiles="@(LbDeps)" DestinationFolder="$(OutDir)" SkipUnchangedFiles="true" />

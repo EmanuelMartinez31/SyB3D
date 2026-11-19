@@ -337,6 +337,13 @@
   .field.full { grid-column: 1 / -1; }
   .field input, .field select { width: 100%; }
   .field-hint { color: var(--muted); font-size: 10px; line-height: 1.45; }
+  /* (r82) Modo de partida: 1 vs 1, 2 vs 2 o 5 vs 5. */
+  .modo-box { grid-column: 1 / -1; display: flex; flex-direction: column; gap: 9px; padding-bottom: 4px; border-bottom: 1px solid var(--line); }
+  .modo-options { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+  .modo-options .field-label { min-width: 62px; }
+  .modo-btn { padding: 8px 15px; border: 1px solid var(--line); border-radius: 6px; background: var(--input); color: var(--muted); font-size: 12px; font-weight: 600; letter-spacing: .02em; }
+  .modo-btn:hover { border-color: var(--cyan); color: var(--text); }
+  .modo-btn.is-on { border-color: var(--cyan); background: rgba(34, 211, 238, .16); color: var(--text); }
   .team-settings { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
   .team-block { min-width: 0; padding: 18px; }
   .team-block + .team-block { border-left: 1px solid var(--line); }
@@ -550,6 +557,21 @@
         <section class="panel">
           <header class="panel-header"><div><span class="section-kicker">Identidad</span><h2>Torneo y equipos</h2></div></header>
           <div class="form-grid">
+            <div class="modo-box">
+              <div class="modo-options">
+                <span class="field-label">Modo de partida</span>
+                <button type="button" class="modo-btn" data-modo="1v1" onclick="setModoPartida('1v1')">1 vs 1</button>
+                <button type="button" class="modo-btn" data-modo="2v2" onclick="setModoPartida('2v2')">2 vs 2</button>
+                <button type="button" class="modo-btn is-on" data-modo="5v5" onclick="setModoPartida('5v5')">5 vs 5</button>
+              </div>
+              <div class="modo-options" id="modoBaneos" hidden>
+                <span class="field-label">Baneos</span>
+                <button type="button" class="modo-btn is-on" data-baneos="0" onclick="setBaneosPartida(0)">0</button>
+                <button type="button" class="modo-btn" data-baneos="1" onclick="setBaneosPartida(1)">1</button>
+                <button type="button" class="modo-btn" data-baneos="3" onclick="setBaneosPartida(3)">3</button>
+              </div>
+              <span class="field-hint" id="modoHint">El modo se manda al Draft y al Ingame al elegirlo. Los baneos de esta fila son solo para 1 vs 1 y 2 vs 2: en 5 vs 5 el draft sigue con sus 5 baneos de siempre. En 1 vs 1 y 2 vs 2 no se usan los logos de equipo.</span>
+            </div>
             <label class="field full"><span class="field-label">Nombre del torneo</span><input id="tName" placeholder="Ej. GamerGrounds · Gran Final"></label>
           </div>
           <div class="team-settings">
@@ -661,7 +683,7 @@
 <script>
 const CHAMPS = ['Aatrox', 'Ahri', 'Akali', 'Akshan', 'Alistar', 'Ambessa', 'Amumu', 'Anivia', 'Annie', 'Aphelios', 'Ashe', 'Aurelion Sol', 'Aurora', 'Azir', 'Bard', "Bel'Veth", 'Blitzcrank', 'Brand', 'Braum', 'Briar', 'Caitlyn', 'Camille', 'Cassiopeia', "Cho'Gath", 'Corki', 'Darius', 'Diana', 'Dr. Mundo', 'Draven', 'Ekko', 'Elise', 'Evelynn', 'Ezreal', 'Fiddlesticks', 'Fiora', 'Fizz', 'Galio', 'Gangplank', 'Garen', 'Gnar', 'Gragas', 'Graves', 'Gwen', 'Hecarim', 'Heimerdinger', 'Hwei', 'Illaoi', 'Irelia', 'Ivern', 'Janna', 'Jarvan IV', 'Jax', 'Jayce', 'Jhin', 'Jinx', "K'Sante", "Kai'Sa", 'Kalista', 'Karma', 'Karthus', 'Kassadin', 'Katarina', 'Kayle', 'Kayn', 'Kennen', "Kha'Zix", 'Kindred', 'Kled', "Kog'Maw", 'LeBlanc', 'Lee Sin', 'Leona', 'Lillia', 'Lissandra', 'Locke', 'Lucian', 'Lulu', 'Lux', 'Malphite', 'Malzahar', 'Maokai', 'Master Yi', 'Mel', 'Milio', 'Miss Fortune', 'Mordekaiser', 'Morgana', 'Naafiri', 'Nami', 'Nasus', 'Nautilus', 'Neeko', 'Nidalee', 'Nilah', 'Nocturne', 'Nunu & Willump', 'Olaf', 'Orianna', 'Ornn', 'Pantheon', 'Poppy', 'Pyke', 'Qiyana', 'Quinn', 'Rakan', 'Rammus', "Rek'Sai", 'Rell', 'Renata Glasc', 'Renekton', 'Rengar', 'Riven', 'Rumble', 'Ryze', 'Samira', 'Sejuani', 'Senna', 'Seraphine', 'Sett', 'Shaco', 'Shen', 'Shyvana', 'Singed', 'Sion', 'Sivir', 'Skarner', 'Smolder', 'Sona', 'Soraka', 'Swain', 'Sylas', 'Syndra', 'Tahm Kench', 'Taliyah', 'Talon', 'Taric', 'Teemo', 'Thresh', 'Tristana', 'Trundle', 'Tryndamere', 'Twisted Fate', 'Twitch', 'Udyr', 'Urgot', 'Varus', 'Vayne', 'Veigar', "Vel'Koz", 'Vex', 'Vi', 'Viego', 'Viktor', 'Vladimir', 'Volibear', 'Warwick', 'Wukong', 'Xayah', 'Xerath', 'Xin Zhao', 'Yasuo', 'Yone', 'Yorick', 'Yuumi', 'Zac', 'Zed', 'Zeri', 'Ziggs', 'Zilean', 'Zoe', 'Zyra'];
 
-const PHASES = [
+const PHASES_BASE = [
   {team:'blue', type:'ban'},  {team:'red', type:'ban'},
   {team:'blue', type:'ban'},  {team:'red', type:'ban'},
   {team:'blue', type:'ban'},  {team:'red', type:'ban'},
@@ -673,7 +695,29 @@ const PHASES = [
   {team:'red', type:'pick'},  {team:'blue', type:'pick'},
   {team:'blue', type:'pick'}, {team:'red', type:'pick'}
 ];
+// R86 · El turno de baneo respeta lo que dice el modo: en 5 vs 5 son los 5 de
+// siempre (la lista entera, igual que antes); en 1 vs 1 y 2 vs 2 se quedan solo
+// los baneos elegidos (0, 1 o 3 por equipo) y los turnos de baneo que sobran
+// desaparecen. Los turnos de selección no se tocan.
+function construirFases() {
+  const porLado = baneosEfectivos();
+  const hechos = { blue: 0, red: 0 };
+  return PHASES_BASE.filter(f => {
+    if (f.type !== 'ban') return true;
+    if (hechos[f.team] < porLado) { hechos[f.team]++; return true; }
+    return false;
+  });
+}
+let PHASES = PHASES_BASE.slice();   // se recalcula cuando se sabe el modo
 let phaseIdx = 0;
+// Baneos que ya se han mandado, por equipo (para no pasarse del cupo).
+let bansHechos = { blue: 0, red: 0 };
+function rehacerFases() {
+  const antes = PHASES[phaseIdx];
+  PHASES = construirFases();
+  if (phaseIdx > PHASES.length) phaseIdx = PHASES.length;
+  if (antes) updateBanner();
+}
 
 let ws = null;
 let reconnectTimer = null;
@@ -745,10 +789,21 @@ function handlePanelMessage(e) {
     lcuOn = msg.state?.lcuEnabled === true;
     syncToggleButtons();
     phaseIdx = (msg.state?.picks?.length || 0) + (msg.state?.bans?.length || 0);
+    // R86 · cupo de baneos: se cuentan los que ya hay en el servidor
+    bansHechos = { blue: 0, red: 0 };
+    (msg.state?.bans || []).forEach(b => { if (bansHechos[b.team] !== undefined) bansHechos[b.team]++; });
+    rehacerFases();
+    if (phaseIdx > PHASES.length) phaseIdx = PHASES.length;
     updateBanner();
     log(`📍 Draft sincronizado en el paso ${Math.min(phaseIdx + 1, 20)}/20`);
     return;
   }
+  // R97f · NO contar dos veces. El servidor reenvía a todos lo que manda el
+  // panel, así que el baneo volvía aquí y se sumaba otra vez. Con 3 baneos el
+  // contador iba por 6, el panel creía que ya estaban los 5 y convertía en
+  // selección los clics siguientes. Los que manda este panel van marcados con
+  // origen:'panel' y aquí no se cuentan (ya se contaron al mandarlos).
+  if (msg.type === 'ban' && bansHechos[msg.team] !== undefined && msg.origen !== 'panel') bansHechos[msg.team]++;
   if ((msg.type === 'pick' || msg.type === 'ban') && msg.auto) {
     log(`⚡ AUTO → ${msg.type.toUpperCase()} ${msg.team === 'blue' ? '🔵' : '🔴'} ${msg.champion}`);
     if (document.getElementById('mode').value === 'guided' && phaseIdx < 20) { phaseIdx++; updateBanner(); }
@@ -959,13 +1014,33 @@ updateBanner();
 
 function doAction(champion, forcedType) {
   if (fearlessOn && usedSet.has(champion)) return log(`⛔ ${champion} ya fue usado — FEARLESS DRAFT, no se puede repetir`);
+  const cupo = baneosEfectivos();
   if (document.getElementById('mode').value === 'manual') {
-    send({ type: forcedType || 'pick', team: document.getElementById('team').value, champion });
+    // R86 · también a mano se respeta el cupo: si al equipo ya no le quedan
+    // baneos, SHIFT + clic selecciona en vez de banear.
+    const team = document.getElementById('team').value;
+    const quiereBaneo = forcedType === 'ban';
+    const puedeBaneo = bansHechos[team] < cupo;
+    const tipo = quiereBaneo && puedeBaneo ? 'ban' : 'pick';
+    if (tipo === 'ban') bansHechos[team]++;
+    send({ type: tipo, team, champion, origen: 'panel' });
+    if (quiereBaneo && !puedeBaneo) log(`⛔ ${team === 'blue' ? 'Azul' : 'Rojo'} ya gastó sus ${cupo} baneos: ${champion} se selecciona`);
     return;
   }
   const p = currentPhase();
   if (!p) return log('🏁 El draft ya terminó. Presiona 🔄 para el siguiente juego.');
-  send({ type: p.type, team: p.team, champion });
+  const quiereBaneo = forcedType === 'ban' || p.type === 'ban';
+  const puedeBaneo = bansHechos[p.team] < cupo;
+  const tipo = quiereBaneo && puedeBaneo ? 'ban' : 'pick';
+  if (tipo === 'ban') bansHechos[p.team]++;
+  send({ type: tipo, team: p.team, champion, origen: 'panel' });
+  const baneoFueraDeTurno = tipo === 'ban' && p.type !== 'ban';
+  if (baneoFueraDeTurno) {
+    // Baneo manual en un turno de selección: se manda el baneo y el turno sigue.
+    log(`🚫 Baneo manual ${p.team === 'blue' ? '🔵' : '🔴'} (${bansHechos[p.team]}/${cupo}): ${champion}`);
+    return;
+  }
+  if (quiereBaneo && !puedeBaneo) log(`⛔ ${p.team === 'blue' ? 'Azul' : 'Rojo'} ya gastó sus ${cupo} baneos: ${champion} se selecciona`);
   phaseIdx++;
   updateBanner();
 }
@@ -974,13 +1049,17 @@ function prevPhase() {
   if (phaseIdx > 0) {
     const last = PHASES[phaseIdx - 1];
     phaseIdx--;
+    if (last.type === 'ban' && bansHechos[last.team] > 0) bansHechos[last.team]--;
     send({ type: 'undo', team: last.team, itype: last.type });
     updateBanner();
     log('↩️ Última acción deshecha en el overlay');
   }
 }
 function resetDraft() {
-  phaseIdx = 0; updateBanner(); send({ type: 'clear' });
+  phaseIdx = 0;
+  bansHechos = { blue: 0, red: 0 };
+  PHASES = construirFases();
+  updateBanner(); send({ type: 'clear' });
   log('🔄 Siguiente juego — draft limpio, usados archivados para fearless');
 }
 
@@ -1048,6 +1127,40 @@ function toggleFearless() {
 }
 
 const teamLogos = { blue: '', red: '' };
+// (r82) Modo de partida. Viaja dentro de «info», que es lo que ya leen el
+// draft, el ingame y la postpartida; el ingame lo usa para cambiar la tabla.
+let modoPartida = '5v5';
+let baneosPartida = 0;
+const MODOS_PARTIDA = ['1v1', '2v2', '5v5'];
+const BANEOS_PARTIDA = [0, 1, 3];
+function pintarModoPartida() {
+  rehacerFases();
+  document.querySelectorAll('.modo-btn[data-modo]').forEach(boton => {
+    boton.classList.toggle('is-on', boton.dataset.modo === modoPartida);
+  });
+  document.querySelectorAll('.modo-btn[data-baneos]').forEach(boton => {
+    boton.classList.toggle('is-on', Number(boton.dataset.baneos) === baneosPartida);
+  });
+  const fila = document.getElementById('modoBaneos');
+  if (fila) fila.hidden = modoPartida === '5v5';
+}
+// En 5 vs 5 los baneos son siempre 5 y no los elige este selector: el selector
+// de 0/1/3 solo vale para 1 vs 1 y 2 vs 2.
+function baneosEfectivos() {
+  return modoPartida === '5v5' ? 5 : baneosPartida;
+}
+function setModoPartida(modo) {
+  modoPartida = MODOS_PARTIDA.includes(modo) ? modo : '5v5';
+  pintarModoPartida();
+  sendInfo();
+  log(`🎛️ Modo de partida: ${modoPartida === '1v1' ? '1 vs 1' : modoPartida === '2v2' ? '2 vs 2' : '5 vs 5'}`);
+}
+function setBaneosPartida(cantidad) {
+  baneosPartida = BANEOS_PARTIDA.includes(Number(cantidad)) ? Number(cantidad) : 0;
+  pintarModoPartida();
+  sendInfo();
+  log(`🎛️ Baneos del draft: ${baneosPartida}`);
+}
 function setLogoPreview(side, url) {
   const image = document.getElementById(`${side}LogoPreview`);
   image.hidden = !url;
@@ -1060,6 +1173,9 @@ function applyInfoToPanel(data) {
     const ids = { tournament: 'tName', blue: 'blueName', red: 'redName', bg: 'bgUrl' };
     document.getElementById(ids[key]).value = data[key] || '';
   });
+  modoPartida = MODOS_PARTIDA.includes(data.modo) ? data.modo : '5v5';
+  baneosPartida = BANEOS_PARTIDA.includes(Number(data.baneos)) ? Number(data.baneos) : 0;
+  pintarModoPartida();
   document.getElementById('logoUrl').value = data.logo || '';
   document.getElementById('sponsorIzquierdaUrl').value = data.sponsorIzquierda || '';
   document.getElementById('sponsorDerechaUrl').value = data.sponsorDerecha || '';
@@ -1119,7 +1235,9 @@ function sendInfo() {
     logo: document.getElementById('logoUrl').value,
     sponsorIzquierda: document.getElementById('sponsorIzquierdaUrl').value.trim(),
     sponsorDerecha: document.getElementById('sponsorDerechaUrl').value.trim(),
-    bg: document.getElementById('bgUrl').value
+    bg: document.getElementById('bgUrl').value,
+    modo: modoPartida,
+    baneos: baneosEfectivos()
   }});
   log("📢 Info del torneo enviada al draft e ingame");
 }
@@ -1185,7 +1303,9 @@ async function savePreset() {
         blueLogo: teamLogos.blue,
         redLogo: teamLogos.red,
         sponsorIzquierda: document.getElementById('sponsorIzquierdaUrl').value.trim(),
-        sponsorDerecha: document.getElementById('sponsorDerechaUrl').value.trim()
+        sponsorDerecha: document.getElementById('sponsorDerechaUrl').value.trim(),
+        modo: modoPartida,
+        baneos: baneosPartida
       }})
     });
     await loadPresetList(result.preset.id);
@@ -1210,6 +1330,9 @@ function loadSelectedPreset() {
   });
   document.getElementById('sponsorIzquierdaUrl').value = data.sponsorIzquierda || '';
   document.getElementById('sponsorDerechaUrl').value = data.sponsorDerecha || '';
+  modoPartida = MODOS_PARTIDA.includes(data.modo) ? data.modo : '5v5';
+  baneosPartida = BANEOS_PARTIDA.includes(Number(data.baneos)) ? Number(data.baneos) : 0;
+  pintarModoPartida();
   // El logo general y el fondo actuales se conservan; picks y marcador no cambian.
   sendInfo();
   log(`📂 Preset «${preset.name}» cargado y sincronizado`);

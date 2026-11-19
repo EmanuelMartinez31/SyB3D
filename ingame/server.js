@@ -36,6 +36,19 @@ let seriesSignature = '';
 let draftPollInFlight = false;
 const reportedWinners = new Set();
 const winnerReportsInFlight = new Set();
+
+// (r94) 1 vs 1: la partida se gana con la primera de las tres reglas. En el
+// Abismo no hay nexo, así que la detección por nexo nunca dispara y la serie
+// no sumaba. El detector vive aparte, en 1v1-ganador.js.
+const ganadorUnoContraUno = require('./1v1-ganador')({
+  httpRequestJson,
+  draftOrigin: DRAFT_ORIGIN,
+  getRevision: () => draftSync.revision,
+  reportedWinners,
+  winnerReportsInFlight,
+  finiteNumber,
+  log: mensaje => console.log(mensaje)
+});
 const ignoredGameIds = new Set();
 const draftSync = {
   connected: false,
@@ -1925,6 +1938,7 @@ function clearIngame(config) {
   lastCompactBytes = 0;
   diskDirty = false;
   resetObjectiveTracking(null);
+  ganadorUnoContraUno.reiniciar();
   applyDraftState(config, false);
 
   const message = JSON.stringify({ type: 'ingame-clear', data: currentSeriesConfig(config?.reason) });
@@ -2187,6 +2201,7 @@ app.post('/sensor', (req, res) => {
     if (client.readyState === 1) client.send(message);
   }
   void maybeReportGameWinner(normalized);
+  void ganadorUnoContraUno.reportar(adapted, normalized);
   void autoHideNativeHud(normalized);
 
   if (sequence === 1 || sequence % 20 === 0) {
@@ -2229,6 +2244,7 @@ app.get('/status', (req, res) => {
       error: draftSync.lastError
     },
     winnersReported: reportedWinners.size,
+    unoContraUno: ganadorUnoContraUno.estadoActual(),
     hudAutoHide: {
       gameId: autoHideGameId,
       inFlight: autoHideInFlight,

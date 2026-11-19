@@ -1,0 +1,62 @@
+﻿==============================================================
+ INFORME: por que el sensor no encuentra la libreria del juego
+==============================================================
+ Fecha: 2026-11-18 15:07:35
+
+
+----------------------------------------------------------------------
+1. LEAGUE BROADCAST
+
+----------------------------------------------------------------------
+   Carpeta: C:\Users\31ema\AppData\Local\LeagueBroadcast\current
+   No hay LeagueBroadcast.exe en esa carpeta.
+   League Broadcast esta cerrado.
+   El cliente de League of Legends esta ABIERTO.
+
+----------------------------------------------------------------------
+2. LIBRERIAS DEL JUEGO (lblib) QUE HAY EN LEAGUE BROADCAST
+
+----------------------------------------------------------------------
+   C:\Users\31ema\AppData\Local\LeagueBroadcast\current\lblib.dll
+       15972256 bytes, modificado 11/18/2026 09:25:10
+
+   lblib que ve el sensor cerca de su ejecutable:
+     F:\Streams\OBS\Broadcast\SyB3D+HUD\SyBSensor\bin\Release\net10.0-windows\lblib.dll   (11/04/2026 04:44:50)
+     F:\Streams\OBS\Broadcast\SyB3D+HUD\SyBSensor\bin\Release\net10.0-windows\lblib.dll   (11/04/2026 04:44:50)
+     F:\Streams\OBS\Broadcast\SyB3D+HUD\SyBSensor\bin\Debug\net10.0-windows\lblib.dll   (11/04/2026 04:44:50)
+     F:\Streams\OBS\Broadcast\SyB3D+HUD\SyBSensor\bin\Debug\net11.0-windows\lblib.dll   (11/18/2026 09:25:10)
+
+----------------------------------------------------------------------
+3. DONDE ESTA INSTALADO LEAGUE OF LEGENDS
+
+----------------------------------------------------------------------
+   Encontrado en el disco: F:\Riot\Riot Games\League of Legends
+   Carpeta del juego: F:\Riot\Riot Games\League of Legends
+
+----------------------------------------------------------------------
+4. CONFIGURACION DE LEAGUE BROADCAST (LeagueInstall)
+
+----------------------------------------------------------------------
+   No hay ningun Component.json. Tu version de League Broadcast guarda
+   la ruta del juego en otro sitio, o no la tiene configurada.
+
+----------------------------------------------------------------------
+5. ARREGLO
+
+----------------------------------------------------------------------
+   No puedo tocar nada: no hay Component.json que editar.
+
+----------------------------------------------------------------------
+6. QUE HACER AHORA, EN ESTE ORDEN
+
+----------------------------------------------------------------------
+   1) Cierra League Broadcast si esta abierto.
+   2) Abre el cliente de League of Legends y dejalo en el menu.
+   3) Abre League Broadcast y espera a que cargue del todo.
+   4) Arranca tu iniciar.bat.
+
+   Si el sensor sigue diciendo "Game Lib not found", mandame este informe
+   y la ventana del sensor.
+
+
+----------------------------------------------------------------------

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>SyB Ingame Overlay</title>
   <link rel="icon" href="data:,">
-  <link rel="stylesheet" href="./src/styles.css?v=79">
+  <link rel="stylesheet" href="./src/styles.css?v=89">
   <script type="importmap">
     {
       "imports": {
@@ -41,6 +41,7 @@
           <div id="blue-series-score" class="series-score" title="Victorias del equipo azul en la serie" hidden></div>
           <div class="team-emblem"><img id="blue-team-logo" class="team-logo" alt="" hidden><span id="blue-emblem">A</span></div>
           <div class="team-identity"><strong id="blue-name">AZUL</strong></div>
+          <div class="top-stat top-cs" title="Súbditos y monstruos (CS)"><span class="cs-tag">CS</span><strong id="blue-cs">0</strong></div>
           <div class="top-stat" title="Torretas destruidas"><img class="tower-icon" src="./assets/objectives/tower.png" alt="" aria-hidden="true"><strong id="blue-towers">0</strong></div>
           <div class="top-gold-wrap">
             <div class="top-gold"><img class="gold-icon" src="./assets/ui/gold.svg" alt="" aria-hidden="true"><strong id="blue-gold">0.0K</strong></div>
@@ -65,10 +66,19 @@
             <span id="red-gold-lead" class="team-gold-lead red" title="Ventaja de oro del equipo rojo" hidden></span>
           </div>
           <div class="top-stat" title="Torretas destruidas"><img class="tower-icon" src="./assets/objectives/tower.png" alt="" aria-hidden="true"><strong id="red-towers">0</strong></div>
+          <div class="top-stat top-cs" title="Súbditos y monstruos (CS)"><span class="cs-tag">CS</span><strong id="red-cs">0</strong></div>
           <div class="team-identity"><strong id="red-name">ROJO</strong></div>
           <div class="team-emblem"><img id="red-team-logo" class="team-logo" alt="" hidden><span id="red-emblem">R</span></div>
           <div id="red-series-score" class="series-score" title="Victorias del equipo rojo en la serie" hidden></div>
         </section>
+
+        <!-- (r82) 1 vs 1: las tres formas de ganar la partida. Va como segunda
+             fila de la propia barra de arriba y solo se ve en ese modo. -->
+        <div id="win-rules" class="win-rules" aria-label="Reglas de victoria">
+          <div class="win-rule" data-regla="torre"><span class="win-dot" aria-hidden="true"></span><b>PRIMERA TORRE</b><i class="win-who"></i></div>
+          <div class="win-rule" data-regla="cs"><span class="win-dot" aria-hidden="true"></span><b>PRIMEROS 100 CS</b><i class="win-who"></i></div>
+          <div class="win-rule" data-regla="kill"><span class="win-dot" aria-hidden="true"></span><b>PRIMERA KILL</b><i class="win-who"></i></div>
+        </div>
       </header>
 
       <!-- Barra de presentación del inicio. Mientras están las runas y las
@@ -216,11 +226,29 @@
         <strong id="multikill-title" class="multikill-title"></strong>
       </aside>
 
+      <!-- (r82) 1 vs 1: anuncio grande de victoria en el centro. Sale en cuanto
+           cae una de las tres reglas: primera torre, primeros 100 cs o primera kill. -->
+      <aside id="victory" class="victory" aria-label="Victoria" aria-live="polite" hidden>
+        <div class="victory-card">
+          <span class="victory-kicker">VICTORIA</span>
+          <div class="victory-body">
+            <span class="victory-portrait">
+              <img id="victory-icon" class="victory-icon" alt="">
+              <span id="victory-letter" class="victory-letter">?</span>
+            </span>
+            <div class="victory-text">
+              <strong id="victory-name" class="victory-name">—</strong>
+              <span class="victory-reason-wrap"><span class="victory-reason-label">POR</span><b id="victory-reason" class="victory-reason">—</b></span>
+            </div>
+          </div>
+        </div>
+      </aside>
+
       <div class="minimap-frame" aria-hidden="true"></div>
 
       <aside class="sponsor" aria-label="Espacio para patrocinadores"></aside>
     </div>
   </main>
-  <script type="module" src="./src/main.js?v=79"></script>
+  <script type="module" src="./src/main.js?v=89"></script>
 </body>
 </html>

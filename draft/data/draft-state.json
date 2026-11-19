@@ -5,118 +5,140 @@
       {
         "type": "pick",
         "team": "blue",
-        "champion": "Amumu"
+        "champion": "Amumu",
+        "origen": "panel"
       },
       {
         "type": "pick",
         "team": "red",
-        "champion": "Anivia"
+        "champion": "Anivia",
+        "origen": "panel"
       },
       {
         "type": "pick",
         "team": "red",
-        "champion": "Annie"
+        "champion": "Annie",
+        "origen": "panel"
       },
       {
         "type": "pick",
         "team": "blue",
-        "champion": "Aphelios"
+        "champion": "Brand",
+        "origen": "panel"
       },
       {
         "type": "pick",
         "team": "blue",
-        "champion": "Ashe"
+        "champion": "Blitzcrank",
+        "origen": "panel"
       },
       {
         "type": "pick",
         "team": "red",
-        "champion": "Aurelion Sol"
+        "champion": "Bel'Veth",
+        "origen": "panel"
       },
       {
         "type": "pick",
         "team": "red",
-        "champion": "Blitzcrank"
+        "champion": "Cho'Gath",
+        "origen": "panel"
       },
       {
         "type": "pick",
         "team": "blue",
-        "champion": "Brand"
+        "champion": "Darius",
+        "origen": "panel"
       },
       {
         "type": "pick",
         "team": "blue",
-        "champion": "Braum"
+        "champion": "Diana",
+        "origen": "panel"
       },
       {
         "type": "pick",
         "team": "red",
-        "champion": "Briar"
+        "champion": "Fiora",
+        "origen": "panel"
       }
     ],
     "bans": [
       {
         "type": "ban",
         "team": "blue",
-        "champion": "Aatrox"
+        "champion": "Aatrox",
+        "origen": "panel"
       },
       {
         "type": "ban",
         "team": "red",
-        "champion": "Ahri"
+        "champion": "Ahri",
+        "origen": "panel"
       },
       {
         "type": "ban",
         "team": "blue",
-        "champion": "Akali"
+        "champion": "Akali",
+        "origen": "panel"
       },
       {
         "type": "ban",
         "team": "red",
-        "champion": "Akshan"
+        "champion": "Akshan",
+        "origen": "panel"
       },
       {
         "type": "ban",
         "team": "blue",
-        "champion": "Alistar"
+        "champion": "Alistar",
+        "origen": "panel"
       },
       {
         "type": "ban",
         "team": "red",
-        "champion": "Ambessa"
+        "champion": "Ambessa",
+        "origen": "panel"
       },
       {
         "type": "ban",
         "team": "red",
-        "champion": "Aurora"
+        "champion": "Bard",
+        "origen": "panel"
       },
       {
         "type": "ban",
         "team": "blue",
-        "champion": "Azir"
+        "champion": "Aurelion Sol",
+        "origen": "panel"
       },
       {
         "type": "ban",
         "team": "red",
-        "champion": "Bard"
+        "champion": "Caitlyn",
+        "origen": "panel"
       },
       {
         "type": "ban",
         "team": "blue",
-        "champion": "Bel'Veth"
+        "champion": "Camille",
+        "origen": "panel"
       }
     ],
     "info": {
       "tournament": "INTERS 2026",
-      "blue": "T2",
-      "red": "OCELOTL ESPORTS",
-      "blueShort": "T2",
-      "redShort": "OCEL",
-      "blueLogo": "/uploads/red-1794793317350.png",
-      "redLogo": "/uploads/blue-1794793264215.png",
+      "blue": "JUANITO CAMARADA",
+      "red": "ARNULFO PISTOLAS",
+      "blueShort": "",
+      "redShort": "",
+      "blueLogo": "/uploads/blue-1795031562323.png",
+      "redLogo": "/uploads/red-1795031558909.png",
       "logo": "/uploads/general-1794861248882.png",
       "sponsorIzquierda": "/uploads/sponsorIzquierda-1794861218432.png",
       "sponsorDerecha": "/uploads/sponsorDerecha-1794861224638.png",
-      "bg": ""
+      "bg": "",
+      "modo": "5v5",
+      "baneos": 5
     },
     "score": {
       "format": "BO3",
@@ -130,17 +152,17 @@
     },
     "histTeams": {},
     "teamBind": {
-      "T2": [],
-      "OCELOTL ESPORTS": []
+      "JUANITO CAMARADA": [],
+      "ARNULFO PISTOLAS": []
     },
     "sideTeams": {
-      "blue": "T2",
-      "red": "OCELOTL ESPORTS"
+      "blue": "JUANITO CAMARADA",
+      "red": "ARNULFO PISTOLAS"
     },
     "fearless": true,
-    "lcuEnabled": true
+    "lcuEnabled": false
   },
-  "seriesRevision": 54,
+  "seriesRevision": 70,
   "countedGames": [],
   "pendingWinners": []
 }

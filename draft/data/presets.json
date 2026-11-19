@@ -26,5 +26,19 @@
       "redLogo": "/uploads/blue-1794793264215.png"
     },
     "updatedAt": "2026-11-16T20:34:44.862Z"
+  },
+  {
+    "id": "mwlb3g3t-a8aq2k",
+    "name": "1 vs 1",
+    "data": {
+      "tournament": "INTERS 2026",
+      "blue": "JUANITO CAMARADA",
+      "red": "ARNULFO PISTOLAS",
+      "blueShort": "",
+      "redShort": "",
+      "blueLogo": "",
+      "redLogo": ""
+    },
+    "updatedAt": "2026-11-17T23:11:11.177Z"
   }
 ]

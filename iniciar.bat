@@ -65,8 +65,25 @@ if errorlevel 1 (
   echo [AVISO] No se encontro dotnet; el sensor no se inicio automaticamente.
   goto sensor_listo
 )
+
+rem ---------------------------------------------------------------------------
+rem r92 - Antes de arrancar el sensor se comprueba el entorno y se arregla solo
+rem lo que cambia con cada parche: el SDK de .NET que piden las librerias de
+rem League Broadcast y la version a la que apunta el proyecto. Si no puede
+rem arreglarlo, se para aqui con el motivo escrito en vez de fallar despues.
+rem ---------------------------------------------------------------------------
+call "%~dp0comprobar-entorno.bat" /auto "%SENSOR_DIR%\SyBSensor.csproj"
+if errorlevel 1 (
+  echo.
+  echo [ERROR] El sensor no compila. El motivo esta arriba, con el detalle
+  echo         en compilar-salida.txt.
+  echo         No arranco el HUD para no dejarte a medias.
+  pause
+  exit /b 1
+)
+
 echo Iniciando SyBSensor en su propia ventana...
-start "SyBSensor" /D "%SENSOR_DIR%" cmd /k "timeout /t 2 /nobreak >nul && dotnet run"
+start "SyBSensor" /D "%SENSOR_DIR%" cmd /k "timeout /t 2 /nobreak >nul && dotnet run -c Release"
 goto sensor_listo
 :sensor_exe
 echo Iniciando SyBSensor en su propia ventana...

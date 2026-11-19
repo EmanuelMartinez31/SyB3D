@@ -1,3 +1,5 @@
+import { recursoDe, nombreDeRecurso, SIN_RECURSO } from './recursos.js';
+
 const ROLE_ORDER = ['top', 'jungle', 'mid', 'bot', 'support'];
 const DRAGON_ICONS = {
   Infernal: 'infernal', Mountain: 'mountain', Ocean: 'ocean', Cloud: 'cloud',
@@ -19,6 +21,180 @@ export function setCardDebug(on) {
 const byId = id => document.getElementById(id);
 const finite = value => typeof value === 'number' && Number.isFinite(value);
 const numberOr = (value, fallback = 0) => finite(value) ? value : fallback;
+
+/* ------------------------------------------------------------------
+   (r82) Modo de partida: 5 vs 5 · 2 vs 2 · 1 vs 1.
+   Lo elige el operador en el panel y llega dentro de «info», que es lo
+   mismo que ya trae los nombres y los logos. Si no llega nada, se cuenta
+   la gente que trae el juego. Sin panel y con diez jugadores, 5 vs 5, que
+   es lo que había hasta ahora: así el 5 vs 5 se queda igual.
+   ------------------------------------------------------------------ */
+let modoActual = '5v5';
+
+function normalizarModo(valor) {
+  const bruto = String(valor ?? '').trim().toLowerCase().replace(/[^0-9a-z]/g, '');
+  if (!bruto) return null;
+  if (['1v1', '1vs1', '1'].includes(bruto)) return '1v1';
+  if (['2v2', '2vs2', '2'].includes(bruto)) return '2v2';
+  if (['5v5', '5vs5', '5'].includes(bruto)) return '5v5';
+  return null;
+}
+
+function modoDePartida(state) {
+  const info = state?.info || {};
+  const delPanel = normalizarModo(info.modo ?? info.mode ?? info.modoPartida);
+  const jugadores = Array.isArray(state?.players) ? state.players.length : 0;
+  // Con dos jugadores en cancha no hay 5 vs 5 posible, y con cuatro es un 2 vs 2:
+  // ahi manda el numero de jugadores, aunque el panel se haya quedado en 5 vs 5.
+  // Con diez jugadores (o cualquier otra cifra) manda el panel.
+  if (jugadores === 2) return '1v1';
+  if (jugadores === 4) return '2v2';
+  if (delPanel) return delPanel;
+  return '5v5';
+}
+
+function aplicarModo(modo) {
+  if (modo === modoActual) return;
+  modoActual = modo;
+  document.body.dataset.modo = modo;
+  // Las tres reglas solo existen en el 1 vs 1: se limpian al salir del modo.
+  if (modo !== '1v1') {
+    primeras.anotadas = {};
+    primeras.victoria = null;
+    ocultarVictoria();
+  }
+}
+
+/* Las tres formas de ganar un 1 vs 1: primera torre, primeros 100 cs y
+   primera kill. Se encienden solas y no se apagan aunque el marcador pierda
+   el dato después: son cosas que ya pasaron. */
+const primeras = { gameId: null, anotadas: {}, victoria: null };
+
+const nombreDeJugador = player => {
+  const nombre = String(player?.player || '').split('#')[0].trim();
+  return nombre || String(player?.champion || '').trim() || '—';
+};
+
+function jugadoresPorEquipo(state) {
+  const jugadores = Array.isArray(state?.players) ? state.players : [];
+  const deEquipo = team => jugadores.filter(jugador => jugador.team === team);
+  return { 1: deEquipo(1), 2: deEquipo(2) };
+}
+
+const MOTIVOS_DE_VICTORIA = { torre: 'PRIMERA TORRE', cs: 'PRIMEROS 100 CS', kill: 'PRIMERA KILL' };
+
+function anotarRegla(regla, team, nombre, campeon, cuando) {
+  if (primeras.anotadas[regla]) return;
+  primeras.anotadas[regla] = { team, nombre, campeon, cuando: finite(cuando) ? cuando : null };
+  decidirVictoria();
+}
+
+// De las tres, la que ocurrió antes es la que da la partida. Se compara el
+// instante de juego de cada una, no el orden en que se detectaron: si el HUD
+// se abre con la partida empezada, las tres pueden aparecer en el mismo
+// fotograma y hay que quedarse con la más antigua.
+function decidirVictoria() {
+  const reglas = Object.entries(primeras.anotadas);
+  if (!reglas.length) return;
+  const instante = datos => (finite(datos.cuando) ? datos.cuando : Infinity);
+  const [regla, datos] = reglas.reduce((a, b) => (instante(a[1]) <= instante(b[1]) ? a : b));
+  if (primeras.victoria && instante(primeras.victoria) <= instante(datos)) return;
+  primeras.victoria = { regla, ...datos };
+  mostrarVictoria(datos.team, datos.nombre, regla, datos.campeon);
+}
+
+function mostrarVictoria(team, nombre, regla, campeon) {
+  const caja = byId('victory');
+  if (!caja) return;
+  caja.classList.remove('azul', 'rojo');
+  caja.classList.add(team === 1 ? 'azul' : 'rojo');
+  setText(byId('victory-name'), nombre);
+  setText(byId('victory-reason'), MOTIVOS_DE_VICTORIA[regla] || '');
+  const icono = byId('victory-icon');
+  const letra = byId('victory-letter');
+  if (icono && letra && !icono.dataset.victoryWired) {
+    icono.dataset.victoryWired = '1';
+    wireImageFallback(icono, letra);
+  }
+  const url = campeon && activeCatalog ? activeCatalog.championUrl(campeon) : null;
+  setImage(icono, url, campeon || '', letra, (nombre || '?').slice(0, 1));
+  caja.hidden = false;
+}
+
+function ocultarVictoria() {
+  const caja = byId('victory');
+  if (caja) caja.hidden = true;
+}
+
+function primeraDeLaLista(feed) {
+  const asesinatos = Array.isArray(feed?.asesinatos) ? feed.asesinatos : [];
+  return tipo => asesinatos.find(asesinato => asesinato?.victim?.tipo === tipo) || null;
+}
+
+function renderUnoContraUno(state) {
+  const equipos = jugadoresPorEquipo(state);
+  const { 1: azules, 2: rojos } = equipos;
+  const azul = azules[0] || null;
+  const rojo = rojos[0] || null;
+
+  // El nombre del jugador ocupa el sitio del nombre del equipo.
+  for (const [prefix, jugador] of [['blue', azul], ['red', rojo]]) {
+    const etiqueta = byId(`${prefix}-name`);
+    if (!etiqueta) continue;
+    etiqueta.style.fontSize = '';       // el ajuste de siglas no pinta nada aquí
+    setText(etiqueta, jugador ? nombreDeJugador(jugador) : '—');
+    etiqueta.title = jugador ? nombreDeJugador(jugador) : '';
+  }
+
+  // El CS de cada uno, en la barra de arriba.
+  setText(byId('blue-cs'), azul && finite(azul.cs?.total) ? azul.cs.total : '—');
+  setText(byId('red-cs'), rojo && finite(rojo.cs?.total) ? rojo.cs.total : '—');
+
+  const gameId = state?.meta?.gameId ?? null;
+  if (primeras.gameId !== gameId) {
+    primeras.gameId = gameId;
+    primeras.anotadas = {};
+    primeras.victoria = null;
+    ocultarVictoria();
+  }
+
+  const jugadorDe = team => (team === 1 ? azul : rojo);
+  const nombreDe = team => jugadorDe(team)
+    ? nombreDeJugador(jugadorDe(team))
+    : (team === 1 ? 'AZUL' : 'ROJO');
+  const campeonDe = team => jugadorDe(team)?.champion || null;
+
+  // Primera kill: la primera muerte de campeón que anotó el feed.
+  const primeraKill = primeraDeLaLista(state?.killFeed)('campeon');
+  if (primeraKill) {
+    const team = finite(primeraKill.killer?.team) ? primeraKill.killer.team : null;
+    if (team === 1 || team === 2) anotarRegla('kill', team, nombreDe(team), campeonDe(team), primeraKill.gameTime);
+  }
+
+  // Primera torre: la primera torre que cayó, también del feed. Si el feed ya
+  // no la guarda, se mira qué lado perdió una.
+  const primeraTorre = primeraDeLaLista(state?.killFeed)('torre');
+  if (primeraTorre) {
+    const team = finite(primeraTorre.killer?.team) ? primeraTorre.killer.team : null;
+    if (team === 1 || team === 2) anotarRegla('torre', team, nombreDe(team), campeonDe(team), primeraTorre.gameTime);
+  } else if (!primeras.anotadas.torre) {
+    const torres = Array.isArray(state?.structures?.turrets) ? state.structures.turrets : [];
+    const caida = torres.find(torre => torre?.alive === false && torre?.countsTowardTowers !== false && finite(torre?.team));
+    if (caida) {
+      const team = caida.team === 1 ? 2 : 1;
+      anotarRegla('torre', team, nombreDe(team), campeonDe(team), state?.meta?.gameTime);
+    }
+  }
+
+  // Primeros 100 cs.
+  for (const jugador of [azul, rojo]) {
+    if (!jugador || !finite(jugador.cs?.total) || jugador.cs.total < 100) continue;
+    if (jugador.team === 1 || jugador.team === 2) {
+      anotarRegla('cs', jugador.team, nombreDeJugador(jugador), jugador.champion || null, state?.meta?.gameTime);
+    }
+    break;
+  }
+}
 
 function setText(element, value) {
   const text = String(value);
@@ -590,8 +766,19 @@ function updateFightCard(refs, player) {
   refs.hpFill.style.width = `${hpPct}%`;
   refs.hp.classList.toggle('is-low', hpPct <= 30);
   refs.hp.title = `Vida ${Math.round(player.health?.current ?? 0)} / ${Math.round(player.health?.max ?? 0)}`;
-  refs.mpFill.style.width = `${fightPercent(player.resource?.current, player.resource?.max)}%`;
-  refs.mp.title = `Maná ${Math.round(player.resource?.current ?? 0)} / ${Math.round(player.resource?.max ?? 0)}`;
+  // (r90) No todos gastan maná: el color y el rótulo van según el campeón.
+  // El que no gasta nada (Garen, Katarina, Riven…) se queda sin barra.
+  const recursoFicha = recursoDe(player.champion);
+  const sinRecursoFicha = recursoFicha === SIN_RECURSO;
+  refs.mp.classList.toggle('is-sin', sinRecursoFicha);
+  if (sinRecursoFicha) {
+    refs.mp.removeAttribute('data-recurso');
+    refs.mp.removeAttribute('title');
+  } else {
+    refs.mp.dataset.recurso = recursoFicha;
+    refs.mpFill.style.width = `${fightPercent(player.resource?.current, player.resource?.max)}%`;
+    refs.mp.title = `${nombreDeRecurso(recursoFicha)} ${Math.round(player.resource?.current ?? 0)} / ${Math.round(player.resource?.max ?? 0)}`;
+  }
   setText(refs.level, finite(player.level) ? player.level : '—');
   // El muerto NO se retira: su ficha se queda en su sitio, en gris. Aquí no
   // hay contador de reaparición (eso es solo de la tabla de abajo).
@@ -914,13 +1101,20 @@ function buildDeck(players, catalog) {
   for (const [team, container, side] of sides) {
     if (!container) continue;
     container.replaceChildren();
-    for (const role of ROLE_ORDER) {
-      const player = players.find(candidate => candidate.team === team && candidate.role === role);
-      if (!player) continue;
+    const suyos = players.filter(candidate => candidate.team === team);
+    // En la Grieta cada equipo tiene sus cinco lineas y se ordena por rol. En
+    // Abismo (1 vs 1 y 2 vs 2) no hay lineas: los jugadores llegan sin rol, asi
+    // que va una ficha por jugador en el orden en que vienen. Antes se buscaban
+    // los cinco roles, no se encontraba a nadie y no salia ninguna ficha.
+    const hayLineas = suyos.length >= 5 && suyos.every(candidate => candidate.role);
+    const orden = hayLineas
+      ? ROLE_ORDER.map(role => suyos.find(candidate => candidate.role === role)).filter(Boolean)
+      : suyos;
+    orden.forEach((player, indice) => {
       const card = buildDeckCard(player, catalog, side);
-      card.dataset.role = role;
+      card.dataset.role = player.role || `puesto${indice + 1}`;
       container.append(card);
-    }
+    });
   }
 }
 
@@ -977,8 +1171,10 @@ function renderDeck(state, catalog) {
   if (!container) return;
   const gameTime = state?.meta?.gameTime;
   const players = Array.isArray(state?.players) ? state.players : [];
-  // Con menos de diez jugadores no hay presentación que valga.
-  const hayEquipos = finite(gameTime) && players.length >= 10;
+  // Con menos de diez jugadores no hay presentación que valga… salvo en el
+  // 1 vs 1, donde solo hay dos y la presentación es la suya.
+  const hayEquipos = finite(gameTime)
+    && (players.length >= 10 || (modoActual === '1v1' && players.length >= 2));
   // La tabla se retira desde el primer segundo y vuelve a los 30.
   const retiene = hayEquipos && gameTime >= 0 && gameTime < DECK_UNTIL;
   if (retiene !== deckHoldsTable) {
@@ -1003,6 +1199,17 @@ function renderDeck(state, catalog) {
     return;
   }
 
+  if (modoActual === '1v1') {
+    // Una ficha por lado, las dos a la vez y durante todo el recorrido: no hay
+    // líneas que presentar de una en una.
+    if (deckRoleKey !== '1v1') {
+      deckRoleKey = '1v1';
+      setText(byId('deck-role-label'), '1 VS 1');
+      for (const card of container.querySelectorAll('.deck-card')) card.classList.add('is-active');
+    }
+    setDeckActive(true);
+    return;
+  }
   const index = Math.min(
     ROLE_ORDER.length - 1,
     Math.max(0, Math.floor((gameTime - DECK_FROM) / DECK_STEP))
@@ -1403,9 +1610,20 @@ function updatePlayerRow(refs, player) {
   refs.secondaryRune.wrap.title = activeCatalog.secondaryStyleName(runeIds);
 
   setBar(refs.healthFill, player.health?.current, player.health?.max);
-  const hasResource = finite(player.resource?.max) && player.resource.max > 0;
+  // (r90) Mismo criterio que en las fichas: el color y el rótulo dependen del
+  // campeón, y el que no gasta nada no lleva barra.
+  const recursoFila = recursoDe(player.champion);
+  const hasResource = recursoFila !== SIN_RECURSO
+    && finite(player.resource?.max) && player.resource.max > 0;
   refs.resourceBar.hidden = !hasResource;
-  if (hasResource) setBar(refs.resourceFill, player.resource.current, player.resource.max);
+  if (hasResource) {
+    refs.resourceBar.dataset.recurso = recursoFila;
+    setBar(refs.resourceFill, player.resource.current, player.resource.max);
+    refs.resourceBar.title = `${nombreDeRecurso(recursoFila)} ${Math.round(player.resource.current)} / ${Math.round(player.resource.max)}`;
+  } else {
+    refs.resourceBar.removeAttribute('data-recurso');
+    refs.resourceBar.removeAttribute('title');
+  }
 
   // Experiencia: sin dato no se dibuja nada, no se inventa el avance.
   const xp = MOSTRAR_BARRA_XP ? progresoExperiencia(player) : null;
@@ -1552,7 +1770,11 @@ function renderSecondaryObjective(state) {
 function renderGoldMatchups(bluePlayers, redPlayers) {
   const container = byId('gold-matchups');
   const roleLabels = ['TOP', 'JG', 'MID', 'ADC', 'SUP'];
-  while (container.children.length < 5) {
+  // (r82) En el 1 vs 1 la columna del medio tiene un solo piso.
+  const filas = modoActual === '5v5'
+    ? 5
+    : Math.max(1, Math.min(5, Math.max(bluePlayers.length, redPlayers.length)));
+  while (container.children.length < filas) {
     const row = document.createElement('div');
     row.className = 'matchup-row';
     const difference = document.createElement('span');
@@ -1571,15 +1793,36 @@ function renderGoldMatchups(bluePlayers, redPlayers) {
     if (row.hidden) return;
     const blueGold = bluePlayer?.gold?.total;
     const redGold = redPlayer?.gold?.total;
-    setText(row.querySelector('small'), roleLabels[index] || 'LINEA');
+    setText(row.querySelector('small'), modoActual === '1v1' ? '1 VS 1' : (roleLabels[index] || 'LINEA'));
     const differenceElement = row.querySelector('strong');
     differenceElement.classList.remove('advantage-blue', 'advantage-red');
+    // (r82) En el 1 vs 1 el medio de la tabla lleva la diferencia de CS,
+    // que es lo que decide la partida, y no la de oro.
+    if (modoActual === '1v1') {
+      const blueCs = bluePlayer?.cs?.total;
+      const redCs = redPlayer?.cs?.total;
+      setText(row.querySelector('small'), 'CS');
+      differenceElement.classList.remove('advantage-blue', 'advantage-red', 'advantage-neutral');
+      if (finite(blueCs) && finite(redCs)) {
+        const diferencia = blueCs - redCs;
+        const signo = diferencia > 0 ? '+' : diferencia < 0 ? '-' : '±';
+        setText(differenceElement, `${signo}${Math.abs(diferencia)}`);
+        differenceElement.classList.add(diferencia > 0 ? 'advantage-blue' : diferencia < 0 ? 'advantage-red' : 'advantage-neutral');
+        row.title = 'Diferencia de CS entre los dos jugadores';
+      } else {
+        setText(differenceElement, '—');
+        row.title = '';
+      }
+      return;
+    }
     if (finite(blueGold) && finite(redGold)) {
       const difference = blueGold - redGold;
       const sign = difference > 0 ? '+' : difference < 0 ? '-' : '±';
       setText(differenceElement, `${sign}${formatGold(Math.abs(difference))}`);
       differenceElement.classList.add(difference > 0 ? 'advantage-blue' : difference < 0 ? 'advantage-red' : 'advantage-neutral');
-      row.title = `Diferencia de oro total en ${roleLabels[index] || 'la línea'}`;
+      row.title = modoActual === '1v1'
+        ? 'Diferencia de oro total entre los dos jugadores'
+        : `Diferencia de oro total en ${roleLabels[index] || 'la línea'}`;
     } else {
       setText(differenceElement, '—');
       row.title = '';
@@ -2459,6 +2702,7 @@ export function renderIngameState(state, catalog) {
   if (!state || typeof state !== 'object') return;
   if (cardDebug) renderCardDebug(state);
   activeCatalog = catalog;
+  aplicarModo(modoDePartida(state));
   const teams = Array.isArray(state.teams) ? state.teams : [];
   const players = Array.isArray(state.players) ? state.players : [];
   renderTeams(teams);
@@ -2471,6 +2715,8 @@ export function renderIngameState(state, catalog) {
   renderCamaras(state);
   renderFight(state, catalog);
   setText(byId('game-time'), formatTime(state.meta?.gameTime));
+
+  if (modoActual === '1v1') renderUnoContraUno(state);
 
   renderDragonObjective(state);
   renderSecondaryObjective(state);

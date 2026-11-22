@@ -292,6 +292,19 @@
   .champion-footer { display: flex; justify-content: space-between; gap: 16px; padding: 10px 16px; border-top: 1px solid var(--line); color: var(--muted); font-size: 10px; }
 
   .series-panel { position: sticky; top: 154px; }
+  /* R102 · la columna de la derecha lleva ahora dos recuadros: el marcador y
+     el estado de la tira de teamfight. */
+  .series-column { position: sticky; top: 154px; display: flex; flex-direction: column; gap: 14px; }
+  .series-column .series-panel { position: static; top: auto; }
+  .teamfight-state { display: flex; flex-direction: column; gap: 9px; padding: 14px 16px 12px; }
+  .teamfight-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; color: var(--muted); font: 10px/1 ui-monospace, monospace; letter-spacing: .1em; text-transform: uppercase; }
+  .teamfight-row b { display: inline-flex; align-items: center; gap: 7px; color: #53617a; font-weight: 600; }
+  .teamfight-row b::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #53617a; }
+  .teamfight-row b.is-on { color: var(--mint); }
+  .teamfight-row b.is-on::before { background: var(--mint); box-shadow: 0 0 8px rgba(52, 211, 153, .7); }
+  .teamfight-row b.is-open { color: var(--amber); }
+  .teamfight-row b.is-open::before { background: var(--amber); box-shadow: 0 0 8px rgba(251, 191, 36, .7); }
+  .teamfight-hint { margin: 0; padding: 0 16px 14px; color: var(--muted); font-size: 10px; line-height: 1.5; }
   .series-score-wrap { padding: 20px 16px 17px; border-bottom: 1px solid var(--line); text-align: center; }
   .score-team-labels { display: flex; justify-content: space-between; padding: 0 15px; color: var(--muted); font: 9px/1 ui-monospace, monospace; letter-spacing: .15em; }
   .score-team-labels span:first-child { color: var(--blue); }
@@ -332,6 +345,10 @@
   .activity-footer { padding: 10px 14px; border-top: 1px solid var(--line); color: var(--muted); font: 9px/1.4 ui-monospace, monospace; letter-spacing: .05em; }
 
   .settings-grid { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(280px, .65fr); gap: 18px; align-items: start; }
+  /* R102 · cada columna apila sus recuadros por su cuenta. Antes iban por
+     filas y, al ser un recuadro mucho más alto que el de al lado, quedaba un
+     hueco vacío enorme a la derecha. */
+  .settings-col { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
   .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; padding: 18px; }
   .field { min-width: 0; display: flex; flex-direction: column; gap: 6px; }
   .field.full { grid-column: 1 / -1; }
@@ -423,7 +440,7 @@
     .diagnostics-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     .workspace { grid-template-columns: 1fr; }
     .activity-panel { position: relative; top: auto; height: 320px; min-height: 0; }
-    .series-panel { top: 154px; }
+    .series-column { top: 154px; }
     .settings-grid { grid-template-columns: 1fr; }
   }
   @media (max-width: 760px) {
@@ -443,7 +460,7 @@
     .phase-actions { justify-content: flex-start; }
     #phaseBanner { flex-wrap: wrap; }
     .draft-columns, .postgame-layout { grid-template-columns: 1fr; }
-    .series-panel { position: relative; top: auto; }
+    .series-column { position: relative; top: auto; }
     .grid { max-height: 55vh; grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)); }
     .panel-header { align-items: flex-start; flex-direction: column; }
     .panel-hint { text-align: left; }
@@ -554,6 +571,7 @@
           <footer class="champion-footer"><span>Los campeones marcados como USADO pertenecen al fearless.</span><span id="champCount">Cargando catálogo...</span></footer>
         </section>
 
+        <div class="series-column">
         <aside class="panel series-panel">
           <header class="panel-header"><div><span class="section-kicker">Serie actual</span><h2>Marcador</h2></div></header>
           <div class="series-score-wrap">
@@ -571,13 +589,27 @@
           </div>
           <div class="danger-zone"><p>Borra draft, marcador y campeones usados para comenzar una serie nueva.</p><button class="danger full-width" onclick="resetAll()">Reiniciar serie completa</button></div>
         </aside>
+
+        <aside class="panel teamfight-panel">
+          <header class="panel-header">
+            <div><span class="section-kicker">Teamfight</span><h2>Tira de teamfight</h2></div>
+            <span class="panel-hint" id="tfLatido">SIN DATOS</span>
+          </header>
+          <div class="teamfight-state">
+            <div class="teamfight-row"><span>Automático</span><b id="tfAuto">—</b></div>
+            <div class="teamfight-row"><span>Tira</span><b id="tfTira">—</b></div>
+          </div>
+          <p class="teamfight-hint">Se abre y se cierra con los botones del Stream Deck. Aquí solo se ve cómo está.</p>
+        </aside>
+        </div>
       </div>
     </section>
 
     <section class="view" id="view-production" aria-labelledby="nav-production" hidden>
       <header class="view-heading"><div><span class="section-kicker">Configuración de transmisión</span><h1>Producción</h1></div><p>Administra la identidad de la serie sin interferir con picks, baneos, marcador o fearless.</p></header>
       <div class="settings-grid">
-        <section class="panel">
+        <div class="settings-col">
+<section class="panel">
           <header class="panel-header"><div><span class="section-kicker">Identidad</span><h2>Torneo y equipos</h2></div></header>
           <div class="form-grid">
             <div class="modo-box">
@@ -618,6 +650,11 @@
               <label class="field"><span class="field-label">… o el enlace del logo</span><input id="redLogoUrl" placeholder="https://... (también vale subir el archivo)" onchange="logoPorEnlace('red', this.value)"></label>
             </section>
           </div>
+          <!-- R102 · fuera de la vista: el fondo y los patrocinadores ya no se
+               piden desde aquí. Los campos siguen en la página (ocultos) para que
+               los enlaces que ya están puestos se sigan mandando tal cual al
+               sincronizar y no se pierdan en el draft. -->
+          <div hidden>
           <details class="advanced">
             <summary>Fondo y patrocinadores del draft</summary>
             <div class="form-grid">
@@ -630,10 +667,21 @@
             <label class="field"><span class="field-label">Patrocinador derecho · enlace</span><input id="sponsorDerechaUrl" placeholder="https://..."><span class="field-hint">Va a la derecha del logo del torneo, en el draft.</span></label>
             <label class="field"><span class="field-label">Patrocinador derecho · archivo</span><input id="sponsorDerechaFile" type="file" accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml" onchange="uploadLogo('sponsorDerecha', this, 'sponsorDerechaUrl')"><span class="field-hint">Las dos formas hacen lo mismo.</span></label>
           </div>
+          </div>
           <div class="form-actions"><p>Los cambios se aplican al draft, ingame y postpartida con la misma acción.</p><button class="primary" onclick="sendInfo()">Sincronizar información</button></div>
         </section>
-
-        <section class="panel" id="panel-colores">
+<section class="panel">
+          <header class="panel-header"><div><span class="section-kicker">Configuraciones locales</span><h2>Presets</h2></div></header>
+          <div class="preset-body">
+            <label class="field"><span class="field-label">Preset guardado</span><select id="presetSelect" onchange="selectPresetName()" aria-label="Preset guardado"><option value="">Cargando presets...</option></select></label>
+            <label class="field"><span class="field-label">Nombre del preset</span><input id="presetName" placeholder="Ej. Final · Azul vs Rojo" maxlength="80"></label>
+            <div class="preset-actions"><button class="primary" onclick="savePreset()">Guardar preset</button><button onclick="loadSelectedPreset()">Cargar seleccionado</button><button class="danger" onclick="deleteSelectedPreset()">Eliminar</button></div>
+          </div>
+          <p class="info-note">Incluye torneo, equipos, siglas y logos. Al cargarlo no se modifican picks, baneos, marcador ni fearless.</p>
+        </section>
+        </div>
+        <div class="settings-col">
+<section class="panel" id="panel-colores">
           <header class="panel-header">
             <div><span class="section-kicker">Identidad visual</span><h2>Colores del HUD</h2></div>
             <button class="subtle" onclick="coloresDeFabrica()">Colores de fábrica</button>
@@ -659,17 +707,7 @@
             <p class="field-hint">Los tonos claros y los bordes se calculan solos con estos tres colores. Se aplican al draft, al ingame y a la postpartida al pulsar «Sincronizar información». Si no tocas nada, el HUD se queda con los colores de siempre.</p>
           </div>
         </section>
-
-        <section class="panel">
-          <header class="panel-header"><div><span class="section-kicker">Configuraciones locales</span><h2>Presets</h2></div></header>
-          <div class="preset-body">
-            <label class="field"><span class="field-label">Preset guardado</span><select id="presetSelect" onchange="selectPresetName()" aria-label="Preset guardado"><option value="">Cargando presets...</option></select></label>
-            <label class="field"><span class="field-label">Nombre del preset</span><input id="presetName" placeholder="Ej. Final · Azul vs Rojo" maxlength="80"></label>
-            <div class="preset-actions"><button class="primary" onclick="savePreset()">Guardar preset</button><button onclick="loadSelectedPreset()">Cargar seleccionado</button><button class="danger" onclick="deleteSelectedPreset()">Eliminar</button></div>
-          </div>
-          <p class="info-note">Incluye torneo, equipos, siglas y logos. Al cargarlo no se modifican picks, baneos, marcador ni fearless.</p>
-        </section>
-        <section class="panel" id="panel-camaras">
+<section class="panel" id="panel-camaras">
           <header class="panel-header">
             <div><span class="section-kicker">Cámaras de los jugadores</span><h2>Enlaces de VDO.Ninja</h2></div>
             <button class="danger" onclick="regenerarCamaras()">Regenerar</button>
@@ -692,6 +730,7 @@
             <span class="cam-aviso" id="camAviso"></span>
           </div>
         </section>
+        </div>
       </div>
     </section>
 
@@ -1680,6 +1719,46 @@ refreshPostgameStatus();
 setInterval(refreshPostgameStatus, 3000);
 refreshDiagnostics();
 setInterval(refreshDiagnostics, 2000);
+
+// ------------------------- R102: estado de la tira de teamfight --------
+// Solo mira: los botones son del Stream Deck. Se pregunta al servidor del
+// ingame cada segundo y medio, que es barato y no toca el draft.
+function pintarTeamfight(estado) {
+  const auto = document.getElementById('tfAuto');
+  const tira = document.getElementById('tfTira');
+  const latido = document.getElementById('tfLatido');
+  if (!auto || !tira) return;
+  const automatico = estado?.automatico === true;
+  const abierta = estado?.tira === true;
+  auto.textContent = automatico ? 'Sí' : 'No';
+  auto.className = automatico ? 'is-on' : '';
+  tira.textContent = abierta ? 'Abierta' : 'Cerrada';
+  tira.className = abierta ? 'is-open' : '';
+  if (latido) latido.textContent = automatico ? 'HUD AL MANDO' : 'A TU MANO';
+}
+
+function teamfightSinDatos() {
+  const auto = document.getElementById('tfAuto');
+  const tira = document.getElementById('tfTira');
+  const latido = document.getElementById('tfLatido');
+  if (auto) { auto.textContent = '—'; auto.className = ''; }
+  if (tira) { tira.textContent = '—'; tira.className = ''; }
+  if (latido) latido.textContent = 'SIN DATOS';
+}
+
+async function refrescarTeamfight() {
+  try {
+    const respuesta = await fetch('/fight', { cache: 'no-store' });
+    if (!respuesta.ok) throw new Error(`HTTP ${respuesta.status}`);
+    pintarTeamfight(await respuesta.json());
+  } catch {
+    // El ingame no está levantado o la página se abrió como archivo suelto.
+    teamfightSinDatos();
+  }
+}
+
+refrescarTeamfight();
+setInterval(refrescarTeamfight, 1500);
 
 function loadIcons() {
   const grid = document.getElementById('champGrid');

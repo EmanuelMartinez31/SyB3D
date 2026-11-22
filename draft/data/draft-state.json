@@ -5,61 +5,61 @@
       {
         "type": "pick",
         "team": "blue",
-        "champion": "Ezreal",
+        "champion": "Amumu",
         "origen": "panel"
       },
       {
         "type": "pick",
         "team": "red",
-        "champion": "Fiddlesticks",
+        "champion": "Anivia",
         "origen": "panel"
       },
       {
         "type": "pick",
         "team": "red",
-        "champion": "Fiora",
+        "champion": "Annie",
         "origen": "panel"
       },
       {
         "type": "pick",
         "team": "blue",
-        "champion": "Fizz",
+        "champion": "Aphelios",
         "origen": "panel"
       },
       {
         "type": "pick",
         "team": "blue",
-        "champion": "Galio",
+        "champion": "Ashe",
         "origen": "panel"
       },
       {
         "type": "pick",
         "team": "red",
-        "champion": "Gangplank",
+        "champion": "Aurelion Sol",
         "origen": "panel"
       },
       {
         "type": "pick",
         "team": "red",
-        "champion": "Gwen",
+        "champion": "Blitzcrank",
         "origen": "panel"
       },
       {
         "type": "pick",
         "team": "blue",
-        "champion": "Hecarim",
+        "champion": "Brand",
         "origen": "panel"
       },
       {
         "type": "pick",
         "team": "blue",
-        "champion": "Heimerdinger",
+        "champion": "Braum",
         "origen": "panel"
       },
       {
         "type": "pick",
         "team": "red",
-        "champion": "Hwei",
+        "champion": "Briar",
         "origen": "panel"
       }
     ],
@@ -67,61 +67,61 @@
       {
         "type": "ban",
         "team": "blue",
-        "champion": "Diana",
+        "champion": "Aatrox",
         "origen": "panel"
       },
       {
         "type": "ban",
         "team": "red",
-        "champion": "Dr. Mundo",
+        "champion": "Ahri",
         "origen": "panel"
       },
       {
         "type": "ban",
         "team": "blue",
-        "champion": "Draven",
+        "champion": "Akali",
         "origen": "panel"
       },
       {
         "type": "ban",
         "team": "red",
-        "champion": "Ekko",
+        "champion": "Akshan",
         "origen": "panel"
       },
       {
         "type": "ban",
         "team": "blue",
-        "champion": "Elise",
+        "champion": "Alistar",
         "origen": "panel"
       },
       {
         "type": "ban",
         "team": "red",
-        "champion": "Evelynn",
+        "champion": "Ambessa",
         "origen": "panel"
       },
       {
         "type": "ban",
         "team": "red",
-        "champion": "Garen",
+        "champion": "Aurora",
         "origen": "panel"
       },
       {
         "type": "ban",
         "team": "blue",
-        "champion": "Gnar",
+        "champion": "Azir",
         "origen": "panel"
       },
       {
         "type": "ban",
         "team": "red",
-        "champion": "Gragas",
+        "champion": "Bard",
         "origen": "panel"
       },
       {
         "type": "ban",
         "team": "blue",
-        "champion": "Graves",
+        "champion": "Bel'Veth",
         "origen": "panel"
       }
     ],
@@ -140,49 +140,22 @@
       "modo": "5v5",
       "baneos": 5,
       "tema": {
-        "acento": "#a3e635",
-        "azul": "#10b981",
-        "rojo": "#f43f5e"
+        "acento": "#e8c77b",
+        "azul": "#3b82f6",
+        "rojo": "#ef4444"
       }
     },
     "score": {
       "format": "BO3",
-      "blue": 1,
+      "blue": 0,
       "red": 0
     },
     "roster": null,
     "history": {
-      "blue": [
-        "Amumu",
-        "Aphelios",
-        "Ashe",
-        "Brand",
-        "Braum"
-      ],
-      "red": [
-        "Anivia",
-        "Annie",
-        "Aurelion Sol",
-        "Blitzcrank",
-        "Briar"
-      ]
+      "blue": [],
+      "red": []
     },
-    "histTeams": {
-      "JUANITO CAMARADA": [
-        "Amumu",
-        "Aphelios",
-        "Ashe",
-        "Brand",
-        "Braum"
-      ],
-      "ARNULFO PISTOLAS": [
-        "Anivia",
-        "Annie",
-        "Aurelion Sol",
-        "Blitzcrank",
-        "Briar"
-      ]
-    },
+    "histTeams": {},
     "teamBind": {
       "JUANITO CAMARADA": [],
       "ARNULFO PISTOLAS": []
@@ -194,7 +167,12 @@
     "fearless": true,
     "lcuEnabled": false
   },
-  "seriesRevision": 73,
+  "seriesRevision": 74,
   "countedGames": [],
-  "pendingWinners": []
+  "pendingWinners": [
+    [
+      "LA1-1763583571",
+      "blue"
+    ]
+  ]
 }

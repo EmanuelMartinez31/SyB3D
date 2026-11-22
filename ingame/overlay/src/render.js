@@ -584,6 +584,33 @@ const FIGHT_CLASH_RADIUS = 2200;
 const FIGHT_ENTER_S = 0.6;
 const FIGHT_EXIT_S = 2.0;
 
+// R102 · manda el operador desde el Stream Deck: auto / off / on.
+// El servidor lo mete en cada estado, así que una recarga del overlay no lo
+// pierde.
+const MODOS_PELEA = ['auto', 'off', 'on'];
+let modoPelea = 'auto';
+
+// R102 · el botón de alternar tiene que saber si la tira se está viendo ahora
+// mismo, así que aquí se le cuenta al servidor cada vez que entra o sale.
+// Se repite cada 15 s por si el servidor se reinició y se quedó sin el dato.
+let visibilidadAvisada = null;
+let cuandoSeAviso = 0;
+
+function avisarVisibilidad() {
+  const ahora = Date.now();
+  if (fightVisible === visibilidadAvisada && ahora - cuandoSeAviso < 15000) return;
+  visibilidadAvisada = fightVisible;
+  cuandoSeAviso = ahora;
+  if (typeof fetch !== 'function') return;
+  try {
+    fetch('/fight/visible', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ visible: fightVisible })
+    }).catch(() => {});
+  } catch { /* si el overlay se abre como archivo suelto no hay a quién avisar */ }
+}
+
 const fightState = {
   active: false,
   sostiene: 0,   // segundos que lleva cumpliéndose la condición
@@ -909,9 +936,22 @@ function renderFight(state, catalog) {
   if (!strip) return;
 
   const players = Array.isArray(state?.players) ? state.players : [];
+
+  // Apagada a mano: la tira no sale aunque la detección diga que sí.
+  if (modoPelea === 'off') {
+    fightState.active = false;
+    fightState.sostiene = 0;
+    fightState.ausente = 0;
+    fightState.blue = [];
+    fightState.red = [];
+    hideFightStrip();
+    return;
+  }
+
   const fight = updateFight(players);
   renderFightLogo(state?.info);
-  if (fight.active !== true) {
+  // Encendida a mano: sale aunque la detección no vea pelea.
+  if (modoPelea !== 'on' && fight.active !== true) {
     hideFightStrip();
     return;
   }
@@ -2698,60 +2738,9 @@ function renderMultikill(state, catalog) {
   }, MULTIKILL_ESPERA_MS);
 }
 
-// ===== R99 · colores del HUD =====
-// El panel manda tres colores dentro de info.tema. Aquí solo se reescriben las
-// variables de color de la hoja de estilos: el resto del HUD ya las usa, así
-// que no hay que tocar ninguna tarjeta. Sin tema no se cambia nada.
-const HEX_COLOR = /^#[0-9a-f]{6}$/i;
-// Las sombras y los bordes del HUD usan el color con transparencia. Se escribe
-// como rgb(... / x%) con tres números aparte porque es lo que entienden todos
-// los navegadores, incluido el que lleva OBS.
-function canalesHex(hex) {
-  const h = String(hex).replace('#', '');
-  return [0, 2, 4].map(i => parseInt(h.substr(i, 2), 16)).join(' ');
-}
-function mezclaHex(hex, hacia, factor) {
-  const h = String(hex).replace('#', '');
-  const t = String(hacia).replace('#', '');
-  return '#' + [0, 2, 4].map(i => {
-    const a = parseInt(h.substr(i, 2), 16);
-    const b = parseInt(t.substr(i, 2), 16);
-    return Math.round(a + (b - a) * factor).toString(16).padStart(2, '0');
-  }).join('');
-}
-function aplicarTemaHUD(tema) {
-  if (!tema || typeof tema !== 'object') return;
-  const raiz = document.documentElement.style;
-  const limpio = (valor) => HEX_COLOR.test(String(valor || '').trim()) ? String(valor).trim().toLowerCase() : null;
-  const acento = limpio(tema.acento);
-  const azul = limpio(tema.azul);
-  const rojo = limpio(tema.rojo);
-  if (acento) {
-    raiz.setProperty('--p-gold-400', acento);
-    raiz.setProperty('--accent-rgb', canalesHex(acento));
-    raiz.setProperty('--accent-dark', mezclaHex(acento, '#000000', .55));
-  }
-  if (azul) {
-    const claro = mezclaHex(azul, '#ffffff', .45);
-    raiz.setProperty('--p-blue-500', azul);
-    raiz.setProperty('--p-blue-300', claro);
-    raiz.setProperty('--team-blue-rgb', canalesHex(azul));
-    raiz.setProperty('--p-blue-300-rgb', canalesHex(claro));
-    raiz.setProperty('--team-blue-dark', mezclaHex(azul, '#000000', .55));
-  }
-  if (rojo) {
-    const claro = mezclaHex(rojo, '#ffffff', .45);
-    raiz.setProperty('--p-red-500', rojo);
-    raiz.setProperty('--p-red-300', claro);
-    raiz.setProperty('--team-red-rgb', canalesHex(rojo));
-    raiz.setProperty('--p-red-300-rgb', canalesHex(claro));
-    raiz.setProperty('--team-red-dark', mezclaHex(rojo, '#000000', .55));
-  }
-}
-
 export function renderIngameState(state, catalog) {
   if (!state || typeof state !== 'object') return;
-  aplicarTemaHUD(state.info && state.info.tema);
+  if (MODOS_PELEA.includes(state.fightMode)) modoPelea = state.fightMode;
   if (cardDebug) renderCardDebug(state);
   activeCatalog = catalog;
   aplicarModo(modoDePartida(state));
@@ -2766,6 +2755,7 @@ export function renderIngameState(state, catalog) {
   renderIntroBanner(state);
   renderCamaras(state);
   renderFight(state, catalog);
+  avisarVisibilidad();
   setText(byId('game-time'), formatTime(state.meta?.gameTime));
 
   if (modoActual === '1v1') renderUnoContraUno(state);

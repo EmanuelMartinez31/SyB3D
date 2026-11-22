@@ -59,12 +59,12 @@
   {
     "path": "$.NeutralMinions[0].Info.NetworkId",
     "type": "number",
-    "value": 1073742531
+    "value": 1073742526
   },
   {
     "path": "$.NeutralMinions[0].Info.Index",
     "type": "number",
-    "value": 133148
+    "value": 133109
   },
   {
     "path": "$.NeutralMinions[0].Info.Position",
@@ -73,17 +73,17 @@
   {
     "path": "$.NeutralMinions[0].Info.Position.x",
     "type": "number",
-    "value": 6141
+    "value": 8659
   },
   {
     "path": "$.NeutralMinions[0].Info.Position.y",
     "type": "number",
-    "value": 50.523113
+    "value": 53.657677
   },
   {
     "path": "$.NeutralMinions[0].Info.Position.z",
     "type": "number",
-    "value": 3402
+    "value": 11535
   },
   {
     "path": "$.NeutralMinions[0].Info.Rotation",
@@ -2677,12 +2677,12 @@
   {
     "path": "$.MinionMap.1073742404.Common.Buffs[0].StartTime",
     "type": "number",
-    "value": 0.3637509
+    "value": 0.5675284
   },
   {
     "path": "$.MinionMap.1073742404.Common.Buffs[0].EndTime",
     "type": "number",
-    "value": 60.36375
+    "value": 60.567528
   },
   {
     "path": "$.MinionMap.1073742404.Common.Buffs[0].Count",
@@ -3137,12 +3137,12 @@
   {
     "path": "$.MinionMap.1073742406.Common.Buffs[0].StartTime",
     "type": "number",
-    "value": 0.3637509
+    "value": 0.5675284
   },
   {
     "path": "$.MinionMap.1073742406.Common.Buffs[0].EndTime",
     "type": "number",
-    "value": 60.36375
+    "value": 60.567528
   },
   {
     "path": "$.MinionMap.1073742406.Common.Buffs[0].Count",
@@ -3597,12 +3597,12 @@
   {
     "path": "$.MinionMap.1073742408.Common.Buffs[0].StartTime",
     "type": "number",
-    "value": 0.3637509
+    "value": 0.5675284
   },
   {
     "path": "$.MinionMap.1073742408.Common.Buffs[0].EndTime",
     "type": "number",
-    "value": 60.36375
+    "value": 60.567528
   },
   {
     "path": "$.MinionMap.1073742408.Common.Buffs[0].Count",
@@ -3827,12 +3827,12 @@
   {
     "path": "$.MinionMap.1073742409.Common.Buffs[0].StartTime",
     "type": "number",
-    "value": 0.3637509
+    "value": 0.5675284
   },
   {
     "path": "$.MinionMap.1073742409.Common.Buffs[0].EndTime",
     "type": "number",
-    "value": 60.36375
+    "value": 60.567528
   },
   {
     "path": "$.MinionMap.1073742409.Common.Buffs[0].Count",
@@ -4620,7 +4620,7 @@
   {
     "path": "$.MinionMap.1073742492.Info.Index",
     "type": "number",
-    "value": 68107
+    "value": 68108
   },
   {
     "path": "$.MinionMap.1073742492.Info.Position",
@@ -5022,7 +5022,7 @@
   {
     "path": "$.MinionMap.1073742523.Info.Index",
     "type": "number",
-    "value": 133110
+    "value": 133178
   },
   {
     "path": "$.MinionMap.1073742523.Info.Position",
@@ -5036,7 +5036,7 @@
   {
     "path": "$.MinionMap.1073742523.Info.Position.y",
     "type": "number",
-    "value": 165.06851
+    "value": 171.4954
   },
   {
     "path": "$.MinionMap.1073742523.Info.Position.z",
@@ -5223,7 +5223,7 @@
   {
     "path": "$.MinionMap.1073742526.Info.Index",
     "type": "number",
-    "value": 133163
+    "value": 133109
   },
   {
     "path": "$.MinionMap.1073742526.Info.Position",
@@ -5424,7 +5424,7 @@
   {
     "path": "$.MinionMap.1073742527.Info.Index",
     "type": "number",
-    "value": 133172
+    "value": 133110
   },
   {
     "path": "$.MinionMap.1073742527.Info.Position",
@@ -6429,7 +6429,7 @@
   {
     "path": "$.MinionMap.1073742533.Info.Index",
     "type": "number",
-    "value": 68114
+    "value": 68115
   },
   {
     "path": "$.MinionMap.1073742533.Info.Position",
@@ -6630,7 +6630,7 @@
   {
     "path": "$.MinionMap.1073742534.Info.Index",
     "type": "number",
-    "value": 68113
+    "value": 68114
   },
   {
     "path": "$.MinionMap.1073742534.Info.Position",
@@ -7151,7 +7151,7 @@
   {
     "path": "$.HeroMap.1073742161.D.Cooldown",
     "type": "number",
-    "value": 13.455242
+    "value": 13.39383
   },
   {
     "path": "$.HeroMap.1073742161.D.IsToggled",
@@ -7215,7 +7215,7 @@
   {
     "path": "$.HeroMap.1073742161.F.Cooldown",
     "type": "number",
-    "value": 13.455242
+    "value": 13.39383
   },
   {
     "path": "$.HeroMap.1073742161.F.IsToggled",
@@ -8011,7 +8011,7 @@
   {
     "path": "$.HeroMap.1073742162.D.Cooldown",
     "type": "number",
-    "value": 13.455242
+    "value": 13.39383
   },
   {
     "path": "$.HeroMap.1073742162.D.IsToggled",
@@ -8045,7 +8045,7 @@
   {
     "path": "$.HeroMap.1073742162.F.AmmoReadyAt",
     "type": "number",
-    "value": 1.3320514
+    "value": 1.5936589
   },
   {
     "path": "$.HeroMap.1073742162.F.AmmoCooldown",
@@ -8075,7 +8075,7 @@
   {
     "path": "$.HeroMap.1073742162.F.Cooldown",
     "type": "number",
-    "value": 13.455242
+    "value": 13.39383
   },
   {
     "path": "$.HeroMap.1073742162.F.IsToggled",
@@ -8871,7 +8871,7 @@
   {
     "path": "$.HeroMap.1073742163.D.Cooldown",
     "type": "number",
-    "value": 13.455242
+    "value": 13.39383
   },
   {
     "path": "$.HeroMap.1073742163.D.IsToggled",
@@ -8935,7 +8935,7 @@
   {
     "path": "$.HeroMap.1073742163.F.Cooldown",
     "type": "number",
-    "value": 13.455242
+    "value": 13.39383
   },
   {
     "path": "$.HeroMap.1073742163.F.IsToggled",
@@ -9509,7 +9509,7 @@
   {
     "path": "$.HeroMap.1073742164.W.AmmoReadyAt",
     "type": "number",
-    "value": 100.21105
+    "value": 100.414825
   },
   {
     "path": "$.HeroMap.1073742164.W.AmmoCooldown",
@@ -9731,7 +9731,7 @@
   {
     "path": "$.HeroMap.1073742164.D.Cooldown",
     "type": "number",
-    "value": 13.455242
+    "value": 13.39383
   },
   {
     "path": "$.HeroMap.1073742164.D.IsToggled",
@@ -9795,7 +9795,7 @@
   {
     "path": "$.HeroMap.1073742164.F.Cooldown",
     "type": "number",
-    "value": 13.455242
+    "value": 13.39383
   },
   {
     "path": "$.HeroMap.1073742164.F.IsToggled",
@@ -10591,7 +10591,7 @@
   {
     "path": "$.HeroMap.1073742165.D.Cooldown",
     "type": "number",
-    "value": 13.455242
+    "value": 13.39383
   },
   {
     "path": "$.HeroMap.1073742165.D.IsToggled",
@@ -10655,7 +10655,7 @@
   {
     "path": "$.HeroMap.1073742165.F.Cooldown",
     "type": "number",
-    "value": 13.455242
+    "value": 13.39383
   },
   {
     "path": "$.HeroMap.1073742165.F.IsToggled",
@@ -11451,7 +11451,7 @@
   {
     "path": "$.HeroMap.1073742166.D.Cooldown",
     "type": "number",
-    "value": 13.455242
+    "value": 13.39383
   },
   {
     "path": "$.HeroMap.1073742166.D.IsToggled",
@@ -11515,7 +11515,7 @@
   {
     "path": "$.HeroMap.1073742166.F.Cooldown",
     "type": "number",
-    "value": 13.455242
+    "value": 13.39383
   },
   {
     "path": "$.HeroMap.1073742166.F.IsToggled",
@@ -12311,7 +12311,7 @@
   {
     "path": "$.HeroMap.1073742167.D.Cooldown",
     "type": "number",
-    "value": 13.455242
+    "value": 13.39383
   },
   {
     "path": "$.HeroMap.1073742167.D.IsToggled",
@@ -12345,7 +12345,7 @@
   {
     "path": "$.HeroMap.1073742167.F.AmmoReadyAt",
     "type": "number",
-    "value": 1.3320514
+    "value": 1.5936589
   },
   {
     "path": "$.HeroMap.1073742167.F.AmmoCooldown",
@@ -12375,7 +12375,7 @@
   {
     "path": "$.HeroMap.1073742167.F.Cooldown",
     "type": "number",
-    "value": 13.455242
+    "value": 13.39383
   },
   {
     "path": "$.HeroMap.1073742167.F.IsToggled",
@@ -13171,7 +13171,7 @@
   {
     "path": "$.HeroMap.1073742168.D.Cooldown",
     "type": "number",
-    "value": 13.455242
+    "value": 13.39383
   },
   {
     "path": "$.HeroMap.1073742168.D.IsToggled",
@@ -13235,7 +13235,7 @@
   {
     "path": "$.HeroMap.1073742168.F.Cooldown",
     "type": "number",
-    "value": 13.455242
+    "value": 13.39383
   },
   {
     "path": "$.HeroMap.1073742168.F.IsToggled",
@@ -14031,7 +14031,7 @@
   {
     "path": "$.HeroMap.1073742169.D.Cooldown",
     "type": "number",
-    "value": 13.455242
+    "value": 13.39383
   },
   {
     "path": "$.HeroMap.1073742169.D.IsToggled",
@@ -14095,7 +14095,7 @@
   {
     "path": "$.HeroMap.1073742169.F.Cooldown",
     "type": "number",
-    "value": 13.455242
+    "value": 13.39383
   },
   {
     "path": "$.HeroMap.1073742169.F.IsToggled",
@@ -14891,7 +14891,7 @@
   {
     "path": "$.HeroMap.1073742170.D.Cooldown",
     "type": "number",
-    "value": 13.455242
+    "value": 13.39383
   },
   {
     "path": "$.HeroMap.1073742170.D.IsToggled",
@@ -14955,7 +14955,7 @@
   {
     "path": "$.HeroMap.1073742170.F.Cooldown",
     "type": "number",
-    "value": 13.455242
+    "value": 13.39383
   },
   {
     "path": "$.HeroMap.1073742170.F.IsToggled",
@@ -15422,7 +15422,7 @@
   {
     "path": "$.GameTime",
     "type": "number",
-    "value": 1.544758
+    "value": 1.60617
   },
   {
     "path": "$.PlaybackSpeed",
@@ -15432,7 +15432,7 @@
   {
     "path": "$.UtcTime",
     "type": "number",
-    "value": 1795063644149
+    "value": 1795376689761
   },
   {
     "path": "$.Camera",
@@ -15849,7 +15849,7 @@
   {
     "path": "$.Heroes[0].D.Cooldown",
     "type": "number",
-    "value": 13.455242
+    "value": 13.39383
   },
   {
     "path": "$.Heroes[0].D.IsToggled",
@@ -15913,7 +15913,7 @@
   {
     "path": "$.Heroes[0].F.Cooldown",
     "type": "number",
-    "value": 13.455242
+    "value": 13.39383
   },
   {
     "path": "$.Heroes[0].F.IsToggled",
@@ -16423,22 +16423,22 @@
   {
     "path": "$.Minions[0].Info.IsNeutral",
     "type": "boolean",
-    "value": false
+    "value": true
   },
   {
     "path": "$.Minions[0].Info.Name",
     "type": "string",
-    "value": "PerksPerxie"
+    "value": "PlantSatchel"
   },
   {
     "path": "$.Minions[0].Info.NetworkId",
     "type": "number",
-    "value": 1073742523
+    "value": 1073742526
   },
   {
     "path": "$.Minions[0].Info.Index",
     "type": "number",
-    "value": 133110
+    "value": 133109
   },
   {
     "path": "$.Minions[0].Info.Position",
@@ -16447,17 +16447,17 @@
   {
     "path": "$.Minions[0].Info.Position.x",
     "type": "number",
-    "value": 14181.27
+    "value": 8659
   },
   {
     "path": "$.Minions[0].Info.Position.y",
     "type": "number",
-    "value": 165.06851
+    "value": 53.657677
   },
   {
     "path": "$.Minions[0].Info.Position.z",
     "type": "number",
-    "value": 14392.117
+    "value": 11535
   },
   {
     "path": "$.Minions[0].Info.Rotation",
@@ -16467,7 +16467,7 @@
   {
     "path": "$.Minions[0].Info.Team",
     "type": "number",
-    "value": 2
+    "value": 3
   },
   {
     "path": "$.Minions[0].Common",
@@ -16496,7 +16496,7 @@
   {
     "path": "$.Minions[0].Common.Identifier",
     "type": "string",
-    "value": "PerksPerxie"
+    "value": "SRU_Plant_Satchel"
   },
   {
     "path": "$.Minions[0].Common.CurrentAttack",
@@ -16511,12 +16511,12 @@
   {
     "path": "$.Minions[0].Common.Health",
     "type": "number",
-    "value": 360
+    "value": 1
   },
   {
     "path": "$.Minions[0].Common.MaxHealth",
     "type": "number",
-    "value": 360
+    "value": 1
   },
   {
     "path": "$.Minions[0].Common.Armor",
@@ -16930,7 +16930,7 @@
   {
     "path": "$.ParticleEmitters[0].index",
     "type": "number",
-    "value": 68115
+    "value": 68116
   },
   {
     "path": "$.ParticleEmitters[0].networkId",
@@ -16969,7 +16969,7 @@
   {
     "path": "$.ParticleEmitters[0].rotation[0]",
     "type": "number",
-    "value": 1.4812182e+25
+    "value": 5454900500000000
   },
   {
     "path": "$.Misc",

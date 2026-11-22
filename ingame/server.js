@@ -1804,6 +1804,7 @@ function normalizeDraftInfo(info) {
 
 function broadcastLatestState() {
   if (!latestState) return;
+  latestState.fightMode = modoPelea;
   const message = JSON.stringify({ type: 'ingame-state', data: latestState });
   lastCompactBytes = Buffer.byteLength(message);
   for (const client of wss.clients) {
@@ -2185,6 +2186,7 @@ app.post('/sensor', (req, res) => {
   adapted.info = draftSync.info;
   adapted.score = draftSync.score;
   adapted.sideTeams = draftSync.sideTeams;
+  adapted.fightMode = modoPelea;
 
   latest = normalized;
   cinematica.actualizar(normalized);
@@ -2244,6 +2246,8 @@ app.get('/status', (req, res) => {
       error: draftSync.lastError
     },
     winnersReported: reportedWinners.size,
+    modoPelea,
+    tiraVisible,
     unoContraUno: ganadorUnoContraUno.estadoActual(),
     hudAutoHide: {
       gameId: autoHideGameId,
@@ -2252,6 +2256,95 @@ app.get('/status', (req, res) => {
       preserve: ['interfaceMinimap', 'interfaceTarget']
     }
   });
+});
+
+// ===========================================================================
+// R102 · TIRA DE TEAMFIGHT A MANO
+// La tira la detecta el overlay por su cuenta (3 contra 3 dentro de un radio
+// amplio, con uno de los lados a cuatro). A veces salta sin ser una pelea, así
+// que aquí el operador manda: auto (como siempre), off (no sale nunca) u on
+// (sale siempre). Se guarda en disco para que aguante un reinicio.
+// ===========================================================================
+const MODO_PELEA_PATH = path.join(DATA_DIR, 'modo-pelea.json');
+const MODOS_PELEA = ['auto', 'off', 'on'];
+// El overlay avisa de si la tira está a la vista ahora mismo. Con eso el botón
+// de alternar sabe qué hacer sin que el operador tenga que recordar el modo:
+// si la está viendo, la quita; si no la está viendo, la pone.
+let tiraVisible = false;
+let avisoVisible = null;
+let modoPelea = (() => {
+  try {
+    const guardado = JSON.parse(fs.readFileSync(MODO_PELEA_PATH, 'utf8'));
+    return MODOS_PELEA.includes(guardado?.modo) ? guardado.modo : 'auto';
+  } catch { return 'auto'; }
+})();
+
+function guardarModoPelea() {
+  try {
+    fs.writeFileSync(MODO_PELEA_PATH, JSON.stringify({ modo: modoPelea }, null, 2));
+  } catch (error) {
+    console.error('No se pudo guardar el modo de pelea:', error.message);
+  }
+}
+
+function aplicarModoPelea(modo) {
+  if (!MODOS_PELEA.includes(modo)) return null;
+  modoPelea = modo;
+  guardarModoPelea();
+  if (latestState) latestState.fightMode = modo;
+  broadcastLatestState();
+  return modo;
+}
+
+app.get('/fight', (req, res) => {
+  const automatico = modoPelea === 'auto';
+  res.json({
+    modo: modoPelea,
+    modos: MODOS_PELEA,
+    automatico,
+    tira: automatico ? tiraVisible : modoPelea === 'on',
+    visible: tiraVisible
+  });
+});
+
+// Botón de la tira: abre y cierra. Si el automático está puesto, el primer
+// toque lo quita y deja la tira al revés de como se está viendo.
+function modoAlternado() {
+  if (modoPelea === 'off') return 'on';
+  if (modoPelea === 'on') return 'off';
+  return tiraVisible ? 'off' : 'on';
+}
+
+// Botón del automático: lo quita y lo pone. Al quitarlo, la tira se queda tal
+// como está en ese momento (si estaba abierta, se queda abierta; si no, cerrada)
+// y el HUD deja de decidir hasta que se vuelva a poner.
+function modoAutoAlternado() {
+  if (modoPelea !== 'auto') return 'auto';
+  return tiraVisible ? 'on' : 'off';
+}
+
+app.get('/fight/:modo', (req, res) => {
+  const pedido = String(req.params.modo || '').toLowerCase();
+  const alternarTira = pedido === 'toggle' || pedido === 'alternar';
+  const alternarAuto = pedido === 'auto-toggle' || pedido === 'automatico' || pedido === 'alternar-auto';
+  const objetivo = alternarTira
+    ? modoAlternado()
+    : alternarAuto ? modoAutoAlternado() : pedido;
+  const aplicado = aplicarModoPelea(objetivo);
+  if (!aplicado) {
+    return res.status(400).json({ error: `Modo desconocido: ${pedido}`, modos: MODOS_PELEA });
+  }
+  const texto = { auto: 'automática (como siempre)', off: 'apagada', on: 'encendida a mano' }[aplicado];
+  console.log(`[pelea] Tira de teamfight ${texto}`);
+  res.json({ ok: true, modo: aplicado, texto, visible: tiraVisible });
+});
+
+// El overlay cuenta si la tira está puesta. Es un aviso corto y sin respuesta.
+app.post('/fight/visible', (req, res) => {
+  const visible = req.body?.visible === true;
+  tiraVisible = visible;
+  avisoVisible = new Date().toISOString();
+  res.json({ ok: true, visible: tiraVisible });
 });
 
 app.get('/gold-series', (req, res) => {

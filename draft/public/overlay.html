@@ -4,6 +4,19 @@
 <meta charset="UTF-8">
 <title>OVERLAY — Draft 3D</title>
 <style>
+  /* R99 · paleta del HUD. El panel manda el azul y el rojo de los equipos y
+     aquí se calculan los claros y los bordes (el draft no tiene dorado). Si el
+     panel no manda nada, estos son los de fábrica y todo se ve como siempre. */
+  :root {
+    --hud-azul: #3b82f6;
+    --hud-azul-claro: #60a5fa;
+    --hud-azul-borde: #1e3a8a;
+    --hud-rojo: #ef4444;
+    --hud-rojo-claro: #f87171;
+    --hud-rojo-borde: #7f1d1d;
+    --hud-azul-rgb: 59 130 246;
+    --hud-rojo-rgb: 239 68 68;
+  }
   html, body { margin: 0; height: 100%; overflow: hidden; background: transparent; }
   #bg { position: fixed; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1; }
   #ui { position: fixed; top: 16px; left: 50%; transform: translateX(-50%); display: flex; gap: 10px; font-family: system-ui; color: #fff; text-shadow: 0 2px 8px #000; pointer-events: none; }
@@ -42,11 +55,11 @@
   .pbox {
     width: 156px; height: 208px; border-radius: 14px;
     background: rgba(5,8,15,.75);
-    border: 3px solid #1e3a8a;
+    border: 3px solid var(--hud-azul-borde);
     box-shadow: 0 6px 24px rgba(0,0,0,.6);
     overflow: hidden; position: relative;
   }
-  .team-red .pbox { border-color: #7f1d1d; }
+  .team-red .pbox { border-color: var(--hud-rojo-borde); }
   .pbox img { width: 100%; height: 100%; object-fit: cover; display: block; }
   /* R97 · PRESELECCIÓN (hover del jugador en el cliente de LoL): se ve SOLO en
      la carta 2D, atenuada y con el borde punteado, para que nadie la confunda
@@ -64,16 +77,16 @@
   .bbox {
     width: 78px; height: 78px; border-radius: 10px;
     background: rgba(5,8,15,.7);
-    border: 2px solid #1e3a8a;
+    border: 2px solid var(--hud-azul-borde);
     box-shadow: 0 4px 14px rgba(0,0,0,.5);
     overflow: hidden; position: relative;
   }
-  .team-red .bbox { border-color: #7f1d1d; }
+  .team-red .bbox { border-color: var(--hud-rojo-borde); }
   .bbox img { width: 100%; height: 100%; object-fit: cover; display: block; filter: grayscale(.6) brightness(.85); }
   .bbox::after {
     content: '✕'; position: absolute; inset: 0;
     display: flex; align-items: center; justify-content: center;
-    font-size: 44px; font-weight: 900; color: rgba(239,68,68,.9);
+    font-size: 44px; font-weight: 900; color: rgb(var(--hud-rojo-rgb) / 90%);
     text-shadow: 0 2px 6px #000;
   }
 
@@ -92,11 +105,11 @@
   .ubox {
     width: 40px; height: 40px; border-radius: 6px;
     background: rgba(5,8,15,.75);
-    border: 2px solid #1e3a8a;
+    border: 2px solid var(--hud-azul-borde);
     box-shadow: 0 3px 10px rgba(0,0,0,.5);
     overflow: hidden; position: relative;
   }
-  #redUsed .ubox { border-color: #7f1d1d; }
+  #redUsed .ubox { border-color: var(--hud-rojo-borde); }
   .ubox img { width: 100%; height: 100%; object-fit: cover; display: block; filter: brightness(.6) saturate(.75); }
   .ubox::after { content: '🔒'; position: absolute; bottom: 1px; right: 2px; font-size: 10px; }
 
@@ -108,16 +121,16 @@
   #centerinfo img.logo { height: 140px; max-width: 440px; object-fit: contain; margin-bottom: 8px; filter: drop-shadow(0 2px 8px rgba(0,0,0,.7)); }
   #tournamentName { font-size: 32px; font-weight: 800; letter-spacing: 2px; opacity: .95; }
   #matchTeams { width: 100%; max-width: 460px; display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 5px; font-size: 26px; font-weight: 700; opacity: .9; }
-  #matchTeams .tb { flex: 1; min-width: 0; text-align: right; color: #60a5fa; line-height: 1.1; overflow-wrap: break-word; }
-  #matchTeams .tr { flex: 1; min-width: 0; text-align: left; color: #f87171; line-height: 1.1; overflow-wrap: break-word; }
+  #matchTeams .tb { flex: 1; min-width: 0; text-align: right; color: var(--hud-azul-claro); line-height: 1.1; overflow-wrap: break-word; }
+  #matchTeams .tr { flex: 1; min-width: 0; text-align: left; color: var(--hud-rojo-claro); line-height: 1.1; overflow-wrap: break-word; }
   #matchTeams .vs { font-weight: 900; opacity: .85; letter-spacing: 3px; flex: 0 0 auto; }
 
    #scoreLine { margin-top: 8px; display: flex; flex-direction: column; align-items: center; gap: 3px; }
   #scoreLine .scorerow { display: flex; align-items: center; gap: 20px; }
   #scoreLine b { font-size: 28px; font-weight: 900; letter-spacing: 1px; }
   .pip { display: inline-block; width: 14px; height: 14px; border-radius: 50%; border: 2px solid #555; margin: 0 3px; vertical-align: middle; }
-  .pip.blue.filled { background: #3b82f6; border-color: #3b82f6; box-shadow: 0 0 8px #3b82f6; }
-  .pip.red.filled { background: #ef4444; border-color: #ef4444; box-shadow: 0 0 8px #ef4444; }
+  .pip.blue.filled { background: var(--hud-azul); border-color: var(--hud-azul); box-shadow: 0 0 8px var(--hud-azul); }
+  .pip.red.filled { background: var(--hud-rojo); border-color: var(--hud-rojo); box-shadow: 0 0 8px var(--hud-rojo); }
   #boLabel { font-size: 14px; font-weight: 800; opacity: .8; letter-spacing: 1px; }
 
   /* ===== TIMER DEL DRAFT (sincronizado al cliente) ===== */
@@ -208,6 +221,59 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
+// ===== R99 · colores del HUD =====
+// Dos colores base (azul y rojo); los claros y los bordes salen de aquí.
+// hexANum lo usan también los materiales 3D y el canvas 2D de las etiquetas.
+const TEMA_HUD = {
+  azul: '#3b82f6', rojo: '#ef4444',
+  azulClaro: '#60a5fa', azulBorde: '#1e3a8a',
+  rojoClaro: '#f87171', rojoBorde: '#7f1d1d'
+};
+const HEX_VALIDO = /^#[0-9a-f]{6}$/i;
+function hexANum(hex) { return parseInt(String(hex).replace('#', ''), 16); }
+function mezclarHex(hex, hacia, factor) {
+  const h = String(hex).replace('#', '');
+  const t = String(hacia).replace('#', '');
+  const canal = (i) => Math.round(parseInt(h.substr(i, 2), 16) + (parseInt(t.substr(i, 2), 16) - parseInt(h.substr(i, 2), 16)) * factor);
+  return '#' + [0, 2, 4].map(i => canal(i).toString(16).padStart(2, '0')).join('');
+}
+function calcularDerivados() {
+  TEMA_HUD.azulClaro = mezclarHex(TEMA_HUD.azul, '#ffffff', .45);
+  TEMA_HUD.azulBorde = mezclarHex(TEMA_HUD.azul, '#000000', .58);
+  TEMA_HUD.rojoClaro = mezclarHex(TEMA_HUD.rojo, '#ffffff', .45);
+  TEMA_HUD.rojoBorde = mezclarHex(TEMA_HUD.rojo, '#000000', .58);
+}
+function aplicarTemaHUD(tema) {
+  if (!tema || typeof tema !== 'object') return;
+  // El draft no tiene dorado: aquí solo se mueven el azul y el rojo.
+  const cambiado = ['azul', 'rojo'].filter(clave => {
+    const valor = String(tema[clave] || '').trim();
+    if (!HEX_VALIDO.test(valor)) return false;
+    TEMA_HUD[clave] = valor.toLowerCase();
+    return true;
+  });
+  if (!cambiado.length) return;
+  calcularDerivados();
+  const raiz = document.documentElement.style;
+  raiz.setProperty('--hud-azul', TEMA_HUD.azul);
+  raiz.setProperty('--hud-azul-claro', TEMA_HUD.azulClaro);
+  raiz.setProperty('--hud-azul-borde', TEMA_HUD.azulBorde);
+  raiz.setProperty('--hud-rojo', TEMA_HUD.rojo);
+  raiz.setProperty('--hud-rojo-claro', TEMA_HUD.rojoClaro);
+  raiz.setProperty('--hud-rojo-borde', TEMA_HUD.rojoBorde);
+  const canales = (hex) => { const h = hex.replace('#', ''); return [0, 2, 4].map(i => parseInt(h.substr(i, 2), 16)).join(' '); };
+  raiz.setProperty('--hud-azul-rgb', canales(TEMA_HUD.azul));
+  raiz.setProperty('--hud-rojo-rgb', canales(TEMA_HUD.rojo));
+  // Lo que ya estaba creado en 3D no se repinta solo: luces y pedestales.
+  if (typeof rimBlue !== 'undefined' && rimBlue) rimBlue.color.set(TEMA_HUD.azul);
+  if (typeof rimRed !== 'undefined' && rimRed) rimRed.color.set(TEMA_HUD.rojo);
+  if (typeof pedestales !== 'undefined' && pedestales) {
+    pedestales.blue.forEach(p => p.material.emissive.set(TEMA_HUD.azulBorde));
+    pedestales.red.forEach(p => p.material.emissive.set(TEMA_HUD.rojoBorde));
+  }
+  if (typeof ring !== 'undefined' && ring && !activePick) ring.material.color.set(TEMA_HUD.azulClaro);
+}
+
 const scene = new THREE.Scene();
 scene.fog = new THREE.Fog(0x23262e, 14, 48);
 const camera = new THREE.PerspectiveCamera(45, innerWidth/innerHeight, .1, 100);
@@ -230,8 +296,8 @@ controls.enableDamping = true;
 
 scene.add(new THREE.AmbientLight(0x8899bb, 2.0));
 const key = new THREE.SpotLight(0xffffff, 600, 60, Math.PI/3, .6); key.position.set(0, 12, 8); scene.add(key);
-const rimBlue = new THREE.PointLight(0x3b82f6, 300, 60); rimBlue.position.set(-11, 4, 2); scene.add(rimBlue);
-const rimRed  = new THREE.PointLight(0xef4444, 300, 60); rimRed.position.set(11, 4, 2); scene.add(rimRed);
+const rimBlue = new THREE.PointLight(hexANum(TEMA_HUD.azul), 300, 60); rimBlue.position.set(-11, 4, 2); scene.add(rimBlue);
+const rimRed  = new THREE.PointLight(hexANum(TEMA_HUD.rojo), 300, 60); rimRed.position.set(11, 4, 2); scene.add(rimRed);
 const fill = new THREE.DirectionalLight(0xffffff, 1.4); fill.position.set(0, 6, 12); scene.add(fill);
 
 const podium = new THREE.Mesh(
@@ -243,7 +309,7 @@ const floor = new THREE.Mesh(new THREE.CircleGeometry(30, 64),
   new THREE.MeshStandardMaterial({ color: 0x3a3f4a, metalness: .35, roughness: .6 }));
 floor.rotation.x = -Math.PI/2; floor.position.y = -.36; scene.add(floor);
 const ring = new THREE.Mesh(new THREE.TorusGeometry(2.2, .04, 16, 100),
-  new THREE.MeshBasicMaterial({ color: 0x58a6ff }));
+  new THREE.MeshBasicMaterial({ color: hexANum(TEMA_HUD.azulClaro) }));
 ring.rotation.x = Math.PI/2; ring.position.y = .01; scene.add(ring);
 
 // ===== R86 · MODO DEL DRAFT =====
@@ -290,7 +356,7 @@ for (let t = 0; t < 2; t++) {
     const d = new THREE.Mesh(new THREE.CylinderGeometry(.85, .95, .06, 32),
       new THREE.MeshStandardMaterial({
         color: 0x14161d, metalness: .8, roughness: .3,
-        emissive: team === 'blue' ? 0x1e3a8a : 0x7f1d1d, emissiveIntensity: .25
+        emissive: team === 'blue' ? hexANum(TEMA_HUD.azulBorde) : hexANum(TEMA_HUD.rojoBorde), emissiveIntensity: .25
       }));
     const p = lineupPos(team, i);
     d.position.set(p.x, -.33, p.z);
@@ -488,6 +554,7 @@ function clearBoxes() {
 
 function applyInfo(data) {
   if (!data) return;
+  aplicarTemaHUD(data.tema);
   aplicarModoDraft(data);
   currentInfoData = data;
   const oldBg = document.getElementById('bg');
@@ -564,11 +631,11 @@ function applyTimer(d) {
   document.getElementById('timerPhase').textContent = fase;
   const num = document.getElementById('timerNum');
   num.textContent = d.left;
-  num.style.color = d.left <= 5 ? '#f87171' : '#fff';
+  num.style.color = d.left <= 5 ? TEMA_HUD.rojoClaro : '#fff';
   const pct = d.total > 0 ? Math.max(0, Math.min(100, (d.left / d.total) * 100)) : 0;
   const bar = document.getElementById('timerBar');
   bar.style.height = pct + '%';
-  bar.style.background = d.team === 'blue' ? '#3b82f6' : d.team === 'red' ? '#ef4444' : '#a1a1aa';
+  bar.style.background = d.team === 'blue' ? TEMA_HUD.azul : d.team === 'red' ? TEMA_HUD.rojo : '#a1a1aa';
 }
 
 const loader = new GLTFLoader();
@@ -589,7 +656,7 @@ function dibujarEtiqueta1v1(l) {
   const W = l.cv.width, H = l.cv.height;
   g.clearRect(0, 0, W, H);
   g.fillStyle = 'rgba(5,8,15,.88)';
-  g.strokeStyle = l.team === 'blue' ? '#3b82f6' : '#ef4444';
+  g.strokeStyle = l.team === 'blue' ? TEMA_HUD.azul : TEMA_HUD.rojo;
   g.lineWidth = 10;
   roundRect(g, 8, 8, W - 16, H - 16, 26);
   g.fill(); g.stroke();
@@ -709,7 +776,7 @@ function teamCompleteFX(team, silent) {
   rim.userData.pulse = 1;
   const wave = new THREE.Mesh(
     new THREE.TorusGeometry(1, .12, 12, 64),
-    new THREE.MeshBasicMaterial({ color: team === 'blue' ? 0x3b82f6 : 0xef4444, transparent: true, opacity: .9 })
+    new THREE.MeshBasicMaterial({ color: team === 'blue' ? hexANum(TEMA_HUD.azul) : hexANum(TEMA_HUD.rojo), transparent: true, opacity: .9 })
   );
   wave.rotation.x = Math.PI/2;
   wave.position.set((team === 'blue' ? -1 : 1) * 4.6, -.3, .3);
@@ -860,7 +927,7 @@ function drawLaneLabel(l) {
   const cv = sp.userData.cv, g = cv.getContext('2d');
   g.clearRect(0, 0, cv.width, cv.height);
   g.fillStyle = 'rgba(5,8,15,.85)';
-  g.strokeStyle = team === 'blue' ? '#3b82f6' : '#ef4444';
+  g.strokeStyle = team === 'blue' ? TEMA_HUD.azul : TEMA_HUD.rojo;
   g.lineWidth = 8;
   roundRect(g, 6, 6, cv.width - 12, cv.height - 12, 18);
   g.fill(); g.stroke();
@@ -972,7 +1039,7 @@ function loadModelInto(holder, team, name) {
     holder.userData.normModel = model;
   }, undefined, () => {
     const ph = new THREE.Mesh(new THREE.CapsuleGeometry(.5, 1, 8, 16),
-      new THREE.MeshStandardMaterial({ color: team === 'blue' ? 0x3b82f6 : 0xef4444 }));
+      new THREE.MeshStandardMaterial({ color: team === 'blue' ? hexANum(TEMA_HUD.azul) : hexANum(TEMA_HUD.rojo) }));
     ph.position.y = 1.1; holder.add(ph);
   });
 }
@@ -994,7 +1061,7 @@ function pumpPickQueue() {
   }
 
   activePick = holder;
-  ring.material.color.set(team === 'blue' ? 0x3b82f6 : 0xef4444);
+  ring.material.color.set(team === 'blue' ? hexANum(TEMA_HUD.azul) : hexANum(TEMA_HUD.rojo));
   logUI(`🎬 Pick ${team === 'blue' ? '🔵' : '🔴'}: ${name}`);
   scene.add(holder);
 

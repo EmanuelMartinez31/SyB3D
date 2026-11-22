@@ -5,55 +5,13 @@
       {
         "type": "pick",
         "team": "blue",
-        "champion": "Amumu",
+        "champion": "Ezreal",
         "origen": "panel"
       },
       {
         "type": "pick",
         "team": "red",
-        "champion": "Anivia",
-        "origen": "panel"
-      },
-      {
-        "type": "pick",
-        "team": "red",
-        "champion": "Annie",
-        "origen": "panel"
-      },
-      {
-        "type": "pick",
-        "team": "blue",
-        "champion": "Brand",
-        "origen": "panel"
-      },
-      {
-        "type": "pick",
-        "team": "blue",
-        "champion": "Blitzcrank",
-        "origen": "panel"
-      },
-      {
-        "type": "pick",
-        "team": "red",
-        "champion": "Bel'Veth",
-        "origen": "panel"
-      },
-      {
-        "type": "pick",
-        "team": "red",
-        "champion": "Cho'Gath",
-        "origen": "panel"
-      },
-      {
-        "type": "pick",
-        "team": "blue",
-        "champion": "Darius",
-        "origen": "panel"
-      },
-      {
-        "type": "pick",
-        "team": "blue",
-        "champion": "Diana",
+        "champion": "Fiddlesticks",
         "origen": "panel"
       },
       {
@@ -61,67 +19,109 @@
         "team": "red",
         "champion": "Fiora",
         "origen": "panel"
+      },
+      {
+        "type": "pick",
+        "team": "blue",
+        "champion": "Fizz",
+        "origen": "panel"
+      },
+      {
+        "type": "pick",
+        "team": "blue",
+        "champion": "Galio",
+        "origen": "panel"
+      },
+      {
+        "type": "pick",
+        "team": "red",
+        "champion": "Gangplank",
+        "origen": "panel"
+      },
+      {
+        "type": "pick",
+        "team": "red",
+        "champion": "Gwen",
+        "origen": "panel"
+      },
+      {
+        "type": "pick",
+        "team": "blue",
+        "champion": "Hecarim",
+        "origen": "panel"
+      },
+      {
+        "type": "pick",
+        "team": "blue",
+        "champion": "Heimerdinger",
+        "origen": "panel"
+      },
+      {
+        "type": "pick",
+        "team": "red",
+        "champion": "Hwei",
+        "origen": "panel"
       }
     ],
     "bans": [
       {
         "type": "ban",
         "team": "blue",
-        "champion": "Aatrox",
+        "champion": "Diana",
         "origen": "panel"
       },
       {
         "type": "ban",
         "team": "red",
-        "champion": "Ahri",
+        "champion": "Dr. Mundo",
         "origen": "panel"
       },
       {
         "type": "ban",
         "team": "blue",
-        "champion": "Akali",
+        "champion": "Draven",
         "origen": "panel"
       },
       {
         "type": "ban",
         "team": "red",
-        "champion": "Akshan",
+        "champion": "Ekko",
         "origen": "panel"
       },
       {
         "type": "ban",
         "team": "blue",
-        "champion": "Alistar",
+        "champion": "Elise",
         "origen": "panel"
       },
       {
         "type": "ban",
         "team": "red",
-        "champion": "Ambessa",
+        "champion": "Evelynn",
         "origen": "panel"
       },
       {
         "type": "ban",
         "team": "red",
-        "champion": "Bard",
+        "champion": "Garen",
         "origen": "panel"
       },
       {
         "type": "ban",
         "team": "blue",
-        "champion": "Aurelion Sol",
+        "champion": "Gnar",
         "origen": "panel"
       },
       {
         "type": "ban",
         "team": "red",
-        "champion": "Caitlyn",
+        "champion": "Gragas",
         "origen": "panel"
       },
       {
         "type": "ban",
         "team": "blue",
-        "champion": "Camille",
+        "champion": "Graves",
         "origen": "panel"
       }
     ],
@@ -138,19 +138,51 @@
       "sponsorDerecha": "/uploads/sponsorDerecha-1794861224638.png",
       "bg": "",
       "modo": "5v5",
-      "baneos": 5
+      "baneos": 5,
+      "tema": {
+        "acento": "#a3e635",
+        "azul": "#10b981",
+        "rojo": "#f43f5e"
+      }
     },
     "score": {
       "format": "BO3",
-      "blue": 0,
+      "blue": 1,
       "red": 0
     },
     "roster": null,
     "history": {
-      "blue": [],
-      "red": []
+      "blue": [
+        "Amumu",
+        "Aphelios",
+        "Ashe",
+        "Brand",
+        "Braum"
+      ],
+      "red": [
+        "Anivia",
+        "Annie",
+        "Aurelion Sol",
+        "Blitzcrank",
+        "Briar"
+      ]
     },
-    "histTeams": {},
+    "histTeams": {
+      "JUANITO CAMARADA": [
+        "Amumu",
+        "Aphelios",
+        "Ashe",
+        "Brand",
+        "Braum"
+      ],
+      "ARNULFO PISTOLAS": [
+        "Anivia",
+        "Annie",
+        "Aurelion Sol",
+        "Blitzcrank",
+        "Briar"
+      ]
+    },
     "teamBind": {
       "JUANITO CAMARADA": [],
       "ARNULFO PISTOLAS": []
@@ -162,7 +194,7 @@
     "fearless": true,
     "lcuEnabled": false
   },
-  "seriesRevision": 70,
+  "seriesRevision": 73,
   "countedGames": [],
   "pendingWinners": []
 }

@@ -530,8 +530,111 @@ function normalizePresetData(source) {
     data[field] = String(input[field] || '').trim().slice(0, limit);
     if (field.endsWith('Short')) data[field] = data[field].toUpperCase();
   });
+  // R99 · la paleta del HUD se guarda con el preset. Solo se aceptan colores
+  // completos tipo #rrggbb: lo que no encaje se descarta y el overlay se queda
+  // con el color de fábrica.
+  if (input.tema && typeof input.tema === 'object') {
+    const tema = {};
+    ['acento', 'azul', 'rojo'].forEach(clave => {
+      const valor = String(input.tema[clave] || '').trim();
+      if (/^#[0-9a-f]{6}$/i.test(valor)) tema[clave] = valor.toLowerCase();
+    });
+    if (Object.keys(tema).length) data.tema = tema;
+  }
   return data;
 }
+
+// ===========================================================================
+// R100 · PALETAS DE COLOR
+// Combinaciones de los tres colores que el operador aplica de un clic, sin
+// tocar equipos ni torneo (eso es cosa de los presets). Las de fábrica vienen
+// puestas y no se pueden borrar; las demás se guardan en paletas.json.
+// ===========================================================================
+const PALETAS_PATH = process.env.SYB_DRAFT_PALETAS_FILE || path.join(DATA_DIR, 'paletas.json');
+const COLOR_HEX = /^#[0-9a-f]{6}$/i;
+// Doce paletas listas. Todas se comprobaron para que el texto se lea sobre el
+// fondo oscuro del HUD (contraste mínimo 4,6) y para que el azul y el rojo de
+// los equipos se distingan entre ellos, también con daltonismo.
+const PALETAS_FABRICA = [
+  { id: 'fabrica',      nombre: 'La de fábrica',   acento: '#e8c77b', azul: '#3b82f6', rojo: '#ef4444' },
+  { id: 'verde',        nombre: 'Verde',           acento: '#6ee7a8', azul: '#22c55e', rojo: '#0ea5e9' },
+  { id: 'morada',       nombre: 'Morada',          acento: '#c9a7ff', azul: '#8b5cf6', rojo: '#f43f87' },
+  { id: 'turquesa',     nombre: 'Turquesa',        acento: '#ffd166', azul: '#22d3ee', rojo: '#fb7185' },
+  { id: 'hextech',      nombre: 'Hextech',         acento: '#c8aa6e', azul: '#0ac8b9', rojo: '#d95c5c' },
+  { id: 'neon',         nombre: 'Neón',            acento: '#f9f871', azul: '#00e5ff', rojo: '#ff2e97' },
+  { id: 'hielo',        nombre: 'Hielo y fuego',   acento: '#dbe9ff', azul: '#5ec8ff', rojo: '#ff6b3d' },
+  { id: 'plata',        nombre: 'Plata nocturna',  acento: '#a8b3cf', azul: '#4a7cff', rojo: '#d9566f' },
+  { id: 'atardecer',    nombre: 'Atardecer',       acento: '#ffd6a5', azul: '#8b5cf6', rojo: '#ff5f6d' },
+  { id: 'esmeralda',    nombre: 'Esmeralda',       acento: '#a3e635', azul: '#10b981', rojo: '#f43f5e' },
+  { id: 'acero',        nombre: 'Acero',           acento: '#d4d7b0', azul: '#4b8f8c', rojo: '#d4695c' },
+  { id: 'synthwave',    nombre: 'Synthwave',       acento: '#7df9ff', azul: '#4d7cff', rojo: '#ff2fb9' }
+];
+
+function paletaValida(paleta) {
+  return paleta && typeof paleta === 'object'
+    && typeof paleta.id === 'string' && paleta.id
+    && typeof paleta.nombre === 'string' && paleta.nombre
+    && COLOR_HEX.test(paleta.acento || '') && COLOR_HEX.test(paleta.azul || '') && COLOR_HEX.test(paleta.rojo || '');
+}
+
+function loadPaletas() {
+  try {
+    const guardadas = JSON.parse(fs.readFileSync(PALETAS_PATH, 'utf8'));
+    return Array.isArray(guardadas) ? guardadas.filter(paletaValida) : [];
+  } catch (error) {
+    if (error.code !== 'ENOENT') console.error('No se pudieron recuperar las paletas:', error.message);
+    return [];
+  }
+}
+
+let paletas = loadPaletas();
+function savePaletas() {
+  const temporaryPath = `${PALETAS_PATH}.${process.pid}.tmp`;
+  try {
+    fs.writeFileSync(temporaryPath, JSON.stringify(paletas, null, 2));
+    fs.renameSync(temporaryPath, PALETAS_PATH);
+    return true;
+  } catch (error) {
+    console.error('No se pudieron guardar las paletas:', error.message);
+    try { if (fs.existsSync(temporaryPath)) fs.unlinkSync(temporaryPath); } catch {}
+    return false;
+  }
+}
+
+app.get('/api/paletas', (req, res) => {
+  const guardadas = [...paletas].sort((a, b) => a.nombre.localeCompare(b.nombre, 'es', { sensitivity: 'base' }));
+  res.json({ fabrica: PALETAS_FABRICA, guardadas });
+});
+
+app.post('/api/paletas', express.json({ limit: '4kb' }), (req, res) => {
+  const nombre = String(req.body?.nombre || '').trim().slice(0, 40);
+  if (!nombre) return res.status(400).json({ error: 'Escribe un nombre para la paleta' });
+  const colores = {};
+  for (const clave of ['acento', 'azul', 'rojo']) {
+    const valor = String(req.body?.[clave] || '').trim();
+    if (!COLOR_HEX.test(valor)) return res.status(400).json({ error: `El color ${clave} no es válido` });
+    colores[clave] = valor.toLowerCase();
+  }
+  const existente = paletas.find(p => p.nombre.toLowerCase() === nombre.toLowerCase());
+  const paleta = {
+    id: existente?.id || `p-${Date.now().toString(36)}`,
+    nombre,
+    ...colores,
+    actualizada: new Date().toISOString()
+  };
+  if (existente) Object.assign(existente, paleta);
+  else paletas.push(paleta);
+  if (!savePaletas()) return res.status(500).json({ error: 'No se pudo escribir el archivo de paletas' });
+  res.status(existente ? 200 : 201).json({ ok: true, paleta, actualizada: Boolean(existente) });
+});
+
+app.delete('/api/paletas/:id', (req, res) => {
+  const indice = paletas.findIndex(p => p.id === req.params.id);
+  if (indice < 0) return res.status(404).json({ error: 'Esa paleta ya no existe' });
+  const [borrada] = paletas.splice(indice, 1);
+  if (!savePaletas()) return res.status(500).json({ error: 'No se pudo actualizar el archivo de paletas' });
+  res.json({ ok: true, borrada: { id: borrada.id, nombre: borrada.nombre } });
+});
 
 app.get('/api/presets', (req, res) => {
   const ordered = [...presets].sort((a, b) => a.name.localeCompare(b.name, 'es', { sensitivity: 'base' }));
@@ -733,6 +836,9 @@ wss.on('connection', (ws, request) => {
       broadcast({ type: 'score', data: null });
       broadcast({ type: 'roster', data: { blue: ['', '', '', '', ''], red: ['', '', '', '', ''] } });
       notifySeriesControl('reset-series');
+      // R99b · el panel que reinició la serie recibe el estado limpio y vuelve a
+      // contar sus baneos desde cero. Solo a él: los overlays no se tocan.
+      try { ws.send(JSON.stringify({ type: 'init', state })); } catch {}
     }
     saveDraftState();
     broadcast(msg);

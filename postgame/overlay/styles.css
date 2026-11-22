@@ -26,6 +26,10 @@
   --red: #f05262;
   --red-light: #ff9b9e;
   --gold: #e8c77b;
+  /* R99 · canales sueltos para las transparencias (compatible con el navegador de OBS) */
+  --blue-rgb: 53 167 255;
+  --red-rgb: 240 82 98;
+  --gold-rgb: 232 199 123;
   --ink: #080b12;
   --muted: #9aa6ba;
 }
@@ -61,8 +65,8 @@ body {
   overflow: hidden;
   transform-origin: 0 0;
   background:
-    radial-gradient(ellipse at 8% 40%, rgba(19, 92, 151, 0.2), transparent 42%),
-    radial-gradient(ellipse at 92% 70%, rgba(148, 32, 48, 0.17), transparent 43%),
+    radial-gradient(ellipse at 8% 40%, rgb(var(--blue-rgb) / 20%), transparent 42%),
+    radial-gradient(ellipse at 92% 70%, rgb(var(--red-rgb) / 17%), transparent 43%),
     linear-gradient(125deg, #0c111c 0%, #080b12 45%, #0e0c13 100%);
 }
 #stage:before {
@@ -268,7 +272,7 @@ body {
 }
 .mid-side.right .mid-tag {
   color: var(--red-light);
-  background: rgba(240, 82, 98, 0.08);
+  background: rgb(var(--red-rgb) / 8%);
 }
 .mid-team {
   display: flex;
@@ -312,7 +316,7 @@ body {
 }
 .mid-result.win {
   color: var(--gold);
-  background: rgba(214, 178, 92, 0.12);
+  background: rgb(var(--gold-rgb) / 12%);
 }
 .mid-result.loss {
   color: #98a4b8;
@@ -648,7 +652,7 @@ body {
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  border: 1px solid rgba(214, 178, 92, 0.55);
+  border: 1px solid rgb(var(--gold-rgb) / 55%);
   background: rgba(3, 5, 9, 0.85);
   padding: 2px;
 }
@@ -779,7 +783,7 @@ body {
   color: #18130a;
   border: 1px solid #ffe9ad;
   clip-path: polygon(7% 0, 100% 0, 93% 100%, 0 100%);
-  filter: drop-shadow(0 0 8px rgba(232, 199, 123, 0.38));
+  filter: drop-shadow(0 0 8px rgb(var(--gold-rgb) / 38%));
   font-size: 29px;
   line-height: 1;
   font-weight: 800;
@@ -903,7 +907,7 @@ body {
 .lb-value {
   font: 800 12.5px Plex;
   font-variant-numeric: tabular-nums;
-  color: #87d4ff;
+  color: var(--blue-light);
   flex: none;
 }
 .lb-chart {

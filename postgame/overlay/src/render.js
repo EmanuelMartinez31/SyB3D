@@ -299,6 +299,44 @@ function buscarPatrocinadorDeRespaldo(imagen, nombre) {
   probar();
 }
 
+// ===== R99 · colores del HUD =====
+// Tres colores base que llegan en info.tema desde el panel; los claros se
+// calculan aquí. La hoja de estilos de la postpartida ya usa estas variables.
+const HEX_COLOR = /^#[0-9a-f]{6}$/i;
+function canalesHex(hex) {
+  const h = String(hex).replace('#', '');
+  return [0, 2, 4].map(i => parseInt(h.substr(i, 2), 16)).join(' ');
+}
+function aclararHex(hex, factor) {
+  const h = String(hex).replace('#', '');
+  return '#' + [0, 2, 4].map(i => {
+    const valor = parseInt(h.substr(i, 2), 16);
+    return Math.round(valor + (255 - valor) * factor).toString(16).padStart(2, '0');
+  }).join('');
+}
+function aplicarTemaHUD(tema) {
+  if (!tema || typeof tema !== 'object') return;
+  const raiz = document.documentElement.style;
+  const limpio = (valor) => HEX_COLOR.test(String(valor || '').trim()) ? String(valor).trim().toLowerCase() : null;
+  const acento = limpio(tema.acento);
+  const azul = limpio(tema.azul);
+  const rojo = limpio(tema.rojo);
+  if (acento) {
+    raiz.setProperty('--gold', acento);
+    raiz.setProperty('--gold-rgb', canalesHex(acento));
+  }
+  if (azul) {
+    raiz.setProperty('--blue', azul);
+    raiz.setProperty('--blue-light', aclararHex(azul, .45));
+    raiz.setProperty('--blue-rgb', canalesHex(azul));
+  }
+  if (rojo) {
+    raiz.setProperty('--red', rojo);
+    raiz.setProperty('--red-light', aclararHex(rojo, .45));
+    raiz.setProperty('--red-rgb', canalesHex(rojo));
+  }
+}
+
 export function renderPostgame(summary, catalog) {
   const stage = document.getElementById('stage');
   if (!summary?.teams?.blue || !summary?.teams?.red) {
@@ -307,6 +345,7 @@ export function renderPostgame(summary, catalog) {
   }
   stage.hidden = false;
   const info = summary.info || {};
+  aplicarTemaHUD(info.tema);
   document.getElementById('series-format').textContent =
     `${summary.format || 'BO3'} · JUEGO ${summary.gameNumber || 1}`;
   document.getElementById('game-duration').textContent = duration(summary.gameDuration);

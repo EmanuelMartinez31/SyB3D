@@ -2274,10 +2274,13 @@ function camPintarCaja(caja, lado, equipo, linea, state, indiceVisible) {
   caja.classList.toggle('is-viva', emitiendo);
   const rol = caja.querySelector('.camara-rol');
   const nombre = caja.querySelector('.camara-nombre');
-  // R98 · el pie de la cámara enseña SOLO la línea y el nombre del jugador.
-  // Aquí había un tercer texto ("CÁMARA") que sobraba.
+  const chip = caja.querySelector('.camara-estado');
   if (rol) setText(rol, CAM_ETIQUETA[linea] || '');
   if (nombre) setText(nombre, camNombre(state, lado === 'izq' ? 1 : 2, linea));
+  // El chip solo dice qué está mirando. VDO.Ninja no avisa al HUD si el jugador
+  // ya entró (se comprobó: no manda ningún mensaje al conectar), así que poner
+  // "EN VIVO" seria mentir: mientras no llegue imagen, la caja se ve oscura.
+  if (chip) setText(chip, 'CÁMARA');
 }
 
 let camRelojListo = false;
@@ -2695,8 +2698,60 @@ function renderMultikill(state, catalog) {
   }, MULTIKILL_ESPERA_MS);
 }
 
+// ===== R99 · colores del HUD =====
+// El panel manda tres colores dentro de info.tema. Aquí solo se reescriben las
+// variables de color de la hoja de estilos: el resto del HUD ya las usa, así
+// que no hay que tocar ninguna tarjeta. Sin tema no se cambia nada.
+const HEX_COLOR = /^#[0-9a-f]{6}$/i;
+// Las sombras y los bordes del HUD usan el color con transparencia. Se escribe
+// como rgb(... / x%) con tres números aparte porque es lo que entienden todos
+// los navegadores, incluido el que lleva OBS.
+function canalesHex(hex) {
+  const h = String(hex).replace('#', '');
+  return [0, 2, 4].map(i => parseInt(h.substr(i, 2), 16)).join(' ');
+}
+function mezclaHex(hex, hacia, factor) {
+  const h = String(hex).replace('#', '');
+  const t = String(hacia).replace('#', '');
+  return '#' + [0, 2, 4].map(i => {
+    const a = parseInt(h.substr(i, 2), 16);
+    const b = parseInt(t.substr(i, 2), 16);
+    return Math.round(a + (b - a) * factor).toString(16).padStart(2, '0');
+  }).join('');
+}
+function aplicarTemaHUD(tema) {
+  if (!tema || typeof tema !== 'object') return;
+  const raiz = document.documentElement.style;
+  const limpio = (valor) => HEX_COLOR.test(String(valor || '').trim()) ? String(valor).trim().toLowerCase() : null;
+  const acento = limpio(tema.acento);
+  const azul = limpio(tema.azul);
+  const rojo = limpio(tema.rojo);
+  if (acento) {
+    raiz.setProperty('--p-gold-400', acento);
+    raiz.setProperty('--accent-rgb', canalesHex(acento));
+    raiz.setProperty('--accent-dark', mezclaHex(acento, '#000000', .55));
+  }
+  if (azul) {
+    const claro = mezclaHex(azul, '#ffffff', .45);
+    raiz.setProperty('--p-blue-500', azul);
+    raiz.setProperty('--p-blue-300', claro);
+    raiz.setProperty('--team-blue-rgb', canalesHex(azul));
+    raiz.setProperty('--p-blue-300-rgb', canalesHex(claro));
+    raiz.setProperty('--team-blue-dark', mezclaHex(azul, '#000000', .55));
+  }
+  if (rojo) {
+    const claro = mezclaHex(rojo, '#ffffff', .45);
+    raiz.setProperty('--p-red-500', rojo);
+    raiz.setProperty('--p-red-300', claro);
+    raiz.setProperty('--team-red-rgb', canalesHex(rojo));
+    raiz.setProperty('--p-red-300-rgb', canalesHex(claro));
+    raiz.setProperty('--team-red-dark', mezclaHex(rojo, '#000000', .55));
+  }
+}
+
 export function renderIngameState(state, catalog) {
   if (!state || typeof state !== 'object') return;
+  aplicarTemaHUD(state.info && state.info.tema);
   if (cardDebug) renderCardDebug(state);
   activeCatalog = catalog;
   aplicarModo(modoDePartida(state));

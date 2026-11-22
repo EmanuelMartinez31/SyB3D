@@ -354,6 +354,29 @@
   .team-block.red .team-heading span { color: var(--red); }
   .team-fields { display: grid; grid-template-columns: minmax(0, 1fr) 86px; gap: 10px; }
   .logo-row { display: flex; align-items: center; gap: 12px; margin-top: 13px; }
+  /* R99 · el logo del torneo va junto a su nombre, arriba de los equipos */
+  .torneo-box { grid-column: 1 / -1; display: flex; gap: 14px; align-items: flex-start; padding-bottom: 16px; border-bottom: 1px solid var(--line); }
+  .torneo-campos { flex: 1; min-width: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .torneo-campos > .field:first-child { grid-column: 1 / -1; }
+  /* R99 · paleta del HUD */
+  .colores-body { padding: 18px; display: flex; flex-direction: column; gap: 14px; }
+  .colores-fila { display: grid; grid-template-columns: repeat(auto-fit, minmax(88px, 1fr)); gap: 14px; }
+  .color-field { display: flex; flex-direction: column; gap: 7px; min-width: 0; }
+  .color-field input[type="color"] { width: 100%; height: 46px; padding: 4px; cursor: pointer; background: var(--input); border: 1px solid var(--line); border-radius: 6px; }
+  .color-field code { color: var(--text); font: 11px/1 ui-monospace, monospace; letter-spacing: .08em; }
+  .paletas-box { display: flex; flex-direction: column; gap: 10px; padding-top: 14px; border-top: 1px solid var(--line); }
+  .paletas-cabeza { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .paletas-lista { display: flex; flex-wrap: wrap; gap: 8px; }
+  .paleta-btn { display: inline-flex; align-items: center; gap: 8px; padding: 8px 11px; background: var(--input); border: 1px solid var(--line); border-radius: 6px; color: var(--text); font-size: 12px; font-weight: 600; cursor: pointer; }
+  .paleta-btn:hover { border-color: var(--cyan); }
+  .paleta-btn.is-on { border-color: var(--cyan); box-shadow: inset 0 0 0 1px var(--cyan); }
+  .paleta-puntos { display: inline-flex; gap: 3px; }
+  .paleta-puntos i { width: 9px; height: 9px; border-radius: 50%; display: block; }
+  .paleta-borrar { margin-left: 2px; padding: 0 3px; background: none; border: 0; color: var(--muted); font-size: 15px; line-height: 1; cursor: pointer; }
+  .paleta-borrar:hover { color: var(--danger, #ff6b6b); }
+  .paletas-nueva { display: flex; gap: 8px; }
+  .paletas-nueva input { flex: 1; min-width: 0; }
+  .color-muestra { display: flex; align-items: center; justify-content: center; gap: 20px; height: 54px; border: 1px solid var(--line); border-radius: 6px; background: var(--input); font: 700 13px/1 ui-monospace, monospace; letter-spacing: .2em; }
   .logo-row input { width: 100%; height: auto; min-height: 42px; padding: 5px; font-size: 10px; }
   input[type="file"]::file-selector-button { margin-right: 8px; padding: 6px 8px; border: 0; border-radius: 4px; background: var(--raised); color: var(--text); font-size: 10px; cursor: pointer; }
   .team-logo-preview { flex: 0 0 auto; width: 48px; height: 48px; padding: 5px; border: 1px solid var(--line); border-radius: 6px; background: var(--input); object-fit: contain; }
@@ -572,7 +595,14 @@
               </div>
               <span class="field-hint" id="modoHint">El modo se manda al Draft y al Ingame al elegirlo. Los baneos de esta fila son solo para 1 vs 1 y 2 vs 2: en 5 vs 5 el draft sigue con sus 5 baneos de siempre. En 1 vs 1 y 2 vs 2 no se usan los logos de equipo.</span>
             </div>
-            <label class="field full"><span class="field-label">Nombre del torneo</span><input id="tName" placeholder="Ej. GamerGrounds · Gran Final"></label>
+            <div class="torneo-box">
+              <img id="torneoLogoPreview" class="team-logo-preview" alt="Logo del torneo" hidden>
+              <div class="torneo-campos">
+                <label class="field"><span class="field-label">Nombre del torneo</span><input id="tName" placeholder="Ej. GamerGrounds · Gran Final"></label>
+                <label class="field"><span class="field-label">Logo del torneo · archivo</span><input id="logoGeneralFile" type="file" accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml" onchange="uploadLogo('general', this, 'logoUrl')"><span class="field-hint">Se ve en el centro del draft y en la postpartida.</span></label>
+                <label class="field"><span class="field-label">… o el enlace del logo</span><input id="logoUrl" placeholder="https://..." oninput="pintarLogoGeneral()"><span class="field-hint">Las dos formas hacen lo mismo.</span></label>
+              </div>
+            </div>
           </div>
           <div class="team-settings">
             <section class="team-block blue">
@@ -589,11 +619,9 @@
             </section>
           </div>
           <details class="advanced">
-            <summary>Recursos avanzados del draft</summary>
+            <summary>Fondo y patrocinadores del draft</summary>
             <div class="form-grid">
-              <label class="field"><span class="field-label">URL del logo general</span><input id="logoUrl" placeholder="https://..."><span class="field-hint">Se muestra en el centro del overlay del draft.</span></label>
-              <label class="field"><span class="field-label">… o el archivo del logo general</span><input id="logoGeneralFile" type="file" accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml" onchange="uploadLogo('general', this, 'logoUrl')"><span class="field-hint">Las dos formas hacen lo mismo: rellena el enlace de arriba.</span></label>
-              <label class="field"><span class="field-label">URL del fondo</span><input id="bgUrl" placeholder="Imagen o video .mp4"><span class="field-hint">Fondo opcional de la escena del draft.</span></label>
+              <label class="field full"><span class="field-label">URL del fondo</span><input id="bgUrl" placeholder="Imagen o video .mp4"><span class="field-hint">Fondo opcional de la escena del draft.</span></label>
             </div>
           </details>
           <div class="form-grid">
@@ -603,6 +631,33 @@
             <label class="field"><span class="field-label">Patrocinador derecho · archivo</span><input id="sponsorDerechaFile" type="file" accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml" onchange="uploadLogo('sponsorDerecha', this, 'sponsorDerechaUrl')"><span class="field-hint">Las dos formas hacen lo mismo.</span></label>
           </div>
           <div class="form-actions"><p>Los cambios se aplican al draft, ingame y postpartida con la misma acción.</p><button class="primary" onclick="sendInfo()">Sincronizar información</button></div>
+        </section>
+
+        <section class="panel" id="panel-colores">
+          <header class="panel-header">
+            <div><span class="section-kicker">Identidad visual</span><h2>Colores del HUD</h2></div>
+            <button class="subtle" onclick="coloresDeFabrica()">Colores de fábrica</button>
+          </header>
+          <div class="colores-body">
+            <div class="colores-fila">
+              <label class="color-field"><span class="field-label">Acento · dorado</span><input type="color" id="colorAcento" value="#e8c77b" oninput="coloresCambiados()"><code id="hexAcento">#e8c77b</code></label>
+              <label class="color-field"><span class="field-label">Equipo azul</span><input type="color" id="colorAzul" value="#3b82f6" oninput="coloresCambiados()"><code id="hexAzul">#3b82f6</code></label>
+              <label class="color-field"><span class="field-label">Equipo rojo</span><input type="color" id="colorRojo" value="#ef4444" oninput="coloresCambiados()"><code id="hexRojo">#ef4444</code></label>
+            </div>
+            <div class="color-muestra" id="colorMuestra"><span>AZUL</span><b>VS</b><span>ROJO</span></div>
+            <div class="paletas-box">
+              <div class="paletas-cabeza">
+                <span class="field-label">Paletas</span>
+                <span class="field-hint">Un clic pone los tres colores y los manda al HUD.</span>
+              </div>
+              <div class="paletas-lista" id="paletasLista"><span class="field-hint">Cargando paletas...</span></div>
+              <div class="paletas-nueva">
+                <input id="paletaNombre" placeholder="Nombre para guardar la paleta actual" maxlength="40">
+                <button onclick="guardarPaleta()">Guardar paleta</button>
+              </div>
+            </div>
+            <p class="field-hint">Los tonos claros y los bordes se calculan solos con estos tres colores. Se aplican al draft, al ingame y a la postpartida al pulsar «Sincronizar información». Si no tocas nada, el HUD se queda con los colores de siempre.</p>
+          </div>
         </section>
 
         <section class="panel">
@@ -828,6 +883,7 @@ function connectPanel() {
     refreshDiagnostics();
     refreshPostgameStatus();
     loadPresetList();
+    cargarPaletas();
   };
   next.onmessage = handlePanelMessage;
   next.onclose = () => {
@@ -1090,6 +1146,12 @@ function resetAll() {
   if (!confirm('¿Resetear TODA la serie? Se limpiará el draft, el marcador y los campeones usados (fearless).')) return;
   score.blue = 0; score.red = 0;
   phaseIdx = 0;
+  // R99b · el contador de baneos vuelve a cero con la serie. Antes se quedaba
+  // como estaba: si en la serie anterior se gastaron los 5, el panel seguía
+  // creyendo que no quedaban y convertía en SELECCIÓN el siguiente clic, así
+  // que el draft manual se quedaba sin baneos hasta recargar la página.
+  bansHechos = { blue: 0, red: 0 };
+  PHASES = construirFases();
   updateScoreDisplay(); updateBanner();
   usedSet = new Set();
   CHAMPS.forEach(c => { if (tiles[c]) tiles[c].classList.remove('used'); });
@@ -1161,6 +1223,184 @@ function setBaneosPartida(cantidad) {
   sendInfo();
   log(`🎛️ Baneos del draft: ${baneosPartida}`);
 }
+// ===== R99 · Paleta del HUD =====
+// Los tres colores viajan dentro de info.tema; el draft, el ingame y la
+// postpartida los leen de ahí. Sin tema (null) cada overlay usa el suyo de
+// fábrica, así que un panel sin tocar nada no cambia ni un color.
+const COLORES_FABRICA = { acento: '#e8c77b', azul: '#3b82f6', rojo: '#ef4444' };
+const CAMPOS_COLOR = { acento: 'colorAcento', azul: 'colorAzul', rojo: 'colorRojo' };
+const HEX_COLOR = { acento: 'hexAcento', azul: 'hexAzul', rojo: 'hexRojo' };
+let temaActual = null;
+function leerColores() {
+  const tema = {};
+  Object.entries(CAMPOS_COLOR).forEach(([clave, id]) => {
+    tema[clave] = document.getElementById(id).value;
+  });
+  return tema;
+}
+function pintarMuestraColores() {
+  const muestra = document.getElementById('colorMuestra');
+  if (!muestra) return;
+  const tema = temaActual || COLORES_FABRICA;
+  const [azul, rojo] = [muestra.children[0], muestra.children[2]];
+  if (azul) azul.style.color = tema.azul || COLORES_FABRICA.azul;
+  if (rojo) rojo.style.color = tema.rojo || COLORES_FABRICA.rojo;
+  if (muestra.children[1]) muestra.children[1].style.color = tema.acento || COLORES_FABRICA.acento;
+}
+function pintarColores(tema) {
+  const t = { ...COLORES_FABRICA, ...(tema || {}) };
+  Object.entries(CAMPOS_COLOR).forEach(([clave, id]) => {
+    const input = document.getElementById(id);
+    if (input) input.value = t[clave];
+    const hex = document.getElementById(HEX_COLOR[clave]);
+    if (hex) hex.textContent = String(t[clave]).toLowerCase();
+  });
+  temaActual = tema ? { ...t } : null;
+  pintarMuestraColores();
+  pintarPaletas();
+}
+function coloresCambiados() {
+  temaActual = leerColores();
+  Object.entries(CAMPOS_COLOR).forEach(([clave, id]) => {
+    const hex = document.getElementById(HEX_COLOR[clave]);
+    if (hex) hex.textContent = document.getElementById(id).value.toLowerCase();
+  });
+  pintarMuestraColores();
+  // Al tocar un color a mano la paleta ya no representa lo que hay puesto.
+  pintarPaletas();
+}
+function coloresDeFabrica() {
+  pintarColores(null);
+  sendInfo();
+  log('🎨 Colores de fábrica restablecidos en el HUD');
+}
+// ===== R100 · paletas de color =====
+// Guardadas en el servidor (paletas.json). Las de fábrica vienen siempre; las
+// del operador se pueden borrar. Aplicar una NO toca equipos ni torneo.
+let paletasDisponibles = { fabrica: [], guardadas: [] };
+async function cargarPaletas() {
+  try {
+    const respuesta = await fetch('/api/paletas');
+    if (!respuesta.ok) throw new Error(`HTTP ${respuesta.status}`);
+    const datos = await respuesta.json();
+    paletasDisponibles = {
+      fabrica: Array.isArray(datos.fabrica) ? datos.fabrica : [],
+      guardadas: Array.isArray(datos.guardadas) ? datos.guardadas : []
+    };
+  } catch {
+    paletasDisponibles = { fabrica: [], guardadas: [] };
+  }
+  pintarPaletas();
+}
+function paletasTodas() {
+  return [
+    ...(paletasDisponibles.fabrica || []).map(p => ({ ...p, fija: true })),
+    ...(paletasDisponibles.guardadas || []).map(p => ({ ...p, fija: false }))
+  ];
+}
+// La paleta que se marca es la que coincide con los colores puestos. Así no hay
+// una variable que se pueda quedar desfasada cuando el panel se refresca solo.
+function paletaQueCoincide() {
+  const puestos = temaActual || leerColores();
+  const igual = (a, b) => String(a || '').toLowerCase() === String(b || '').toLowerCase();
+  const encontrada = paletasTodas().find(p =>
+    igual(p.acento, puestos.acento) && igual(p.azul, puestos.azul) && igual(p.rojo, puestos.rojo));
+  return encontrada ? encontrada.id : null;
+}
+function pintarPaletas() {
+  const lista = document.getElementById('paletasLista');
+  if (!lista) return;
+  lista.replaceChildren();
+  const todas = paletasTodas();
+  const activa = paletaQueCoincide();
+  if (!todas.length) {
+    const aviso = document.createElement('span');
+    aviso.className = 'field-hint';
+    aviso.textContent = 'No se pudieron cargar las paletas; los colores de arriba siguen funcionando.';
+    lista.appendChild(aviso);
+    return;
+  }
+  todas.forEach(paleta => {
+    const boton = document.createElement('button');
+    boton.type = 'button';
+    boton.className = 'paleta-btn' + (activa === paleta.id ? ' is-on' : '');
+    boton.dataset.paleta = paleta.id;
+    const puntos = document.createElement('span');
+    puntos.className = 'paleta-puntos';
+    [paleta.acento, paleta.azul, paleta.rojo].forEach(color => {
+      const punto = document.createElement('i');
+      punto.style.background = color;
+      puntos.appendChild(punto);
+    });
+    boton.appendChild(puntos);
+    boton.appendChild(document.createTextNode(paleta.nombre));
+    boton.addEventListener('click', () => aplicarPaleta(paleta.id));
+    if (!paleta.fija) {
+      const borrar = document.createElement('button');
+      borrar.type = 'button';
+      borrar.className = 'paleta-borrar';
+      borrar.title = 'Borrar esta paleta';
+      borrar.textContent = '×';
+      borrar.addEventListener('click', evento => { evento.stopPropagation(); borrarPaleta(paleta.id); });
+      boton.appendChild(borrar);
+    }
+    lista.appendChild(boton);
+  });
+}
+function aplicarPaleta(id) {
+  const paleta = paletasTodas().find(p => p.id === id);
+  if (!paleta) return;
+  pintarColores({ acento: paleta.acento, azul: paleta.azul, rojo: paleta.rojo });
+  pintarPaletas();
+  sendInfo();
+  log(`🎨 Paleta «${paleta.nombre}» aplicada al draft, ingame y postpartida`);
+}
+async function guardarPaleta() {
+  const campo = document.getElementById('paletaNombre');
+  const nombre = campo.value.trim();
+  if (!nombre) {
+    log('⚠️ Escribe un nombre antes de guardar la paleta');
+    campo.focus();
+    return;
+  }
+  const colores = temaActual || leerColores();
+  try {
+    const respuesta = await fetch('/api/paletas', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nombre, acento: colores.acento, azul: colores.azul, rojo: colores.rojo })
+    });
+    const resultado = await respuesta.json().catch(() => ({}));
+    if (!respuesta.ok) throw new Error(resultado.error || `HTTP ${respuesta.status}`);
+    campo.value = '';
+    await cargarPaletas();
+    log(resultado.actualizada ? `💾 Paleta «${nombre}» actualizada` : `💾 Paleta «${nombre}» guardada`);
+  } catch (error) {
+    log(`⚠️ No se pudo guardar la paleta: ${error.message}`);
+  }
+}
+async function borrarPaleta(id) {
+  const paleta = (paletasDisponibles.guardadas || []).find(p => p.id === id);
+  if (!paleta) return;
+  if (!confirm(`¿Borrar la paleta «${paleta.nombre}»? Los colores que tiene puestos el HUD no cambian.`)) return;
+  try {
+    const respuesta = await fetch(`/api/paletas/${encodeURIComponent(id)}`, { method: 'DELETE' });
+    if (!respuesta.ok) throw new Error(`HTTP ${respuesta.status}`);
+    await cargarPaletas();
+    log(`🗑️ Paleta «${paleta.nombre}» borrada`);
+  } catch (error) {
+    log(`⚠️ No se pudo borrar la paleta: ${error.message}`);
+  }
+}
+function pintarLogoGeneral() {
+  const campo = document.getElementById('logoUrl');
+  const img = document.getElementById('torneoLogoPreview');
+  if (!campo || !img) return;
+  const url = String(campo.value || '').trim();
+  img.hidden = !url;
+  if (url) img.src = url;
+  else img.removeAttribute('src');
+}
 function setLogoPreview(side, url) {
   const image = document.getElementById(`${side}LogoPreview`);
   image.hidden = !url;
@@ -1177,6 +1417,8 @@ function applyInfoToPanel(data) {
   baneosPartida = BANEOS_PARTIDA.includes(Number(data.baneos)) ? Number(data.baneos) : 0;
   pintarModoPartida();
   document.getElementById('logoUrl').value = data.logo || '';
+  pintarLogoGeneral();
+  pintarColores(data.tema || null);
   document.getElementById('sponsorIzquierdaUrl').value = data.sponsorIzquierda || '';
   document.getElementById('sponsorDerechaUrl').value = data.sponsorDerecha || '';
   ['blue', 'red'].forEach(side => {
@@ -1206,6 +1448,7 @@ async function uploadLogo(campo, input, inputId) {
       teamLogos[campo] = result.url;
       setLogoPreview(campo, result.url);
     }
+    if (campo === 'general') pintarLogoGeneral();
     input.value = '';
     sendInfo();
     log(`🖼️ Logo «${campo}» subido y sincronizado (${(file.size / 1024).toFixed(0)} KB)`);
@@ -1237,7 +1480,8 @@ function sendInfo() {
     sponsorDerecha: document.getElementById('sponsorDerechaUrl').value.trim(),
     bg: document.getElementById('bgUrl').value,
     modo: modoPartida,
-    baneos: baneosEfectivos()
+    baneos: baneosEfectivos(),
+    tema: temaActual
   }});
   log("📢 Info del torneo enviada al draft e ingame");
 }
@@ -1305,7 +1549,8 @@ async function savePreset() {
         sponsorIzquierda: document.getElementById('sponsorIzquierdaUrl').value.trim(),
         sponsorDerecha: document.getElementById('sponsorDerechaUrl').value.trim(),
         modo: modoPartida,
-        baneos: baneosPartida
+        baneos: baneosPartida,
+        tema: temaActual
       }})
     });
     await loadPresetList(result.preset.id);
@@ -1333,6 +1578,7 @@ function loadSelectedPreset() {
   modoPartida = MODOS_PARTIDA.includes(data.modo) ? data.modo : '5v5';
   baneosPartida = BANEOS_PARTIDA.includes(Number(data.baneos)) ? Number(data.baneos) : 0;
   pintarModoPartida();
+  pintarColores(data.tema || null);
   // El logo general y el fondo actuales se conservan; picks y marcador no cambian.
   sendInfo();
   log(`📂 Preset «${preset.name}» cargado y sincronizado`);

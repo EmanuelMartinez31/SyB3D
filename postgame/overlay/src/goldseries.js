@@ -251,7 +251,7 @@ function construirBanda(entrada) {
   const dibujo = dibujarDiferencia(svg, {
     serie: entrada.diff, techo: escala.techo, duracion: entrada.duracion,
     ancho: 355, alto: 44, izq: 24, der: 8, arr: 3, aba: 3,
-    colorPos: '#35a7ff', colorNeg: '#f05262', colorLinea: '#dbe8f6',
+    colorPos: colorTema('--blue', '#35a7ff'), colorNeg: colorTema('--red', '#f05262'), colorLinea: '#dbe8f6',
     ejeY: 1, ejeXtics: 0, puntosCada: 120, idBase: `linea-${entrada.linea}`,
     tamEje: 7, radio: 1.7
   });
@@ -281,8 +281,16 @@ function construirBanda(entrada) {
 
 // El color de la cifra sigue al signo: azul si va por delante el azul, rojo si
 // va por delante el rojo. Es la misma convención que la gráfica.
+// R99 · el gráfico toma los colores del HUD que dejó puestos el panel.
+function colorTema(nombre, respaldo) {
+  try {
+    const valor = getComputedStyle(document.documentElement).getPropertyValue(nombre).trim();
+    return valor || respaldo;
+  } catch { return respaldo; }
+}
+
 function colorDeValor(valor) {
-  return valor >= 0 ? '#87d4ff' : '#ff9b9e';
+  return valor >= 0 ? colorTema('--blue-light', '#87d4ff') : colorTema('--red-light', '#ff9b9e');
 }
 
 function animarBanda(entrada) {
@@ -363,7 +371,7 @@ function construirPanel() {
   const dibujo = dibujarDiferencia(svg, {
     serie: dif, techo: escala.techo, duracion, ancho: 1232, alto: 378,
     izq: 52, der: 12, arr: 12, aba: 26,
-    colorPos: '#35a7ff', colorNeg: '#e03a4b', colorLinea: '#dbe8f6',
+    colorPos: colorTema('--blue', '#35a7ff'), colorNeg: colorTema('--red', '#e03a4b'), colorLinea: '#dbe8f6',
     ejeY: 3, ejeXtics: 6, puntosCada: 60, idBase: 'equipos', tamEje: 11, radio: 3
   });
   // Marca del momento de mayor ventaja.
@@ -383,7 +391,7 @@ function construirPanel() {
   marca.appendChild(
     nodo('circle', {
       cx: xPico.toFixed(1), cy: dibujo.Y(pico.v).toFixed(1), r: 4.6, fill: 'none',
-      stroke: pico.v >= 0 ? '#87d4ff' : '#ff9b9e', 'stroke-width': 1.6
+      stroke: pico.v >= 0 ? colorTema('--blue-light', '#87d4ff') : colorTema('--red-light', '#ff9b9e'), 'stroke-width': 1.6
     })
   );
   marca.appendChild(
@@ -408,7 +416,7 @@ function construirPanel() {
     Math.round(rojo[rojo.length - 1])
   );
   panel.querySelector('.gp-final').innerHTML = `POR DELANTE AL FINAL: <b style="color:${
-    finalDif >= 0 ? '#87d4ff' : '#ff9b9e'
+    finalDif >= 0 ? colorTema('--blue-light', '#87d4ff') : colorTema('--red-light', '#ff9b9e')
   }">${finalDif >= 0 ? 'AZUL' : 'ROJO'}</b> (${conSigno(finalDif)})`;
   panel.querySelector('.gp-scale').textContent =
     `escala ±${compacto(escala.techo)} · tramos de ${compacto(escala.paso)}`;

@@ -1336,3 +1336,83 @@ body[data-modo="1v1"] .top-team .series-score{
 }
 body[data-modo="1v1"] .top-team-red .series-score{left:auto;right:26px}
 body[data-modo="1v1"] .series-score .series-pip{min-height:8px}
+
+/* ==================================================================
+   R105 · MAPA GIGANTE
+   El mapa de la Grieta llega ya en perspectiva desde el archivo
+   (assets/map/grieta-3d.webp): el volumen y el canto vienen pintados, así que
+   aquí solo hay que encogerlo, colocarlo y mover los globos.
+   La barra de arriba (z 20) y la tabla (z 18) se quedan por encima.
+   ================================================================== */
+.mapa-gigante{
+  position:absolute;z-index:15;inset:0;
+  display:grid;place-items:center;
+  pointer-events:none;
+  background:radial-gradient(60% 58% at 50% 46%,oklch(0.15 0.03 265 / 0.80),oklch(0.09 0.02 285 / 0) 74%);
+  opacity:0;transition:opacity 480ms ease-out;
+}
+.mapa-gigante.is-open{opacity:1}
+
+.mapa-mundo{
+  position:relative;
+  width:1740px;height:838px;
+  transform-origin:92% 94%;
+  /* cerrado: diminuto y encima del minimapa del juego (1786, 946 en el lienzo) */
+  transform:translate(392px,-52px) scale(.05);
+  transition:transform 1150ms cubic-bezier(.19,.9,.16,1);
+}
+.mapa-gigante.is-open .mapa-mundo{transform:translate(0,-38px) scale(1)}
+
+.mapa-mesa{position:absolute;inset:0}
+.mapa-fondo{
+  position:absolute;inset:0;width:100%;height:100%;display:block;
+  filter:drop-shadow(0 26px 40px oklch(0.02 0 0 / 0.72));
+}
+
+/* ---- globos de los jugadores ---- */
+.mapa-globos{position:absolute;inset:0}
+.mapa-globo{position:absolute;width:0;height:0;opacity:0;transition:opacity 240ms ease-out}
+.mapa-gigante.is-open .mapa-globo{opacity:1}
+
+.mapa-globo .mapa-sombra{
+  position:absolute;left:0;top:0;
+  width:calc(var(--tam) * 1.35);height:calc(var(--tam) * 0.52);
+  margin-left:calc(var(--tam) * -0.675);margin-top:calc(var(--tam) * -0.26);
+  border-radius:50%;
+  background:radial-gradient(closest-side,oklch(0.02 0 0 / 0.60),oklch(0.02 0 0 / 0));
+}
+.mapa-globo .mapa-pin{
+  position:absolute;left:0;top:0;
+  width:var(--tam);height:var(--tam);
+  margin-left:calc(var(--tam) / -2);
+  margin-top:calc(var(--tam) / -1 - var(--tam) * 0.55);
+}
+.mapa-globo .mapa-aro{
+  width:100%;height:100%;border-radius:50%;overflow:hidden;
+  display:grid;place-items:center;
+  border:3px solid var(--globo-color,#8fa0bb);
+  background:oklch(0.09 0.02 285 / 0.96);
+  box-shadow:
+    0 0 0 2px oklch(0.05 0.02 285 / 0.66),
+    0 0 14px var(--globo-brillo,transparent),
+    0 6px 10px oklch(0 0 0 / 0.55);
+}
+.mapa-globo .mapa-aro img{width:100%;height:100%;display:block;object-fit:cover}
+.mapa-globo .mapa-aro span{font:800 18px/1 var(--font-ui);color:var(--globo-color,#c7d2e5)}
+.mapa-globo.blue{--globo-color:var(--team-blue);--globo-brillo:rgb(var(--team-blue-rgb) / 60%)}
+.mapa-globo.red{--globo-color:var(--team-red);--globo-brillo:rgb(var(--team-red-rgb) / 60%)}
+.mapa-globo.is-dead{opacity:.3;filter:grayscale(1)}
+
+/* Entrada escalonada de los globos cuando el mapa ya está grande. */
+.mapa-gigante.is-open .mapa-globo.subiendo{
+  animation:mapaSube 420ms cubic-bezier(.2,1.35,.4,1) backwards;
+}
+@keyframes mapaSube{
+  from{opacity:0;transform:translateY(26px) scale(.5)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+
+@media (prefers-reduced-motion: reduce){
+  .mapa-mundo{transition-duration:200ms}
+  .mapa-gigante.is-open .mapa-globo.subiendo{animation:none}
+}

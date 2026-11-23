@@ -53,6 +53,20 @@
       "mid": "arnulfmid864219",
       "bot": "arnulfadc22b5c0",
       "support": "arnulfsup7df4b0"
+    },
+    "ROG Gaming": {
+      "top": "roggamtop63cddc",
+      "jungle": "roggamjgdc38f9",
+      "mid": "roggammid140666",
+      "bot": "roggamadc1f702f",
+      "support": "roggamsup23db40"
+    },
+    "Lobos Grises": {
+      "top": "lobosgtop5aefc4",
+      "jungle": "lobosgjg7c4ad0",
+      "mid": "lobosgmidcbb741",
+      "bot": "lobosgadc352e0f",
+      "support": "lobosgsup8df280"
     }
   }
 }

@@ -1805,6 +1805,7 @@ function normalizeDraftInfo(info) {
 function broadcastLatestState() {
   if (!latestState) return;
   latestState.fightMode = modoPelea;
+  latestState.mapOpen = mapaAbierto;
   const message = JSON.stringify({ type: 'ingame-state', data: latestState });
   lastCompactBytes = Buffer.byteLength(message);
   for (const client of wss.clients) {
@@ -2187,6 +2188,7 @@ app.post('/sensor', (req, res) => {
   adapted.score = draftSync.score;
   adapted.sideTeams = draftSync.sideTeams;
   adapted.fightMode = modoPelea;
+  adapted.mapOpen = mapaAbierto;
 
   latest = normalized;
   cinematica.actualizar(normalized);
@@ -2248,6 +2250,7 @@ app.get('/status', (req, res) => {
     winnersReported: reportedWinners.size,
     modoPelea,
     tiraVisible,
+    mapaAbierto,
     unoContraUno: ganadorUnoContraUno.estadoActual(),
     hudAutoHide: {
       gameId: autoHideGameId,
@@ -2345,6 +2348,51 @@ app.post('/fight/visible', (req, res) => {
   tiraVisible = visible;
   avisoVisible = new Date().toISOString();
   res.json({ ok: true, visible: tiraVisible });
+});
+
+// ===========================================================================
+// R105 · MAPA GIGANTE
+// Interruptor del operador: el mapa de la Grieta crece hasta ocupar la
+// pantalla y ensena donde esta cada jugador. Como la tira de teamfight, el
+// estado lo lleva el servidor para que el overlay no lo pierda al recargar.
+// ===========================================================================
+const MAPA_ABIERTO_PATH = path.join(DATA_DIR, 'mapa-abierto.json');
+let mapaAbierto = (() => {
+  try {
+    return JSON.parse(fs.readFileSync(MAPA_ABIERTO_PATH, 'utf8'))?.abierto === true;
+  } catch { return false; }
+})();
+
+function guardarMapaAbierto() {
+  try {
+    fs.writeFileSync(MAPA_ABIERTO_PATH, JSON.stringify({ abierto: mapaAbierto }, null, 2));
+  } catch (error) {
+    console.error('No se pudo guardar el estado del mapa:', error.message);
+  }
+}
+
+function aplicarMapaAbierto(abierto) {
+  mapaAbierto = abierto === true;
+  guardarMapaAbierto();
+  if (latestState) latestState.mapOpen = mapaAbierto;
+  broadcastLatestState();
+  return mapaAbierto;
+}
+
+app.get('/mapa', (req, res) => {
+  res.json({ abierto: mapaAbierto });
+});
+
+app.get('/mapa/:accion', (req, res) => {
+  const accion = String(req.params.accion || '').toLowerCase();
+  let objetivo;
+  if (accion === 'toggle' || accion === 'alternar') objetivo = !mapaAbierto;
+  else if (accion === 'on' || accion === 'abrir') objetivo = true;
+  else if (accion === 'off' || accion === 'cerrar') objetivo = false;
+  else return res.status(400).json({ error: `Acción desconocida: ${accion}`, acciones: ['toggle', 'on', 'off'] });
+  const aplicado = aplicarMapaAbierto(objetivo);
+  console.log(`[mapa] Mapa gigante ${aplicado ? 'abierto' : 'cerrado'}`);
+  res.json({ ok: true, abierto: aplicado });
 });
 
 app.get('/gold-series', (req, res) => {

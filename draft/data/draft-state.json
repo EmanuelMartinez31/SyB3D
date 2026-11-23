@@ -5,134 +5,166 @@
       {
         "type": "pick",
         "team": "blue",
-        "champion": "Amumu",
-        "origen": "panel"
+        "champion": "Nocturne",
+        "auto": true,
+        "role": "JUNGLE",
+        "player": "LG Eliham"
       },
       {
         "type": "pick",
         "team": "red",
-        "champion": "Anivia",
-        "origen": "panel"
+        "champion": "Qiyana",
+        "auto": true,
+        "role": "MIDDLE",
+        "player": "MODOLOL"
       },
       {
         "type": "pick",
         "team": "red",
-        "champion": "Annie",
-        "origen": "panel"
+        "champion": "Tristana",
+        "auto": true,
+        "role": "BOTTOM",
+        "player": "Reaþer"
       },
       {
         "type": "pick",
         "team": "blue",
-        "champion": "Aphelios",
-        "origen": "panel"
+        "champion": "Xayah",
+        "auto": true,
+        "role": "BOTTOM",
+        "player": "LG Gus"
       },
       {
         "type": "pick",
         "team": "blue",
-        "champion": "Ashe",
-        "origen": "panel"
+        "champion": "Rakan",
+        "auto": true,
+        "role": "UTILITY",
+        "player": "LG Mr LoverLover"
       },
       {
         "type": "pick",
         "team": "red",
-        "champion": "Aurelion Sol",
-        "origen": "panel"
+        "champion": "Alistar",
+        "auto": true,
+        "role": "UTILITY",
+        "player": "Peco Cherez"
       },
       {
         "type": "pick",
         "team": "red",
-        "champion": "Blitzcrank",
-        "origen": "panel"
+        "champion": "Ornn",
+        "auto": true,
+        "role": "TOP",
+        "player": "WwSantiagowW"
       },
       {
         "type": "pick",
         "team": "blue",
-        "champion": "Brand",
-        "origen": "panel"
+        "champion": "Gwen",
+        "auto": true,
+        "role": "TOP",
+        "player": "LG Yoko"
       },
       {
         "type": "pick",
         "team": "blue",
-        "champion": "Braum",
-        "origen": "panel"
+        "champion": "Yone",
+        "auto": true,
+        "role": "MIDDLE",
+        "player": "WS Chubby Cat"
       },
       {
         "type": "pick",
         "team": "red",
-        "champion": "Briar",
-        "origen": "panel"
+        "champion": "Lillia",
+        "auto": true,
+        "role": "JUNGLE",
+        "player": "MagzyBogues"
       }
     ],
     "bans": [
       {
         "type": "ban",
         "team": "blue",
-        "champion": "Aatrox",
-        "origen": "panel"
+        "champion": "Caitlyn",
+        "auto": true,
+        "role": "TOP",
+        "player": "LG Eliham"
       },
       {
         "type": "ban",
         "team": "red",
-        "champion": "Ahri",
-        "origen": "panel"
+        "champion": "Fiddlesticks",
+        "auto": true,
+        "role": "TOP",
+        "player": "WwSantiagowW"
       },
       {
         "type": "ban",
         "team": "blue",
-        "champion": "Akali",
-        "origen": "panel"
+        "champion": "Braum",
+        "auto": true,
+        "role": "JUNGLE",
+        "player": "LG Gus"
       },
       {
         "type": "ban",
         "team": "red",
-        "champion": "Akshan",
-        "origen": "panel"
+        "champion": "Sylas",
+        "auto": true,
+        "role": "JUNGLE",
+        "player": "MagzyBogues"
+      },
+      {
+        "type": "ban",
+        "team": "red",
+        "champion": "Locke",
+        "auto": true,
+        "role": "MIDDLE",
+        "player": "Peco Cherez"
+      },
+      {
+        "type": "ban",
+        "team": "red",
+        "champion": "Jayce",
+        "auto": true,
+        "role": "BOTTOM",
+        "player": "WwSantiagowW"
       },
       {
         "type": "ban",
         "team": "blue",
-        "champion": "Alistar",
-        "origen": "panel"
+        "champion": "Mordekaiser",
+        "auto": true,
+        "role": "BOTTOM",
+        "player": "LG Yoko"
       },
       {
         "type": "ban",
         "team": "red",
-        "champion": "Ambessa",
-        "origen": "panel"
-      },
-      {
-        "type": "ban",
-        "team": "red",
-        "champion": "Aurora",
-        "origen": "panel"
+        "champion": "Orianna",
+        "auto": true,
+        "role": "UTILITY",
+        "player": "MagzyBogues"
       },
       {
         "type": "ban",
         "team": "blue",
-        "champion": "Azir",
-        "origen": "panel"
-      },
-      {
-        "type": "ban",
-        "team": "red",
-        "champion": "Bard",
-        "origen": "panel"
-      },
-      {
-        "type": "ban",
-        "team": "blue",
-        "champion": "Bel'Veth",
-        "origen": "panel"
+        "champion": "Syndra",
+        "auto": true,
+        "role": "UTILITY",
+        "player": "WS Chubby Cat"
       }
     ],
     "info": {
       "tournament": "INTERS 2026",
-      "blue": "JUANITO CAMARADA",
-      "red": "ARNULFO PISTOLAS",
-      "blueShort": "",
-      "redShort": "",
-      "blueLogo": "/uploads/blue-1795031562323.png",
-      "redLogo": "/uploads/red-1795031558909.png",
+      "blue": "Lobos Grises",
+      "red": "ROG Gaming",
+      "blueShort": "LOG",
+      "redShort": "ROG",
+      "blueLogo": "/uploads/red-1795389961368.png",
+      "redLogo": "/uploads/blue-1795389911570.png",
       "logo": "/uploads/general-1794861248882.png",
       "sponsorIzquierda": "/uploads/sponsorIzquierda-1794861218432.png",
       "sponsorDerecha": "/uploads/sponsorDerecha-1794861224638.png",
@@ -141,37 +173,93 @@
       "baneos": 5,
       "tema": {
         "acento": "#e8c77b",
-        "azul": "#3b82f6",
-        "rojo": "#ef4444"
+        "azul": "#f2e6c8",
+        "rojo": "#840035"
       }
     },
     "score": {
       "format": "BO3",
-      "blue": 0,
+      "blue": 1,
       "red": 0
     },
-    "roster": null,
-    "history": {
-      "blue": [],
-      "red": []
+    "roster": {
+      "blue": [
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "red": [
+        "",
+        "",
+        "",
+        "",
+        ""
+      ]
     },
-    "histTeams": {},
+    "history": {
+      "blue": [
+        "Yunara",
+        "Lulu",
+        "Jarvan IV",
+        "Galio",
+        "Viktor"
+      ],
+      "red": [
+        "Cho'Gath",
+        "Jinx",
+        "Thresh",
+        "Renekton",
+        "Viego"
+      ]
+    },
+    "histTeams": {
+      "ROG Gaming": [
+        "Cho'Gath",
+        "Jinx",
+        "Thresh",
+        "Renekton",
+        "Viego"
+      ],
+      "Lobos Grises": [
+        "Yunara",
+        "Lulu",
+        "Jarvan IV",
+        "Galio",
+        "Viktor"
+      ]
+    },
     "teamBind": {
-      "JUANITO CAMARADA": [],
-      "ARNULFO PISTOLAS": []
+      "ROG Gaming": [
+        "WwSantiagowW",
+        "MagzyBogues",
+        "Peco Cherez",
+        "Reaþer",
+        "MODOLOL"
+      ],
+      "Lobos Grises": [
+        "LG Eliham",
+        "LG Gus",
+        "LG Mr LoverLover",
+        "LG Yoko",
+        "WS Chubby Cat"
+      ]
     },
     "sideTeams": {
-      "blue": "JUANITO CAMARADA",
-      "red": "ARNULFO PISTOLAS"
+      "blue": "Lobos Grises",
+      "red": "ROG Gaming"
     },
     "fearless": true,
-    "lcuEnabled": false
+    "lcuEnabled": true
   },
-  "seriesRevision": 74,
-  "countedGames": [],
+  "seriesRevision": 76,
+  "countedGames": [
+    "LA1-1764581068"
+  ],
   "pendingWinners": [
     [
-      "LA1-1763583571",
+      "LA1-1764604631",
       "blue"
     ]
   ]

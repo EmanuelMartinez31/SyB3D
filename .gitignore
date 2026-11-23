@@ -5,3 +5,6 @@ draft/models/
 *.glb
 ingame/cine/recortes/
 *mkv
+# Modelo 3D pesado: se queda fuera del repositorio
+streamdeck/Grieta.glb
+*.glb

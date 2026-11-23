@@ -1,6 +1,6 @@
 import { loadGameCatalog } from './data-dragon.js';
 import { createDemoState, advanceDemoState, aplicarBuffDemo } from './demo.js';
-import { renderIngameState, setCardDebug } from './render.js';
+import { renderIngameState, setCardDebug } from './render.js?v=90';
 import { createVoidGrubAlert } from './voidgrub-alert.js';
 import { createDragonAlert } from './dragon-alert.js';
 import { createBaronAlert } from './baron-alert.js';

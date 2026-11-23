@@ -1,11 +1,11 @@
 [
  {
-  "cuando": "2026-11-22T19:45:13.914Z",
+  "cuando": "2026-11-23T19:58:24.046Z",
   "lista": "DeathEvents",
   "gameId": "LA1-1763583571",
-  "gameTime": 20.617577,
+  "gameTime": 20.589851,
   "evento": {
-   "GameTime": 20.454914,
+   "GameTime": 20.46473,
    "KillerNetworkId": 1073742564,
    "VictimNetworkId": 1073742564,
    "GoldByTeam": [
@@ -15,12 +15,12 @@
   }
  },
  {
-  "cuando": "2026-11-22T19:45:13.914Z",
+  "cuando": "2026-11-23T19:58:24.047Z",
   "lista": "DamageDealtEvents",
   "gameId": "LA1-1763583571",
-  "gameTime": 20.617577,
+  "gameTime": 20.589851,
   "evento": {
-   "GameTime": 20.454914,
+   "GameTime": 20.46473,
    "SourceNetworkId": 1073742564,
    "TargetNetworkId": 1073742564,
    "DamageDealt": 0,
@@ -29,24 +29,6 @@
    "Param4": 0,
    "SpellIdentifierELFHash": 0,
    "TargetHealthBefore": 0
-  }
- },
- {
-  "cuando": "2026-11-22T19:46:37.051Z",
-  "lista": "HeroDieEvents",
-  "gameId": "LA1-1763583571",
-  "gameTime": 103.732285,
-  "evento": {
-   "AssisterNetworkIds_Length": 5
-  }
- },
- {
-  "cuando": "2026-11-22T20:01:29.108Z",
-  "lista": "InhibitorKillEvents",
-  "gameId": "LA1-1763583571",
-  "gameTime": 1944.1527,
-  "evento": {
-   "AssisterNetworkIds_Length": 5
   }
  }
 ]

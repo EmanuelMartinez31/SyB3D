@@ -2738,8 +2738,200 @@ function renderMultikill(state, catalog) {
   }, MULTIKILL_ESPERA_MS);
 }
 
+/* ------------------------------------------------------------------
+   R104 · Colores del HUD
+   El panel manda tres colores base en info.tema: acento, azul y rojo. Hasta
+   ahora el ingame los recibía y no hacía nada con ellos, así que se quedaba
+   siempre con el dorado y el azul/rojo de fábrica. Aquí se cambian las
+   variables de la hoja de estilos, y los tonos claros y oscuros se calculan
+   solos a partir de esos tres.
+   ------------------------------------------------------------------ */
+const HEX_COLOR = /^#[0-9a-f]{6}$/i;
+let temaAplicado = '';
+
+function canalesHex(hex) {
+  const h = String(hex).replace('#', '');
+  return [0, 2, 4].map(i => parseInt(h.substr(i, 2), 16)).join(' ');
+}
+
+// Mezcla hacia blanco (factor > 0) para los tonos claros de cada lado.
+function aclararHex(hex, factor) {
+  const h = String(hex).replace('#', '');
+  return '#' + [0, 2, 4].map(i => {
+    const valor = parseInt(h.substr(i, 2), 16);
+    return Math.round(valor + (255 - valor) * factor).toString(16).padStart(2, '0');
+  }).join('');
+}
+
+// Mezcla hacia negro para los bordes y los degradados oscuros.
+function oscurecerHex(hex, factor) {
+  const h = String(hex).replace('#', '');
+  return '#' + [0, 2, 4].map(i => {
+    const valor = parseInt(h.substr(i, 2), 16);
+    return Math.round(valor * (1 - factor)).toString(16).padStart(2, '0');
+  }).join('');
+}
+
+function aplicarTemaHUD(tema) {
+  if (!tema || typeof tema !== 'object') return;
+  const limpio = valor => (HEX_COLOR.test(String(valor || '').trim()) ? String(valor).trim().toLowerCase() : null);
+  const acento = limpio(tema.acento);
+  const azul = limpio(tema.azul);
+  const rojo = limpio(tema.rojo);
+  const firma = [acento, azul, rojo].join('|');
+  if (!acento && !azul && !rojo) return;
+  if (firma === temaAplicado) return;   // ya está puesto: no se toca en cada estado
+  temaAplicado = firma;
+
+  const raiz = document.documentElement.style;
+  if (acento) {
+    raiz.setProperty('--accent', acento);
+    raiz.setProperty('--accent-rgb', canalesHex(acento));
+    raiz.setProperty('--accent-dark', oscurecerHex(acento, .58));
+    raiz.setProperty('--p-gold-400', acento);
+  }
+  if (azul) {
+    const claro = aclararHex(azul, .45);
+    raiz.setProperty('--team-blue', azul);
+    raiz.setProperty('--team-blue-rgb', canalesHex(azul));
+    raiz.setProperty('--team-blue-dark', oscurecerHex(azul, .55));
+    raiz.setProperty('--p-blue-500', azul);
+    raiz.setProperty('--p-blue-300', claro);
+    raiz.setProperty('--p-blue-300-rgb', canalesHex(claro));
+  }
+  if (rojo) {
+    const claro = aclararHex(rojo, .45);
+    raiz.setProperty('--team-red', rojo);
+    raiz.setProperty('--team-red-rgb', canalesHex(rojo));
+    raiz.setProperty('--team-red-dark', oscurecerHex(rojo, .55));
+    raiz.setProperty('--p-red-500', rojo);
+    raiz.setProperty('--p-red-300', claro);
+    raiz.setProperty('--p-red-300-rgb', canalesHex(claro));
+  }
+}
+
+/* ------------------------------------------------------------------
+   R105 · MAPA GIGANTE
+   El mapa de la Grieta se abre a pantalla completa y enseña dónde está cada
+   jugador. La imagen ya viene en perspectiva, así que el trabajo es pasar las
+   coordenadas del juego a píxeles de esa imagen.
+
+   MAPA_H es la proyección del plano del mapa: se sacó midiendo los dos nexos
+   sobre la imagen. Va de (0,0) —esquina de arriba a la izquierda— a (1,1).
+   ------------------------------------------------------------------ */
+const MAPA_MIN = -120;
+const MAPA_MAX = 14820;
+const MAPA_ANCHO = 1520;                 // tamaño del archivo grieta-3d.webp
+const MAPA_ALTO = 732;
+const MAPA_ESCALA = 1740 / MAPA_ANCHO;   // cómo de grande se pinta en el HUD
+const MAPA_H = [[1143.701377, -151.648204, 188.149311], [0.0, 460.16054, 34.291884], [0.0, -0.199537, 1.0]];
+
+const mapaGlobos = new Map();            // jugador -> nodo
+
+// Coordenadas del juego (x, z) a un punto de la imagen del mapa.
+function puntoDelMapa(x, z) {
+  const u = (x - MAPA_MIN) / (MAPA_MAX - MAPA_MIN);
+  const v = 1 - (z - MAPA_MIN) / (MAPA_MAX - MAPA_MIN);
+  const w = MAPA_H[2][0] * u + MAPA_H[2][1] * v + MAPA_H[2][2];
+  if (!finite(w) || Math.abs(w) < 1e-6) return null;
+  return {
+    x: (MAPA_H[0][0] * u + MAPA_H[0][1] * v + MAPA_H[0][2]) / w,
+    y: (MAPA_H[1][0] * u + MAPA_H[1][1] * v + MAPA_H[1][2]) / w,
+    v,                                    // 0 = fondo del mapa, 1 = primer plano
+  };
+}
+
+function renderMapaGigante(state, catalog) {
+  const capa = byId('mapa-gigante');
+  const caja = byId('mapa-globos');
+  if (!capa || !caja) return;
+
+  const abierto = state?.mapOpen === true;
+  if (abierto !== capa.classList.contains('is-open')) {
+    capa.classList.toggle('is-open', abierto);
+    capa.setAttribute('aria-hidden', abierto ? 'false' : 'true');
+  }
+
+  const players = Array.isArray(state?.players) ? state.players : [];
+  const situados = players.filter(player =>
+    finite(player?.position?.x) && finite(player?.position?.z)
+  );
+
+  const vistos = new Set();
+  situados.forEach((player, indice) => {
+    const punto = puntoDelMapa(player.position.x, player.position.z);
+    if (!punto) return;
+
+    const clave = player.id ?? `${player.team}-${player.role}-${indice}`;
+    vistos.add(clave);
+    let globo = mapaGlobos.get(clave);
+    if (!globo) {
+      const el = document.createElement('div');
+      el.className = 'mapa-globo';
+      const sombra = document.createElement('div');
+      sombra.className = 'mapa-sombra';
+      const pin = document.createElement('div');
+      pin.className = 'mapa-pin';
+      const aro = document.createElement('div');
+      aro.className = 'mapa-aro';
+      const img = document.createElement('img');
+      img.alt = '';
+      const letra = document.createElement('span');
+      letra.textContent = '?';
+      aro.append(img, letra);
+      pin.appendChild(aro);
+      el.append(sombra, pin);
+      caja.appendChild(el);
+      globo = { el, img, letra, campeon: null };
+      mapaGlobos.set(clave, globo);
+    }
+
+    globo.el.classList.toggle('blue', player.team === 1);
+    globo.el.classList.toggle('red', player.team === 2);
+    globo.el.classList.toggle('is-dead', player.alive === false);
+
+    if (globo.campeon !== player.champion) {
+      globo.campeon = player.champion;
+      const url = player.champion && catalog ? catalog.championUrl(player.champion) : null;
+      if (url) {
+        globo.img.hidden = false;
+        globo.img.src = url;
+        globo.img.onerror = () => { globo.img.hidden = true; };
+        globo.letra.hidden = true;
+      } else {
+        globo.img.hidden = true;
+        globo.letra.hidden = false;
+        globo.letra.textContent = String(player.champion || '?').slice(0, 2).toUpperCase();
+      }
+    }
+
+    globo.el.style.left = `${(punto.x / MAPA_ANCHO) * 100}%`;
+    globo.el.style.top = `${(punto.y / MAPA_ALTO) * 100}%`;
+    // Los de delante se ven un poco más grandes, como en el juego.
+    globo.el.style.setProperty('--tam', `${(16 + 10 * punto.v) * 2.45 * MAPA_ESCALA}px`);
+  });
+
+  mapaGlobos.forEach((globo, clave) => {
+    if (vistos.has(clave)) return;
+    globo.el.remove();
+    mapaGlobos.delete(clave);
+  });
+
+  // Al abrirse, los globos entran uno detrás de otro.
+  if (abierto) {
+    [...mapaGlobos.values()].forEach((globo, i) => {
+      if (globo.el.classList.contains('subiendo')) return;
+      globo.el.style.animationDelay = `${360 + i * 55}ms`;
+      globo.el.classList.add('subiendo');
+    });
+  } else {
+    mapaGlobos.forEach(globo => globo.el.classList.remove('subiendo'));
+  }
+}
+
 export function renderIngameState(state, catalog) {
   if (!state || typeof state !== 'object') return;
+  aplicarTemaHUD(state.info?.tema);
   if (MODOS_PELEA.includes(state.fightMode)) modoPelea = state.fightMode;
   if (cardDebug) renderCardDebug(state);
   activeCatalog = catalog;
@@ -2755,6 +2947,7 @@ export function renderIngameState(state, catalog) {
   renderIntroBanner(state);
   renderCamaras(state);
   renderFight(state, catalog);
+  renderMapaGigante(state, catalog);
   avisarVisibilidad();
   setText(byId('game-time'), formatTime(state.meta?.gameTime));
 

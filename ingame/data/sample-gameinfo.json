@@ -513,8 +513,8 @@
         "Buffs": [
           {
             "Name": "camprespawncountdownvisible",
-            "StartTime": 0.5675284,
-            "EndTime": 60.567528,
+            "StartTime": 0.5669472,
+            "EndTime": 60.566948,
             "Count": 1,
             "Type": 1
           }
@@ -619,8 +619,8 @@
         "Buffs": [
           {
             "Name": "camprespawncountdownvisible",
-            "StartTime": 0.5675284,
-            "EndTime": 60.567528,
+            "StartTime": 0.5669472,
+            "EndTime": 60.566948,
             "Count": 1,
             "Type": 1
           }
@@ -725,8 +725,8 @@
         "Buffs": [
           {
             "Name": "camprespawncountdownvisible",
-            "StartTime": 0.5675284,
-            "EndTime": 60.567528,
+            "StartTime": 0.5669472,
+            "EndTime": 60.566948,
             "Count": 1,
             "Type": 1
           }
@@ -778,8 +778,8 @@
         "Buffs": [
           {
             "Name": "camprespawncountdownvisible",
-            "StartTime": 0.5675284,
-            "EndTime": 60.567528,
+            "StartTime": 0.5669472,
+            "EndTime": 60.566948,
             "Count": 1,
             "Type": 1
           }
@@ -1500,8 +1500,8 @@
         "Buffs": [
           {
             "Name": "camprespawncountdownvisible",
-            "StartTime": 0.5675284,
-            "EndTime": 60.567528,
+            "StartTime": 0.5669472,
+            "EndTime": 60.566948,
             "Count": 1,
             "Type": 1
           }
@@ -1606,8 +1606,8 @@
         "Buffs": [
           {
             "Name": "camprespawncountdownvisible",
-            "StartTime": 0.5675284,
-            "EndTime": 60.567528,
+            "StartTime": 0.5669472,
+            "EndTime": 60.566948,
             "Count": 1,
             "Type": 1
           }
@@ -1712,8 +1712,8 @@
         "Buffs": [
           {
             "Name": "camprespawncountdownvisible",
-            "StartTime": 0.5675284,
-            "EndTime": 60.567528,
+            "StartTime": 0.5669472,
+            "EndTime": 60.566948,
             "Count": 1,
             "Type": 1
           }
@@ -1765,8 +1765,8 @@
         "Buffs": [
           {
             "Name": "camprespawncountdownvisible",
-            "StartTime": 0.5675284,
-            "EndTime": 60.567528,
+            "StartTime": 0.5669472,
+            "EndTime": 60.566948,
             "Count": 1,
             "Type": 1
           }
@@ -2056,7 +2056,7 @@
         "Index": 133178,
         "Position": {
           "x": 14181.27,
-          "y": 171.4954,
+          "y": 171.5035,
           "z": 14392.117
         },
         "Rotation": null,
@@ -2528,7 +2528,7 @@
         "Index": 4,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.39383,
+        "Cooldown": 13.188517,
         "IsToggled": false
       },
       "F": {
@@ -2542,7 +2542,7 @@
         "Index": 5,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.39383,
+        "Cooldown": 13.188517,
         "IsToggled": false
       },
       "NameAndTagline": "sSilv#Fill",
@@ -2708,8 +2708,8 @@
           },
           {
             "Name": "srhomeguardspeed",
-            "StartTime": 0.5675284,
-            "EndTime": 25000.568,
+            "StartTime": 0.5669472,
+            "EndTime": 25000.566,
             "Count": 1,
             "Type": 15
           }
@@ -2797,7 +2797,7 @@
           "Index": 4,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.39383,
+          "Cooldown": 13.188517,
           "IsToggled": false
         },
         {
@@ -2811,7 +2811,7 @@
           "Index": 5,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.39383,
+          "Cooldown": 13.188517,
           "IsToggled": false
         },
         {
@@ -3145,7 +3145,7 @@
         "Index": 4,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.39383,
+        "Cooldown": 13.188517,
         "IsToggled": false
       },
       "F": {
@@ -3153,13 +3153,13 @@
         "Icon": "Summoner_smite.dds",
         "ReadyAt": 15,
         "MaxCooldown": 15,
-        "AmmoReadyAt": 1.5936589,
+        "AmmoReadyAt": 1.598774,
         "AmmoCooldown": 0,
         "InitAtTime": null,
         "Index": 5,
         "Level": 1,
         "AmmoCount": 1,
-        "Cooldown": 13.39383,
+        "Cooldown": 13.188517,
         "IsToggled": false
       },
       "NameAndTagline": "ElMacaco#Pro",
@@ -3325,8 +3325,8 @@
           },
           {
             "Name": "srhomeguardspeed",
-            "StartTime": 0.5675284,
-            "EndTime": 25000.568,
+            "StartTime": 0.5669472,
+            "EndTime": 25000.566,
             "Count": 1,
             "Type": 15
           }
@@ -3414,7 +3414,7 @@
           "Index": 4,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.39383,
+          "Cooldown": 13.188517,
           "IsToggled": false
         },
         {
@@ -3422,13 +3422,13 @@
           "Icon": "Summoner_smite.dds",
           "ReadyAt": 15,
           "MaxCooldown": 15,
-          "AmmoReadyAt": 1.5936589,
+          "AmmoReadyAt": 1.598774,
           "AmmoCooldown": 0,
           "InitAtTime": null,
           "Index": 5,
           "Level": 1,
           "AmmoCount": 1,
-          "Cooldown": 13.39383,
+          "Cooldown": 13.188517,
           "IsToggled": false
         },
         {
@@ -3762,7 +3762,7 @@
         "Index": 4,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.39383,
+        "Cooldown": 13.188517,
         "IsToggled": false
       },
       "F": {
@@ -3776,7 +3776,7 @@
         "Index": 5,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.39383,
+        "Cooldown": 13.188517,
         "IsToggled": false
       },
       "NameAndTagline": "ghary#LAN",
@@ -3935,8 +3935,8 @@
           },
           {
             "Name": "srhomeguardspeed",
-            "StartTime": 0.5675284,
-            "EndTime": 25000.568,
+            "StartTime": 0.5669472,
+            "EndTime": 25000.566,
             "Count": 1,
             "Type": 15
           }
@@ -4024,7 +4024,7 @@
           "Index": 4,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.39383,
+          "Cooldown": 13.188517,
           "IsToggled": false
         },
         {
@@ -4038,7 +4038,7 @@
           "Index": 5,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.39383,
+          "Cooldown": 13.188517,
           "IsToggled": false
         },
         {
@@ -4324,7 +4324,7 @@
         "Icon": "ASSETS/Characters/Kalista/HUD/Icons2D/Kalista_W.dds",
         "ReadyAt": 0,
         "MaxCooldown": 0,
-        "AmmoReadyAt": 100.414825,
+        "AmmoReadyAt": 100.414246,
         "AmmoCooldown": 100,
         "InitAtTime": null,
         "Index": 1,
@@ -4372,7 +4372,7 @@
         "Index": 4,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.39383,
+        "Cooldown": 13.188517,
         "IsToggled": false
       },
       "F": {
@@ -4386,7 +4386,7 @@
         "Index": 5,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.39383,
+        "Cooldown": 13.188517,
         "IsToggled": false
       },
       "NameAndTagline": "Beto Feid#LAN",
@@ -4524,8 +4524,8 @@
           },
           {
             "Name": "srhomeguardspeed",
-            "StartTime": 0.5675284,
-            "EndTime": 25000.568,
+            "StartTime": 0.5669472,
+            "EndTime": 25000.566,
             "Count": 1,
             "Type": 15
           }
@@ -4565,7 +4565,7 @@
           "Icon": "ASSETS/Characters/Kalista/HUD/Icons2D/Kalista_W.dds",
           "ReadyAt": 0,
           "MaxCooldown": 0,
-          "AmmoReadyAt": 100.414825,
+          "AmmoReadyAt": 100.414246,
           "AmmoCooldown": 100,
           "InitAtTime": null,
           "Index": 1,
@@ -4613,7 +4613,7 @@
           "Index": 4,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.39383,
+          "Cooldown": 13.188517,
           "IsToggled": false
         },
         {
@@ -4627,7 +4627,7 @@
           "Index": 5,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.39383,
+          "Cooldown": 13.188517,
           "IsToggled": false
         },
         {
@@ -4992,7 +4992,7 @@
         "Index": 4,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.39383,
+        "Cooldown": 13.188517,
         "IsToggled": false
       },
       "F": {
@@ -5006,7 +5006,7 @@
         "Index": 5,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.39383,
+        "Cooldown": 13.188517,
         "IsToggled": false
       },
       "NameAndTagline": "Manolo Melenas#CAST",
@@ -5193,14 +5193,14 @@
           },
           {
             "Name": "srhomeguardspeed",
-            "StartTime": 0.5675284,
-            "EndTime": 25000.568,
+            "StartTime": 0.5669472,
+            "EndTime": 25000.566,
             "Count": 1,
             "Type": 15
           },
           {
             "Name": "S14_Support_Gold_Display",
-            "StartTime": 0.5675284,
+            "StartTime": 0.5669472,
             "EndTime": 250000.56,
             "Count": 0,
             "Type": 27
@@ -5289,7 +5289,7 @@
           "Index": 4,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.39383,
+          "Cooldown": 13.188517,
           "IsToggled": false
         },
         {
@@ -5303,7 +5303,7 @@
           "Index": 5,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.39383,
+          "Cooldown": 13.188517,
           "IsToggled": false
         },
         {
@@ -5437,7 +5437,7 @@
           "Icon": "ASSETS/Characters/Swain/HUD/Icons2D/Swain_P.dds",
           "ReadyAt": 0,
           "MaxCooldown": 0,
-          "AmmoReadyAt": 1.5936589,
+          "AmmoReadyAt": 1.598774,
           "AmmoCooldown": 0,
           "InitAtTime": null,
           "Index": 63,
@@ -5668,7 +5668,7 @@
         "Index": 4,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.39383,
+        "Cooldown": 13.188517,
         "IsToggled": false
       },
       "F": {
@@ -5682,7 +5682,7 @@
         "Index": 5,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.39383,
+        "Cooldown": 13.188517,
         "IsToggled": false
       },
       "NameAndTagline": "Trafallgar Law#LAN",
@@ -5813,8 +5813,8 @@
           },
           {
             "Name": "srhomeguardspeed",
-            "StartTime": 0.5675284,
-            "EndTime": 25000.568,
+            "StartTime": 0.5669472,
+            "EndTime": 25000.566,
             "Count": 1,
             "Type": 15
           }
@@ -5902,7 +5902,7 @@
           "Index": 4,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.39383,
+          "Cooldown": 13.188517,
           "IsToggled": false
         },
         {
@@ -5916,7 +5916,7 @@
           "Index": 5,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.39383,
+          "Cooldown": 13.188517,
           "IsToggled": false
         },
         {
@@ -6250,7 +6250,7 @@
         "Index": 4,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.39383,
+        "Cooldown": 13.188517,
         "IsToggled": false
       },
       "F": {
@@ -6258,13 +6258,13 @@
         "Icon": "Summoner_smite.dds",
         "ReadyAt": 15,
         "MaxCooldown": 15,
-        "AmmoReadyAt": 1.5936589,
+        "AmmoReadyAt": 1.598774,
         "AmmoCooldown": 0,
         "InitAtTime": null,
         "Index": 5,
         "Level": 1,
         "AmmoCount": 1,
-        "Cooldown": 13.39383,
+        "Cooldown": 13.188517,
         "IsToggled": false
       },
       "NameAndTagline": "Piyullo#LAN",
@@ -6444,15 +6444,15 @@
           },
           {
             "Name": "KhazixPDamage",
-            "StartTime": 0.5675284,
-            "EndTime": 25000.568,
+            "StartTime": 0.5669472,
+            "EndTime": 25000.566,
             "Count": 1,
             "Type": 1
           },
           {
             "Name": "srhomeguardspeed",
-            "StartTime": 0.5675284,
-            "EndTime": 25000.568,
+            "StartTime": 0.5669472,
+            "EndTime": 25000.566,
             "Count": 1,
             "Type": 15
           }
@@ -6540,7 +6540,7 @@
           "Index": 4,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.39383,
+          "Cooldown": 13.188517,
           "IsToggled": false
         },
         {
@@ -6548,13 +6548,13 @@
           "Icon": "Summoner_smite.dds",
           "ReadyAt": 15,
           "MaxCooldown": 15,
-          "AmmoReadyAt": 1.5936589,
+          "AmmoReadyAt": 1.598774,
           "AmmoCooldown": 0,
           "InitAtTime": null,
           "Index": 5,
           "Level": 1,
           "AmmoCount": 1,
-          "Cooldown": 13.39383,
+          "Cooldown": 13.188517,
           "IsToggled": false
         },
         {
@@ -6888,7 +6888,7 @@
         "Index": 4,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.39383,
+        "Cooldown": 13.188517,
         "IsToggled": false
       },
       "F": {
@@ -6902,7 +6902,7 @@
         "Index": 5,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.39383,
+        "Cooldown": 13.188517,
         "IsToggled": false
       },
       "NameAndTagline": "sparta5690#LAN",
@@ -7047,8 +7047,8 @@
           },
           {
             "Name": "srhomeguardspeed",
-            "StartTime": 0.5675284,
-            "EndTime": 25000.568,
+            "StartTime": 0.5669472,
+            "EndTime": 25000.566,
             "Count": 1,
             "Type": 15
           }
@@ -7136,7 +7136,7 @@
           "Index": 4,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.39383,
+          "Cooldown": 13.188517,
           "IsToggled": false
         },
         {
@@ -7150,7 +7150,7 @@
           "Index": 5,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.39383,
+          "Cooldown": 13.188517,
           "IsToggled": false
         },
         {
@@ -7484,7 +7484,7 @@
         "Index": 4,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.39383,
+        "Cooldown": 13.188517,
         "IsToggled": false
       },
       "F": {
@@ -7498,7 +7498,7 @@
         "Index": 5,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.39383,
+        "Cooldown": 13.188517,
         "IsToggled": false
       },
       "NameAndTagline": "elchichico1234#LAN",
@@ -7664,8 +7664,8 @@
           },
           {
             "Name": "srhomeguardspeed",
-            "StartTime": 0.5675284,
-            "EndTime": 25000.568,
+            "StartTime": 0.5669472,
+            "EndTime": 25000.566,
             "Count": 1,
             "Type": 15
           }
@@ -7753,7 +7753,7 @@
           "Index": 4,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.39383,
+          "Cooldown": 13.188517,
           "IsToggled": false
         },
         {
@@ -7767,7 +7767,7 @@
           "Index": 5,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.39383,
+          "Cooldown": 13.188517,
           "IsToggled": false
         },
         {
@@ -8101,7 +8101,7 @@
         "Index": 4,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.39383,
+        "Cooldown": 13.188517,
         "IsToggled": false
       },
       "F": {
@@ -8115,7 +8115,7 @@
         "Index": 5,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.39383,
+        "Cooldown": 13.188517,
         "IsToggled": false
       },
       "NameAndTagline": "Urannia#LAN",
@@ -8302,14 +8302,14 @@
           },
           {
             "Name": "srhomeguardspeed",
-            "StartTime": 0.5675284,
-            "EndTime": 25000.568,
+            "StartTime": 0.5669472,
+            "EndTime": 25000.566,
             "Count": 1,
             "Type": 15
           },
           {
             "Name": "S14_Support_Gold_Display",
-            "StartTime": 0.5675284,
+            "StartTime": 0.5669472,
             "EndTime": 250000.56,
             "Count": 0,
             "Type": 27
@@ -8398,7 +8398,7 @@
           "Index": 4,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.39383,
+          "Cooldown": 13.188517,
           "IsToggled": false
         },
         {
@@ -8412,7 +8412,7 @@
           "Index": 5,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.39383,
+          "Cooldown": 13.188517,
           "IsToggled": false
         },
         {
@@ -8707,9 +8707,9 @@
       "Assists": 0
     }
   },
-  "GameTime": 1.60617,
+  "GameTime": 1.8114837,
   "PlaybackSpeed": 1,
-  "UtcTime": 1795376689761,
+  "UtcTime": 1795463851391,
   "Camera": null,
   "TeamStats": [
     {
@@ -8804,7 +8804,7 @@
         "Index": 4,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.39383,
+        "Cooldown": 13.188517,
         "IsToggled": false
       },
       "F": {
@@ -8818,7 +8818,7 @@
         "Index": 5,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.39383,
+        "Cooldown": 13.188517,
         "IsToggled": false
       },
       "NameAndTagline": "sSilv#Fill",
@@ -8984,8 +8984,8 @@
           },
           {
             "Name": "srhomeguardspeed",
-            "StartTime": 0.5675284,
-            "EndTime": 25000.568,
+            "StartTime": 0.5669472,
+            "EndTime": 25000.566,
             "Count": 1,
             "Type": 15
           }
@@ -9073,7 +9073,7 @@
           "Index": 4,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.39383,
+          "Cooldown": 13.188517,
           "IsToggled": false
         },
         {
@@ -9087,7 +9087,7 @@
           "Index": 5,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.39383,
+          "Cooldown": 13.188517,
           "IsToggled": false
         },
         {
@@ -9421,7 +9421,7 @@
         "Index": 4,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.39383,
+        "Cooldown": 13.188517,
         "IsToggled": false
       },
       "F": {
@@ -9429,13 +9429,13 @@
         "Icon": "Summoner_smite.dds",
         "ReadyAt": 15,
         "MaxCooldown": 15,
-        "AmmoReadyAt": 1.5936589,
+        "AmmoReadyAt": 1.598774,
         "AmmoCooldown": 0,
         "InitAtTime": null,
         "Index": 5,
         "Level": 1,
         "AmmoCount": 1,
-        "Cooldown": 13.39383,
+        "Cooldown": 13.188517,
         "IsToggled": false
       },
       "NameAndTagline": "ElMacaco#Pro",
@@ -9601,8 +9601,8 @@
           },
           {
             "Name": "srhomeguardspeed",
-            "StartTime": 0.5675284,
-            "EndTime": 25000.568,
+            "StartTime": 0.5669472,
+            "EndTime": 25000.566,
             "Count": 1,
             "Type": 15
           }
@@ -9690,7 +9690,7 @@
           "Index": 4,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.39383,
+          "Cooldown": 13.188517,
           "IsToggled": false
         },
         {
@@ -9698,13 +9698,13 @@
           "Icon": "Summoner_smite.dds",
           "ReadyAt": 15,
           "MaxCooldown": 15,
-          "AmmoReadyAt": 1.5936589,
+          "AmmoReadyAt": 1.598774,
           "AmmoCooldown": 0,
           "InitAtTime": null,
           "Index": 5,
           "Level": 1,
           "AmmoCount": 1,
-          "Cooldown": 13.39383,
+          "Cooldown": 13.188517,
           "IsToggled": false
         },
         {
@@ -10038,7 +10038,7 @@
         "Index": 4,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.39383,
+        "Cooldown": 13.188517,
         "IsToggled": false
       },
       "F": {
@@ -10052,7 +10052,7 @@
         "Index": 5,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.39383,
+        "Cooldown": 13.188517,
         "IsToggled": false
       },
       "NameAndTagline": "ghary#LAN",
@@ -10211,8 +10211,8 @@
           },
           {
             "Name": "srhomeguardspeed",
-            "StartTime": 0.5675284,
-            "EndTime": 25000.568,
+            "StartTime": 0.5669472,
+            "EndTime": 25000.566,
             "Count": 1,
             "Type": 15
           }
@@ -10300,7 +10300,7 @@
           "Index": 4,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.39383,
+          "Cooldown": 13.188517,
           "IsToggled": false
         },
         {
@@ -10314,7 +10314,7 @@
           "Index": 5,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.39383,
+          "Cooldown": 13.188517,
           "IsToggled": false
         },
         {
@@ -10600,7 +10600,7 @@
         "Icon": "ASSETS/Characters/Kalista/HUD/Icons2D/Kalista_W.dds",
         "ReadyAt": 0,
         "MaxCooldown": 0,
-        "AmmoReadyAt": 100.414825,
+        "AmmoReadyAt": 100.414246,
         "AmmoCooldown": 100,
         "InitAtTime": null,
         "Index": 1,
@@ -10648,7 +10648,7 @@
         "Index": 4,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.39383,
+        "Cooldown": 13.188517,
         "IsToggled": false
       },
       "F": {
@@ -10662,7 +10662,7 @@
         "Index": 5,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.39383,
+        "Cooldown": 13.188517,
         "IsToggled": false
       },
       "NameAndTagline": "Beto Feid#LAN",
@@ -10800,8 +10800,8 @@
           },
           {
             "Name": "srhomeguardspeed",
-            "StartTime": 0.5675284,
-            "EndTime": 25000.568,
+            "StartTime": 0.5669472,
+            "EndTime": 25000.566,
             "Count": 1,
             "Type": 15
           }
@@ -10841,7 +10841,7 @@
           "Icon": "ASSETS/Characters/Kalista/HUD/Icons2D/Kalista_W.dds",
           "ReadyAt": 0,
           "MaxCooldown": 0,
-          "AmmoReadyAt": 100.414825,
+          "AmmoReadyAt": 100.414246,
           "AmmoCooldown": 100,
           "InitAtTime": null,
           "Index": 1,
@@ -10889,7 +10889,7 @@
           "Index": 4,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.39383,
+          "Cooldown": 13.188517,
           "IsToggled": false
         },
         {
@@ -10903,7 +10903,7 @@
           "Index": 5,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.39383,
+          "Cooldown": 13.188517,
           "IsToggled": false
         },
         {
@@ -11268,7 +11268,7 @@
         "Index": 4,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.39383,
+        "Cooldown": 13.188517,
         "IsToggled": false
       },
       "F": {
@@ -11282,7 +11282,7 @@
         "Index": 5,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.39383,
+        "Cooldown": 13.188517,
         "IsToggled": false
       },
       "NameAndTagline": "Manolo Melenas#CAST",
@@ -11469,14 +11469,14 @@
           },
           {
             "Name": "srhomeguardspeed",
-            "StartTime": 0.5675284,
-            "EndTime": 25000.568,
+            "StartTime": 0.5669472,
+            "EndTime": 25000.566,
             "Count": 1,
             "Type": 15
           },
           {
             "Name": "S14_Support_Gold_Display",
-            "StartTime": 0.5675284,
+            "StartTime": 0.5669472,
             "EndTime": 250000.56,
             "Count": 0,
             "Type": 27
@@ -11565,7 +11565,7 @@
           "Index": 4,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.39383,
+          "Cooldown": 13.188517,
           "IsToggled": false
         },
         {
@@ -11579,7 +11579,7 @@
           "Index": 5,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.39383,
+          "Cooldown": 13.188517,
           "IsToggled": false
         },
         {
@@ -11713,7 +11713,7 @@
           "Icon": "ASSETS/Characters/Swain/HUD/Icons2D/Swain_P.dds",
           "ReadyAt": 0,
           "MaxCooldown": 0,
-          "AmmoReadyAt": 1.5936589,
+          "AmmoReadyAt": 1.598774,
           "AmmoCooldown": 0,
           "InitAtTime": null,
           "Index": 63,
@@ -11944,7 +11944,7 @@
         "Index": 4,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.39383,
+        "Cooldown": 13.188517,
         "IsToggled": false
       },
       "F": {
@@ -11958,7 +11958,7 @@
         "Index": 5,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.39383,
+        "Cooldown": 13.188517,
         "IsToggled": false
       },
       "NameAndTagline": "Trafallgar Law#LAN",
@@ -12089,8 +12089,8 @@
           },
           {
             "Name": "srhomeguardspeed",
-            "StartTime": 0.5675284,
-            "EndTime": 25000.568,
+            "StartTime": 0.5669472,
+            "EndTime": 25000.566,
             "Count": 1,
             "Type": 15
           }
@@ -12178,7 +12178,7 @@
           "Index": 4,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.39383,
+          "Cooldown": 13.188517,
           "IsToggled": false
         },
         {
@@ -12192,7 +12192,7 @@
           "Index": 5,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.39383,
+          "Cooldown": 13.188517,
           "IsToggled": false
         },
         {
@@ -12526,7 +12526,7 @@
         "Index": 4,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.39383,
+        "Cooldown": 13.188517,
         "IsToggled": false
       },
       "F": {
@@ -12534,13 +12534,13 @@
         "Icon": "Summoner_smite.dds",
         "ReadyAt": 15,
         "MaxCooldown": 15,
-        "AmmoReadyAt": 1.5936589,
+        "AmmoReadyAt": 1.598774,
         "AmmoCooldown": 0,
         "InitAtTime": null,
         "Index": 5,
         "Level": 1,
         "AmmoCount": 1,
-        "Cooldown": 13.39383,
+        "Cooldown": 13.188517,
         "IsToggled": false
       },
       "NameAndTagline": "Piyullo#LAN",
@@ -12720,15 +12720,15 @@
           },
           {
             "Name": "KhazixPDamage",
-            "StartTime": 0.5675284,
-            "EndTime": 25000.568,
+            "StartTime": 0.5669472,
+            "EndTime": 25000.566,
             "Count": 1,
             "Type": 1
           },
           {
             "Name": "srhomeguardspeed",
-            "StartTime": 0.5675284,
-            "EndTime": 25000.568,
+            "StartTime": 0.5669472,
+            "EndTime": 25000.566,
             "Count": 1,
             "Type": 15
           }
@@ -12816,7 +12816,7 @@
           "Index": 4,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.39383,
+          "Cooldown": 13.188517,
           "IsToggled": false
         },
         {
@@ -12824,13 +12824,13 @@
           "Icon": "Summoner_smite.dds",
           "ReadyAt": 15,
           "MaxCooldown": 15,
-          "AmmoReadyAt": 1.5936589,
+          "AmmoReadyAt": 1.598774,
           "AmmoCooldown": 0,
           "InitAtTime": null,
           "Index": 5,
           "Level": 1,
           "AmmoCount": 1,
-          "Cooldown": 13.39383,
+          "Cooldown": 13.188517,
           "IsToggled": false
         },
         {
@@ -13164,7 +13164,7 @@
         "Index": 4,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.39383,
+        "Cooldown": 13.188517,
         "IsToggled": false
       },
       "F": {
@@ -13178,7 +13178,7 @@
         "Index": 5,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.39383,
+        "Cooldown": 13.188517,
         "IsToggled": false
       },
       "NameAndTagline": "sparta5690#LAN",
@@ -13323,8 +13323,8 @@
           },
           {
             "Name": "srhomeguardspeed",
-            "StartTime": 0.5675284,
-            "EndTime": 25000.568,
+            "StartTime": 0.5669472,
+            "EndTime": 25000.566,
             "Count": 1,
             "Type": 15
           }
@@ -13412,7 +13412,7 @@
           "Index": 4,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.39383,
+          "Cooldown": 13.188517,
           "IsToggled": false
         },
         {
@@ -13426,7 +13426,7 @@
           "Index": 5,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.39383,
+          "Cooldown": 13.188517,
           "IsToggled": false
         },
         {
@@ -13760,7 +13760,7 @@
         "Index": 4,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.39383,
+        "Cooldown": 13.188517,
         "IsToggled": false
       },
       "F": {
@@ -13774,7 +13774,7 @@
         "Index": 5,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.39383,
+        "Cooldown": 13.188517,
         "IsToggled": false
       },
       "NameAndTagline": "elchichico1234#LAN",
@@ -13940,8 +13940,8 @@
           },
           {
             "Name": "srhomeguardspeed",
-            "StartTime": 0.5675284,
-            "EndTime": 25000.568,
+            "StartTime": 0.5669472,
+            "EndTime": 25000.566,
             "Count": 1,
             "Type": 15
           }
@@ -14029,7 +14029,7 @@
           "Index": 4,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.39383,
+          "Cooldown": 13.188517,
           "IsToggled": false
         },
         {
@@ -14043,7 +14043,7 @@
           "Index": 5,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.39383,
+          "Cooldown": 13.188517,
           "IsToggled": false
         },
         {
@@ -14377,7 +14377,7 @@
         "Index": 4,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.39383,
+        "Cooldown": 13.188517,
         "IsToggled": false
       },
       "F": {
@@ -14391,7 +14391,7 @@
         "Index": 5,
         "Level": 1,
         "AmmoCount": 0,
-        "Cooldown": 13.39383,
+        "Cooldown": 13.188517,
         "IsToggled": false
       },
       "NameAndTagline": "Urannia#LAN",
@@ -14578,14 +14578,14 @@
           },
           {
             "Name": "srhomeguardspeed",
-            "StartTime": 0.5675284,
-            "EndTime": 25000.568,
+            "StartTime": 0.5669472,
+            "EndTime": 25000.566,
             "Count": 1,
             "Type": 15
           },
           {
             "Name": "S14_Support_Gold_Display",
-            "StartTime": 0.5675284,
+            "StartTime": 0.5669472,
             "EndTime": 250000.56,
             "Count": 0,
             "Type": 27
@@ -14674,7 +14674,7 @@
           "Index": 4,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.39383,
+          "Cooldown": 13.188517,
           "IsToggled": false
         },
         {
@@ -14688,7 +14688,7 @@
           "Index": 5,
           "Level": 1,
           "AmmoCount": 0,
-          "Cooldown": 13.39383,
+          "Cooldown": 13.188517,
           "IsToggled": false
         },
         {
@@ -15268,7 +15268,7 @@
         "Index": 133178,
         "Position": {
           "x": 14181.27,
-          "y": 171.4954,
+          "y": 171.5035,
           "z": 14392.117
         },
         "Rotation": null,
@@ -15905,8 +15905,8 @@
         "Buffs": [
           {
             "Name": "camprespawncountdownvisible",
-            "StartTime": 0.5675284,
-            "EndTime": 60.567528,
+            "StartTime": 0.5669472,
+            "EndTime": 60.566948,
             "Count": 1,
             "Type": 1
           }
@@ -16011,8 +16011,8 @@
         "Buffs": [
           {
             "Name": "camprespawncountdownvisible",
-            "StartTime": 0.5675284,
-            "EndTime": 60.567528,
+            "StartTime": 0.5669472,
+            "EndTime": 60.566948,
             "Count": 1,
             "Type": 1
           }
@@ -16117,8 +16117,8 @@
         "Buffs": [
           {
             "Name": "camprespawncountdownvisible",
-            "StartTime": 0.5675284,
-            "EndTime": 60.567528,
+            "StartTime": 0.5669472,
+            "EndTime": 60.566948,
             "Count": 1,
             "Type": 1
           }
@@ -16170,8 +16170,8 @@
         "Buffs": [
           {
             "Name": "camprespawncountdownvisible",
-            "StartTime": 0.5675284,
-            "EndTime": 60.567528,
+            "StartTime": 0.5669472,
+            "EndTime": 60.566948,
             "Count": 1,
             "Type": 1
           }
@@ -17591,15 +17591,15 @@
         "z": 4784
       },
       "rotation": [
-        5454900500000000,
-        4.5905e-41,
-        5454900500000000,
-        5814638400000000,
-        4.5905e-41,
-        5452306400000000,
-        5456996500000000,
-        4.5905e-41,
-        5456996500000000
+        -5.9079396e-27,
+        4.5904e-41,
+        -5.9079396e-27,
+        -6.166039e-27,
+        4.5904e-41,
+        -5.9060783e-27,
+        -5.9094433e-27,
+        4.5904e-41,
+        -5.9094433e-27
       ]
     }
   ],

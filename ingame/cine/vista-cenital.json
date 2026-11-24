@@ -1,0 +1,24 @@
+{
+  "modoCamara": "free",
+  "posicion": {
+    "x": 7300.47,
+    "y": 21897.03,
+    "z": -9507.56
+  },
+  "rotacion": {
+    "x": 0,
+    "y": 56,
+    "z": 0
+  },
+  "campoVista": 40,
+  "quitarInterfaz": true,
+  "quitarPersonajes": false,
+  "quitarMinions": false,
+  "quitarParticulas": false,
+  "quitarTextos": false,
+  "quitarNiebla": false,
+  "duracionSegundos": 2.2,
+  "transicion": "linear",
+  "campoLejano": 60000,
+  "quitarBarras": true
+}

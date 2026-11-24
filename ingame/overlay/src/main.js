@@ -1,6 +1,6 @@
 import { loadGameCatalog } from './data-dragon.js';
 import { createDemoState, advanceDemoState, aplicarBuffDemo } from './demo.js';
-import { renderIngameState, setCardDebug } from './render.js?v=90';
+import { renderIngameState, setCardDebug } from './render.js?v=138';
 import { createVoidGrubAlert } from './voidgrub-alert.js';
 import { createDragonAlert } from './dragon-alert.js';
 import { createBaronAlert } from './baron-alert.js';
@@ -211,4 +211,24 @@ async function start() {
   connect(catalog);
 }
 
+/* ------------------------------------------------------------------
+   Interruptor del mapa grande.
+   El botón de verdad es el del Stream Deck, que llega por el estado de la
+   partida (mapOpen). Esto de aquí es para poder probarlo a mano:
+     · tecla M  -> abre y cierra
+     · ?mapa=1  -> se abre solo al cargar
+   ------------------------------------------------------------------ */
+function interruptorDelMapa() {
+  window.__mapaAbierto = params.get('mapa') === '1';
+  window.addEventListener('keydown', evento => {
+    if (evento.key !== 'm' && evento.key !== 'M') return;
+    if (evento.repeat || evento.ctrlKey || evento.altKey || evento.metaKey) return;
+    const dentro = evento.target;
+    if (dentro && (dentro.tagName === 'INPUT' || dentro.tagName === 'TEXTAREA' || dentro.isContentEditable)) return;
+    window.__mapaAbierto = !window.__mapaAbierto;
+    document.dispatchEvent(new CustomEvent('syb:mapa', { detail: window.__mapaAbierto }));
+  });
+}
+
+interruptorDelMapa();
 start();

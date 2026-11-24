@@ -1,5 +1,5 @@
 ULTIMA CINEMATICA
-cuando: 2026-11-23T19:58:06.528Z
+cuando: 2026-11-24T23:35:13.794Z
 mapa: - (-)
 abismo: no
 modo en el panel: 5v5
@@ -9,7 +9,7 @@ bases: no se pudieron leer
 spawn del campeon: azul si, rojo si
 secuencia usada: normal
 duracion: 25 s
-arranca en el segundo: 3.062745
+arranca en el segundo: 3.1336133
 motivo / avisos: el panel esta en 5 vs 5: cinematica de la Grieta
 
 relevo = recorrido nuevo en dos tramos (solo 1 contra 1)

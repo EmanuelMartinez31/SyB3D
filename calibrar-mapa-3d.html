@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Calibrar el mapa 3D</title>
+<style>
+  html,body{margin:0;height:100%;background:#07090d;color:#dbe4f2;overflow:hidden;
+            font-family:system-ui,Segoe UI,Arial,sans-serif}
+  #lienzo{position:fixed;inset:0;display:block}
+  #panel{position:fixed;top:12px;left:12px;width:352px;background:rgba(11,15,22,.94);
+         border:1px solid #2a3548;border-radius:10px;padding:13px 15px;font-size:13px;
+         line-height:1.5;max-height:calc(100% - 24px);overflow:auto}
+  #panel h1{font-size:15px;margin:0 0 6px;color:#e8c77b}
+  #panel p{margin:6px 0;color:#a8b8ce}
+  #panel ol{margin:6px 0;padding-left:18px;color:#a8b8ce}
+  #panel li{margin:3px 0}
+  #panel b{color:#dbe4f2}
+  #estado{margin:8px 0;font-size:12px;color:#8fd6a0;min-height:32px}
+  #archivo{width:100%;font-size:12px;color:#c9d6e8;margin:4px 0 2px}
+  button{background:#1d2837;color:#cfe0f5;border:1px solid #33455e;border-radius:6px;
+         padding:6px 10px;font-size:12px;cursor:pointer;margin:7px 6px 0 0}
+  button:hover{background:#26364a}
+  button.on{background:#2d4a35;border-color:#4c7a58;color:#c9f0d3}
+  #salida{width:100%;box-sizing:border-box;margin-top:8px;background:#0b1018;color:#a8f0bd;
+          border:1px solid #26364a;border-radius:6px;padding:8px;font-size:11px;height:104px;
+          font-family:ui-monospace,Consolas,monospace;white-space:pre;resize:vertical}
+  .punto{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;
+         vertical-align:-1px}
+</style>
+</head>
+<body>
+<canvas id="lienzo"></canvas>
+
+<div id="panel">
+  <h1>Calibrar el mapa 3D</h1>
+  <input type="file" id="archivo" accept=".glb,.gltf">
+  <div id="estado">Elige tu Grieta.glb…</div>
+
+  <ol>
+    <li>Espera a que cargue.</li>
+    <li>Arrastra los <b>cuatro marcadores</b> hasta su sitio en el modelo:</li>
+  </ol>
+  <p>
+    <span class="punto" style="background:#f0c24a"></span><b>1 · Nexo azul</b><br>
+    <span class="punto" style="background:#e85454"></span><b>2 · Nexo rojo</b><br>
+    <span class="punto" style="background:#4fbf8f"></span><b>3 · Fosa del dragón</b><br>
+    <span class="punto" style="background:#a97fe0"></span><b>4 · Fosa del barón</b>
+  </p>
+  <p style="color:#8fa0bb">Los cuatro se ven perfectamente en cualquier mapa de la Grieta: los
+  dos cristales de los nexos y los dos huecos redondos de los monstruos.</p>
+
+  <button id="arriba">Ver desde arriba</button>
+  <button id="blanco">Quitar el blanco</button>
+  <button id="copiar">Copiar los valores</button>
+
+  <textarea id="salida" readonly placeholder="Aquí salen los valores para mandármelos"></textarea>
+</div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+/* ------------------------------------------------------------------
+   Los cuatro puntos de referencia, en coordenadas del juego.
+   Las dos bases se sacaron del mapa bueno; el dragón y el barón también.
+   ------------------------------------------------------------------ */
+const REFERENCIAS = [
+  { nombre: 'nexo azul',        x: 2493, z: 3729,  color: 0xf0c24a },
+  { nombre: 'nexo rojo',        x: 9866, z: 11089, color: 0xe85454 },
+  { nombre: 'dragón',           x: 7933, z: 6627,  color: 0x4fbf8f },
+  { nombre: 'barón',            x: 5119, z: 9783,  color: 0xa97fe0 }
+];
+
+// Jugadores de prueba, para ver si el encaje es bueno.
+const JUGADORES = [
+  { n:'Gnar',     x:1200,  z:1400,  azul:true  },
+  { n:'Vi',       x:4200,  z:8600,  azul:true  },
+  { n:'Ahri',     x:8200,  z:9200,  azul:true  },
+  { n:'Jinx',     x:11200, z:11800, azul:true  },
+  { n:'Rakan',    x:10100, z:10600, azul:true  },
+  { n:'K Sante',  x:3000,  z:3800,  azul:false },
+  { n:'Sejuani',  x:5600,  z:6600,  azul:false },
+  { n:'Azir',     x:8600,  z:9400,  azul:false },
+  { n:'Aphelios', x:9500,  z:10400, azul:false },
+  { n:'Nautilus', x:8600,  z:9800,  azul:false }
+];
+
+const estado = document.getElementById('estado');
+const lona = document.getElementById('lienzo');
+
+const renderer = new THREE.WebGLRenderer({ canvas: lona, antialias: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setSize(innerWidth, innerHeight, false);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.1;
+
+const escena = new THREE.Scene();
+escena.background = new THREE.Color(0x07090d);
+
+const camara = new THREE.PerspectiveCamera(34, innerWidth / innerHeight, 0.5, 1400);
+camara.position.set(0, 150, 8);
+camara.lookAt(0, 0, 0);
+
+const controles = new OrbitControls(camara, lona);
+controles.target.set(0, 0, 0);
+controles.enableDamping = true;
+controles.dampingFactor = 0.1;
+controles.minDistance = 40;
+controles.maxDistance = 420;
+controles.update();
+
+escena.add(new THREE.HemisphereLight(0xa8c8ff, 0x18220f, 1.0));
+const sol = new THREE.DirectionalLight(0xfff0d2, 2.1);
+sol.position.set(-80, 160, 60);
+escena.add(sol);
+const relleno = new THREE.DirectionalLight(0x6f9fe0, 0.55);
+relleno.position.set(90, 70, -80);
+escena.add(relleno);
+
+const rayo = new THREE.Raycaster();
+const abajo = new THREE.Vector3(0, -1, 0);
+
+let mapa = null;        // grupo con el modelo, ya normalizado a 100 de lado
+let cajaMapa = null;
+let marcadores = [];    // las cuatro bolas
+let globos = null;
+let ajuste = null;      // transformación calculada
+let blancoArreglado = false;
+let arrastrando = null;
+
+/* ------------------------------------------------------------ utilidades */
+
+function texturaGlobo(azul) {
+  const S = 128, c = document.createElement('canvas');
+  c.width = S; c.height = S * 2;
+  const g = c.getContext('2d');
+  const color = azul ? '#4a94f5' : '#e85454';
+  const cx = S / 2, r = S * 0.38, cy = r + 12;
+
+  g.fillStyle = 'rgba(0,0,0,0.5)';
+  g.beginPath(); g.ellipse(cx, S * 1.94, r * 0.7, r * 0.2, 0, 0, Math.PI * 2); g.fill();
+
+  g.fillStyle = color;
+  g.beginPath();
+  g.moveTo(cx, S * 1.92);
+  g.lineTo(cx - r * 0.18, cy + r * 0.5);
+  g.lineTo(cx + r * 0.18, cy + r * 0.5);
+  g.closePath(); g.fill();
+
+  g.beginPath(); g.arc(cx, cy, r, 0, Math.PI * 2);
+  g.fillStyle = 'rgba(8,12,18,0.92)'; g.fill();
+  g.lineWidth = r * 0.3; g.strokeStyle = color; g.stroke();
+  g.beginPath(); g.arc(cx, cy, r * 0.78, 0, Math.PI * 2);
+  g.fillStyle = 'rgba(40,52,68,1)'; g.fill();
+
+  const t = new THREE.CanvasTexture(c);
+  t.colorSpace = THREE.SRGBColorSpace;
+  t.anisotropy = 4;
+  return t;
+}
+
+const texturaAzul = texturaGlobo(true);
+const texturaRojo = texturaGlobo(false);
+
+/* ------------------------------------------------------------ el modelo */
+
+function quitarBlanco(gltf) {
+  let n = 0;
+  gltf.scene.traverse((o) => {
+    if (!o.isMesh) return;
+    const mats = Array.isArray(o.material) ? o.material : [o.material];
+    for (const m of mats) {
+      if (!m) continue;
+      const tieneMapa = !!(m.map || m.emissiveMap);
+      if (!tieneMapa) {
+        // Piezas sin textura: piedra oscura, para que no canten.
+        if (m.color) m.color.setHex(0x4a4f42);
+        m.roughness = 0.95;
+        m.metalness = 0.0;
+        m.needsUpdate = true;
+        n++;
+      }
+    }
+  });
+  return n;
+}
+
+function encajarModelo(gltf) {
+  if (mapa) { escena.remove(mapa); mapa = null; }
+  if (globos) { escena.remove(globos); globos = null; }
+  for (const m of marcadores) escena.remove(m);
+  marcadores = [];
+  ajuste = null;
+
+  const caja = new THREE.Box3().setFromObject(gltf.scene);
+  const centro = caja.getCenter(new THREE.Vector3());
+  const tam = caja.getSize(new THREE.Vector3());
+
+  gltf.scene.position.sub(centro);
+
+  mapa = new THREE.Group();
+  mapa.add(gltf.scene);
+  const escala = 100 / Math.max(tam.x, tam.z);
+  mapa.scale.setScalar(escala);
+  mapa.updateMatrixWorld(true);
+  escena.add(mapa);
+
+  cajaMapa = {
+    ancho: tam.x * escala,
+    fondo: tam.z * escala,
+    alto: tam.y * escala,
+    techo: caja.max.y * escala,
+    escala
+  };
+
+  if (blancoArreglado) quitarBlanco(gltf);
+
+  const cuantas = (() => { let c = 0; gltf.scene.traverse(o => { if (o.isMesh) c++; }); return c; })();
+  estado.innerHTML = 'Mapa cargado. ' + cuantas + ' piezas, ' + Math.round(cajaMapa.ancho) + '×' +
+                      Math.round(cajaMapa.fondo) + ' de lado. Arrastra los cuatro marcadores.';
+  estado.style.color = '#8fd6a0';
+
+  crearMarcadores();
+  camara.position.set(0, cajaMapa.ancho * 1.15, cajaMapa.ancho * 0.06);
+  controles.target.set(0, 0, 0);
+  controles.update();
+  recalcular();
+}
+
+function crearMarcadores() {
+  const L = cajaMapa ? cajaMapa.ancho : 100;
+  // Sitios de salida aproximados: se supone que el área de juego ocupa el centro.
+  const salida = [
+    [-0.22, -0.22],
+    [ 0.22,  0.22],
+    [ 0.16, -0.14],
+    [-0.16,  0.16]
+  ];
+
+  REFERENCIAS.forEach((r, i) => {
+    const g = new THREE.Group();
+    const bola = new THREE.Mesh(
+      new THREE.SphereGeometry(L * 0.016, 20, 14),
+      new THREE.MeshBasicMaterial({ color: r.color, depthTest: false, transparent: true, opacity: 0.95 })
+    );
+    bola.renderOrder = 20;
+    bola.userData.indice = i;
+    g.add(bola);
+
+    const aro = new THREE.Mesh(
+      new THREE.RingGeometry(L * 0.022, L * 0.034, 28),
+      new THREE.MeshBasicMaterial({ color: r.color, side: THREE.DoubleSide, transparent: true,
+                                    opacity: 0.55, depthTest: false })
+    );
+    aro.rotation.x = -Math.PI / 2;
+    aro.renderOrder = 19;
+    g.add(aro);
+
+    g.position.set(salida[i][0] * L, cajaMapa.techo * 0.5, salida[i][1] * L);
+    g.userData.indice = i;
+    g.userData.aro = aro;
+    escena.add(g);
+    marcadores.push(g);
+  });
+}
+
+function ponerSobreSuelo(grupo, x, z) {
+  rayo.set(new THREE.Vector3(x, (cajaMapa ? cajaMapa.techo : 100) + 60, z), abajo);
+  rayo.far = 900;
+  const golpes = rayo.intersectObject(mapa, true);
+  const y = golpes.length ? golpes[0].point.y : 0;
+  grupo.position.set(x, y, z);
+  grupo.userData.aro.position.y = 0.05;
+}
+
+/* ------------------------------------------------------------ el ajuste
+   Busca escala, giro y desplazamiento que lleven los cuatro puntos del juego
+   a los cuatro marcadores. Prueba también la versión espejada, que es lo que
+   pasa cuando el modelo está girado del revés.
+   ------------------------------------------------------------------ */
+
+function ajustarSemejanza(desde, hasta) {
+  const n = desde.length;
+  let pcx = 0, pcz = 0, qcx = 0, qcz = 0;
+  for (let i = 0; i < n; i++) {
+    pcx += desde[i][0] / n; pcz += desde[i][1] / n;
+    qcx += hasta[i][0] / n; qcz += hasta[i][1] / n;
+  }
+
+  let a = 0, b = 0, den = 0;
+  for (let i = 0; i < n; i++) {
+    const px = desde[i][0] - pcx, pz = desde[i][1] - pcz;
+    const qx = hasta[i][0] - qcx, qz = hasta[i][1] - qcz;
+    a += px * qx + pz * qz;
+    b += px * qz - pz * qx;
+    den += px * px + pz * pz;
+  }
+  if (den < 1e-9) return null;
+
+  const s = Math.sqrt(a * a + b * b) / den;
+  const t = Math.atan2(b, a);
+  const cos = Math.cos(t), sin = Math.sin(t);
+
+  const tx = qcx - s * (cos * pcx - sin * pcz);
+  const tz = qcz - s * (sin * pcx + cos * pcz);
+
+  // error
+  let err = 0;
+  for (let i = 0; i < n; i++) {
+    const X = tx + s * (cos * desde[i][0] - sin * desde[i][1]);
+    const Z = tz + s * (sin * desde[i][0] + cos * desde[i][1]);
+    err += (X - hasta[i][0]) ** 2 + (Z - hasta[i][1]) ** 2;
+  }
+  return { s, cos, sin, tx, tz, error: Math.sqrt(err / n) };
+}
+
+function mejorAjuste() {
+  if (marcadores.length < 2) return null;
+
+  const desde = REFERENCIAS.slice(0, marcadores.length).map(r => [r.x, r.z]);
+  const hasta = marcadores.map(m => [m.position.x, m.position.z]);
+
+  const normal = ajustarSemejanza(desde, hasta);
+  const espejo = ajustarSemejanza(desde.map(p => [-p[0], p[1]]), hasta);
+
+  const elegido = (!espejo || (normal && normal.error <= espejo.error)) ? normal : espejo;
+  if (!elegido) return { s: 1, cos: 1, sin: 0, tx: 0, tz: 0, error: 0 };
+
+  elegido.espejo = elegido === espejo;
+  return elegido;
+}
+
+function proyectar(x, z, a) {
+  const px = a.espejo ? -x : x;
+  return {
+    X: a.tx + a.s * (a.cos * px - a.sin * z),
+    Z: a.tz + a.s * (a.sin * px + a.cos * z)
+  };
+}
+
+function recalcular() {
+  ajuste = mejorAjuste();
+  if (!ajuste) return;
+
+  if (globos) escena.remove(globos);
+  globos = new THREE.Group();
+
+  for (const j of JUGADORES) {
+    const q = proyectar(j.x, j.z, ajuste);
+    const spr = new THREE.Sprite(new THREE.SpriteMaterial({
+      map: j.azul ? texturaAzul : texturaRojo,
+      transparent: true, depthTest: false
+    }));
+    spr.center.set(0.5, 0);
+    const alto = (cajaMapa ? cajaMapa.ancho : 100) * 0.11;
+    spr.scale.set(alto / 2, alto, 1);
+    spr.renderOrder = 30;
+
+    rayo.set(new THREE.Vector3(q.X, cajaMapa.techo + 60, q.Z), abajo);
+    rayo.far = 900;
+    const golpes = rayo.intersectObject(mapa, true);
+    const y = golpes.length ? golpes[0].point.y : 0;
+    spr.position.set(q.X, y, q.Z);
+    globos.add(spr);
+  }
+  escena.add(globos);
+
+  pintarSalida();
+}
+
+function pintarSalida() {
+  const t = document.getElementById('salida');
+  if (!ajuste) { t.value = ''; return; }
+  const filas = [
+    'PUNTOS: ' + marcadores.length + ' de 4',
+    'error: ' + ajuste.error.toFixed(2) + ' unidades',
+    '',
+    'escala : ' + ajuste.s.toFixed(6),
+    'coseno : ' + ajuste.cos.toFixed(6),
+    'seno   : ' + ajuste.sin.toFixed(6),
+    'moverX : ' + ajuste.tx.toFixed(3),
+    'moverZ : ' + ajuste.tz.toFixed(3),
+    'espejo : ' + (ajuste.espejo ? 'si' : 'no')
+  ];
+  t.value = filas.join('\n');
+}
+
+/* ------------------------------------------------------------ arrastrar */
+
+const plano = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
+const aux = new THREE.Vector3();
+const raton = new THREE.Vector2();
+
+function punteroA(evento) {
+  const r = lona.getBoundingClientRect();
+  raton.x = ((evento.clientX - r.left) / r.width) * 2 - 1;
+  raton.y = -((evento.clientY - r.top) / r.height) * 2 + 1;
+}
+
+lona.addEventListener('pointerdown', (e) => {
+  if (!mapa) return;
+  punteroA(e);
+  rayo.setFromCamera(raton, camara);
+
+  // ¿ha tocado una bola?
+  const bolas = [];
+  for (const m of marcadores) bolas.push(m.children[0]);
+  const golpes = rayo.intersectObjects(bolas, false);
+  if (golpes.length) {
+    arrastrando = golpes[0].object.parent;
+    controles.enabled = false;
+    lona.setPointerCapture(e.pointerId);
+  }
+});
+
+lona.addEventListener('pointermove', (e) => {
+  if (!arrastrando || !mapa) return;
+  punteroA(e);
+  rayo.setFromCamera(raton, camara);
+
+  let punto = null;
+  const sobreMapa = rayo.intersectObject(mapa, true);
+  if (sobreMapa.length) punto = sobreMapa[0].point;
+  else if (rayo.ray.intersectPlane(plano, aux)) punto = aux.clone();
+
+  if (punto) {
+    ponerSobreSuelo(arrastrando, punto.x, punto.z);
+    recalcular();
+  }
+});
+
+function soltar(e) {
+  if (!arrastrando) return;
+  arrastrando = null;
+  controles.enabled = true;
+  try { lona.releasePointerCapture(e.pointerId); } catch (err) { /* da igual */ }
+}
+lona.addEventListener('pointerup', soltar);
+lona.addEventListener('pointercancel', soltar);
+
+/* ------------------------------------------------------------ botones */
+
+document.getElementById('arriba').addEventListener('click', () => {
+  const L = cajaMapa ? cajaMapa.ancho : 100;
+  camara.position.set(0, L * 1.15, L * 0.06);
+  controles.target.set(0, 0, 0);
+  controles.update();
+});
+
+let gltfActual = null;
+
+document.getElementById('blanco').addEventListener('click', (e) => {
+  blancoArreglado = !blancoArreglado;
+  e.target.classList.toggle('on', blancoArreglado);
+  e.target.textContent = blancoArreglado ? 'Blanco quitado' : 'Quitar el blanco';
+  if (gltfActual) {
+    if (blancoArreglado) {
+      const n = quitarBlanco(gltfActual);
+      estado.textContent = 'Teñidas ' + n + ' piezas sin textura.';
+    } else {
+      estado.textContent = 'Vuelve a cargar el archivo para dejarlo como estaba.';
+    }
+  }
+});
+
+document.getElementById('copiar').addEventListener('click', async () => {
+  const t = document.getElementById('salida');
+  try { await navigator.clipboard.writeText(t.value); estado.textContent = 'Copiado. Ya puedes mandármelo.'; }
+  catch (err) { t.select(); document.execCommand('copy'); estado.textContent = 'Copiado.'; }
+});
+
+const cargador = new GLTFLoader();
+
+document.getElementById('archivo').addEventListener('change', async (e) => {
+  const f = e.target.files[0];
+  if (!f) return;
+  estado.textContent = 'Leyendo ' + Math.round(f.size / 1048576) + ' MB… puede tardar un poco.';
+  estado.style.color = '#e8c77b';
+  try {
+    const datos = await f.arrayBuffer();
+    cargador.parse(datos, '', (gltf) => {
+      try {
+        gltfActual = gltf;
+        if (blancoArreglado) quitarBlanco(gltf);
+        encajarModelo(gltf);
+      } catch (err) {
+        estado.textContent = 'Error al montar: ' + err.message;
+        estado.style.color = '#ff8b8b';
+      }
+    }, (err) => {
+      estado.textContent = 'Error al leer el modelo: ' + (err && err.message ? err.message : err);
+      estado.style.color = '#ff8b8b';
+    });
+  } catch (err) {
+    estado.textContent = 'Error: ' + err.message;
+    estado.style.color = '#ff8b8b';
+  }
+});
+
+addEventListener('resize', () => {
+  camara.aspect = innerWidth / innerHeight;
+  camara.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight, false);
+});
+
+function bucle() {
+  requestAnimationFrame(bucle);
+  controles.update();
+
+  // Los aros se tumban siempre en el suelo.
+  for (const m of marcadores) {
+    m.userData.aro.quaternion.copy(camara.quaternion);
+    m.userData.aro.rotateX(-Math.PI / 2);
+  }
+
+  renderer.render(escena, camara);
+}
+bucle();
+</script>
+</body>
+</html>

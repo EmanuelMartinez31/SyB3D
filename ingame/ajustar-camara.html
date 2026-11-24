@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Ajustar la cámara del mapa</title>
+<style>
+  :root{color-scheme:dark}
+  *{box-sizing:border-box}
+  body{margin:0;font:15px/1.45 system-ui,Segoe UI,Arial,sans-serif;background:#0d1017;color:#e7ecf5}
+  header{padding:16px 22px;background:#141a24;border-bottom:1px solid #222c3a}
+  h1{margin:0;font-size:19px}
+  header p{margin:6px 0 0;color:#93a1b5;font-size:13px}
+  main{display:grid;grid-template-columns:390px 1fr;gap:18px;padding:18px 22px;align-items:start}
+  .caja{background:#141a24;border:1px solid #222c3a;border-radius:10px;padding:14px 16px}
+  .caja h2{margin:0 0 10px;font-size:14px;text-transform:uppercase;letter-spacing:.06em;color:#8ea2bd}
+  label{display:block;margin:10px 0 4px;font-size:13px;color:#b9c6d8}
+  .fila{display:flex;gap:10px;align-items:center}
+  input[type=range]{flex:1;accent-color:#4a9eff}
+  input[type=number]{width:86px;background:#0d1017;border:1px solid #2a3648;color:#e7ecf5;border-radius:6px;padding:5px 7px}
+  select{background:#0d1017;border:1px solid #2a3648;color:#e7ecf5;border-radius:6px;padding:6px 8px;width:100%}
+  button{background:#22405f;border:1px solid #2f5c88;color:#eaf2ff;border-radius:8px;padding:8px 13px;font-size:14px;cursor:pointer}
+  button:hover{background:#2b5079}
+  button.principal{background:#1f6f3f;border-color:#2c8f55;font-weight:600}
+  button.principal:hover{background:#26804a}
+  button.rojo{background:#6a2530;border-color:#8c3140}
+  .botones{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+  pre{margin:0;padding:11px;background:#0a0d13;border:1px solid #1c2534;border-radius:8px;
+      font:12px/1.5 ui-monospace,Consolas,monospace;color:#9fd3a8;white-space:pre-wrap;word-break:break-word;max-height:300px;overflow:auto}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px}
+  th,td{text-align:left;padding:6px 8px;border-bottom:1px solid #1c2534}
+  th{color:#8ea2bd;font-weight:600}
+  .si{color:#5fe08a;font-weight:700}
+  .no{color:#ff7b7b;font-weight:700}
+  .nota{margin-top:12px;font-size:12.5px;color:#93a1b5}
+</style>
+</head>
+<body>
+<header>
+  <h1>Ajustar la cámara del mapa</h1>
+  <p>Abre una repetición, deja esta página en el otro monitor y mueve los deslizadores. Cada cambio se manda al juego al soltar.</p>
+</header>
+
+<main>
+  <div>
+    <div class="caja">
+      <h2>Posición y encuadre</h2>
+
+      <label>Modo de cámara</label>
+      <select id="modo">
+        <option value="free">free (libre)</option>
+        <option value="top">top (el que tienes ahora)</option>
+        <option value="player">player (pegada al campeón)</option>
+        <option value="fps">fps</option>
+        <option value="orbit">orbit</option>
+      </select>
+
+      <label>Altura <span id="vy">20000</span></label>
+      <div class="fila"><input type="range" id="y" min="2000" max="40000" step="250" value="20000"><input type="number" id="yn" value="20000"></div>
+
+      <label>Centro X <span id="vx">7500</span></label>
+      <div class="fila"><input type="range" id="x" min="0" max="15000" step="100" value="7500"><input type="number" id="xn" value="7500"></div>
+
+      <label>Centro Z <span id="vz">7500</span></label>
+      <div class="fila"><input type="range" id="z" min="0" max="15000" step="100" value="7500"><input type="number" id="zn" value="7500"></div>
+
+      <label>Inclinación (ry) <span id="vry">90</span>º</label>
+      <div class="fila"><input type="range" id="ry" min="-90" max="180" step="1" value="90"><input type="number" id="ryn" value="90"></div>
+
+      <label>Giro (rx) <span id="vrx">0</span>º</label>
+      <div class="fila"><input type="range" id="rx" min="-180" max="180" step="1" value="0"><input type="number" id="rxn" value="0"></div>
+
+      <label>Campo de visión <span id="vfov">45</span>º</label>
+      <div class="fila"><input type="range" id="fov" min="10" max="120" step="1" value="45"><input type="number" id="fovn" value="45"></div>
+
+      <div class="botones">
+        <button class="principal" id="aplicar">Aplicar</button>
+        <button id="leer">Leer estado</button>
+        <button class="rojo" id="volver">Volver a como estaba</button>
+      </div>
+    </div>
+
+    <div class="caja" style="margin-top:16px">
+      <h2>Prueba automática</h2>
+      <p class="nota" style="margin:0 0 8px">Prueba varias formas de mandar la cámara y te dice cuál la mueve de verdad.</p>
+      <button class="principal" id="probar">Probar todas</button>
+      <div id="tabla"></div>
+    </div>
+  </div>
+
+  <div class="caja">
+    <h2>Lo que contesta el juego</h2>
+    <pre id="salida">Pulsa «Leer estado» para empezar.</pre>
+  </div>
+</main>
+
+<script>
+const $ = id => document.getElementById(id);
+function salida(t){ $('salida').textContent = typeof t === 'string' ? t : JSON.stringify(t, null, 1); }
+function num(id){ return Number($(id).value); }
+
+// enlaza el deslizador con su número y su etiqueta
+for (const [r, n, v] of [['y','yn','vy'],['x','xn','vx'],['z','zn','vz'],['ry','ryn','vry'],['rx','rxn','vrx'],['fov','fovn','vfov']]) {
+  $(r).addEventListener('input', () => { $(n).value = $(r).value; $(v).textContent = $(r).value; });
+  $(n).addEventListener('input', () => { $(r).value = $(n).value; $(v).textContent = $(n).value; });
+  $(r).addEventListener('change', aplicar);
+}
+
+async function pedir(ruta, cuerpo) {
+  const r = await fetch(ruta, {
+    method: cuerpo === undefined ? 'GET' : 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: cuerpo === undefined ? undefined : JSON.stringify(cuerpo)
+  });
+  return r.json();
+}
+
+async function aplicar() {
+  const cuerpo = {
+    modo: $('modo').value,
+    x: num('x'), y: num('y'), z: num('z'),
+    rx: num('rx'), ry: num('ry'), rz: 0,
+    fov: num('fov')
+  };
+  salida('Mandando…\n' + JSON.stringify(cuerpo));
+  const r = await pedir('/camara/probar', cuerpo);
+  salida(r);
+}
+
+$('aplicar').onclick = aplicar;
+$('leer').onclick = async () => { salida(await pedir('/camara/leer')); };
+$('volver').onclick = async () => { salida(await pedir('/camara/bajar', {})); };
+
+// ---- prueba automática ------------------------------------------------
+// Comprueba las dos vías posibles y dice cuál mueve la cámara de verdad.
+$('probar').onclick = async () => {
+  const clave = (t, value) => ({ blend: 'linear', time: t, value });
+  const sec = (y, ry) => ({
+    cameraPosition: [clave(0, { x: 7500, y, z: 7500 }), clave(1, { x: 7500, y, z: 7500 })],
+    cameraRotation: [clave(0, { x: 0, y: ry, z: 0 }), clave(1, { x: 0, y: ry, z: 0 })],
+    fieldOfView: [clave(0, 45), clave(1, 45)]
+  });
+
+  const casos = [
+    ['SECUENCIA altura 20000, inclinación 89', 'sec', sec(20000, 89), 20000],
+    ['SECUENCIA altura 12000, inclinación 89', 'sec', sec(12000, 89), 12000],
+    ['SECUENCIA altura 20000, inclinación 56', 'sec', sec(20000, 56), 20000],
+    ['RENDER (la vía que no funcionaba)', 'render', { cameraPosition: { x: 7500, y: 20000, z: 7500 }, cameraRotation: { x: 0, y: 89, z: 0 } }, 20000]
+  ];
+
+  $('tabla').innerHTML = '<p class="nota">Probando…</p>';
+  const filas = [];
+
+  for (const [nombre, via, cuerpo, objetivo] of casos) {
+    const r = via === 'sec'
+      ? await fetch('/camara/secuencia', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(cuerpo) }).then(x => x.json()).catch(e => ({ error: String(e) }))
+      : await fetch('/camara/bruto', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(cuerpo) }).then(x => x.json()).catch(e => ({ error: String(e) }));
+
+    await new Promise(z => setTimeout(z, 1200));
+    const leido = await pedir('/camara/leer');
+    const p1 = leido?.juego?.cameraPosition || {};
+    const altura = Math.round(p1.y ?? 0);
+    const llego = Math.abs(altura - objetivo) < 500;
+    filas.push({ nombre, altura, llego, ok: r?.ok });
+  }
+
+  $('tabla').innerHTML = '<table><tr><th>Forma de mandarlo</th><th>Altura final</th><th>¿Llegó?</th></tr>' +
+    filas.map(f => `<tr><td>${f.nombre}</td><td>${f.altura}</td><td class="${f.llego?'si':'no'}">${f.llego?'SÍ':'no'}</td></tr>`).join('') +
+    '</table><p class="nota">Si alguna fila dice SÍ, esa es la buena: pulsa Aplicar y ajusta con los deslizadores.</p>';
+};
+</script>
+</body>
+</html>

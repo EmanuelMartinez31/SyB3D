@@ -1348,30 +1348,108 @@ body[data-modo="1v1"] .series-score .series-pip{min-height:8px}
   position:absolute;z-index:15;inset:0;
   display:grid;place-items:center;
   pointer-events:none;
-  background:radial-gradient(60% 58% at 50% 46%,oklch(0.15 0.03 265 / 0.80),oklch(0.09 0.02 285 / 0) 74%);
+  /* Sin velo: el mapa va recortado con el fondo transparente, así que
+     detrás se ve lo que cada uno ponga (el juego, un color, una foto). */
+  background:none;
   opacity:0;transition:opacity 480ms ease-out;
 }
 .mapa-gigante.is-open{opacity:1}
 
 .mapa-mundo{
   position:relative;
-  width:1740px;height:838px;
+  width:1920px;height:1080px;
   transform-origin:92% 94%;
   /* cerrado: diminuto y encima del minimapa del juego (1786, 946 en el lienzo) */
-  transform:translate(392px,-52px) scale(.05);
+  transform:translate(60px,-42px) scale(.05);
   transition:transform 1150ms cubic-bezier(.19,.9,.16,1);
 }
-.mapa-gigante.is-open .mapa-mundo{transform:translate(0,-38px) scale(1)}
+.mapa-gigante.is-open .mapa-mundo{transform:translate(0,0) scale(1)}
 
 .mapa-mesa{position:absolute;inset:0}
 .mapa-fondo{
   position:absolute;inset:0;width:100%;height:100%;display:block;
   filter:drop-shadow(0 26px 40px oklch(0.02 0 0 / 0.72));
+  transition:opacity 320ms ease-out;
+}
+/* Modo cámara: el juego nos deja leer su cámara, así que no hace falta el mapa
+   dibujado. Se apaga la imagen y las burbujas se quedan sobre el juego real. */
+/* Difuminado del alrededor: las rocas y el vacio que rodean el mapa se funden
+   para que todo se vea parejo. Dos capas:
+     - un velo oscuro con degradado (barato, hace casi todo el trabajo)
+     - un desenfoque suave encima (14px, no mas: con mas radio el navegador
+       sufre y puede ir a tirones)
+   La mascara deja libre el rectangulo del mapa y va cerrando hacia los bordes. */
+.mapa-vineta{
+  position:absolute;inset:0;pointer-events:none;
+  opacity:0;transition:opacity 520ms ease-out;
+  background:radial-gradient(circle at 50% 48%,
+    oklch(0.13 0.02 265 / 0) 24%,
+    oklch(0.11 0.02 265 / 0.5) 50%,
+    oklch(0.09 0.02 265 / 0.88) 76%);
+  -webkit-mask-image:
+    linear-gradient(to bottom, #000 0, #000 5%, transparent 24%),
+    linear-gradient(to top, #000 0, #000 9%, transparent 32%),
+    linear-gradient(to right, #000 0, #000 10%, transparent 28%),
+    linear-gradient(to left, #000 0, #000 10%, transparent 28%);
+  mask-image:
+    linear-gradient(to bottom, #000 0, #000 5%, transparent 24%),
+    linear-gradient(to top, #000 0, #000 9%, transparent 32%),
+    linear-gradient(to right, #000 0, #000 10%, transparent 28%),
+    linear-gradient(to left, #000 0, #000 10%, transparent 28%);
+}
+/* El desenfoque va aparte y mas suave, para que no pese. */
+.mapa-vineta::after{
+  content:'';position:absolute;inset:0;
+  -webkit-backdrop-filter:blur(14px);
+  backdrop-filter:blur(14px);
+  -webkit-mask-image:inherit;mask-image:inherit;
+}
+.mapa-gigante.modo-camara.is-open .mapa-vineta{opacity:1}
+
+.mapa-gigante.modo-camara .mapa-fondo{opacity:0}
+/* En modo camara el mapa no se encoje al cerrar: solo se desvanece. Asi no
+   se ve ese efecto raro de "el mapa desaparece" mientras la camara baja. */
+.mapa-gigante.modo-camara:not(.is-open) .mapa-mundo{transform:none}
+
+/* El recuadro oscuro del minimapa: cuando la camara esta arriba se tapa y en
+   su sitio va el logo del torneo, lo mas grande que quepa sin deformarlo.
+   Va dentro del propio marco para heredar su sitio y su tamano exactos. */
+.minimap-logo{
+  position:absolute;inset:0;z-index:1;
+  box-sizing:border-box;padding:5px;
+  display:grid;place-items:center;
+  background:oklch(0.11 0.012 285 / 0.99);
+  opacity:0;transition:opacity 340ms ease-out;
+  pointer-events:none;
+}
+.minimap-frame.con-logo .minimap-logo{opacity:1}
+.minimap-logo img{
+  width:100%;height:100%;display:block;
+  object-fit:contain;object-position:center;
 }
 
 /* ---- globos de los jugadores ---- */
 .mapa-globos{position:absolute;inset:0}
-.mapa-globo{position:absolute;width:0;height:0;opacity:0;transition:opacity 240ms ease-out}
+
+/* Para que los globos se DESLICEN por el mapa en vez de saltar de un sitio a
+   otro, estas tres medidas tienen que poder interpolarse. */
+@property --sep{syntax:'<length>';inherits:true;initial-value:0px}
+@property --dy{syntax:'<length>';inherits:true;initial-value:0px}
+@property --dx{syntax:'<length>';inherits:true;initial-value:0px}
+@property --tam{syntax:'<length>';inherits:true;initial-value:28px}
+.mapa-globo{
+  position:absolute;width:0;height:0;opacity:0;
+  /* Sin transicion en left/top: el movimiento lo lleva el propio navegador
+     fotograma a fotograma. Si ademas hubiera transicion, las dos peleaban
+     entre si y el globo iba a tirones. */
+  transition:
+    opacity 240ms ease-out,
+    --sep 520ms cubic-bezier(.22,.86,.28,1),
+    --dx 520ms cubic-bezier(.22,.86,.28,1),
+    --dy 520ms cubic-bezier(.22,.86,.28,1),
+    --tam 520ms cubic-bezier(.22,.86,.28,1);
+  will-change:left,top;
+}
 .mapa-gigante.is-open .mapa-globo{opacity:1}
 
 .mapa-globo .mapa-sombra{
@@ -1381,16 +1459,30 @@ body[data-modo="1v1"] .series-score .series-pip{min-height:8px}
   border-radius:50%;
   background:radial-gradient(closest-side,oklch(0.02 0 0 / 0.60),oklch(0.02 0 0 / 0));
 }
+/* El pin: el aro arriba y una punta que baja hasta el suelo, de forma que se
+   vea exactamente en qué punto del mapa está el jugador. */
 .mapa-globo .mapa-pin{
+  position:absolute;left:0;bottom:var(--dy,0px);
+  width:var(--tam);height:calc(var(--tam) * 1.52 + var(--sep,0px));
+  transform:translateX(calc(-50% + var(--dx,0px)));
+}
+/* La flecha baja hasta el suelo: su punta es el punto exacto del mapa. */
+.mapa-globo .mapa-pin::after{
+  content:'';position:absolute;bottom:0;left:50%;
+  transform:translateX(-50%);
+  width:0;height:0;
+  border-left:calc(var(--tam) * 0.17) solid transparent;
+  border-right:calc(var(--tam) * 0.17) solid transparent;
+  border-top:calc(var(--tam) * 0.52 + var(--sep,0px)) solid var(--globo-color,#8fa0bb);
+  filter:drop-shadow(0 2px 2px oklch(0 0 0 / 0.45));
+}
+/* El aro va REDONDO y del tamaño justo: ni estirado ni ovalado. */
+.mapa-globo .mapa-aro{
   position:absolute;left:0;top:0;
   width:var(--tam);height:var(--tam);
-  margin-left:calc(var(--tam) / -2);
-  margin-top:calc(var(--tam) / -1 - var(--tam) * 0.55);
-}
-.mapa-globo .mapa-aro{
-  width:100%;height:100%;border-radius:50%;overflow:hidden;
+  border-radius:50%;overflow:hidden;
   display:grid;place-items:center;
-  border:3px solid var(--globo-color,#8fa0bb);
+  border:calc(var(--tam) * 0.09) solid var(--globo-color,#8fa0bb);
   background:oklch(0.09 0.02 285 / 0.96);
   box-shadow:
     0 0 0 2px oklch(0.05 0.02 285 / 0.66),
@@ -1415,4 +1507,54 @@ body[data-modo="1v1"] .series-score .series-pip{min-height:8px}
 @media (prefers-reduced-motion: reduce){
   .mapa-mundo{transition-duration:200ms}
   .mapa-gigante.is-open .mapa-globo.subiendo{animation:none}
+}
+
+/* Con el mapa grande abierto, el minimapa pequeño no tiene sentido: se tapa
+   (también el del juego, que va debajo del HUD) y se apagan las tiras. */
+.mapa-gigante.is-open ~ .minimap-frame{
+  background:var(--frame-void);
+  transition:background 260ms ease-out;
+}
+.mapa-gigante.is-open ~ .minimap-frame::before{opacity:0;transition:opacity 260ms ease-out}
+
+/* Marcas de comprobación (tecla P). */
+.mapa-marca{
+  position:absolute;transform:translate(-50%,-50%);
+  padding:3px 7px;border-radius:4px;
+  background:oklch(0.16 0.02 260 / 0.92);
+  border:2px solid #ffd400;color:#ffd400;
+  font:800 13px/1 var(--font-ui);letter-spacing:.04em;
+  white-space:nowrap;pointer-events:none;z-index:5;
+}
+
+/* ==================================================================
+   CAMARAS CON EL MAPA ABIERTO
+   Normalmente las camaras van abajo, al lado de la tabla. Mientras el
+   mapa grande esta abierto se suben arriba en los laterales, con el
+   mismo formato que tenian los paneles de runas.
+   Si no hay camaras puestas, #camaras esta oculto y no se ve nada.
+   ================================================================== */
+body.mapa-abierto .camara{
+  bottom:auto;top:104px;width:282px;height:auto;
+  background:linear-gradient(180deg,oklch(0.17 0.022 285 / 0.95),oklch(0.11 0.015 285 / 0.97));
+  border:1px solid var(--line);
+  filter:drop-shadow(0 4px 10px oklch(0.10 0.02 285 / 0.45));
+}
+body.mapa-abierto .camara-izq{
+  left:24px;border-left:3px solid var(--team-blue);
+  clip-path:polygon(0 0,100% 0,100% 100%,14px 100%,0 calc(100% - 14px));
+}
+body.mapa-abierto .camara-der{
+  left:1614px;border-right:3px solid var(--team-red);
+  clip-path:polygon(0 0,100% 0,100% calc(100% - 14px),calc(100% - 14px) 100%,0 100%);
+}
+body.mapa-abierto .camara-video{width:280px;height:280px}
+
+/* Mientras el mapa grande esta abierto no se enseñan las runas del inicio ni
+   la presentacion de jugadores: se comen los laterales. */
+body.mapa-abierto #rune-intro,
+body.mapa-abierto #deck-intro{
+  visibility:hidden !important;
+  opacity:0 !important;
+  pointer-events:none !important;
 }

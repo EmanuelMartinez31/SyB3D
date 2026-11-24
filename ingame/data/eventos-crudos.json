@@ -1,13 +1,13 @@
 [
  {
-  "cuando": "2026-11-23T19:58:24.046Z",
+  "cuando": "2026-11-24T23:35:28.550Z",
   "lista": "DeathEvents",
-  "gameId": "LA1-1763583571",
-  "gameTime": 20.589851,
+  "gameId": "LA1-1764346340",
+  "gameTime": 17.900576,
   "evento": {
-   "GameTime": 20.46473,
-   "KillerNetworkId": 1073742564,
-   "VictimNetworkId": 1073742564,
+   "GameTime": 17.787964,
+   "KillerNetworkId": 1073742552,
+   "VictimNetworkId": 1073742552,
    "GoldByTeam": [
     2500,
     2500
@@ -15,14 +15,14 @@
   }
  },
  {
-  "cuando": "2026-11-23T19:58:24.047Z",
+  "cuando": "2026-11-24T23:35:28.551Z",
   "lista": "DamageDealtEvents",
-  "gameId": "LA1-1763583571",
-  "gameTime": 20.589851,
+  "gameId": "LA1-1764346340",
+  "gameTime": 17.900576,
   "evento": {
-   "GameTime": 20.46473,
-   "SourceNetworkId": 1073742564,
-   "TargetNetworkId": 1073742564,
+   "GameTime": 17.787964,
+   "SourceNetworkId": 1073742552,
+   "TargetNetworkId": 1073742552,
    "DamageDealt": 0,
    "DamageType": 3,
    "AttackSuccessFlag": 7,

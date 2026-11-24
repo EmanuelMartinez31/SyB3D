@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>SyB Ingame Overlay</title>
   <link rel="icon" href="data:,">
-  <link rel="stylesheet" href="./src/styles.css?v=90">
+  <link rel="stylesheet" href="./src/styles.css?v=161">
   <script type="importmap">
     {
       "imports": {
@@ -244,13 +244,13 @@
 
       <!-- R105 · MAPA GIGANTE
            Se abre con el botón del Stream Deck. El mapa viene en perspectiva
-           desde assets/map/grieta-3d.webp; aquí solo se coloca y se mueven los
+           desde assets/map/grieta-3d-r124.webp; aquí solo se coloca y se mueven los
            globos. Va por debajo de la barra (z 20) y de la tabla (z 18) para
            que esos dos se sigan viendo tal cual. -->
       <section id="mapa-gigante" class="mapa-gigante" aria-hidden="true">
         <div class="mapa-mundo">
           <div class="mapa-mesa">
-            <img class="mapa-fondo" src="./assets/map/grieta-3d.webp" alt="">
+            <img class="mapa-fondo" src="./assets/map/grieta-3d-r124.webp" alt="">
             <div class="mapa-globos" id="mapa-globos"></div>
           </div>
         </div>
@@ -261,6 +261,6 @@
       <aside class="sponsor" aria-label="Espacio para patrocinadores"></aside>
     </div>
   </main>
-  <script type="module" src="./src/main.js?v=90"></script>
+  <script type="module" src="./src/main.js?v=161"></script>
 </body>
 </html>

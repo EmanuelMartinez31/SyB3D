@@ -2821,17 +2821,56 @@ function aplicarTemaHUD(tema) {
    ------------------------------------------------------------------ */
 const MAPA_MIN = -120;
 const MAPA_MAX = 14820;
-const MAPA_ANCHO = 1520;                 // tamaño del archivo grieta-3d.webp
-const MAPA_ALTO = 732;
-const MAPA_ESCALA = 1740 / MAPA_ANCHO;   // cómo de grande se pinta en el HUD
-const MAPA_H = [[1143.701377, -151.648204, 188.149311], [0.0, 460.16054, 34.291884], [0.0, -0.199537, 1.0]];
+const MAPA_ANCHO = 1920;                 // tamaño del archivo grieta-3d.webp
+const MAPA_ALTO = 1080;
+const MAPA_ESCALA = 1;                   // se pinta a tamaño natural
+// Proyección medida sobre la imagen nueva. Error 0 px en los 49 puntos
+// de control: los dos nexos, el dragón, el barón y el borde del mapa.
+const MAPA_H = [[739.176495, -352.485070, 512.885086],
+                [-25.693254, 253.218772, 189.375535],
+                [-0.074198, -0.360684, 1.0]];
 
 const mapaGlobos = new Map();            // jugador -> nodo
+
+/* ------------------------------------------------------------------
+   Máscara del terreno. Se lee el contorno de la propia imagen del mapa para
+   saber dónde hay suelo: así ningún globo queda colgando en el vacío y las
+   líneas de bot y top no se ven aplastadas contra el borde.
+   ------------------------------------------------------------------ */
+const mapaMascara = { datos: null, w: 0, h: 0 };
+(function prepararMascara() {
+  if (typeof document === 'undefined') return;
+  const img = new Image();
+  img.onload = () => {
+    const w = 480, h = Math.max(1, Math.round(480 * img.height / img.width));
+    const c = document.createElement('canvas');
+    c.width = w; c.height = h;
+    const g = c.getContext('2d', { willReadFrequently: true });
+    g.drawImage(img, 0, 0, w, h);
+    try {
+      mapaMascara.datos = g.getImageData(0, 0, w, h).data;
+      mapaMascara.w = w; mapaMascara.h = h;
+    } catch (e) { /* sin permiso para leer píxeles: se sigue sin máscara */ }
+  };
+  img.src = './assets/map/grieta-3d-r124.webp';
+})();
+
+function hayTerreno(x, y) {
+  const m = mapaMascara;
+  if (!m.datos) return true;                  // sin máscara no se toca nada
+  const px = Math.round((x / MAPA_ANCHO) * m.w);
+  const py = Math.round((y / MAPA_ALTO) * m.h);
+  if (px < 0 || py < 0 || px >= m.w || py >= m.h) return false;
+  return m.datos[(py * m.w + px) * 4 + 3] > 110;
+}
 
 // Coordenadas del juego (x, z) a un punto de la imagen del mapa.
 function puntoDelMapa(x, z) {
   const u = (x - MAPA_MIN) / (MAPA_MAX - MAPA_MIN);
   const v = 1 - (z - MAPA_MIN) / (MAPA_MAX - MAPA_MIN);
+  // Si la posición se sale del mapa (un dato raro del sensor, o alguien en la
+  // fuente), no se pinta nada: mejor ningún globo que uno en el sitio erróneo.
+  if (u < -0.015 || u > 1.015 || v < -0.015 || v > 1.015) return null;
   const w = MAPA_H[2][0] * u + MAPA_H[2][1] * v + MAPA_H[2][2];
   if (!finite(w) || Math.abs(w) < 1e-6) return null;
   return {
@@ -2841,15 +2880,212 @@ function puntoDelMapa(x, z) {
   };
 }
 
+/* ---- Modo cámara: las burbujas sobre el juego real -----------------------
+   El juego no deja MOVER su cámara, pero sí deja LEERLA (/camara/leer).
+   Con su posición, su giro y su campo de visión se calcula en qué píxel de la
+   pantalla cae cada campeón, y las burbujas van encima del mapa de verdad.
+
+   Convención comprobada contra una captura real del juego:
+       rot.x = giro horizontal (yaw)
+       rot.y = inclinación     (56 = como el modo top, 90 = al suelo)
+       fieldOfView = campo vertical
+   ------------------------------------------------------------------ */
+const camara = { pos: null, rot: null, fov: 40, valida: false };
+
+function refrescarCamara() {
+  if (typeof fetch !== 'function') return;
+  fetch('/camara/leer', { cache: 'no-store' })
+    .then(r => r.json())
+    .then(j => {
+      const g = j && j.juego;
+      if (!g || !g.cameraPosition || !g.cameraRotation) { camara.valida = false; return; }
+      camara.pos = g.cameraPosition;
+      camara.rot = g.cameraRotation;
+      camara.fov = Number(g.fieldOfView) || 40;
+      camara.valida = true;
+    })
+    .catch(() => { camara.valida = false; });
+}
+if (typeof window !== 'undefined') {
+  refrescarCamara();
+  setInterval(refrescarCamara, 250);
+}
+
+function proyectarCamara(x, z) {
+  if (!camara.valida || !camara.pos || !camara.rot) return null;
+  const W = MAPA_ANCHO, H = MAPA_ALTO;
+  const psi = camara.rot.x * Math.PI / 180;
+  const theta = camara.rot.y * Math.PI / 180;
+  const cf = Math.cos(theta);
+  const f = [Math.sin(psi) * cf, -Math.sin(theta), Math.cos(psi) * cf];   // hacia dónde mira
+  const rg = [Math.cos(psi), 0, -Math.sin(psi)];                          // derecha
+  const up = [                                                            // arriba (f x rg)
+    f[1] * rg[2] - f[2] * rg[1],
+    f[2] * rg[0] - f[0] * rg[2],
+    f[0] * rg[1] - f[1] * rg[0]
+  ];
+  const v = [x - camara.pos.x, -camara.pos.y, z - camara.pos.z];
+  const zc = v[0] * f[0] + v[1] * f[1] + v[2] * f[2];
+  if (zc <= 1) return null;
+  const xc = v[0] * rg[0] + v[1] * rg[1] + v[2] * rg[2];
+  const yc = v[0] * up[0] + v[1] * up[1] + v[2] * up[2];
+  const fv = camara.fov * Math.PI / 180;
+  const fh = 2 * Math.atan(Math.tan(fv / 2) * (W / H));
+  const sx = W / 2 + (xc / zc) / Math.tan(fh / 2) * (W / 2);
+  const sy = H / 2 - (yc / zc) / Math.tan(fv / 2) * (H / 2);
+  if (!finite(sx) || !finite(sy)) return null;
+  return { x: sx, y: sy, v: 0.5 };
+}
+
+/* ------------------------------------------------------------------
+   Comprobación a mano: la tecla P pone cuatro marcas en el nexo azul, el
+   nexo rojo, el dragón y el barón. Si caen donde toca, el mapa y las
+   cuentas están bien y lo que falla son las posiciones que llegan.
+   ------------------------------------------------------------------ */
+const MARCAS = [
+  { n: 'AZUL',   x: 1450,  z: 1500  },
+  { n: 'ROJO',   x: 13250, z: 13350 },
+  { n: 'DRAGON', x: 9750,  z: 4400  },
+  { n: 'BARON',  x: 5000,  z: 10450 }];
+let marcasPuestas = false;
+
+function alternarMarcas() {
+  const caja = byId('mapa-globos');
+  if (!caja) return;
+  marcasPuestas = !marcasPuestas;
+  caja.querySelectorAll('.mapa-marca').forEach(n => n.remove());
+  if (!marcasPuestas) return;
+  for (const m of MARCAS) {
+    const p = puntoDelMapa(m.x, m.z);
+    if (!p) continue;
+    const el = document.createElement('div');
+    el.className = 'mapa-marca';
+    el.textContent = m.n;
+    el.style.left = `${(p.x / MAPA_ANCHO) * 100}%`;
+    el.style.top = `${(p.y / MAPA_ALTO) * 100}%`;
+    caja.appendChild(el);
+  }
+}
+if (typeof window !== 'undefined') {
+  window.addEventListener('keydown', e => {
+    if (e.key === 'p' || e.key === 'P') alternarMarcas();
+  });
+}
+
+/* Desliza cada burbuja hacia su destino. Se para solo cuando todas han
+   llegado, para no dejar una animación corriendo sin necesidad. */
+let bucleBurbujas = 0;
+function arrancarSuavizado() {
+  if (bucleBurbujas) return;
+  bucleBurbujas = requestAnimationFrame(pasoSuavizado);
+}
+function pasoSuavizado() {
+  bucleBurbujas = 0;
+  let sigue = false;
+  for (const globo of mapaGlobos.values()) {
+    if (!finite(globo.tx) || !finite(globo.ty) || !finite(globo.cx)) continue;
+    const dx = globo.tx - globo.cx;
+    const dy = globo.ty - globo.cy;
+    if (Math.abs(dx) < 0.015 && Math.abs(dy) < 0.015) {
+      globo.cx = globo.tx;
+      globo.cy = globo.ty;
+    } else {
+      /* Se va frenando al llegar, y ademas tiene tope de velocidad para que
+         el arranque no sea un tiron. */
+      let mx = dx * 0.14;
+      let my = dy * 0.14;
+      const largo = Math.hypot(mx, my);
+      const TOPE = 2.2;
+      if (largo > TOPE) { mx = (mx / largo) * TOPE; my = (my / largo) * TOPE; }
+      globo.cx += mx;
+      globo.cy += my;
+      sigue = true;
+    }
+    globo.el.style.left = `${globo.cx}%`;
+    globo.el.style.top = `${globo.cy}%`;
+  }
+  if (sigue) bucleBurbujas = requestAnimationFrame(pasoSuavizado);
+}
+
+/* El recuadro oscuro de la esquina (el marco del minimapa) se tapa y en su
+   sitio va el logo del torneo, lo mas grande que quepa. */
+let logoMinimapa = null;
+function renderLogoMinimapa(state, mostrar) {
+  const marco = document.querySelector('.minimap-frame');
+  if (!marco) return;
+  if (!logoMinimapa) {
+    const caja = document.createElement('div');
+    caja.className = 'minimap-logo';
+    const img = document.createElement('img');
+    img.alt = '';
+    img.addEventListener('error', () => { img.hidden = true; });
+    caja.appendChild(img);
+    caja._img = img;
+    marco.appendChild(caja);
+    logoMinimapa = caja;
+  }
+
+  const info = state && state.info ? state.info : {};
+  let fuente = typeof info.logo === 'string' && info.logo.trim() ? info.logo.trim() : '';
+  /* Si el estado no trae el logo, se usa el mismo que ya esta puesto en la
+     intro o en el panel de pelea: asi sale siempre. */
+  if (!fuente) {
+    for (const id of ['intro-tournament-logo', 'fight-tournament-logo']) {
+      const otro = byId(id);
+      const src = otro && otro.getAttribute('src');
+      if (src && src.trim()) { fuente = src.trim(); break; }
+    }
+  }
+  const img = logoMinimapa._img;
+  if (fuente) {
+    if (img.getAttribute('src') !== fuente) img.src = fuente;
+    img.hidden = false;
+    logoMinimapa.title = info.tournament ? String(info.tournament) : '';
+  } else {
+    img.hidden = true;
+  }
+
+  marco.classList.toggle('con-logo', mostrar === true);
+}
+
+let mapaAbiertoEn = 0;
+let globosMostrados = false;
+/* El difuminado del alrededor: tapa las rocas y el vacio que quedan fuera
+   del mapa para que todo se vea parejo. Va dentro del mapa grande y solo se
+   enciende con la camara arriba. */
+let vineta = null;
+function asegurarVineta() {
+  if (vineta) return;
+  const capa = byId('mapa-gigante');
+  if (!capa) return;
+  const d = document.createElement('div');
+  d.className = 'mapa-vineta';
+  capa.insertBefore(d, capa.firstChild);
+  vineta = d;
+}
+
+/* ==================================================================
+   TARJETAS DE ESTADISTICAS DEL MAPA GRANDE
+   Un jugador por lado (el del equipo azul a la izquierda, el del rojo a
+   la derecha) con sus estadisticas de combate. Van cambiando cada cinco
+   segundos por linea: top, jungla, mid, adc, support.
+   ================================================================== */
 function renderMapaGigante(state, catalog) {
   const capa = byId('mapa-gigante');
   const caja = byId('mapa-globos');
   if (!capa || !caja) return;
 
-  const abierto = state?.mapOpen === true;
+  const abierto = state?.mapOpen === true || window.__mapaAbierto === true;
   if (abierto !== capa.classList.contains('is-open')) {
     capa.classList.toggle('is-open', abierto);
     capa.setAttribute('aria-hidden', abierto ? 'false' : 'true');
+    if (abierto) mapaAbiertoEn = performance.now();
+  }
+  /* Con el mapa abierto se apartan las runas del inicio y la presentacion de
+     jugadores: si no, se comen las tarjetas de estadisticas. Solo se ocultan
+     mientras el mapa esta abierto; su cuenta atras sigue igual. */
+  if (abierto !== document.body.classList.contains('mapa-abierto')) {
+    document.body.classList.toggle('mapa-abierto', abierto);
   }
 
   const players = Array.isArray(state?.players) ? state.players : [];
@@ -2857,13 +3093,50 @@ function renderMapaGigante(state, catalog) {
     finite(player?.position?.x) && finite(player?.position?.z)
   );
 
+  /* Si el juego nos deja leer su cámara, las burbujas van encima del mapa de
+     verdad y no hace falta el mapa dibujado. Si no, se sigue igual que antes. */
+  const modoCamara = camara.valida && camara.pos !== null;
+  if (modoCamara !== capa.classList.contains('modo-camara')) {
+    capa.classList.toggle('modo-camara', modoCamara);
+  }
+  renderLogoMinimapa(state, modoCamara && abierto);
+  asegurarVineta();
+
+  /* La camara tarda un par de segundos en subir. Mientras sube, los globos
+     se quedan escondidos: si no, se les ve colocarse mal y luego recolocarse. */
+  const alturaCamara = modoCamara && camara.pos ? Number(camara.pos.y) : 0;
+  /* Se espera a que la camara este arriba de verdad. La red de seguridad
+     (4,5 s) evita que los globos se queden escondidos si algo falla. */
+  const camaraArriba = !modoCamara || alturaCamara > 9000
+    || (mapaAbiertoEn > 0 && performance.now() - mapaAbiertoEn > 4500);
+
+
   const vistos = new Set();
   situados.forEach((player, indice) => {
-    const punto = puntoDelMapa(player.position.x, player.position.z);
-    if (!punto) return;
-
     const clave = player.id ?? `${player.team}-${player.role}-${indice}`;
+    /* Se apunta SIEMPRE que el jugador esta en la lista. Antes, si la cuenta
+       de la posicion fallaba un solo fotograma, el globo se borraba y habia
+       que volver a crearlo: por eso a veces desaparecian y volvian. */
     vistos.add(clave);
+
+    let punto = modoCamara
+      ? proyectarCamara(player.position.x, player.position.z)
+      : puntoDelMapa(player.position.x, player.position.z);
+
+    /* Si la cuenta falla un instante, se usa la ultima posicion buena que
+       hubiera: el globo se queda quieto en vez de desaparecer. */
+    const previo = mapaGlobos.get(clave);
+    if (!punto && previo && previo.ultimo) punto = previo.ultimo;
+    if (!punto) return;
+    if (modoCamara) {
+      // Respaldo: no salirse de la pantalla por un valor raro.
+      if (!(punto.x > -400 && punto.x < MAPA_ANCHO + 400
+            && punto.y > -400 && punto.y < MAPA_ALTO + 400)) {
+        if (previo && previo.ultimo) punto = previo.ultimo;
+        else return;
+      }
+    }
+
     let globo = mapaGlobos.get(clave);
     if (!globo) {
       const el = document.createElement('div');
@@ -2905,10 +3178,65 @@ function renderMapaGigante(state, catalog) {
       }
     }
 
-    globo.el.style.left = `${(punto.x / MAPA_ANCHO) * 100}%`;
-    globo.el.style.top = `${(punto.y / MAPA_ALTO) * 100}%`;
+    /* La posición no se pone de golpe: se guarda como destino y el globo va
+       deslizándose hasta ella. Así el movimiento se ve continuo y no a
+       tirones, que es lo que pasaba cuando el juego manda datos a saltos. */
+    globo.ultimo = punto;
+    globo.tx = (punto.x / MAPA_ANCHO) * 100;
+    globo.ty = (punto.y / MAPA_ALTO) * 100;
+    if (!finite(globo.cx) || !finite(globo.cy)) {
+      globo.cx = globo.tx;
+      globo.cy = globo.ty;
+      globo.el.style.left = `${globo.cx}%`;
+      globo.el.style.top = `${globo.cy}%`;
+    }
+    arrancarSuavizado();
     // Los de delante se ven un poco más grandes, como en el juego.
-    globo.el.style.setProperty('--tam', `${(16 + 10 * punto.v) * 2.45 * MAPA_ESCALA}px`);
+    const tam = (16 + 10 * punto.v) * 1.5 * MAPA_ESCALA;
+
+    /* El punto es exacto: la punta de la flecha cae justo ahí. Si ese punto
+       está fuera del terreno (las líneas de bot y top van por el borde), el
+       aro se aparta hacia dentro del mapa y la flecha se estira para seguir
+       señalando el sitio. */
+    let sep = 0, dx = 0;
+    /* En modo cámara la posición ya sale exacta del juego: no se aparta nada. */
+    if (!modoCamara && !hayTerreno(punto.x, punto.y)) {
+      const ang = Math.atan2(MAPA_ALTO / 2 - punto.y, MAPA_ANCHO / 2 - punto.x);
+      for (let d = 8; d <= 320; d += 8) {
+        const tx = punto.x + Math.cos(ang) * d;
+        const ty = punto.y + Math.sin(ang) * d;
+        if (hayTerreno(tx, ty)) {
+          dx = tx - punto.x;
+          sep = Math.max(0, punto.y - ty);
+          break;
+        }
+      }
+    }
+
+    /* Si dos globos se pisan se apartan, pero MUY poco: como mucho media
+       burbuja. Antes se empujaban hasta 70 px y los que iban juntos en el
+       carril acababan encima de la piedra. Si aun así no caben, se hacen un
+       poco más pequeños en vez de seguir separándose. */
+    let escalaGrupo = 1;
+    const tope = tam * 0.5;
+    if (!modoCamara) for (const otro of mapaGlobos.values()) {
+      if (otro === globo || !otro.colocado) continue;
+      const ddx = (punto.x + dx) - otro.colocado.x;
+      const ddy = (punto.y - sep) - otro.colocado.y;
+      const dist = Math.hypot(ddx, ddy);
+      if (dist < tam * 1.05) {
+        const falta = tam * 1.05 - dist;
+        const signo = ddx >= 0 ? 1 : -1;
+        dx = Math.max(-tope, Math.min(tope, dx + signo * falta * 0.5));
+        sep = Math.max(sep, Math.min(tope, sep + falta * 0.45));
+        escalaGrupo = 0.82;
+      }
+    }
+
+    globo.colocado = { x: punto.x + dx, y: punto.y - sep };
+    globo.el.style.setProperty('--tam', `${(tam * escalaGrupo).toFixed(1)}px`);
+    globo.el.style.setProperty('--sep', `${sep.toFixed(1)}px`);
+    globo.el.style.setProperty('--dx', `${dx.toFixed(1)}px`);
   });
 
   mapaGlobos.forEach((globo, clave) => {
@@ -2917,8 +3245,13 @@ function renderMapaGigante(state, catalog) {
     mapaGlobos.delete(clave);
   });
 
-  // Al abrirse, los globos entran uno detrás de otro.
-  if (abierto) {
+  /* Una vez que salen, ya no se esconden hasta que se cierra el mapa. Asi no
+     parpadean si la lectura de la camara falla un instante. */
+  if (!abierto) globosMostrados = false;
+  else if (camaraArriba) globosMostrados = true;
+
+  // Al abrirse, los globos entran uno detrás de otro (solo si la camara llego).
+  if (abierto && (camaraArriba || globosMostrados)) {
     [...mapaGlobos.values()].forEach((globo, i) => {
       if (globo.el.classList.contains('subiendo')) return;
       globo.el.style.animationDelay = `${360 + i * 55}ms`;

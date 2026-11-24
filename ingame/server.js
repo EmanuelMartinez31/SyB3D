@@ -25,6 +25,7 @@ const wss = new WebSocketServer({ noServer: true });
 
 let latest = null;
 let latestState = null;
+let ultimoGameInfoCrudo = null;
 let sequence = 0;
 let lastReceivedAt = null;
 let lastBytes = 0;
@@ -508,6 +509,8 @@ function playerDisplayName(hero, info, gameId, liveName = null) {
   // es un nombre: se descarta y se sigue con las demás fuentes.
   if (raw && skinName(raw) === skinName(hero?.Common?.Identifier)) raw = '';
   raw = raw || String(liveName || '').trim();
+  // El nombre nunca se enseña con su etiqueta: de «Ana#EUW» solo va «Ana».
+  raw = raw.replace(/#.*$/, '').trim();
   if (raw) {
     if (id !== null) rememberedNames.set(String(id), raw);
     return raw;
@@ -515,6 +518,296 @@ function playerDisplayName(hero, info, gameId, liveName = null) {
   if (id !== null && rememberedNames.has(String(id))) return rememberedNames.get(String(id));
   if (id !== null && previousNames.has(String(id))) return previousNames.get(String(id));
   return null;
+}
+
+/* Las estadisticas de combate. El juego no siempre publica los mismos nombres,
+   asi que no se busca una lista fija: se recogen TODOS los numeros del heroe
+   con la ruta de su clave y luego se elige el que mejor encaja con cada
+   estadistica. Las reglas estan en REGLAS_STATS. */
+const REGLAS_STATS = [
+  ['vida', 'MaxHealth', ['maxhealth', 'maxhp', 'healthmax'], ['maxhealth', 'maxhp'], ['regen', 'growth', 'perlevel', 'ratio', 'pct', 'percent', 'mod', 'bonus', 'item']],
+  ['mana', 'MaxResource', ['maxresource', 'maxmana', 'resourcemax'], ['maxresource', 'maxmana', 'resourcemax'], ['regen', 'growth', 'perlevel', 'pct', 'percent', 'mod', 'bonus']],
+  ['fisico', 'AttackDamage', ['attackdamage'], ['attackdamage'], ['percent', 'pct', 'mod', 'bonus', 'flat', 'total']],
+  ['magico', 'AbilityPower', ['abilitypower', 'spellpower'], ['abilitypower', 'spellpower'], ['percent', 'pct', 'mod', 'total']],
+  ['armadura', 'Armor', ['armor', 'totalarmor'], ['armor'], ['pen', 'penet', 'flat', 'percent', 'pct', 'mod', 'bonus', 'shred', 'reduction']],
+  ['resistencia', 'MagicResist', ['magicresist', 'spellblock', 'magicresistance'], ['magicresist', 'spellblock', 'magicresistance'], ['pen', 'penet', 'flat', 'percent', 'pct', 'mod', 'bonus', 'shred', 'reduction']],
+  ['velocidadAtaque', 'AttackSpeed', ['attackspeed', 'attackspeedtotal'], ['attackspeed', 'attackrate'], ['mod', 'percent', 'pct', 'ratio', 'growth']],
+  ['velocidadMovimiento', 'MoveSpeed', ['movespeed', 'movementspeed'], ['movespeed', 'movementspeed', 'runspeed'], ['percent', 'pct', 'mod', 'flat', 'bonus']],
+  ['regeneracionVida', 'HealthRegen', ['healthregen', 'healthregenrate', 'hpregen', 'hp5'], ['healthregen', 'hpregen', 'hp5', 'healthper5'], ['percent', 'pct']],
+  ['regeneracionMana', 'ResourceRegen', ['resourceregen', 'resourceregenrate', 'manaregen', 'mpregen', 'mp5'], ['resourceregen', 'manaregen', 'mpregen', 'mp5'], ['percent', 'pct']],
+  ['critico', 'CritChance', ['critchance', 'criticalchance', 'flatcritchancemod'], ['critchance'], ['damage', 'dmg', 'multiplier', 'perlevel', 'growth']],
+  ['aceleracion', 'AbilityHaste', ['abilityhaste', 'cooldownreduction', 'cdr'], ['abilityhaste', 'cooldownreduction', 'haste', 'cdr'], ['percent', 'pct', 'mod']],
+  ['roboVida', 'LifeSteal', ['lifesteal', 'percentlifestealmod'], ['lifesteal'], []],
+  ['omnivampirismo', 'Omnivamp', ['omnivamp', 'omnivampirism'], ['omnivamp'], []],
+  ['alcance', 'AttackRange', ['attackrange', 'range'], ['attackrange', 'range'], ['indicator', 'bonus', 'mod', 'perlevel']],
+  ['tenacidad', 'Tenacity', ['tenacity'], ['tenacity'], ['percent', 'pct']],
+  ['letalidad', 'Lethality', ['lethality', 'physicallethality'], ['lethality'], []],
+  ['penetracionArmadura', 'ArmorPenetration', ['armorpenetration', 'armorpenetrationflat', 'flatarmorpenetration'], ['armorpenetration', 'armorpen'], ['percent', 'pct']]
+];
+
+// Deja la clave en minusculas y sin simbolos: «m_Armor» -> «marmor».
+function clavePlana(texto) {
+  return String(texto || '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-zA-Z0-9]/g, '')
+    .toLowerCase();
+}
+
+// Todos los numeros del heroe, con la ruta de donde salieron.
+function numerosDelHeroe(hero) {
+  const salida = [];
+  const vistos = new Set();
+  const andar = (objeto, ruta, profundidad) => {
+    if (!objeto || typeof objeto !== 'object' || profundidad > 3 || vistos.has(objeto)) return;
+    vistos.add(objeto);
+    const entradas = Array.isArray(objeto)
+      ? objeto.slice(0, 6).map((valor, indice) => [String(indice), valor])
+      : Object.entries(objeto);
+    for (const [clave, valor] of entradas) {
+      const camino = ruta ? `${ruta}.${clave}` : clave;
+      /* El juego manda muchos de estos numeros como texto («924»). Si solo se
+         aceptaran numeros de verdad, no se leeria ni uno. */
+      const numero = typeof valor === 'number' ? valor
+        : typeof valor === 'string' && valor.trim() !== '' ? Number(valor) : NaN;
+      if (Number.isFinite(numero)) {
+        salida.push({ ruta: camino, clave: clavePlana(clave), valor: numero });
+      } else if (valor && typeof valor === 'object') {
+        andar(valor, camino, profundidad + 1);
+      }
+    }
+  };
+  andar(hero, '', 0);
+  return salida;
+}
+
+/* Elige el numero de una estadistica. Primero por nombre exacto y luego por
+   parecido, siempre descartando los nombres vetados. */
+function elegirStat(numeros, exactos, trozos, vetos) {
+  for (const buscado of exactos) {
+    let mejor = null;
+    for (const numero of numeros) {
+      if (numero.clave !== buscado) continue;
+      if (!mejor || numero.ruta.length < mejor.ruta.length) mejor = numero;
+    }
+    if (mejor) return mejor;
+  }
+  for (const trozo of trozos) {
+    let mejor = null;
+    for (const numero of numeros) {
+      if (!numero.clave.includes(trozo)) continue;
+      if (vetos.some(veto => numero.clave.includes(veto))) continue;
+      if (!mejor || numero.ruta.length < mejor.ruta.length) mejor = numero;
+    }
+    if (mejor) return mejor;
+  }
+  return null;
+}
+
+// Devuelve las 18 estadisticas y, de paso, de donde salio cada una.
+function leerStats(hero) {
+  const numeros = numerosDelHeroe(hero);
+  const valores = {};
+  const origenes = {};
+  for (const [campo, , exactos, trozos, vetos] of REGLAS_STATS) {
+    const elegido = elegirStat(numeros, exactos, trozos, vetos);
+    valores[campo] = elegido ? elegido.valor : null;
+    origenes[campo] = elegido ? { ruta: elegido.ruta, valor: elegido.valor } : null;
+  }
+  return { valores, origenes };
+}
+
+function compactStats(hero) {
+  return leerStats(hero).valores;
+}
+
+/* ============================================================================
+   DATOS BASE DEL CAMPEON Y DE LOS OBJETOS
+   La repeticion en modo observer solo manda vida y mana: de armadura, poder,
+   velocidad... no llega nada. Los demas numeros se calculan aqui, en el
+   servidor, con los datos base que publica Data Dragon (los mismos de los
+   retratos), el nivel y los objetos que lleva el jugador.
+   ============================================================================ */
+const DDRAGON = 'https://ddragon.leagueoflegends.com';
+let datosBase = { campeones: null, objetos: null, version: null, intento: 0, error: null };
+
+function descargarJson(url, limite = 6 * 1024 * 1024) {
+  return new Promise((resolve, reject) => {
+    const request = https.get(url, { headers: { 'User-Agent': 'SyB3D-HUD' } }, response => {
+      if ((response.statusCode || 0) < 200 || (response.statusCode || 0) >= 300) {
+        request.destroy(new Error(`HTTP ${response.statusCode}`));
+        return;
+      }
+      let texto = '';
+      response.setEncoding('utf8');
+      response.on('data', trozo => {
+        texto += trozo;
+        if (texto.length > limite) request.destroy(new Error('Respuesta demasiado grande'));
+      });
+      response.on('end', () => {
+        try { resolve(JSON.parse(texto)); }
+        catch { reject(new Error('JSON invalido')); }
+      });
+    });
+    request.setTimeout(20000, () => request.destroy(new Error('Tiempo de espera agotado')));
+    request.on('error', reject);
+  });
+}
+
+let cargaDatosBaseEnCurso = null;
+
+function cargarDatosBase() {
+  if (datosBase.campeones && datosBase.objetos) return Promise.resolve(true);
+  if (cargaDatosBaseEnCurso) return cargaDatosBaseEnCurso;
+  if (Date.now() - datosBase.intento < 60000) return Promise.resolve(false);
+  datosBase.intento = Date.now();
+  cargaDatosBaseEnCurso = descargarDatosBase().finally(() => { cargaDatosBaseEnCurso = null; });
+  return cargaDatosBaseEnCurso;
+}
+
+async function descargarDatosBase() {
+  try {
+    const versiones = await descargarJson(`${DDRAGON}/api/versions.json`);
+    const ultima = Array.isArray(versiones) && versiones.length ? String(versiones[0]) : null;
+    // Se puede forzar otra con ?v=16.23.1 en /ingame/campos, para probar.
+    const version = datosBase.versionForzada || ultima;
+    if (!version) throw new Error('sin lista de versiones');
+    const [champs, items] = await Promise.all([
+      descargarJson(`${DDRAGON}/cdn/${version}/data/es_ES/champion.json`),
+      descargarJson(`${DDRAGON}/cdn/${version}/data/es_ES/item.json`)
+    ]);
+    const campeones = new Map();
+    for (const [id, datos] of Object.entries(champs?.data || {})) {
+      if (datos && datos.stats) campeones.set(skinName(id), datos.stats);
+    }
+    const objetos = new Map();
+    for (const [id, datos] of Object.entries(items?.data || {})) {
+      if (datos && datos.stats) objetos.set(String(id), datos.stats);
+    }
+    if (!campeones.size) throw new Error('lista de campeones vacia');
+    datosBase = { campeones, objetos, version, intento: datosBase.intento, error: null };
+    console.log(`Datos base listos: ${campeones.size} campeones y ${objetos.size} objetos (${version}).`);
+    return true;
+  } catch (error) {
+    datosBase.error = error.message;
+    console.log(`Datos base: no se pudieron descargar (${error.message}). Se reintenta en un minuto.`);
+    return false;
+  }
+}
+
+// Se piden al arrancar; si falla, el bucle de abajo lo reintenta.
+void cargarDatosBase();
+
+/* Lo que suma cada objeto de Data Dragon. */
+const SUMAS_OBJETO = {
+  FlatHPPoolMod: 'vidaPlana',
+  PercentHPPoolMod: 'vidaPorciento',
+  FlatMPPoolMod: 'manaPlana',
+  PercentMPPoolMod: 'manaPorciento',
+  FlatPhysicalDamageMod: 'fisicoPlano',
+  PercentAttackDamageMod: 'fisicoPorciento',
+  FlatMagicDamageMod: 'magicoPlano',
+  FlatArmorMod: 'armaduraPlana',
+  PercentArmorMod: 'armaduraPorciento',
+  FlatSpellBlockMod: 'resistenciaPlana',
+  PercentAttackSpeedMod: 'ataquePorciento',
+  FlatMovementSpeedMod: 'movimientoPlano',
+  PercentMovementSpeedMod: 'movimientoPorciento',
+  FlatHPRegenMod: 'regenVidaPlana',
+  FlatMPRegenMod: 'regenManaPlana',
+  FlatCritChanceMod: 'criticoPlano',
+  PercentCooldownMod: 'reduccion',
+  PercentLifeStealMod: 'roboVida',
+  PercentOmnivampMod: 'omnivamp',
+  PercentTenacityMod: 'tenacidad',
+  FlatArmorPenetrationMod: 'letalidad',
+  PercentArmorPenetrationMod: 'penArmadura'
+};
+
+function sumarObjetos(items) {
+  const total = {
+    vidaPlana: 0, vidaPorciento: 0, manaPlana: 0, manaPorciento: 0,
+    fisicoPlano: 0, fisicoPorciento: 0, magicoPlano: 0,
+    armaduraPlana: 0, armaduraPorciento: 0, resistenciaPlana: 0,
+    ataquePorciento: 0, movimientoPlano: 0, movimientoPorciento: 0,
+    regenVidaPlana: 0, regenManaPlana: 0, criticoPlano: 0, reduccion: 0,
+    roboVida: 0, omnivamp: 0, tenacidad: 0, letalidad: 0, penArmadura: 0
+  };
+  const catalogo = datosBase.objetos;
+  if (!catalogo) return total;
+  for (const item of Array.isArray(items) ? items : []) {
+    const id = item?.Id ?? item?.id;
+    if (id === null || id === undefined) continue;
+    const stats = catalogo.get(String(id));
+    if (!stats) continue;
+    const cuantos = Number(item?.Count ?? item?.count);
+    const veces = Number.isFinite(cuantos) && cuantos > 0 ? cuantos : 1;
+    for (const [campo, destino] of Object.entries(SUMAS_OBJETO)) {
+      const valor = Number(stats[campo]);
+      if (Number.isFinite(valor)) total[destino] += valor * veces;
+    }
+  }
+  return total;
+}
+
+/* Las 18 estadisticas calculadas. Devuelve null si no hay datos base. */
+function calcularStats(hero, common) {
+  const catalogo = datosBase.campeones;
+  if (!catalogo) return null;
+  const base = catalogo.get(skinName(common?.Identifier || hero?.champion || ''));
+  if (!base) return null;
+  const nivel = Math.max(1, Math.round(Number(common?.Level ?? hero?.Level ?? 1) || 1));
+  const pasos = nivel - 1;
+  const suma = sumarObjetos(hero?.Items);
+  const numero = valor => {
+    const n = Number(valor);
+    return Number.isFinite(n) ? n : 0;
+  };
+  const crece = (campo, porNivel) => numero(base[campo]) + (porNivel ? numero(base[porNivel]) * pasos : 0);
+  const conPorcentaje = (valor, porciento, plano) => valor * (1 + (porciento || 0)) + (plano || 0);
+
+  return {
+    vida: conPorcentaje(crece('hp', 'hpperlevel'), suma.vidaPorciento, suma.vidaPlana),
+    mana: conPorcentaje(crece('mp', 'mpperlevel'), suma.manaPorciento, suma.manaPlana),
+    fisico: conPorcentaje(crece('attackdamage', 'attackdamageperlevel'), suma.fisicoPorciento, suma.fisicoPlano),
+    magico: suma.magicoPlano,
+    armadura: conPorcentaje(crece('armor', 'armorperlevel'), suma.armaduraPorciento, suma.armaduraPlana),
+    resistencia: crece('spellblock', 'spellblockperlevel') + suma.resistenciaPlana,
+    velocidadAtaque: numero(base.attackspeed)
+      * (1 + (numero(base.attackspeedperlevel) * pasos) / 100 + suma.ataquePorciento),
+    velocidadMovimiento: conPorcentaje(crece('movespeed', null), suma.movimientoPorciento, suma.movimientoPlano),
+    regeneracionVida: crece('hpregen', 'hpregenperlevel') + suma.regenVidaPlana,
+    regeneracionMana: crece('mpregen', 'mpregenperlevel') + suma.regenManaPlana,
+    critico: suma.criticoPlano,
+    aceleracion: Math.max(0, -suma.reduccion * 100),
+    roboVida: suma.roboVida,
+    omnivampirismo: suma.omnivamp,
+    alcance: numero(base.attackrange),
+    tenacidad: suma.tenacidad,
+    letalidad: suma.letalidad,
+    penetracionArmadura: suma.penArmadura
+  };
+}
+
+let liveActiveStats = null;
+let liveActiveError = null;
+
+/* Las estadisticas del heroe. Si el cliente del juego esta publicando las del
+   jugador que sigue la camara y es este mismo, esas mandan: son las de verdad. */
+function statsConLasDelCliente(hero, common) {
+  /* Se empieza por lo calculado y encima se pone lo que mande el juego. */
+  const stats = calcularStats(hero, common) || {};
+  for (const [campo, valor] of Object.entries(compactStats(hero))) {
+    if (valor !== null && valor !== undefined && Number.isFinite(valor)) stats[campo] = valor;
+  }
+  if (!liveActiveStats || !liveActiveStats.champion || !liveActiveStats.stats) return stats;
+  const campeon = skinName(common?.Identifier || hero?.champion);
+  if (!campeon || campeon !== skinName(liveActiveStats.champion)) return stats;
+  for (const [campo, valor] of Object.entries(liveActiveStats.stats)) {
+    if (valor !== null && valor !== undefined && Number.isFinite(valor)) stats[campo] = valor;
+  }
+  stats.delCliente = true;
+  return stats;
 }
 
 function compactPlayer(hero, gameTime, gameId) {
@@ -561,6 +854,7 @@ function compactPlayer(hero, gameTime, gameId) {
       total: hero.TotalGold ?? null,
       givenOnDeath: hero.GoldGivenOnDeath ?? null
     },
+    stats: statsConLasDelCliente(hero, common),
     health: {
       current: common.Health ?? null,
       max: common.MaxHealth ?? null
@@ -630,7 +924,7 @@ function skinName(value) {
   return SKIN_ALIASES[base] || base;
 }
 
-function getLiveClientJson(path) {
+function getLiveClientJson(path, limiteBytes = 1024 * 1024) {
   return new Promise((resolve, reject) => {
     const request = https.request({
       hostname: '127.0.0.1',
@@ -648,7 +942,7 @@ function getLiveClientJson(path) {
       let size = 0;
       response.on('data', chunk => {
         size += chunk.length;
-        if (size > 1024 * 1024) {
+        if (size > limiteBytes) {
           request.destroy(new Error('Respuesta demasiado grande'));
           return;
         }
@@ -666,6 +960,67 @@ function getLiveClientJson(path) {
     request.on('error', reject);
     request.end();
   });
+}
+
+/* ------------------------------------------------------------------
+   ESTADISTICAS EXACTAS DEL JUGADOR QUE SIGUE LA CAMARA
+   El GameInfo de la repeticion NO trae armadura, poder, velocidad...
+   El cliente del juego SI las publica, con los 18 campos, en su API
+   local (127.0.0.1:2999). Pero solo del jugador que se esta viendo:
+   no hay forma de pedirselas a los diez a la vez.
+   ------------------------------------------------------------------ */
+const LIVE_ACTIVE_PATH = '/liveclientdata/activeplayer';
+
+function statsDelCliente(stats) {
+  if (!stats || typeof stats !== 'object') return null;
+  const numero = valor => {
+    const n = Number(valor);
+    return Number.isFinite(n) ? n : null;
+  };
+  return {
+    vida: numero(stats.maxHealth),
+    mana: numero(stats.resourceMax),
+    fisico: numero(stats.attackDamage),
+    magico: numero(stats.abilityPower),
+    armadura: numero(stats.armor),
+    resistencia: numero(stats.magicResist ?? stats.spellBlock),
+    velocidadAtaque: numero(stats.attackSpeed),
+    velocidadMovimiento: numero(stats.moveSpeed),
+    regeneracionVida: numero(stats.healthRegenRate),
+    regeneracionMana: numero(stats.resourceRegenRate),
+    critico: numero(stats.critChance),
+    aceleracion: numero(stats.abilityHaste),
+    roboVida: numero(stats.lifeSteal),
+    omnivampirismo: numero(stats.omnivamp),
+    alcance: numero(stats.attackRange),
+    tenacidad: numero(stats.tenacity),
+    letalidad: numero(stats.physicalLethality),
+    penetracionArmadura: numero(stats.armorPenetrationPercent)
+  };
+}
+
+async function refreshLiveActive() {
+  try {
+    const datos = await getLiveClientJson(LIVE_ACTIVE_PATH, 4 * 1024 * 1024);
+    const activo = datos?.activePlayer;
+    if (!activo || !activo.championStats) {
+      liveActiveStats = null;
+      return;
+    }
+    const nombre = String(activo.summonerName || '').trim();
+    const lista = Array.isArray(datos.allPlayers) ? datos.allPlayers : [];
+    const suyo = (nombre && lista.find(jugador => String(jugador?.summonerName || '').trim() === nombre)) || null;
+    liveActiveError = null;
+    liveActiveStats = {
+      champion: suyo?.championName ? String(suyo.championName) : null,
+      summoner: nombre || null,
+      stats: statsDelCliente(activo.championStats)
+    };
+  } catch (error) {
+    // Sin partida, sin observador o cliente cerrado: se olvida lo anterior.
+    liveActiveError = error?.message || String(error);
+    liveActiveStats = null;
+  }
 }
 
 async function refreshLiveSkins() {
@@ -2147,6 +2502,19 @@ app.use('/overlay', express.static(OVERLAY_DIR));
 // Cámaras de los jugadores: los 10 enlaces de VDO.Ninja (5 por equipo), uno por
 // línea. Van después de express.json() para que /camaras/regenerar pueda leer
 // el cuerpo, y no dependen del sensor: funcionan desde que abre el servidor.
+/* La vista desde arriba: si esta el archivo vista-cenital.js se usa; si no,
+   el boton del mapa funciona igual que siempre. */
+let vistaCenital = null;
+try {
+  vistaCenital = require('./vista-cenital');
+  /* Sin esto el HUD no puede leer la camara y vuelve al mapa dibujado. */
+  vistaCenital.montar(app, { log: (...args) => console.log(...args) });
+  console.log('[mapa] camara automatica disponible (/camara/leer, /camara/arriba, ...)');
+} catch (error) {
+  vistaCenital = null;
+  console.log(`[mapa] sin camara automatica (${error.message}); el mapa funciona igual`);
+}
+
 const camaras = crearCamaras({ app, log: (...args) => console.log(...args) });
 camaras.registrarRutas();
 
@@ -2167,6 +2535,7 @@ app.post('/sensor', (req, res) => {
     return res.sendStatus(204);
   }
 
+  ultimoGameInfoCrudo = normalized;
   saveFirstSample(normalized);
   const nextSequence = sequence + 1;
   const receivedAt = new Date().toISOString();
@@ -2383,7 +2752,7 @@ app.get('/mapa', (req, res) => {
   res.json({ abierto: mapaAbierto });
 });
 
-app.get('/mapa/:accion', (req, res) => {
+app.get('/mapa/:accion', async (req, res) => {
   const accion = String(req.params.accion || '').toLowerCase();
   let objetivo;
   if (accion === 'toggle' || accion === 'alternar') objetivo = !mapaAbierto;
@@ -2392,7 +2761,26 @@ app.get('/mapa/:accion', (req, res) => {
   else return res.status(400).json({ error: `Acción desconocida: ${accion}`, acciones: ['toggle', 'on', 'off'] });
   const aplicado = aplicarMapaAbierto(objetivo);
   console.log(`[mapa] Mapa gigante ${aplicado ? 'abierto' : 'cerrado'}`);
-  res.json({ ok: true, abierto: aplicado });
+
+  /* El boton tambien lleva la camara del juego: arriba al abrir, de vuelta al
+     cerrar. Si el juego no obedece, se avisa pero el mapa se abre igual. */
+  let camara = 'no instalada';
+  if (vistaCenital) {
+    try {
+      /* El segundo de partida: el juego cuenta los tiempos de la camara desde
+         el inicio de la partida, no desde cero. */
+      const t = Number(latestState && latestState.meta && latestState.meta.gameTime);
+      const segundo = Number.isFinite(t) ? t : undefined;
+      if (aplicado) await vistaCenital.subir({ gameTime: segundo });
+      else await vistaCenital.bajar({ gameTime: segundo });
+      camara = aplicado ? 'arriba' : 'devuelta';
+    } catch (error) {
+      camara = `no se pudo mover (${error.message})`;
+      console.log(`[mapa] camara: ${camara}`);
+    }
+  }
+
+  res.json({ ok: true, abierto: aplicado, camara });
 });
 
 app.get('/gold-series', (req, res) => {
@@ -2469,6 +2857,116 @@ app.get('/ingame', (req, res) => {
 // (http://localhost:3000/ingame/diag) mientras hay partida y se ve en una sola
 // pantalla si el cliente del juego responde, qué skins publica y qué nombres
 // tiene cada jugador.
+/* Que campos publica de verdad el sensor. Se abre en el navegador. */
+app.get('/ingame/campos', (req, res) => {
+  if (!ultimoGameInfoCrudo) {
+    res.type('html').send('<!doctype html><meta charset="utf-8"><body style="font:16px system-ui;background:#111;color:#eee;padding:24px">'
+      + '<b>Todavia no ha llegado ningun GameInfo.</b><br><br>Entra en una repeticion en modo observer y recarga esta pagina.</body>');
+    return;
+  }
+  const heroes = Array.isArray(ultimoGameInfoCrudo.Heroes) ? ultimoGameInfoCrudo.Heroes : [];
+  const hero = heroes[0] || {};
+  // Si piden otra version de los datos base, se recargan.
+  if (typeof req.query.v === 'string' && req.query.v && req.query.v !== datosBase.version) {
+    datosBase.campeones = null;
+    datosBase.objetos = null;
+    datosBase.intento = 0;
+    datosBase.versionForzada = req.query.v;
+    void cargarDatosBase();
+  }
+  const numeros = numerosDelHeroe(hero);
+  // Lo que de verdad se manda al HUD para este jugador.
+  const finales = statsConLasDelCliente(hero, hero.Common) || {};
+  const calculadas = calcularStats(hero, hero.Common) || {};
+  const exactas = liveActiveStats && liveActiveStats.stats ? liveActiveStats.stats : null;
+  const avisoBase = datosBase.campeones
+    ? `<p style="margin:0 0 16px;padding:10px 12px;background:#16321c;border-left:4px solid #4c9">
+         Datos base cargados (${datosBase.version}): ${datosBase.campeones.size} campeones y ${datosBase.objetos.size} objetos.
+         Con esto se calculan las estadisticas que el juego no manda.</p>`
+    : `<p style="margin:0 0 16px;padding:10px 12px;background:#3a1a1a;border-left:4px solid #c55">
+         Los datos base NO se han podido descargar${datosBase.error ? ': ' + datosBase.error : ''}. Sin ellos no hay numeros calculados.</p>`;
+  const avisoCliente = liveActiveStats && liveActiveStats.champion
+    ? `<p style="margin:0 0 16px;padding:10px 12px;background:#16321c;border-left:4px solid #4c9">
+         El cliente del juego SI esta publicando las estadisticas de
+         <b>${liveActiveStats.champion}</b> (el que sigue la camara). Ese jugador las vera exactas.</p>`
+    : `<p style="margin:0 0 16px;padding:10px 12px;background:#2d2416;border-left:4px solid #ca4">
+         El cliente del juego no esta publicando estadisticas ahora mismo${liveActiveError ? ' (' + liveActiveError + ')' : ''}.
+         Las demas se calculan con los numeros base, el nivel y los objetos.</p>`;
+
+  /* Si el cliente del juego publica las estadisticas exactas del jugador que
+     sigue la camara, se compara aqui una por una con lo calculado: es la
+     forma de ver de un vistazo que campos van desviados y cuanto. */
+  const campoDelCliente = liveActiveStats && liveActiveStats.stats && liveActiveStats.champion
+    ? heroes.find(h => skinName(h?.Common?.Identifier || '') === skinName(liveActiveStats.champion)) || null
+    : null;
+  let tablaComparacion = '';
+  if (campoDelCliente) {
+    const calculado = calcularStats(campoDelCliente, campoDelCliente.Common) || {};
+    const exacto = liveActiveStats.stats;
+    const filasComp = REGLAS_STATS.map(([campo, etiqueta]) => {
+      const a = Number(calculado[campo]);
+      const b = Number(exacto[campo]);
+      if (!Number.isFinite(a) && !Number.isFinite(b)) return '';
+      const dif = Number.isFinite(a) && Number.isFinite(b) ? a - b : null;
+      const color = dif === null ? '#9aa' : Math.abs(dif) < 1 ? '#7fe08a' : Math.abs(dif) < 5 ? '#e0d07f' : '#e08a7f';
+      const texto = dif === null ? '—' : (dif > 0 ? '+' : '') + (Math.round(dif * 100) / 100);
+      const fmt = v => (Number.isFinite(v) ? String(Math.round(v * 100) / 100) : '—');
+      return `<tr><td>${etiqueta}</td><td>${fmt(a)}</td><td>${fmt(b)}</td><td style="color:${color}"><b>${texto}</b></td></tr>`;
+    }).join('');
+    const objetosDelJugador = (Array.isArray(campoDelCliente.Items) ? campoDelCliente.Items : [])
+      .map(item => `${item?.Id ?? '?'}${Number(item?.Count) > 1 ? ' x' + item.Count : ''}`)
+      .join(', ') || 'ninguno';
+    tablaComparacion = `<h2 style="margin:0 0 6px">Calculado frente a lo que dice el juego</h2>
+<p style="margin:0 0 12px;color:#9aa">Jugador que sigue la camara: <b>${liveActiveStats.champion}</b>,
+ nivel <b>${campoDelCliente?.Common?.Level ?? '?'}</b>,
+ objetos: <b>${objetosDelJugador}</b>.<br>
+ Verde = clava, amarillo = menos de 5 de diferencia, rojo = mas.</p>
+<table cellpadding="5" style="border-collapse:collapse;margin-bottom:26px">
+<tr style="color:#9aa;text-align:left"><th>Estadistica</th><th>Calculado</th><th>Juego</th><th>Diferencia</th></tr>
+${filasComp}
+</table>`;
+  }
+
+  const filas = REGLAS_STATS.map(([campo, etiqueta]) => {
+    const valor = finales[campo];
+    if (valor === null || valor === undefined) {
+      return `<tr><td>${etiqueta}</td><td><b style="color:#e07f7f">—</b></td><td>no hay dato</td></tr>`;
+    }
+    const redondeado = Math.round(valor * 100) / 100;
+    let donde = 'calculado';
+    if (exactas && exactas[campo] !== null && exactas[campo] !== undefined
+      && Math.abs(Number(exactas[campo]) - valor) < 1e-9) donde = 'cliente del juego (exacto)';
+    else if (calculadas[campo] === undefined
+      || Math.abs(Number(calculadas[campo]) - valor) > 1e-9) donde = 'GameInfo';
+    const color = donde === 'calculado' ? '#e0d07f' : '#7fe08a';
+    return `<tr><td>${etiqueta}</td><td><b style="color:${color}">${redondeado}</b></td><td>${donde}</td></tr>`;
+  }).join('');
+
+  const todos = numeros
+    .slice()
+    .sort((a, b) => a.ruta.localeCompare(b.ruta))
+    .map(n => `<tr><td><code>${n.ruta}</code></td><td>${n.valor}</td></tr>`)
+    .join('');
+
+  res.type('html').send(`<!doctype html><meta charset="utf-8">
+<body style="font:15px/1.4 system-ui;background:#111;color:#eee;padding:22px">
+<h2 style="margin:0 0 6px">Estadisticas que se estan mandando al HUD (heroe 1)</h2>
+${avisoBase}
+${avisoCliente}
+<p style="margin:0 0 16px;color:#9aa">Campeon: <b>${(hero?.Common?.Identifier || hero?.champion || '?')}</b>
+ · ${numeros.length} numeros encontrados</p>
+${tablaComparacion}
+<table cellpadding="5" style="border-collapse:collapse;margin-bottom:26px">
+<tr style="color:#9aa;text-align:left"><th>Estadistica</th><th>Valor</th><th>Ha salido de</th></tr>
+${filas}
+</table>
+<h3 style="margin:0 0 6px">Todos los numeros que trae el juego</h3>
+<table cellpadding="3" style="border-collapse:collapse">
+<tr style="color:#9aa;text-align:left"><th>Campo</th><th>Valor</th></tr>
+${todos}
+</table></body>`);
+});
+
 app.get('/ingame/diag', async (req, res) => {
   const jugadores = (latestState?.players || []).map(player => ({
     team: player.team,
@@ -2611,6 +3109,8 @@ return {
       if (Date.now() - liveSkinsLastPoll < (listo ? LIVE_SKINS_EVERY_MS : 1000)) return;
       liveSkinsLastPoll = Date.now();
       void refreshLiveSkins();
+      void refreshLiveActive();
+      void cargarDatosBase();
     }, 1000);
     skinTimer.unref();
   }

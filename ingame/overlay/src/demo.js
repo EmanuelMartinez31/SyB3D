@@ -24,6 +24,15 @@ const RED = [
   ['RGE Ivo', 'Nautilus', 9, 0, 4, 8, 38, 6800, 16500, [3860, 3117, 3190, 3068, 0, 0, 3364]]
 ];
 
+// Dónde empieza cada uno en el demo, en coordenadas del mapa (0 a 14820).
+// Sirve para probar el mapa grande sin tener una partida de verdad delante.
+const SITIOS = {
+  // Azul: top arriba a la izquierda, tirador y apoyo abajo a la derecha.
+  1: [[3000, 11000], [4620, 8420], [6200, 7400], [11020, 3560], [10560, 2980]],
+  // Rojo: al revés, top arriba a la derecha y tirador abajo a la izquierda.
+  2: [[11860, 3860], [9880, 5620], [8320, 6820], [3260, 11240], [3760, 11760]]
+};
+
 const RUNES = [
   [8010, 9111, 9104, 8299, 8448, 8453],
   [8010, 9111, 9104, 8299, 8448, 8453],
@@ -46,6 +55,16 @@ function spell(name, remaining = 0, maxCooldown = 300) {
   };
 }
 
+// Estadísticas de mentira para la vista previa: sirven para ver las tarjetas
+// laterales del mapa grande sin abrir una partida.
+const STATS_DEMO = [
+  { vida: 2910, mana: 0, fisico: 254, magico: 0, armadura: 132, resistencia: 61, velocidadAtaque: 0.91, velocidadMovimiento: 375, regeneracionVida: 18.4, regeneracionMana: 0, critico: 0, aceleracion: 23, roboVida: 0.08, omnivampirismo: 0, alcance: 175, tenacidad: 0.15, letalidad: 12, penetracionArmadura: 0.32 },
+  { vida: 2540, mana: 890, fisico: 198, magico: 0, armadura: 118, resistencia: 74, velocidadAtaque: 1.04, velocidadMovimiento: 345, regeneracionVida: 14.2, regeneracionMana: 12.6, critico: 0, aceleracion: 31, roboVida: 0.11, omnivampirismo: 0.06, alcance: 125, tenacidad: 0.25, letalidad: 18, penetracionArmadura: 0.30 },
+  { vida: 2120, mana: 1240, fisico: 112, magico: 486, armadura: 96, resistencia: 58, velocidadAtaque: 0.86, velocidadMovimiento: 340, regeneracionVida: 9.8, regeneracionMana: 19.4, critico: 0, aceleracion: 42, roboVida: 0, omnivampirismo: 0, alcance: 525, tenacidad: 0.10, letalidad: 0, penetracionArmadura: 0.40 },
+  { vida: 1980, mana: 640, fisico: 268, magico: 0, armadura: 88, resistencia: 47, velocidadAtaque: 1.42, velocidadMovimiento: 360, regeneracionVida: 7.6, regeneracionMana: 8.2, critico: 0.75, aceleracion: 28, roboVida: 0.09, omnivampirismo: 0, alcance: 550, tenacidad: 0, letalidad: 6, penetracionArmadura: 0.35 },
+  { vida: 2410, mana: 980, fisico: 132, magico: 148, armadura: 141, resistencia: 92, velocidadAtaque: 0.79, velocidadMovimiento: 355, regeneracionVida: 11.4, regeneracionMana: 16.8, critico: 0, aceleracion: 36, roboVida: 0, omnivampirismo: 0, alcance: 450, tenacidad: 0.20, letalidad: 0, penetracionArmadura: 0.08 }
+];
+
 function makePlayer(row, team, index) {
   const [player, champion, level, kills, deaths, assists, cs, current, total, itemIds] = row;
   const maxHealth = 1850 + level * 82;
@@ -58,7 +77,7 @@ function makePlayer(row, team, index) {
     role: ROLE_ORDER[index],
     champion,
     player,
-    position: null,
+    position: { x: SITIOS[team][index][0], z: SITIOS[team][index][1] },
     level,
     experience: null,
     kda: { kills, deaths, assists },
@@ -73,6 +92,7 @@ function makePlayer(row, team, index) {
     targetable: true,
     respawnTime: null,
     visionScore: 8 + index * 5 + (team === 2 ? 3 : 0),
+    stats: { ...STATS_DEMO[index] },
     items: itemIds.map((id, slot) => ({ id, slot, count: 1, stacks: null, charges: null })),
     runes: RUNES[index],
     spells: {
@@ -164,6 +184,17 @@ export function advanceDemoState(state, elapsedSeconds) {
     for (const player of state.players) {
       if (player.team === team) player.objectiveBuff = null;
     }
+  }
+  // Los del demo se mueven en círculos pequeños alrededor de su sitio, para
+  // que el mapa grande no salga con todos los globos quietos.
+  const t = state.meta.gameTime;
+  for (const player of state.players) {
+    if (!player.position) continue;
+    const base = SITIOS[player.team]?.[player.index];
+    if (!base) continue;
+    const vuelta = t * 0.055 + player.index * 1.25;
+    player.position.x = base[0] + Math.cos(vuelta) * 900;
+    player.position.z = base[1] + Math.sin(vuelta) * 900;
   }
   for (const player of state.players) {
     // El muerto del demo reaparece: la cuenta atrás baja y vuelve a empezar.

@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "dgSpecHash": "ov3y2DJe7HM=",
+  "success": true,
+  "projectFilePath": "F:\\Streams\\OBS\\Broadcast\\SyB3D+HUD\\Lanzador\\Lanzador.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\31ema\\.nuget\\packages\\microsoft.net.illink.tasks\\11.0.0\\microsoft.net.illink.tasks.11.0.0.nupkg.sha512",
+    "C:\\Users\\31ema\\.nuget\\packages\\microsoft.web.webview2\\1.0.2903.40\\microsoft.web.webview2.1.0.2903.40.nupkg.sha512",
+    "C:\\Users\\31ema\\.nuget\\packages\\microsoft.netcore.app.runtime.win-x64\\11.0.0\\microsoft.netcore.app.runtime.win-x64.11.0.0.nupkg.sha512",
+    "C:\\Users\\31ema\\.nuget\\packages\\microsoft.windowsdesktop.app.runtime.win-x64\\11.0.0\\microsoft.windowsdesktop.app.runtime.win-x64.11.0.0.nupkg.sha512",
+    "C:\\Users\\31ema\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.win-x64\\11.0.0\\microsoft.aspnetcore.app.runtime.win-x64.11.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

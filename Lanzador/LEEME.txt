@@ -1,0 +1,58 @@
+LANZADOR DEL PANEL DE CONTROL (SyB3D.exe)
+========================================
+
+QUE HACE
+  Abre el panel de control en una ventana propia, como cualquier programa
+  de Windows: sin barra de direcciones, sin pestañas y con su icono.
+
+  Al abrirlo:
+    1. Mira si el servidor ya esta corriendo.
+    2. Si no lo esta, arranca iniciar.bat (minimizado, como siempre).
+    3. Espera a que el HUD conteste y abre la ventana.
+    4. Al cerrar la ventana te pregunta si apagar tambien el servidor.
+
+  Si ya tenias el servidor abierto con iniciar.bat, la ventana se abre sola
+  y al cerrarla no apaga nada.
+
+ATAJOS
+  F5            recarga el panel
+  F12           abre las herramientas de desarrollo (para depurar)
+  Ctrl + rueda  zoom
+
+COMPILAR (una sola vez, y cada vez que cambie el codigo)
+  Doble clic en compilar-lanzador.bat
+
+  El .bat hace las tres cosas solo:
+    1. Compila.
+    2. Deja UN SOLO archivo en   Lanzador\dist\SyB3D.exe
+    3. Crea el acceso directo "SyB3D" en el escritorio y abre la carpeta.
+
+  Cuando termina, busca "SyB3D" en el escritorio. Doble clic ahi.
+
+  NO hay que crear carpetas ni buscar nada a mano. El .exe solo aparece
+  cuando se compila: no viene hecho en el zip.
+
+  OJO: no saques SyB3D.exe de la carpeta dist. Desde ahi encuentra solo
+  la carpeta del proyecto (sube dos niveles y da con iniciar.bat). Si lo
+  quieres abrir desde otro sitio, usa el acceso directo del escritorio.
+
+  Hace falta el SDK de .NET 11 (el mismo que compila SyBSensor) y
+  conexion a internet la primera vez, para bajar WebView2 de NuGet.
+
+SI NO ABRE LA VENTANA
+  Lo mas probable es que falte el "Microsoft Edge WebView2 Runtime".
+  En Windows 11 viene puesto. Si falta, se descarga gratis de Microsoft
+  (busca "WebView2 Runtime Evergreen Bootstrapper"). Son 2 MB.
+
+POR QUE NO PESA NADA
+  El motor web lo pone Windows (WebView2), no va dentro del .exe. Por eso
+  el programa ocupa menos de 2 MB en vez de los 200 de Electron.
+
+ARCHIVOS
+  Lanzador.csproj        el proyecto
+  Program.cs             arranque, espera al servidor y apagado
+  VentanaPanel.cs        la ventana y el WebView2
+  app.manifest           escalado de pantalla
+  icono.ico              el icono del .exe
+  compilar-lanzador.bat  compila, crea el acceso directo y abre la carpeta
+  dist\SyB3D.exe         el programa ya compilado (aparece tras compilar)

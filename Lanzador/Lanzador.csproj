@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    SyB3D · Lanzador del panel de control.
+    Se compila con el mismo .NET 11 que ya usa SyBSensor.
+
+      dotnet build -c Release
+
+    El ejecutable queda en:
+      Lanzador\bin\Release\net11.0-windows\SyB3D.exe
+  -->
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net11.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>SyB3D</AssemblyName>
+    <RootNamespace>SyB3D</RootNamespace>
+    <ApplicationIcon>icono.ico</ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <Version>1.0.0</Version>
+    <Product>SyB3D · Panel de control</Product>
+    <Company>SyB3D</Company>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2903.40" />
+  </ItemGroup>
+
+</Project>

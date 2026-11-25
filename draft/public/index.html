@@ -489,6 +489,33 @@
   .cam-acciones { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 12px; }
   .cam-aviso { font-size: 12px; color: var(--mint); }
   .cam-aviso.is-error { color: var(--critical); }
+
+  /* ---------- Enlaces para OBS ---------- */
+  .obs-lista { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+  .obs-fila {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 12px; background: var(--input); border: 1px solid var(--line);
+  }
+  .obs-nombre { display: flex; flex-direction: column; gap: 2px; min-width: 165px; }
+  .obs-nombre b { font-size: 13px; color: var(--text); }
+  .obs-nombre span { font-size: 11px; color: var(--muted); }
+  .obs-url {
+    flex: 1; min-width: 0; font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 12px; color: var(--cyan); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .obs-acciones { display: flex; gap: 6px; flex: none; }
+  .obs-acciones button { padding: 5px 10px; font-size: 11px; }
+  .obs-grupo {
+    margin: 16px 0 8px; font-size: 10px; letter-spacing: .16em;
+    text-transform: uppercase; color: var(--muted);
+  }
+  .obs-grupo:first-of-type { margin-top: 4px; }
+  .obs-pie { min-height: 16px; margin: 10px 0 0; font-size: 12px; color: var(--mint); }
+  .obs-pie.is-error { color: var(--critical); }
+  .obs-estado { display: inline-flex; align-items: center; gap: 7px; font-size: 11px; color: var(--muted); }
+  .obs-punto { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); flex: none; }
+  .obs-punto.vivo { background: var(--mint); box-shadow: 0 0 7px var(--mint); }
+  .obs-punto.muerto { background: var(--critical); box-shadow: 0 0 7px var(--critical); }
 </style>
 </head>
 <body>
@@ -609,6 +636,17 @@
       <header class="view-heading"><div><span class="section-kicker">Configuración de transmisión</span><h1>Producción</h1></div><p>Administra la identidad de la serie sin interferir con picks, baneos, marcador o fearless.</p></header>
       <div class="settings-grid">
         <div class="settings-col">
+<!-- ================= ENLACES PARA OBS ================= -->
+<section class="panel" id="panel-obs">
+  <header class="panel-header">
+    <div><span class="section-kicker">Fuentes de navegador</span><h2>Enlaces para OBS</h2></div>
+    <span class="obs-estado"><i class="obs-punto" id="obsPunto"></i><span id="obsEstado">comprobando…</span></span>
+  </header>
+  <p class="info-note">Cada uno va en OBS como <b>fuente de navegador</b> de 1920×1080. El draft y el ingame llevan fondo transparente; la postpartida llena la pantalla. Los enlaces se arman con la dirección desde la que abres este panel, así que si cambias el puerto cambian solos: no hay nada escrito a mano.</p>
+  <p class="obs-grupo">Para OBS</p>
+  <ul class="obs-lista" id="obsLista"></ul>
+  <p class="obs-pie" id="obsAviso"></p>
+</section>
 <section class="panel">
           <header class="panel-header"><div><span class="section-kicker">Identidad</span><h2>Torneo y equipos</h2></div></header>
           <div class="form-grid">
@@ -1926,6 +1964,103 @@ async function regenerarCamaras() {
     camAvisar(`No se pudieron regenerar: ${error.message}`, true);
   }
 }
+
+/* =====================================================================
+   ENLACES PARA OBS
+   Las direcciones se arman con location.origin, no van escritas a mano:
+   si cambias el puerto o abres el panel desde otra maquina, los enlaces
+   siguen siendo los buenos.
+   ===================================================================== */
+const OBS_FUENTES = [
+  { nombre: 'Draft', nota: 'Picks, baneos, marcador y fearless', ruta: '/overlay.html', tam: '1920×1080', fondo: 'fondo transparente' },
+  { nombre: 'Ingame', nota: 'HUD de la partida en vivo', ruta: '/overlay/', tam: '1920×1080', fondo: 'fondo transparente' },
+  { nombre: 'Postpartida', nota: 'Resumen final con modelos 3D', ruta: '/postgame/', tam: '1920×1080', fondo: 'fondo opaco' }
+];
+
+function obsUrl(ruta) { return location.origin + ruta; }
+
+function obsAvisar(texto, esError) {
+  const caja = document.getElementById('obsAviso');
+  if (!caja) return;
+  caja.textContent = texto || '';
+  caja.classList.toggle('is-error', Boolean(esError));
+  clearTimeout(obsAvisar.t);
+  if (texto) obsAvisar.t = setTimeout(() => { caja.textContent = ''; }, 3200);
+}
+
+function obsFila(fuente) {
+  const fila = document.createElement('li');
+  fila.className = 'obs-fila';
+
+  const info = document.createElement('div');
+  info.className = 'obs-nombre';
+  const titulo = document.createElement('b');
+  titulo.textContent = fuente.nombre;
+  info.appendChild(titulo);
+  const sub = [fuente.nota, fuente.tam, fuente.fondo].filter(Boolean).join(' · ');
+  if (sub) {
+    const detalle = document.createElement('span');
+    detalle.textContent = sub;
+    info.appendChild(detalle);
+  }
+
+  const url = document.createElement('code');
+  url.className = 'obs-url';
+  url.textContent = obsUrl(fuente.ruta);
+  url.title = url.textContent;
+
+  const acciones = document.createElement('div');
+  acciones.className = 'obs-acciones';
+  const botonCopiar = document.createElement('button');
+  botonCopiar.type = 'button';
+  botonCopiar.className = 'primary';
+  botonCopiar.textContent = 'Copiar';
+  botonCopiar.addEventListener('click', async () => {
+    const copiado = await copiarTexto(url.textContent);
+    obsAvisar(copiado
+      ? `Copiado: ${fuente.nombre}`
+      : `No se pudo copiar. Cópialo a mano: ${url.textContent}`, !copiado);
+  });
+  const botonAbrir = document.createElement('button');
+  botonAbrir.type = 'button';
+  botonAbrir.textContent = 'Abrir';
+  botonAbrir.addEventListener('click', () => window.open(url.textContent, '_blank'));
+  acciones.append(botonCopiar, botonAbrir);
+
+  fila.append(info, url, acciones);
+  return fila;
+}
+
+function pintarObs() {
+  const lista = document.getElementById('obsLista');
+  if (!lista || lista.childElementCount) return;
+  OBS_FUENTES.forEach((fuente) => lista.appendChild(obsFila(fuente)));
+}
+
+/* ¿Esta vivo el servidor? Se pregunta cada 5 s para que el punto de la
+   cabecera diga la verdad: si el servidor se cae, la fuente de OBS se queda
+   en negro y aqui se ve. */
+async function obsComprobarServidor() {
+  const punto = document.getElementById('obsPunto');
+  const texto = document.getElementById('obsEstado');
+  if (!punto || !texto) return;
+  try {
+    const control = new AbortController();
+    const reloj = setTimeout(() => control.abort(), 2500);
+    const respuesta = await fetch('/status', { cache: 'no-store', signal: control.signal });
+    clearTimeout(reloj);
+    if (!respuesta.ok) throw new Error(`HTTP ${respuesta.status}`);
+    punto.className = 'obs-punto vivo';
+    texto.textContent = 'servidor en marcha';
+  } catch {
+    punto.className = 'obs-punto muerto';
+    texto.textContent = 'sin respuesta';
+  }
+}
+
+pintarObs();
+obsComprobarServidor();
+setInterval(obsComprobarServidor, 5000);
 </script>
 </body>
 </html>

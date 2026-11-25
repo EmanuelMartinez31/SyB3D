@@ -21,6 +21,9 @@ compilar-salida.txt
 srv-stdout.txt
 srv-stderr.txt
 
+# --- Copias de seguridad de los parches viejos ------------------------
+*.bak
+
 # --- Atajos de Windows -----------------------------------------------
 # (el acceso directo "iniciar - Acceso directo.lnk" SE SUBE: se usa a diario)
 

@@ -1,0 +1,4 @@
+F:\Streams\OBS\Broadcast\SyB3D+HUD\Lanzador\dist\Microsoft.Web.WebView2.Core.xml
+F:\Streams\OBS\Broadcast\SyB3D+HUD\Lanzador\dist\Microsoft.Web.WebView2.WinForms.xml
+F:\Streams\OBS\Broadcast\SyB3D+HUD\Lanzador\dist\Microsoft.Web.WebView2.Wpf.xml
+F:\Streams\OBS\Broadcast\SyB3D+HUD\Lanzador\dist\SyB3D.exe

@@ -31,4 +31,4 @@ C:\Program Files\dotnet\sdk\11.0.100\Microsoft.Common.CurrentVersion.targets(246
     1 Advertencia(s)
     0 Errores
 
-Tiempo transcurrido 00:00:00.71
+Tiempo transcurrido 00:00:02.83

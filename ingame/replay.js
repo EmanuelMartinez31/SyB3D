@@ -100,6 +100,13 @@ const POR_DEFECTO = {
   // Si "audioJuego" va vacio, se buscan solas las fuentes que llevan ese audio.
   silenciarJuego: true,
   audioJuego: [],
+  // Fuentes de OBS que NUNCA se silencian al entrar en repeticion (por ejemplo
+  // la del Discord de los casters). El audio del escritorio y los microfonos
+  // ya se respetan solos, sin poner nada aqui.
+  noSilenciar: [],
+  // Nombres extra con los que reconocer el audio del juego si la busqueda
+  // automatica no da con el (por ejemplo "League of Legends (2)").
+  nombresJuego: [],
 
   // Modo antiguo, solo si todavia no has aprendido los acomodos: lo que se
   // hace pequeno a la esquina mientras corre la repeticion.
@@ -703,35 +710,127 @@ function crearReplay({ app, log = () => {} } = {}) {
   // oiga la repeticion. Al volver a grande se devuelve tal como estaba.
   //
   // Que fuentes se silencian: si en el config esta "audioJuego" con nombres, se
-  // usan esos. Si no, se buscan en OBS las que llevan el audio del juego (la
-  // que se llama igual que el juego, las de "audio de aplicacion" y el audio de
-  // escritorio) y se descartan las que no tienen sonido.
+  // usan esos y no se busca nada.
+  //
+  // Si no, se busca SOLO la fuente que captura el audio del juego. Antes se
+  // cogian todas las "capturas de audio de aplicacion" y tambien la captura de
+  // audio del escritorio: en un montaje normal eso incluye el Discord de los
+  // casters, y al entrar en repeticion se quedaban mudos ellos tambien. Ahora:
+  //
+  //   · Solo se miran fuentes de audio de UNA aplicacion (proceso).
+  //   · Se descartan siempre los microfonos y la captura del escritorio.
+  //   · De las de aplicacion se queda solo la que captura el juego: se mira
+  //     el ejecutable que tiene apuntado la fuente en sus ajustes ("window"),
+  //     y si no, que el nombre de la fuente sea el del juego.
+  //   · Si no se reconoce ninguna, NO se silencia nada y se avisa. Mejor que
+  //     se oiga el juego un rato que quedarse sin casters.
+  const PROCESOS_DEL_JUEGO = [
+    'league of legends', 'leagueclient', 'league client', 'riotclient',
+    'league of legends.exe', 'leagueclient.exe', 'riotclient.exe'
+  ];
+  // Tipos de fuente que NUNCA se tocan: por ahi van los casters.
+  const AUDIO_INTOCABLE = new Set([
+    'wasapi_output_capture',      // audio del escritorio (todo el PC)
+    'wasapi_input_capture',       // microfonos y entradas de audio
+    'wasapi_loopback',            // bucles
+    'coreaudio_input_capture',    // microfonos en Mac
+    'coreaudio_output_capture'    // escritorio en Mac
+  ]);
+
+  function nombresDelJuego() {
+    const config = estado.config;
+    const pistas = [
+      nombreDelJuego(),
+      'lol game',
+      ...(Array.isArray(config.nombresJuego) ? config.nombresJuego : [])
+    ];
+    return pistas.map((pista) => String(pista || '').trim().toLowerCase()).filter(Boolean);
+  }
+
+  // ¿El nombre de la fuente es el del juego? Vale tanto para la fuente de video
+  // (que en OBS puede llevar tambien su audio) como para una de audio suelta.
+  function nombreDelJuegoEn(nombre, pistas) {
+    const bajo = String(nombre || '').trim().toLowerCase();
+    if (!bajo) return false;
+    if (pistas.some((pista) => bajo.includes(pista))) return true;
+    return PROCESOS_DEL_JUEGO.some((proceso) => bajo.includes(proceso));
+  }
+
   async function entradasDeAudio(cliente) {
     const config = estado.config;
     const pedidas = Array.isArray(config.audioJuego)
       ? config.audioJuego.filter((nombre) => typeof nombre === 'string' && nombre.trim())
       : (typeof config.audioJuego === 'string' && config.audioJuego.trim() ? [config.audioJuego] : []);
     if (pedidas.length) return pedidas;
+
+    const prohibidas = new Set(
+      (Array.isArray(config.noSilenciar) ? config.noSilenciar : [])
+        .map((nombre) => String(nombre || '').trim().toLowerCase())
+        .filter(Boolean)
+    );
+    const pistas = nombresDelJuego();
+    const nombres = [];
+    const descartadas = [];
+    const vistas = [];   // para el log: todo lo que se ha mirado
+
     try {
       const { inputs } = await cliente.enviar('GetInputList', {});
       const lista = Array.isArray(inputs) ? inputs : [];
-      const juego = String(nombreDelJuego() || '').toLowerCase();
-      const conNombreDelJuego = lista.filter((i) => juego && String(i.inputName || '').toLowerCase() === juego);
-      const deAplicacion = lista.filter((i) => String(i.inputKind || '') === 'wasapi_process_output_capture');
-      const deEscritorio = lista.filter((i) => String(i.inputKind || '') === 'wasapi_output_capture');
-      const nombres = [];
-      for (const entrada of [...conNombreDelJuego, ...deAplicacion, ...deEscritorio]) {
-        // Solo se queda con las que de verdad tienen sonido: si no, OBS da error.
+      for (const entrada of lista) {
+        const tipo = String(entrada.inputKind || '');
+        const nombre = String(entrada.inputName || '').trim();
+        if (!nombre) continue;
+        if (prohibidas.has(nombre.toLowerCase())) continue;
+
+        // El escritorio y los microfonos no se tocan NUNCA: por ahi van los
+        // casters. Ni se miran.
+        if (AUDIO_INTOCABLE.has(tipo)) {
+          vistas.push(`${nombre} (${tipo}, no se toca)`);
+          continue;
+        }
+
+        // Los ajustes de la fuente dicen dos cosas: a que ventana apunta y si
+        // lleva audio. En una "Captura de juego" con "Captura de audio"
+        // marcada, la ventana es "[League of Legends.exe]: League of Legends
+        // (TM) Client" y el audio sale por esa misma fuente.
+        let ajustes = null;
         try {
-          await cliente.enviar('GetInputMute', { inputName: entrada.inputName });
-          nombres.push(entrada.inputName);
+          ajustes = (await cliente.enviar('GetInputSettings', { inputName: nombre }))?.inputSettings || null;
+        } catch { /* la fuente no deja leer sus ajustes */ }
+        const texto = ajustes ? JSON.stringify(ajustes).toLowerCase() : '';
+        const apuntaAlJuegoEsta = PROCESOS_DEL_JUEGO.some((proceso) => texto.includes(proceso));
+        // La propia fuente del juego: o se llama como el juego, o captura su
+        // ventana. Silenciandola se calla el juego y nada mas.
+        const esLaFuenteDelJuego = nombreDelJuegoEn(nombre, pistas) || apuntaAlJuegoEsta;
+
+        if (!esLaFuenteDelJuego) {
+          // Solo se anota lo que podria llevar audio, para no llenar el log.
+          if (tipo === 'wasapi_process_output_capture' || ajustes?.capture_audio === true) {
+            descartadas.push(nombre);
+            vistas.push(`${nombre} (${tipo})`);
+          }
+          continue;
+        }
+
+        vistas.push(`${nombre} (${tipo})`);
+        // Solo se queda con las que de verdad tienen audio: si no, OBS da error.
+        try {
+          await cliente.enviar('GetInputMute', { inputName: nombre });
+          nombres.push(nombre);
         } catch { /* esa fuente no lleva audio */ }
       }
-      return [...new Set(nombres)];
     } catch (error) {
       log(`[replay] Aviso: no se pudo mirar el audio de OBS: ${error.message}`);
       return [];
     }
+
+    if (vistas.length) {
+      log(`[replay] Fuentes que se miran: ${vistas.join(' | ')}`);
+    }
+    if (descartadas.length) {
+      log(`[replay] Audio que NO se toca (no es del juego): ${descartadas.join(', ')}`);
+    }
+    return [...new Set(nombres)];
   }
 
   async function silenciarJuego(cliente, silenciar) {
@@ -742,8 +841,9 @@ function crearReplay({ app, log = () => {} } = {}) {
         if (estado.silenciados.size) return;        // ya estaba silenciado
         const nombres = await entradasDeAudio(cliente);
         if (!nombres.length) {
-          log('[replay] Aviso: no encontre ninguna fuente con el audio del juego para silenciarla. ' +
-            'Pon su nombre en "audioJuego" de ingame/cine/replay.json');
+          log('[replay] Aviso: no reconoci la fuente del audio del juego y NO he silenciado nada, ' +
+            'para no callar a los casters. Pon el nombre exacto de la fuente en "audioJuego" ' +
+            'de ingame/cine/replay.json');
           return;
         }
         for (const nombre of nombres) {

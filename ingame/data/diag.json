@@ -1,11 +1,11 @@
 {
-  "actualizado": "2026-11-24T23:36:10.163Z",
+  "actualizado": "2026-11-25T01:04:21.101Z",
   "partida": "LA1-1764346340",
   "apiDelJuego": {
     "direccion": "https://127.0.0.1:2999/liveclientdata/playerlist",
     "responde": false,
-    "error": "ECONNREFUSED",
-    "ultimaLectura": "2026-11-24T23:36:10.118Z",
+    "error": "ECONNRESET",
+    "ultimaLectura": "2026-11-25T01:04:20.258Z",
     "jugadoresRecibidos": 10,
     "muestraCruda": [
       {
@@ -20,8 +20,8 @@
         "riotId": "Alekram Zott#LAN",
         "riotIdGameName": "Alekram Zott",
         "riotIdTagLine": "LAN",
-        "screenPositionBottom": "664.1665039,263.0356140",
-        "screenPositionCenter": "665.1600342,256.5781250",
+        "screenPositionBottom": "340282346638528859811704183484516925440.0000000,340282346638528859811704183484516925440.0000000",
+        "screenPositionCenter": "340282346638528859811704183484516925440.0000000,340282346638528859811704183484516925440.0000000",
         "skinID": 45,
         "skinName": "Nasus Portador del Anochecer",
         "summonerName": "Alekram Zott#LAN",
@@ -39,8 +39,8 @@
         "riotId": "2 JINXS 1 CUP#LAN",
         "riotIdGameName": "2 JINXS 1 CUP",
         "riotIdTagLine": "LAN",
-        "screenPositionBottom": "932.3798828,530.7199707",
-        "screenPositionCenter": "932.4885254,522.1038208",
+        "screenPositionBottom": "340282346638528859811704183484516925440.0000000,340282346638528859811704183484516925440.0000000",
+        "screenPositionCenter": "340282346638528859811704183484516925440.0000000,340282346638528859811704183484516925440.0000000",
         "skinID": 1,
         "skinName": "Sylas Espectro Lunar",
         "summonerName": "2 JINXS 1 CUP#LAN",

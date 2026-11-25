@@ -1,11 +1,11 @@
 [
  {
-  "cuando": "2026-11-24T23:35:28.550Z",
+  "cuando": "2026-11-25T01:03:27.525Z",
   "lista": "DeathEvents",
   "gameId": "LA1-1764346340",
-  "gameTime": 17.900576,
+  "gameTime": 18.000765,
   "evento": {
-   "GameTime": 17.787964,
+   "GameTime": 17.788052,
    "KillerNetworkId": 1073742552,
    "VictimNetworkId": 1073742552,
    "GoldByTeam": [
@@ -15,12 +15,12 @@
   }
  },
  {
-  "cuando": "2026-11-24T23:35:28.551Z",
+  "cuando": "2026-11-25T01:03:27.525Z",
   "lista": "DamageDealtEvents",
   "gameId": "LA1-1764346340",
-  "gameTime": 17.900576,
+  "gameTime": 18.000765,
   "evento": {
-   "GameTime": 17.787964,
+   "GameTime": 17.788052,
    "SourceNetworkId": 1073742552,
    "TargetNetworkId": 1073742552,
    "DamageDealt": 0,

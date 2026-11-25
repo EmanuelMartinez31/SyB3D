@@ -61,6 +61,8 @@
   ],
   "silenciarJuego": true,
   "audioJuego": [],
+  "noSilenciar": [],
+  "nombresJuego": [],
   "esquina": "inferior-derecha",
   "anchoPip": 480,
   "margen": 24,

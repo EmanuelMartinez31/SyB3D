@@ -1,0 +1,9 @@
+
+models/
+draft/models/
+*.zip
+*.glb
+ingame/cine/recortes/
+*mkv
+streamdeck/Grieta.glb
+*.glb

@@ -1,9 +1,29 @@
+# --- Lo que se genera solo: no se sube --------------------------------
+node_modules/
+npm-debug.log*
 
+# Compilado del sensor (.NET). Se regenera con "dotnet run -c Release"
+SyBSensor/bin/
+SyBSensor/obj/
+
+# Modelos 3D: pesan y no hacen falta en el repo
 models/
 draft/models/
-*.zip
 *.glb
+
+# Recortes y videos de la repeticion
 ingame/cine/recortes/
 *mkv
-streamdeck/Grieta.glb
-*.glb
+*.mp4
+
+# --- Basura de ejecucion ---------------------------------------------
+compilar-salida.txt
+srv-stdout.txt
+srv-stderr.txt
+
+# --- Atajos de Windows -----------------------------------------------
+# (el acceso directo "iniciar - Acceso directo.lnk" SE SUBE: se usa a diario)
+
+# --- Datos de partidas: se crean solos al arrancar --------------------
+postgame/data/history/
+ingame/data/gold-series/

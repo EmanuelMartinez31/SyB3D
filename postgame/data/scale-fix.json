@@ -19,10 +19,11 @@
     "neeko": 0.85,
     "khazix": 0.85,
     "renekton": 0.9,
-    "nocturne": 0.75,
+    "nocturne": 0.55,
     "alistar": 0.9,
     "gwen": 0.9,
-    "ornn": 0.95
+    "ornn": 0.85,
+    "qiyana": 0.85
   },
-  "updatedAt": "2026-11-23T04:09:01.266Z"
+  "updatedAt": "2026-11-25T19:17:21.548Z"
 }

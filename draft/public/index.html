@@ -150,7 +150,7 @@
     border-radius: 8px;
     background: var(--line);
   }
-  .diag-item { --status: var(--muted); min-width: 0; min-height: 72px; padding: 11px 13px; background: var(--surface); }
+  .diag-item { --status: var(--muted); display: flex; flex-direction: column; min-width: 0; min-height: 72px; padding: 11px 13px; background: var(--surface); }
   .diag-item.ok { --status: var(--mint); }
   .diag-item.warn { --status: var(--amber); }
   .diag-item.bad { --status: var(--critical); }
@@ -158,6 +158,16 @@
   .diag-value { display: flex; align-items: center; gap: 7px; min-width: 0; font-size: 12px; line-height: 1.25; }
   .diag-value::before { content: ""; flex: 0 0 auto; width: 6px; height: 6px; border-radius: 50%; background: var(--status); box-shadow: 0 0 8px var(--status); }
   .diag-detail { display: block; overflow: hidden; margin-top: 5px; color: var(--muted); font-size: 10px; line-height: 1.25; text-overflow: ellipsis; white-space: nowrap; }
+  /* Reabrir el sensor si se cierra sin querer. Solo sale cuando esta cerrado. */
+  .diag-action {
+    margin-top: auto; padding: 6px 9px 5px; border: 1px solid var(--cyan); border-radius: 5px;
+    background: transparent; color: var(--cyan); font: 9px/1.2 ui-monospace, monospace;
+    letter-spacing: .11em; text-transform: uppercase; cursor: pointer;
+    transition: background .12s ease, color .12s ease;
+  }
+  .diag-action:hover { background: var(--cyan); color: var(--bg); }
+  .diag-action:disabled { opacity: .55; cursor: default; }
+  .diag-action[hidden] { display: none; }
 
   .workspace {
     display: grid;
@@ -557,7 +567,7 @@
   </div>
   <div class="diagnostics-grid">
     <div class="diag-item" id="diagServer"><span class="diag-name">Servidor</span><strong class="diag-value">Comprobando...</strong><small class="diag-detail"></small></div>
-    <div class="diag-item" id="diagSensor"><span class="diag-name">SyBSensor</span><strong class="diag-value">Comprobando...</strong><small class="diag-detail"></small></div>
+    <div class="diag-item" id="diagSensor"><span class="diag-name">SyBSensor</span><strong class="diag-value">Comprobando...</strong><small class="diag-detail"></small><button class="diag-action" id="botonAbrirSensor" type="button" onclick="abrirSensor(event)" hidden>Abrir sensor</button></div>
     <div class="diag-item" id="diagDraft"><span class="diag-name">Draft OBS</span><strong class="diag-value">Comprobando...</strong><small class="diag-detail"></small></div>
     <div class="diag-item" id="diagIngame"><span class="diag-name">Ingame OBS</span><strong class="diag-value">Comprobando...</strong><small class="diag-detail"></small></div>
     <div class="diag-item" id="diagPostgame"><span class="diag-name">Postpartida OBS</span><strong class="diag-value">Comprobando...</strong><small class="diag-detail"></small></div>
@@ -994,6 +1004,42 @@ function setDiagnostic(id, level, value, detail = '') {
     setHeaderConnection(level, level === 'ok' ? 'SISTEMA EN LÍNEA' : level === 'bad' ? 'RECONECTANDO' : 'CONECTANDO');
   }
 }
+function mostrarBotonSensor(mostrar) {
+  const boton = document.getElementById('botonAbrirSensor');
+  if (boton) boton.hidden = !mostrar;
+}
+
+// Reabre SyBSensor desde el panel. El servidor comprueba antes si ya estaba
+// abierto y, si no, lo lanza con el mismo arranque de iniciar.bat.
+async function abrirSensor(evento) {
+  const boton = evento?.currentTarget || document.getElementById('botonAbrirSensor');
+  if (!boton) return;
+  boton.disabled = true;
+  boton.textContent = 'Abriendo...';
+  try {
+    const respuesta = await fetch('/sensor/abrir', { method: 'POST' });
+    const datos = await respuesta.json().catch(() => ({}));
+    if (datos.yaEstaba) {
+      boton.textContent = 'Ya estaba abierto';
+    } else if (datos.ok) {
+      boton.textContent = 'Lanzado';
+      log('🔌 SyBSensor: se pidió abrirlo desde el panel; tarda unos segundos');
+    } else {
+      boton.textContent = 'No se pudo';
+      log(`⚠️ No se pudo abrir SyBSensor: ${datos.error || 'sin detalle'}`);
+    }
+  } catch (error) {
+    boton.textContent = 'No se pudo';
+    log(`⚠️ No se pudo abrir SyBSensor: ${error.message}`);
+  }
+  // Se deja el texto un momento para que se lea y luego se vuelve a mirar.
+  setTimeout(() => {
+    boton.disabled = false;
+    boton.textContent = 'Abrir sensor';
+    refreshDiagnostics();
+  }, 3000);
+}
+
 function obsSourceText(count) {
   return count === 1 ? '1 fuente OBS' : `${count} fuentes OBS`;
 }
@@ -1061,9 +1107,19 @@ async function refreshDiagnostics() {
   const postgame = postgameResult.status === 'fulfilled' ? postgameResult.value : null;
 
   if (ingame) {
-    setDiagnostic('diagSensor', ingame.receiving ? 'ok' : ingame.latestAvailable ? 'warn' : 'bad',
-      ingame.receiving ? 'Recibiendo datos' : ingame.latestAvailable ? 'Sin datos recientes' : 'Sin datos',
-      `POST /sensor · #${ingame.sequence || 0} · ${ago(ingame.lastReceivedAt)}`);
+    // sensorProceso lo pone el servidor mirando si SyBSensor.exe sigue abierto.
+    // Si la version del servidor es vieja y no viene, no se enseña el boton.
+    const sensorAbierto = ingame.sensorProceso;
+    if (sensorAbierto === false) {
+      setDiagnostic('diagSensor', 'bad', 'Sensor cerrado', 'Pulsa «Abrir sensor» para volver a abrirlo');
+    } else if (ingame.receiving) {
+      setDiagnostic('diagSensor', 'ok', 'Recibiendo datos',
+        `POST /sensor · #${ingame.sequence || 0} · ${ago(ingame.lastReceivedAt)}`);
+    } else {
+      setDiagnostic('diagSensor', 'warn', sensorAbierto ? 'Abierto, sin datos' : 'Sin datos',
+        `POST /sensor · #${ingame.sequence || 0} · ${ago(ingame.lastReceivedAt)}`);
+    }
+    mostrarBotonSensor(sensorAbierto === false);
     watchConnection('sensor', 'SyBSensor', ingame.receiving === true);
     const count = Number(ingame.webSocketClients) || 0;
     setDiagnostic('diagIngame', count ? 'ok' : 'bad', count ? obsSourceText(count) : 'Sin fuente OBS',
@@ -1072,6 +1128,7 @@ async function refreshDiagnostics() {
   } else {
     setDiagnostic('diagSensor', 'bad', 'Estado no disponible', 'No responde /status');
     setDiagnostic('diagIngame', 'bad', 'Estado no disponible', 'No responde /status');
+    mostrarBotonSensor(false);
   }
 
   if (draft) {

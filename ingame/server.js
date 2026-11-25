@@ -5,6 +5,7 @@ const http = require('http');
 const https = require('https');
 const fs = require('fs');
 const path = require('path');
+const { execFile } = require('child_process');
 const { WebSocketServer } = require('ws');
 
 // Cinematica de inicio: se lanza sola al segundo configurado de la partida.
@@ -2599,11 +2600,63 @@ app.get('/asesinatos', (req, res) => {
   });
 });
 
+// ===========================================================================
+// ABRIR EL SENSOR DESDE EL PANEL
+// Si SyBSensor se cierra sin querer, desde el panel se vuelve a abrir con el
+// mismo arranque de siempre (abrir-sensor.bat). El proceso se vigila con
+// tasklist: "dotnet run" lanza el ejecutable compilado como proceso hijo, asi
+// que SyBSensor.exe aparece igual en los dos casos.
+// ===========================================================================
+const RAIZ_PROYECTO = path.join(__dirname, '..');
+const ABRIR_SENSOR_BAT = path.join(RAIZ_PROYECTO, 'abrir-sensor.bat');
+
+// Ultimo dato conocido. /status responde al instante con esto en vez de
+// esperar a tasklist: el lanzador de Windows consulta /status con 900 ms.
+let procesoVivo = false;
+
+function comprobarProcesoVivo() {
+  execFile('tasklist', ['/FI', 'IMAGENAME eq SyBSensor.exe', '/NH'],
+    { windowsHide: true, timeout: 4000 },
+    (error, salida) => {
+      procesoVivo = !error && /SyBSensor\.exe/i.test(salida || '');
+    });
+}
+
+app.post('/sensor/abrir', (req, res) => {
+  // Se mira ahora mismo, no el dato guardado: si acaba de cerrarse, el panel
+  // tiene que poder reabrirlo en el acto.
+  execFile('tasklist', ['/FI', 'IMAGENAME eq SyBSensor.exe', '/NH'],
+    { windowsHide: true, timeout: 4000 },
+    (error, salida) => {
+      procesoVivo = !error && /SyBSensor\.exe/i.test(salida || '');
+
+      if (procesoVivo) {
+        return res.json({ ok: true, yaEstaba: true, mensaje: 'El sensor ya estaba abierto.' });
+      }
+      if (!fs.existsSync(ABRIR_SENSOR_BAT)) {
+        return res.status(404).json({
+          ok: false,
+          error: 'No encuentro abrir-sensor.bat en la carpeta del proyecto.'
+        });
+      }
+      try {
+        const hijo = execFile('cmd.exe', ['/c', ABRIR_SENSOR_BAT],
+          { cwd: RAIZ_PROYECTO, windowsHide: true });
+        hijo.on('error', () => {});
+      } catch (fallo) {
+        return res.status(500).json({ ok: false, error: fallo.message });
+      }
+      console.log('Sensor: se pidio abrirlo desde el panel');
+      res.json({ ok: true, lanzado: true, mensaje: 'Sensor lanzado. Tarda unos segundos en arrancar.' });
+    });
+});
+
 app.get('/status', (req, res) => {
   const staleMs = lastReceivedAt ? Date.now() - Date.parse(lastReceivedAt) : null;
   res.json({
     receiving: staleMs !== null && staleMs < 2000,
     sequence,
+    sensorProceso: procesoVivo,
     lastReceivedAt,
     lastBytes,
     lastCompactBytes,
@@ -3094,6 +3147,12 @@ return {
   wss,
   start() {
     cinematica.iniciar();
+    // El panel ofrece reabrir el sensor si se cierra sin querer: se mira cada
+    // 7 s si SyBSensor.exe sigue en marcha. Va en segundo plano para no
+    // retrasar /status.
+    comprobarProcesoVivo();
+    const sensorTimer = setInterval(comprobarProcesoVivo, 7000);
+    sensorTimer.unref();
     const draftTimer = setInterval(syncDraftState, 1000);
     draftTimer.unref();
     void syncDraftState();

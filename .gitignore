@@ -35,3 +35,11 @@ srv-stderr.txt
 # --- Datos de partidas: se crean solos al arrancar --------------------
 postgame/data/history/
 ingame/data/gold-series/
+
+# --- Archivos grandes que se hacen en este PC y NO van al repositorio ---
+# (si se cuelan, git rechaza el push por pasar de 100 MB)
+*.zip
+_paquete/
+_pack-modelos/
+_backup-actualizacion/
+_actualizacion/
